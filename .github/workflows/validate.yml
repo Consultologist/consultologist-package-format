@@ -1,0 +1,101 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Structural only, and deliberately so: what each specVersion MEANS is
+      # prose, and the engine repo's test is what proves the accepted set here
+      # matches the set it enforces. This checks the artifact is well-formed and
+      # complete enough to publish.
+      - name: The index is well formed and complete
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re, sys
+
+          index = json.load(open("spec-versions.json"))
+          errors = []
+
+          version = index.get("version", "")
+          if not re.fullmatch(r"v\d{4}\.\d{2}\.[1-9]\d*", version):
+              errors.append(f"version {version!r} is not vYYYY.MM.N")
+
+          supported = index.get("supported", [])
+          if not supported or not all(isinstance(n, int) for n in supported):
+              errors.append(f"supported must be a non-empty list of integers, got {supported!r}")
+          if supported != sorted(supported):
+              errors.append(f"supported must be ascending, got {supported!r}")
+
+          documents = index.get("documents", {})
+          # Every accepted version needs a document, and every document needs to
+          # be accepted — a spec with no document cannot be conformed to, and a
+          # document for a version the engine refuses misleads whoever reads it.
+          named = sorted(int(k) for k in documents)
+          if named != sorted(supported):
+              errors.append(f"documents cover {named} but supported is {sorted(supported)}")
+
+          for spec, filename in sorted(documents.items()):
+              path = pathlib.Path(filename)
+              if not path.is_file():
+                  errors.append(f"document {filename} for spec {spec} does not exist")
+              elif f"specVersion {spec}" not in path.read_text():
+                  errors.append(f"{filename} never says 'specVersion {spec}' — wrong document for the key?")
+
+          for error in errors:
+              print(f"::error::{error}")
+          sys.exit(1 if errors else 0)
+          PY
+
+      # A normative document whose links rot is a document nobody can follow.
+      # Relative links must resolve in this repo; absolute ones must be
+      # commit-pinned, never tracking a branch that can move under a published
+      # version.
+      - name: Links resolve, and outbound links are pinned
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          errors = []
+          for doc in sorted(pathlib.Path(".").glob("*.md")):
+              for number, line in enumerate(doc.read_text().splitlines(), 1):
+                  for target in re.findall(r"\]\(([^)]+)\)", line):
+                      if target.startswith("http"):
+                          if "/blob/main/" in target or "/tree/main/" in target:
+                              errors.append(f"{doc}:{number} links to main, which moves: {target}")
+                      elif target.startswith("#"):
+                          continue
+                      elif not pathlib.Path(target.split("#")[0]).is_file():
+                          errors.append(f"{doc}:{number} dangling relative link: {target}")
+
+          for error in errors:
+              print(f"::error::{error}")
+          sys.exit(1 if errors else 0)
+          PY
+
+      - name: The publish script is syntactically sound
+        run: bash -n scripts/publish-format-specs.sh
+
+      # A warning, not an error: the bump belongs in the same commit as the
+      # change, but a pull request that has not bumped yet is a normal state.
+      # publish.yml refuses for real, after merge, before anything is written.
+      - name: This version is not already published
+        run: |
+          set -euo pipefail
+          VERSION=$(python3 -c "import json;print(json.load(open('spec-versions.json'))['version'])")
+          URL="https://consultologistpublic.blob.core.windows.net/package-format/$VERSION/spec-versions.json"
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [ "$CODE" = "200" ]; then
+            echo "::warning::package-format@$VERSION is already published — bump the version before merging"
+          else
+            echo "$VERSION is unpublished (HTTP $CODE)"
+          fi
