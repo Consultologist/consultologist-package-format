@@ -1,0 +1,118 @@
+{
+  "cases": [
+    {
+      "id": "v5-minimal",
+      "specVersion": 5,
+      "valid": true,
+      "path": "v5/v5-minimal.json"
+    },
+    {
+      "id": "v6-single-collection",
+      "specVersion": 6,
+      "valid": true,
+      "path": "v6/v6-single-collection.json"
+    },
+    {
+      "id": "v7-minimal",
+      "specVersion": 7,
+      "valid": true,
+      "path": "v7/v7-minimal.json"
+    },
+    {
+      "id": "v7-multi-deliverable",
+      "specVersion": 7,
+      "valid": true,
+      "path": "v7/v7-multi-deliverable.json"
+    },
+    {
+      "id": "v8-minimal-is-v7-plus-a-line",
+      "specVersion": 8,
+      "valid": true,
+      "path": "v8/v8-minimal-is-v7-plus-a-line.json"
+    },
+    {
+      "id": "v8-typed-inputs",
+      "specVersion": 8,
+      "valid": true,
+      "path": "v8/v8-typed-inputs.json"
+    },
+    {
+      "id": "v8-conditional-deliverable",
+      "specVersion": 8,
+      "valid": true,
+      "path": "v8/v8-conditional-deliverable.json"
+    },
+    {
+      "id": "invalid-spec-version-unsupported",
+      "specVersion": 3,
+      "valid": false,
+      "path": "any/invalid-spec-version-unsupported.json"
+    },
+    {
+      "id": "invalid-derived-from-latest",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-derived-from-latest.json"
+    },
+    {
+      "id": "invalid-inputs-before-v7",
+      "specVersion": 6,
+      "valid": false,
+      "path": "v6/invalid-inputs-before-v7.json"
+    },
+    {
+      "id": "invalid-results-before-v7",
+      "specVersion": 6,
+      "valid": false,
+      "path": "v6/invalid-results-before-v7.json"
+    },
+    {
+      "id": "invalid-result-and-results-together",
+      "specVersion": 7,
+      "valid": false,
+      "path": "v7/invalid-result-and-results-together.json"
+    },
+    {
+      "id": "invalid-typed-input-before-v8",
+      "specVersion": 7,
+      "valid": false,
+      "path": "v7/invalid-typed-input-before-v8.json"
+    },
+    {
+      "id": "invalid-condition-before-v8",
+      "specVersion": 7,
+      "valid": false,
+      "path": "v7/invalid-condition-before-v8.json"
+    },
+    {
+      "id": "invalid-values-without-enum",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-values-without-enum.json"
+    },
+    {
+      "id": "invalid-enum-without-values",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-enum-without-values.json"
+    },
+    {
+      "id": "invalid-unknown-input-type",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-unknown-input-type.json"
+    },
+    {
+      "id": "invalid-missing-prompt-file",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-missing-prompt-file.json"
+    },
+    {
+      "id": "invalid-empty-results",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-empty-results.json"
+    }
+  ]
+}

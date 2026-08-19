@@ -52,6 +52,24 @@ for f in json.load(open('$INDEX'))['documents'].values(): print(f)
 		--file "$DOC" --name "$VERSION/$DOC" --output none
 done
 
+# The conformance suite travels with the version it describes: a case pinned
+# to an error message is only meaningful beside the rules that produce it.
+if [[ -f conformance/index.json ]]; then
+	python3 -c "
+import json
+for c in json.load(open('conformance/index.json'))['cases']: print('conformance/' + c['path'])
+" | while read -r CASE; do
+		[[ -f "$CASE" ]] || { echo "error: conformance case $CASE named by the index is missing" >&2; exit 1; }
+		az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
+			--file "$CASE" --name "$VERSION/$CASE" --output none
+	done
+	for SUPPORT in conformance/catalog-schemas.json conformance/index.json; do
+		echo "Uploading $VERSION/$SUPPORT"
+		az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
+			--file "$SUPPORT" --name "$VERSION/$SUPPORT" --output none
+	done
+fi
+
 # The licence travels with the artifact. Somebody who downloads a version out
 # of the registry to re-verify a consult should not have to come back to GitHub
 # to learn what they may do with it.

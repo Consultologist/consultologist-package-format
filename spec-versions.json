@@ -1,10 +1,16 @@
 {
-  "version": "v2026.08.1",
-  "supported": [5, 6, 7, 8],
+  "version": "v2026.08.2",
+  "supported": [
+    5,
+    6,
+    7,
+    8
+  ],
   "documents": {
     "5": "package-format-v5.md",
     "6": "package-format-v6.md",
     "7": "package-format-v7.md",
     "8": "package-format-v8.md"
-  }
+  },
+  "conformance": "conformance/index.json"
 }

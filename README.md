@@ -16,6 +16,47 @@ engine accepts.
 | `package-format-v7.md` | declared inputs and the result set — multiple deliverables |
 | `package-format-v8.md` | typed inputs with values, and deliverables conditional on them |
 
+## Checking a package against it
+
+Prose says what a package must be; `conformance/` lets you find out whether
+yours is one.
+
+Each case is self-contained — the manifest, every file the bundle would carry,
+and the outcome the engine produces:
+
+```json
+{
+  "id": "invalid-values-without-enum",
+  "specVersion": 8,
+  "description": "values declared on an input that is not an enum…",
+  "expect": {
+    "valid": false,
+    "errors": ["Input 'seen_on' is type 'date' and may not declare values."]
+  },
+  "manifest": { … },
+  "files": { "prompts/…": "…" }
+}
+```
+
+`conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
+the output-contract schemas a case may reference. Cases about one format sit
+under `v5`–`v8`; a case about the accepted set itself sits under `any`.
+
+**The expectations are not written by hand.** Every case is produced by running
+the engine's own validator and recording what it said, so a fixture can never
+claim an error the engine does not actually produce. The engine replays the
+published suite in its own tests, which is what keeps these documents and the
+code that enforces them from drifting apart.
+
+Of the 19 cases, 12 are invalid ones. That ratio is deliberate: a rejected
+package that names its reason proves more than an accepted one.
+
+**What this is not.** The suite is not a schema, and there is no JSON Schema
+here yet. Roughly a third of the rules are structural and could be expressed
+that way; the rest — that every referenced file exists, that the node graph is
+acyclic and every deliverable reachable, that a declared schema welds to a
+catalog contract, that the template compiles — are not shape questions at all.
+
 ## Reading it from the registry
 
 Every version is published to the public registry and is fetchable with no
