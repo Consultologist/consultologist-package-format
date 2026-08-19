@@ -52,6 +52,13 @@ for f in json.load(open('$INDEX'))['documents'].values(): print(f)
 		--file "$DOC" --name "$VERSION/$DOC" --output none
 done
 
+# The licence travels with the artifact. Somebody who downloads a version out
+# of the registry to re-verify a consult should not have to come back to GitHub
+# to learn what they may do with it.
+echo "Uploading $VERSION/LICENSE"
+az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
+	--file LICENSE --name "$VERSION/LICENSE" --output none
+
 echo "Uploading $VERSION/$INDEX"
 az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
 	--file "$INDEX" --name "$VERSION/$INDEX" --output none

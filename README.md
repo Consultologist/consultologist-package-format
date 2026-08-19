@@ -25,6 +25,7 @@ credential:
 https://consultologistpublic.blob.core.windows.net/package-format/latest.json
 https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/spec-versions.json
 https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/package-format-v8.md
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/LICENSE
 ```
 
 `latest.json` is the only mutable blob — `{"version": "vYYYY.MM.N"}`. Published
@@ -51,6 +52,26 @@ under a package published against it.
 **The accepted set is a published fact, not a code constant.** The engine's own
 list and this document are checked against each other by a test in the engine
 repo, which vendors this repo as a submodule. They cannot silently disagree.
+
+## Licence
+
+These documents are licensed **[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)**
+— © 2026 Tauheed Elahee. Read them, cite them, and share them unchanged with
+attribution.
+
+What that does and does not reach:
+
+- **Implementing the format is unaffected.** An implementation is not a
+  derivative work of this prose, so conformance needs no permission — which is
+  the point of publishing a specification at all.
+- **NoDerivatives** covers this text: no translations, no modified or excerpted
+  redistributions of the documents themselves.
+- **NonCommercial** covers redistribution of the documents, not use of the
+  format. Reproducing them inside commercial documentation needs permission.
+
+The licence covers the documents and `spec-versions.json` only. It grants no
+rights to the Consultologist engine, which is separately licensed, and no
+patent or trademark rights. Ask if you need something it does not cover.
 
 ## Related registries
 
