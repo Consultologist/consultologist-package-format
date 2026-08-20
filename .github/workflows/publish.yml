@@ -30,7 +30,13 @@ jobs:
           CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null || git show --name-only --format= HEAD)
           # Only the artifact matters: a README or workflow edit is not a new
           # version of the specification, and must not consume a version number.
-          if echo "$CHANGED" | grep -qE '^(spec-versions\.json|package-format-v[0-9]+\.md)$'; then
+          #
+          # The schemas and the conformance suite are part of the artifact too —
+          # they are uploaded with every version, so a change to one that did not
+          # publish would leave the checked-in file disagreeing with the
+          # published one silently. With them here the publish runs and, if the
+          # version was not bumped, refuses out loud.
+          if echo "$CHANGED" | grep -qE '^(spec-versions\.json|package-format-v[0-9]+\.md|schemas/.+|conformance/.+)$'; then
             echo "publish=true" >> "$GITHUB_OUTPUT"
           else
             echo "publish=false" >> "$GITHUB_OUTPUT"
