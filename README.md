@@ -67,10 +67,11 @@ shape, and the suite is what covers them.
 
 The schemas are generated from the engine's own manifest type and asserted
 byte-for-byte there, so the published shape cannot drift from the one the engine
-reads. They are **stricter than the engine in one respect**: they set
-`additionalProperties: false`, which is what these documents say
-(*"a section the version does not have is never a silently ignored field"*) and
-what the engine does not yet enforce.
+reads. They set `additionalProperties: false`, which is what these documents say
+— *"a section the version does not have is never a silently ignored field"* —
+and, since the engine was brought into line, what it enforces too: a manifest
+carrying a property the format does not have is refused at load, at publish, and
+by the offline validator, naming the property.
 
 ## Reading it from the registry
 
