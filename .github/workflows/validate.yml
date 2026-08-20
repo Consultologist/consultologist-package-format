@@ -126,6 +126,53 @@ jobs:
           sys.exit(1 if errors else 0)
           PY
 
+      # The schemas are generated from the engine's manifest type and checked
+      # byte-for-byte there. What CI adds here is the half the engine cannot
+      # assert without a schema validator: that the schemas agree with the
+      # conformance suite already published beside them.
+      - name: Every schema agrees with the conformance suite
+        run: |
+          pip install --quiet jsonschema
+          python3 - <<'PY'
+          import json, pathlib, sys, jsonschema
+
+          index = json.load(open("spec-versions.json"))
+          schemas = {int(v): json.load(open(path)) for v, path in index["schemas"].items()}
+          cases = json.load(open("conformance/index.json"))["cases"]
+          errors = []
+
+          for entry in cases:
+              case = json.load(open(pathlib.Path("conformance") / entry["path"]))
+              spec = case["specVersion"]
+
+              if spec not in schemas:
+                  # invalid-spec-version-unsupported is about the ACCEPTED SET,
+                  # which spec-versions.json owns. There is no schema to select.
+                  continue
+
+              try:
+                  jsonschema.validate(case["manifest"], schemas[spec])
+                  accepted = True
+              except jsonschema.ValidationError:
+                  accepted = False
+
+              if case["expect"]["valid"] and not accepted:
+                  errors.append(f"{entry['id']}: valid case rejected by the specVersion {spec} schema")
+
+              # The converse is deliberately NOT asserted. A schema sees shape
+              # and nothing else, so a case that fails on a missing file, a
+              # cyclic graph or an unmatched catalog schema must pass it — and
+              # invalid-missing-prompt-file's manifest is byte-identical to a
+              # valid one, so requiring rejection would be requiring a lie.
+              if accepted and not case["expect"]["valid"]:
+                  print(f"::notice::{entry['id']} is invalid for a reason no schema can see")
+
+          for error in errors:
+              print(f"::error::{error}")
+          print(f"{len(cases)} conformance cases checked against {len(schemas)} schemas")
+          sys.exit(1 if errors else 0)
+          PY
+
       - name: The publish script is syntactically sound
         run: bash -n scripts/publish-format-specs.sh
 

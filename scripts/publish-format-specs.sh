@@ -52,6 +52,19 @@ for f in json.load(open('$INDEX'))['documents'].values(): print(f)
 		--file "$DOC" --name "$VERSION/$DOC" --output none
 done
 
+# The schemas travel with the version too: a schema is a statement about one
+# specVersion's shape, and reading it beside a different version's documents
+# would be reading the wrong contract.
+python3 -c "
+import json
+for f in json.load(open('$INDEX')).get('schemas', {}).values(): print(f)
+" | while read -r SCHEMA; do
+	[[ -f "$SCHEMA" ]] || { echo "error: schema $SCHEMA named by $INDEX is missing" >&2; exit 1; }
+	echo "Uploading $VERSION/$SCHEMA"
+	az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
+		--file "$SCHEMA" --name "$VERSION/$SCHEMA" --output none
+done
+
 # The conformance suite travels with the version it describes: a case pinned
 # to an error message is only meaningful beside the rules that produce it.
 if [[ -f conformance/index.json ]]; then

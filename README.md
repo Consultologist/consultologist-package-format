@@ -51,11 +51,26 @@ code that enforces them from drifting apart.
 Of the 19 cases, 12 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one.
 
-**What this is not.** The suite is not a schema, and there is no JSON Schema
-here yet. Roughly a third of the rules are structural and could be expressed
-that way; the rest — that every referenced file exists, that the node graph is
-acyclic and every deliverable reachable, that a declared schema welds to a
-catalog contract, that the template compiles — are not shape questions at all.
+**Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
+machine-readable half — what an editor or a linter reads. Run the conformance
+suite against them and the boundary is exact: every valid case passes, ten of
+the twelve invalid ones are rejected, and the remaining two are not schema
+questions at all. `invalid-missing-prompt-file` carries a manifest byte-identical
+to a valid one and fails only because the bundle lacks a file;
+`invalid-spec-version-unsupported` is about the accepted set, which
+`spec-versions.json` owns.
+
+So the schema catches shape. Whether every referenced file exists, whether the
+node graph is acyclic and each deliverable reachable, whether a declared schema
+welds to a catalog contract, whether the template compiles — none of those are
+shape, and the suite is what covers them.
+
+The schemas are generated from the engine's own manifest type and asserted
+byte-for-byte there, so the published shape cannot drift from the one the engine
+reads. They are **stricter than the engine in one respect**: they set
+`additionalProperties: false`, which is what these documents say
+(*"a section the version does not have is never a silently ignored field"*) and
+what the engine does not yet enforce.
 
 ## Reading it from the registry
 
