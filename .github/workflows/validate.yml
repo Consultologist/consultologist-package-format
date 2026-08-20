@@ -136,6 +136,15 @@ jobs:
           python3 - <<'PY'
           import json, pathlib, sys, jsonschema
 
+          # Invalid cases a schema cannot be expected to reject, each for a
+          # stated reason. Kept explicit so the boundary is a list somebody
+          # chose, not whatever the schema happens to miss today.
+          SHAPE_BLIND = {
+              # Its manifest is byte-identical to a valid case; only the bundle
+              # differs, and a schema never sees the bundle.
+              "invalid-missing-prompt-file",
+          }
+
           index = json.load(open("spec-versions.json"))
           schemas = {int(v): json.load(open(path)) for v, path in index["schemas"].items()}
           cases = json.load(open("conformance/index.json"))["cases"]
@@ -159,13 +168,17 @@ jobs:
               if case["expect"]["valid"] and not accepted:
                   errors.append(f"{entry['id']}: valid case rejected by the specVersion {spec} schema")
 
-              # The converse is deliberately NOT asserted. A schema sees shape
-              # and nothing else, so a case that fails on a missing file, a
-              # cyclic graph or an unmatched catalog schema must pass it — and
-              # invalid-missing-prompt-file's manifest is byte-identical to a
-              # valid one, so requiring rejection would be requiring a lie.
-              if accepted and not case["expect"]["valid"]:
-                  print(f"::notice::{entry['id']} is invalid for a reason no schema can see")
+              # An invalid case that the schema accepts is only acceptable when
+              # it fails for a reason no schema can see. Naming those exactly is
+              # what stops a loosened schema passing this job: without it, a
+              # schema of {} would satisfy "valid cases pass" perfectly.
+              if accepted and not case["expect"]["valid"] and entry["id"] not in SHAPE_BLIND:
+                  errors.append(
+                      f"{entry['id']}: invalid case accepted by the specVersion {spec} schema. "
+                      "Either the schema lost a rule, or this case belongs in SHAPE_BLIND with a reason.")
+
+          for missing in SHAPE_BLIND - {entry["id"] for entry in cases}:
+              errors.append(f"SHAPE_BLIND names {missing}, which is not a conformance case any more")
 
           for error in errors:
               print(f"::error::{error}")
