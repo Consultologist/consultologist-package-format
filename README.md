@@ -15,6 +15,7 @@ engine accepts.
 | `package-format-v6.md` | multiple collections, aggregator nodes, one assembled document |
 | `package-format-v7.md` | declared inputs and the result set — multiple deliverables |
 | `package-format-v8.md` | typed inputs with values, and deliverables conditional on them |
+| `package-format-v9.md` | structured inputs (number, object, array), fans over caller data, the widened condition grammar, several documents per slot, and package metadata — title, description, required tags |
 
 ## Checking a package against it
 
@@ -40,7 +41,7 @@ and the outcome the engine produces:
 
 `conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
 the output-contract schemas a case may reference. Cases about one format sit
-under `v5`–`v8`; a case about the accepted set itself sits under `any`.
+under `v5`–`v9`; a case about the accepted set itself sits under `any`.
 
 **The expectations are not written by hand.** Every case is produced by running
 the engine's own validator and recording what it said, so a fixture can never
@@ -48,17 +49,23 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 19 cases, 12 are invalid ones. That ratio is deliberate: a rejected
-package that names its reason proves more than an accepted one.
+Of the 92 cases, 80 are invalid ones. That ratio is deliberate: a rejected
+package that names its reason proves more than an accepted one — and the v9
+release added a rejection case for every publish-time refusal its design
+record names, refusal by refusal.
 
 **Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
 machine-readable half — what an editor or a linter reads. Run the conformance
-suite against them and the boundary is exact: every valid case passes, ten of
-the twelve invalid ones are rejected, and the remaining two are not schema
-questions at all. `invalid-missing-prompt-file` carries a manifest byte-identical
-to a valid one and fails only because the bundle lacks a file;
+suite against them and the boundary is exact: every valid case passes, and the
+invalid cases split three ways. Thirty-seven are rejected by their version's
+schema. Forty-two fail for reasons no schema can see — the condition grammar
+lives inside one string, a fan's target is a cross-reference, trim and
+case-insensitive-distinctness rules are semantic — and the validation
+workflow's `SHAPE_BLIND` list names each one with its reason, so the boundary
+is a list somebody chose (`invalid-missing-prompt-file` is the oldest member:
+its manifest is byte-identical to a valid one and only its bundle differs).
 `invalid-spec-version-unsupported` is about the accepted set, which
-`spec-versions.json` owns.
+`spec-versions.json` owns and no per-version schema covers.
 
 So the schema catches shape. Whether every referenced file exists, whether the
 node graph is acyclic and each deliverable reachable, whether a declared schema
@@ -80,9 +87,9 @@ credential:
 
 ```
 https://consultologistpublic.blob.core.windows.net/package-format/latest.json
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/spec-versions.json
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/package-format-v8.md
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.1/LICENSE
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.5/spec-versions.json
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.5/package-format-v9.md
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.5/LICENSE
 ```
 
 `latest.json` is the only mutable blob — `{"version": "vYYYY.MM.N"}`. Published

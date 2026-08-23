@@ -143,6 +143,61 @@ jobs:
               # Its manifest is byte-identical to a valid case; only the bundle
               # differs, and a schema never sees the bundle.
               "invalid-missing-prompt-file",
+              # v9 (#430). A `when` condition is one string to a schema; its
+              # grammar — operand types, paths, count(), literals — is the
+              # validator's alone. Every condition case is schema-blind.
+              "invalid-condition-orders-an-enum",
+              "invalid-condition-orders-a-boolean",
+              "invalid-condition-orders-an-enum-field",
+              "invalid-condition-tests-a-text",
+              "invalid-condition-tests-a-text-field",
+              "invalid-condition-bare-enum",
+              "invalid-condition-bare-number",
+              "invalid-condition-bare-object",
+              "invalid-condition-bare-number-field",
+              "invalid-condition-compares-an-object",
+              "invalid-condition-compares-an-array",
+              "invalid-condition-path-into-a-date",
+              "invalid-condition-path-into-an-array",
+              "invalid-condition-path-to-undeclared-field",
+              "invalid-condition-counts-an-object",
+              "invalid-condition-bare-count",
+              "invalid-condition-count-not-whole",
+              "invalid-condition-count-negative",
+              "invalid-condition-number-literal-not-decimal",
+              "invalid-condition-number-literal-exponent",
+              "invalid-condition-date-literal-not-iso",
+              "invalid-condition-enum-literal-undeclared",
+              "invalid-condition-boolean-literal-not-true-false",
+              "invalid-condition-reads-undeclared-input",
+              "invalid-condition-counts-undeclared-input",
+              "invalid-condition-trailing-operator",
+              "invalid-condition-blank",
+              "invalid-condition-stray-quote",
+              # The v8 gates on v9 condition forms: same reason, on the v8 schema.
+              "invalid-condition-path-at-v8",
+              "invalid-condition-count-at-v8",
+              "invalid-condition-ordering-at-v8",
+              # A fan's target is a cross-reference (a node's forEach against
+              # the inputs list) and its item fields are engine-minted;
+              # a schema checks one property at a time.
+              "invalid-fan-of-undeclared-input",
+              "invalid-fan-of-a-non-array",
+              "invalid-fan-item-field",
+              # minLength counts code units and pattern admits spaces, so
+              # whitespace-only and untrimmed values pass the schema; the
+              # validator's trim rules are semantic.
+              "invalid-title-empty",
+              "invalid-description-empty",
+              "invalid-tag-empty",
+              "invalid-tag-untrimmed",
+              # JSON Schema's uniqueItems is case-sensitive; the engine's tag
+              # distinctness ignores case.
+              "invalid-tag-repeated-ignoring-case",
+              # Duplicate field ids and blank labels are semantic rules over
+              # an array of objects the schema types but does not relate.
+              "invalid-object-duplicate-field",
+              "invalid-object-field-without-label",
           }
 
           index = json.load(open("spec-versions.json"))
