@@ -113,6 +113,444 @@
       "specVersion": 8,
       "valid": false,
       "path": "v8/invalid-empty-results.json"
+    },
+    {
+      "id": "v9-minimal-is-v8-plus-two-lines",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-minimal-is-v8-plus-two-lines.json"
+    },
+    {
+      "id": "v9-tagged",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-tagged.json"
+    },
+    {
+      "id": "invalid-tags-omitted-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tags-omitted-at-v9.json"
+    },
+    {
+      "id": "invalid-tags-before-v9",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-tags-before-v9.json"
+    },
+    {
+      "id": "invalid-tag-repeated-ignoring-case",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tag-repeated-ignoring-case.json"
+    },
+    {
+      "id": "invalid-title-before-v9",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-title-before-v9.json"
+    },
+    {
+      "id": "invalid-description-before-v9",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-description-before-v9.json"
+    },
+    {
+      "id": "invalid-title-empty",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-title-empty.json"
+    },
+    {
+      "id": "invalid-title-multiline",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-title-multiline.json"
+    },
+    {
+      "id": "invalid-title-too-long",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-title-too-long.json"
+    },
+    {
+      "id": "invalid-description-empty",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-description-empty.json"
+    },
+    {
+      "id": "invalid-description-too-long",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-description-too-long.json"
+    },
+    {
+      "id": "invalid-tag-empty",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tag-empty.json"
+    },
+    {
+      "id": "invalid-tag-multiline",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tag-multiline.json"
+    },
+    {
+      "id": "invalid-tag-untrimmed",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tag-untrimmed.json"
+    },
+    {
+      "id": "invalid-tag-too-long",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-tag-too-long.json"
+    },
+    {
+      "id": "invalid-too-many-tags",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-too-many-tags.json"
+    },
+    {
+      "id": "invalid-structured-type-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-structured-type-at-v8.json"
+    },
+    {
+      "id": "invalid-items-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-items-at-v8.json"
+    },
+    {
+      "id": "invalid-fields-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-fields-at-v8.json"
+    },
+    {
+      "id": "invalid-unknown-input-type",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-unknown-input-type.json"
+    },
+    {
+      "id": "invalid-array-without-items",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-array-without-items.json"
+    },
+    {
+      "id": "invalid-array-of-arrays",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-array-of-arrays.json"
+    },
+    {
+      "id": "invalid-unknown-items-type",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-unknown-items-type.json"
+    },
+    {
+      "id": "invalid-items-on-a-scalar",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-items-on-a-scalar.json"
+    },
+    {
+      "id": "invalid-array-of-objects-without-fields",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-array-of-objects-without-fields.json"
+    },
+    {
+      "id": "invalid-object-without-fields",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-without-fields.json"
+    },
+    {
+      "id": "invalid-fields-on-a-scalar",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-fields-on-a-scalar.json"
+    },
+    {
+      "id": "invalid-object-field-bad-id",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-field-bad-id.json"
+    },
+    {
+      "id": "invalid-object-duplicate-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-duplicate-field.json"
+    },
+    {
+      "id": "invalid-object-field-without-label",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-field-without-label.json"
+    },
+    {
+      "id": "invalid-object-field-structured",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-field-structured.json"
+    },
+    {
+      "id": "invalid-object-field-unknown-type",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-field-unknown-type.json"
+    },
+    {
+      "id": "invalid-object-field-values-on-non-enum",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-object-field-values-on-non-enum.json"
+    },
+    {
+      "id": "invalid-field-enum-single-value",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-field-enum-single-value.json"
+    },
+    {
+      "id": "v9-fanned-array",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-fanned-array.json"
+    },
+    {
+      "id": "v9-fanned-optional-input-warns",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-fanned-optional-input-warns.json"
+    },
+    {
+      "id": "invalid-fan-of-undeclared-input",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-fan-of-undeclared-input.json"
+    },
+    {
+      "id": "invalid-fan-of-a-non-array",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-fan-of-a-non-array.json"
+    },
+    {
+      "id": "invalid-fan-item-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-fan-item-field.json"
+    },
+    {
+      "id": "invalid-input-fan-before-v9",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-input-fan-before-v9.json"
+    },
+    {
+      "id": "invalid-condition-orders-an-enum",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-orders-an-enum.json"
+    },
+    {
+      "id": "invalid-condition-orders-a-boolean",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-orders-a-boolean.json"
+    },
+    {
+      "id": "invalid-condition-orders-an-enum-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-orders-an-enum-field.json"
+    },
+    {
+      "id": "invalid-condition-tests-a-text",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-tests-a-text.json"
+    },
+    {
+      "id": "invalid-condition-tests-a-text-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-tests-a-text-field.json"
+    },
+    {
+      "id": "invalid-condition-bare-enum",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-bare-enum.json"
+    },
+    {
+      "id": "invalid-condition-bare-number",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-bare-number.json"
+    },
+    {
+      "id": "invalid-condition-bare-object",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-bare-object.json"
+    },
+    {
+      "id": "invalid-condition-bare-number-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-bare-number-field.json"
+    },
+    {
+      "id": "invalid-condition-compares-an-object",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-compares-an-object.json"
+    },
+    {
+      "id": "invalid-condition-compares-an-array",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-compares-an-array.json"
+    },
+    {
+      "id": "invalid-condition-path-into-a-date",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-path-into-a-date.json"
+    },
+    {
+      "id": "invalid-condition-path-into-an-array",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-path-into-an-array.json"
+    },
+    {
+      "id": "invalid-condition-path-to-undeclared-field",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-path-to-undeclared-field.json"
+    },
+    {
+      "id": "invalid-condition-counts-an-object",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-counts-an-object.json"
+    },
+    {
+      "id": "invalid-condition-bare-count",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-bare-count.json"
+    },
+    {
+      "id": "invalid-condition-count-not-whole",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-count-not-whole.json"
+    },
+    {
+      "id": "invalid-condition-count-negative",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-count-negative.json"
+    },
+    {
+      "id": "invalid-condition-number-literal-not-decimal",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-number-literal-not-decimal.json"
+    },
+    {
+      "id": "invalid-condition-number-literal-exponent",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-number-literal-exponent.json"
+    },
+    {
+      "id": "invalid-condition-date-literal-not-iso",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-date-literal-not-iso.json"
+    },
+    {
+      "id": "invalid-condition-enum-literal-undeclared",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-enum-literal-undeclared.json"
+    },
+    {
+      "id": "invalid-condition-boolean-literal-not-true-false",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-boolean-literal-not-true-false.json"
+    },
+    {
+      "id": "invalid-condition-reads-undeclared-input",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-reads-undeclared-input.json"
+    },
+    {
+      "id": "invalid-condition-counts-undeclared-input",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-counts-undeclared-input.json"
+    },
+    {
+      "id": "invalid-condition-trailing-operator",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-trailing-operator.json"
+    },
+    {
+      "id": "invalid-condition-blank",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-blank.json"
+    },
+    {
+      "id": "invalid-condition-stray-quote",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-stray-quote.json"
+    },
+    {
+      "id": "invalid-condition-path-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-condition-path-at-v8.json"
+    },
+    {
+      "id": "invalid-condition-count-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-condition-count-at-v8.json"
+    },
+    {
+      "id": "invalid-condition-ordering-at-v8",
+      "specVersion": 8,
+      "valid": false,
+      "path": "v8/invalid-condition-ordering-at-v8.json"
+    },
+    {
+      "id": "v9-structured-consult",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-structured-consult.json"
     }
   ]
 }
