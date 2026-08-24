@@ -49,7 +49,7 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 92 cases, 80 are invalid ones. That ratio is deliberate: a rejected
+Of the 93 cases, 80 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9
 release added a rejection case for every publish-time refusal its design
 record names, refusal by refusal.
@@ -112,6 +112,14 @@ live in the engine repo. Those links point at a specific commit rather than at
 `main`, so a published spec version resolves to the same words forever. A
 rationale link going stale is the price of a specification that does not move
 under a package published against it.
+
+**A package name is a path.** Since `v2026.08.6` a name may nest —
+`oncology/breast` — up to four segments, each the flat grammar
+(`[a-z0-9][a-z0-9-]*`); a flat name is a one-segment path, so nothing already
+published changes. The path is the identity: the registry address is
+`{name}/{version}/…`, and `derivedFrom` may name a nested parent on every
+format version (the schemas say so). The engine's account packages nest
+under their `acct-<12 hex>` root.
 
 **The accepted set is a published fact, not a code constant.** The engine's own
 list and this document are checked against each other by a test in the engine

@@ -127,6 +127,12 @@
       "path": "v9/v9-tagged.json"
     },
     {
+      "id": "v9-nested-derived-from",
+      "specVersion": 9,
+      "valid": true,
+      "path": "v9/v9-nested-derived-from.json"
+    },
+    {
       "id": "invalid-tags-omitted-at-v9",
       "specVersion": 9,
       "valid": false,
