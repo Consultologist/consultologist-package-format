@@ -27,7 +27,7 @@ jobs:
           errors = []
 
           version = index.get("version", "")
-          if not re.fullmatch(r"v\d{4}\.\d{2}\.[1-9]\d*", version):
+          if not re.fullmatch(r"v\d{4}\.(0[1-9]|1[0-2])\.[1-9]\d*", version):
               errors.append(f"version {version!r} is not vYYYY.MM.N")
 
           supported = index.get("supported", [])
