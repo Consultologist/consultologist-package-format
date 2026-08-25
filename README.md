@@ -136,14 +136,25 @@ What that does and does not reach:
 - **Implementing the format is unaffected.** An implementation is not a
   derivative work of this prose, so conformance needs no permission — which is
   the point of publishing a specification at all.
-- **NoDerivatives** covers this text: no translations, no modified or excerpted
-  redistributions of the documents themselves.
+- **NoDerivatives** covers this text: no translations, and no redistribution of
+  the documents in modified form. Quoting them — a sentence, a rule, a worked
+  example — within fair dealing is fine and is what "cite them" means.
 - **NonCommercial** covers redistribution of the documents, not use of the
   format. Reproducing them inside commercial documentation needs permission.
 
 The licence covers the documents and `spec-versions.json` only. It grants no
 rights to the Consultologist engine, which is separately licensed, and no
-patent or trademark rights. Ask if you need something it does not cover.
+patent or trademark rights.
+
+**Consultologist clients hold a licence that goes beyond this one.** Every
+client may use these documents, the schemas and the conformance suite commercially — inside the app, and in their own
+environment outside it — and holds the copyright in what they author. That
+permission is part of the client agreement, not this file; this licence is
+the public default for everyone else. Anyone who needs more than it grants
+can ask.
+The permission that matters most is one nobody needs to ask for: implementing
+the format, and running packages that conform to it in your own harness, is
+not a derivative work of this prose.
 
 ## Related registries
 
