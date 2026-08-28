@@ -1,0 +1,182 @@
+{
+  "id": "v10-classifier-scope-demo",
+  "specVersion": 10,
+  "description": "The v10 width in one valid manifest: a three-way classifier, three deliverables each conditioned on its answer, a prompt node reading the classifier.",
+  "expect": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 10,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "preludes": {
+      "snomed-tool-guidance": "prompts/_snomed-tool-guidance.md"
+    },
+    "prompts": [
+      {
+        "id": "classify-scope",
+        "file": "prompts/classify-scope.md",
+        "variables": [
+          "referral"
+        ]
+      },
+      {
+        "id": "draft-plan-section",
+        "file": "prompts/draft-plan-section.md",
+        "variables": [
+          "section_name",
+          "section_content",
+          "consult_draft"
+        ]
+      },
+      {
+        "id": "draft-decline-letter",
+        "file": "prompts/draft-decline-letter.md",
+        "variables": [
+          "consult_draft",
+          "scope"
+        ]
+      },
+      {
+        "id": "draft-information-request",
+        "file": "prompts/draft-information-request.md",
+        "variables": [
+          "consult_draft"
+        ]
+      }
+    ],
+    "schemas": {
+      "concept-list": "schemas/concept-list.json"
+    },
+    "nodes": [
+      {
+        "id": "scope",
+        "label": "Is the referral in scope?",
+        "prompt": "classify-scope",
+        "bindings": {
+          "referral": "input:consult_draft"
+        },
+        "kind": "classifier",
+        "values": [
+          "in_scope",
+          "out_of_scope",
+          "needs_information"
+        ]
+      },
+      {
+        "id": "draft-plan",
+        "label": "Drafting the plan",
+        "prompt": "draft-plan-section",
+        "bindings": {
+          "section_name": "item:name",
+          "section_content": "item:content",
+          "consult_draft": "input:consult_draft"
+        },
+        "forEach": "data:standards"
+      },
+      {
+        "id": "assemble-plan",
+        "label": "Assembling the plan",
+        "aggregate": [
+          "node:draft-plan"
+        ]
+      },
+      {
+        "id": "draft-decline",
+        "label": "Drafting the decline letter",
+        "prompt": "draft-decline-letter",
+        "bindings": {
+          "consult_draft": "input:consult_draft",
+          "scope": "node:scope"
+        },
+        "forEach": "data:standards"
+      },
+      {
+        "id": "assemble-decline",
+        "label": "Assembling the decline letter",
+        "aggregate": [
+          "node:draft-decline"
+        ]
+      },
+      {
+        "id": "draft-request",
+        "label": "Drafting the request for information",
+        "prompt": "draft-information-request",
+        "bindings": {
+          "consult_draft": "input:consult_draft"
+        },
+        "forEach": "data:standards"
+      },
+      {
+        "id": "assemble-request",
+        "label": "Assembling the request",
+        "aggregate": [
+          "node:draft-request"
+        ]
+      }
+    ],
+    "data": {
+      "standards": "data/standards/"
+    },
+    "inputs": [
+      {
+        "id": "consult_draft",
+        "label": "Consult draft",
+        "required": true
+      }
+    ],
+    "results": [
+      {
+        "id": "plan",
+        "node": "node:assemble-plan",
+        "label": "Plan",
+        "when": "node:scope == in_scope"
+      },
+      {
+        "id": "decline_letter",
+        "node": "node:assemble-decline",
+        "label": "Decline letter",
+        "when": "node:scope == out_of_scope"
+      },
+      {
+        "id": "information_request",
+        "node": "node:assemble-request",
+        "label": "Request for information",
+        "when": "node:scope == needs_information"
+      }
+    ],
+    "title": "Scope classifier demo",
+    "description": "A classifier decides whether the referral is in scope; the package produces a plan, a decline letter or a request for information. Not intended for clinical use.",
+    "tags": [
+      "demo",
+      "classifier"
+    ]
+  },
+  "files": {
+    "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
+    "prompts/extract-patient-concepts.md": "consult_draft block:\n{{ consult_draft }}",
+    "prompts/identify-problem.md": "patient_concepts block:\n{{ patient_concepts }}",
+    "prompts/create-typical-trajectory.md": "problem_concepts block:\n{{ problem_concepts }}",
+    "prompts/create-patient-trajectory.md": "problem_concepts block:\n{{ problem_concepts }}\n\npatient_concepts block:\n{{ patient_concepts }}\n\ntypical_trajectory_concepts block:\n{{ typical_trajectory_concepts }}",
+    "prompts/standard-section-draft.md": "section_name block:\n{{ section_name }}\n\npatient_trajectory_concepts block:\n{{ patient_trajectory_concepts }}",
+    "prompts/patient-section-draft.md": "standard_section_draft block:\n{{ standard_section_draft }}\n\nconsult_draft block:\n{{ consult_draft }}\n\nsection_name block:\n{{ section_name }}",
+    "prompts/section-instructions.md": "patient_section_draft block:\n{{ patient_section_draft }}\n\nsection_name block:\n{{ section_name }}\n\nsection_standard block:\n{{ section_standard }}",
+    "schemas/concept-list.json": "{\n  \u0022type\u0022: \u0022object\u0022,\n  \u0022additionalProperties\u0022: false,\n  \u0022required\u0022: [\u0022concepts\u0022],\n  \u0022properties\u0022: {\n    \u0022concepts\u0022: {\n      \u0022type\u0022: \u0022array\u0022,\n      \u0022items\u0022: {\n        \u0022type\u0022: \u0022object\u0022,\n        \u0022additionalProperties\u0022: false,\n        \u0022required\u0022: [\u0022term\u0022, \u0022type\u0022, \u0022id\u0022, \u0022isSnomedConcept\u0022, \u0022isActive\u0022, \u0022support\u0022],\n        \u0022properties\u0022: {\n          \u0022term\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022type\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022id\u0022:              { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] },\n          \u0022isSnomedConcept\u0022: { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022isActive\u0022:        { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022support\u0022:         { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] }\n        }\n      }\n    }\n  }\n}\n",
+    "data/standards/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022hpi\u0022, \u0022name\u0022: \u0022History of Present Illness\u0022, \u0022file\u0022: \u0022hpi.md\u0022 },\n    { \u0022id\u0022: \u0022pmh\u0022, \u0022name\u0022: \u0022Past Medical History\u0022, \u0022file\u0022: \u0022pmh.md\u0022 }\n  ]\n}",
+    "data/standards/hpi.md": "Document the presenting illness.",
+    "data/standards/pmh.md": "List prior conditions with dates.",
+    "data/guidelines/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022htn\u0022, \u0022name\u0022: \u0022Hypertension guideline\u0022, \u0022file\u0022: \u0022htn.md\u0022 },\n    { \u0022id\u0022: \u0022dm2\u0022, \u0022name\u0022: \u0022Diabetes guideline\u0022, \u0022file\u0022: \u0022dm2.md\u0022 }\n  ]\n}",
+    "data/guidelines/htn.md": "Target blood pressure below 140/90.",
+    "data/guidelines/dm2.md": "Screen annually for nephropathy.",
+    "prompts/classify-scope.md": "Is this referral within the clinic\u0027s scope? {{ referral }}",
+    "prompts/draft-plan-section.md": "Draft the {{ section_name }} section of the plan from {{ section_content }} and {{ consult_draft }}.",
+    "prompts/draft-decline-letter.md": "Write a decline letter for {{ consult_draft }}; the referral was classified {{ scope }}.",
+    "prompts/draft-information-request.md": "Write a request for the information missing from {{ consult_draft }}."
+  }
+}
