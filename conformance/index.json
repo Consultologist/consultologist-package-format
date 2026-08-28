@@ -557,6 +557,336 @@
       "specVersion": 9,
       "valid": true,
       "path": "v9/v9-structured-consult.json"
+    },
+    {
+      "id": "v10-classifier",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-classifier.json"
+    },
+    {
+      "id": "invalid-classifier-kind-aggregator",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-kind-aggregator.json"
+    },
+    {
+      "id": "invalid-classifier-kind-unknown",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-kind-unknown.json"
+    },
+    {
+      "id": "invalid-classifier-values-without-kind",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-values-without-kind.json"
+    },
+    {
+      "id": "invalid-classifier-without-values",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-without-values.json"
+    },
+    {
+      "id": "invalid-classifier-one-value",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-one-value.json"
+    },
+    {
+      "id": "invalid-classifier-value-not-snake-case",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-value-not-snake-case.json"
+    },
+    {
+      "id": "invalid-classifier-value-repeated",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-value-repeated.json"
+    },
+    {
+      "id": "invalid-classifier-declares-output",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-declares-output.json"
+    },
+    {
+      "id": "invalid-classifier-declares-foreach",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-declares-foreach.json"
+    },
+    {
+      "id": "invalid-classifier-binds-a-prompt-node",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-classifier-binds-a-prompt-node.json"
+    },
+    {
+      "id": "invalid-aggregator-aggregates-a-classifier",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-aggregator-aggregates-a-classifier.json"
+    },
+    {
+      "id": "v10-classifier-reads-a-classifier",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-classifier-reads-a-classifier.json"
+    },
+    {
+      "id": "invalid-classifier-kind-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-classifier-kind-at-v9.json"
+    },
+    {
+      "id": "invalid-classifier-values-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-classifier-values-at-v9.json"
+    },
+    {
+      "id": "v10-condition-and",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-and.json"
+    },
+    {
+      "id": "v10-condition-or-and-not-grouped",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-or-and-not-grouped.json"
+    },
+    {
+      "id": "v10-condition-arithmetic",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-arithmetic.json"
+    },
+    {
+      "id": "v10-condition-date-plus-days",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-date-plus-days.json"
+    },
+    {
+      "id": "v10-condition-count-times-two",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-count-times-two.json"
+    },
+    {
+      "id": "v10-condition-node-value",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-node-value.json"
+    },
+    {
+      "id": "v10-condition-node-value-and-boolean",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-condition-node-value-and-boolean.json"
+    },
+    {
+      "id": "invalid-condition-node-not-a-classifier",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-node-not-a-classifier.json"
+    },
+    {
+      "id": "invalid-condition-bare-node",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-bare-node.json"
+    },
+    {
+      "id": "invalid-condition-node-ordered",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-node-ordered.json"
+    },
+    {
+      "id": "invalid-condition-node-value-undeclared",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-node-value-undeclared.json"
+    },
+    {
+      "id": "invalid-condition-node-in-arithmetic",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-node-in-arithmetic.json"
+    },
+    {
+      "id": "invalid-condition-arithmetic-on-enum",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-arithmetic-on-enum.json"
+    },
+    {
+      "id": "invalid-condition-arithmetic-without-comparison",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-arithmetic-without-comparison.json"
+    },
+    {
+      "id": "invalid-condition-divides-by-zero",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-divides-by-zero.json"
+    },
+    {
+      "id": "invalid-condition-date-times-number",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-date-times-number.json"
+    },
+    {
+      "id": "invalid-condition-date-compared-with-number",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-date-compared-with-number.json"
+    },
+    {
+      "id": "invalid-condition-arithmetic-undeclared-input",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-arithmetic-undeclared-input.json"
+    },
+    {
+      "id": "invalid-condition-arithmetic-literal-exponent",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-arithmetic-literal-exponent.json"
+    },
+    {
+      "id": "invalid-condition-path-into-a-number",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-path-into-a-number.json"
+    },
+    {
+      "id": "invalid-condition-path-to-undeclared-nested-field",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-path-to-undeclared-nested-field.json"
+    },
+    {
+      "id": "invalid-condition-and-undeclared-input",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-and-undeclared-input.json"
+    },
+    {
+      "id": "invalid-condition-and-bare-enum",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-and-bare-enum.json"
+    },
+    {
+      "id": "invalid-condition-trailing-and",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-trailing-and.json"
+    },
+    {
+      "id": "invalid-condition-unbalanced-parenthesis",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-condition-unbalanced-parenthesis.json"
+    },
+    {
+      "id": "invalid-condition-and-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-and-at-v9.json"
+    },
+    {
+      "id": "invalid-condition-or-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-or-at-v9.json"
+    },
+    {
+      "id": "invalid-condition-not-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-not-at-v9.json"
+    },
+    {
+      "id": "invalid-condition-arithmetic-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-arithmetic-at-v9.json"
+    },
+    {
+      "id": "invalid-condition-deep-path-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-deep-path-at-v9.json"
+    },
+    {
+      "id": "invalid-condition-node-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-condition-node-at-v9.json"
+    },
+    {
+      "id": "v10-nested-structure",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-nested-structure.json"
+    },
+    {
+      "id": "invalid-nested-field-enum-one-value",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-nested-field-enum-one-value.json"
+    },
+    {
+      "id": "invalid-nested-array-field-without-items",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-nested-array-field-without-items.json"
+    },
+    {
+      "id": "invalid-element-enum-without-values",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-element-enum-without-values.json"
+    },
+    {
+      "id": "invalid-element-spec-and-fields-together",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-element-spec-and-fields-together.json"
+    },
+    {
+      "id": "invalid-items-spec-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-items-spec-at-v9.json"
+    },
+    {
+      "id": "invalid-field-array-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-field-array-at-v9.json"
+    },
+    {
+      "id": "invalid-field-object-at-v9",
+      "specVersion": 9,
+      "valid": false,
+      "path": "v9/invalid-field-object-at-v9.json"
+    },
+    {
+      "id": "v10-classifier-scope-demo",
+      "specVersion": 10,
+      "valid": true,
+      "path": "v10/v10-classifier-scope-demo.json"
     }
   ]
 }

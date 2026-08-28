@@ -198,6 +198,48 @@ jobs:
               # an array of objects the schema types but does not relate.
               "invalid-object-duplicate-field",
               "invalid-object-field-without-label",
+              # v10 (#500). A classifier's rules are relations between nodes
+              # — its values against its kind, its bindings against what they
+              # name, an aggregator's sources against the nodes' kinds — and
+              # absence (no values) against a kind the schema types but does
+              # not condition on.
+              "invalid-classifier-values-without-kind",
+              "invalid-classifier-without-values",
+              "invalid-classifier-declares-output",
+              "invalid-classifier-declares-foreach",
+              "invalid-classifier-binds-a-prompt-node",
+              "invalid-aggregator-aggregates-a-classifier",
+              # v10. Every expression case is schema-blind, as every v9
+              # condition case is: the grammar lives inside one string.
+              "invalid-condition-node-not-a-classifier",
+              "invalid-condition-bare-node",
+              "invalid-condition-node-ordered",
+              "invalid-condition-node-value-undeclared",
+              "invalid-condition-node-in-arithmetic",
+              "invalid-condition-arithmetic-on-enum",
+              "invalid-condition-arithmetic-without-comparison",
+              "invalid-condition-divides-by-zero",
+              "invalid-condition-date-times-number",
+              "invalid-condition-date-compared-with-number",
+              "invalid-condition-arithmetic-undeclared-input",
+              "invalid-condition-arithmetic-literal-exponent",
+              "invalid-condition-path-into-a-number",
+              "invalid-condition-path-to-undeclared-nested-field",
+              "invalid-condition-and-undeclared-input",
+              "invalid-condition-and-bare-enum",
+              "invalid-condition-trailing-and",
+              "invalid-condition-unbalanced-parenthesis",
+              # The v9 gates on v10 condition forms: same reason, on the v9 schema.
+              "invalid-condition-and-at-v9",
+              "invalid-condition-or-at-v9",
+              "invalid-condition-not-at-v9",
+              "invalid-condition-arithmetic-at-v9",
+              "invalid-condition-deep-path-at-v9",
+              "invalid-condition-node-at-v9",
+              # items is required for an array at every level; the nested
+              # field's schema types it but, below the top level, does not
+              # require it — the completeness rule is the validator's.
+              "invalid-nested-array-field-without-items",
           }
 
           index = json.load(open("spec-versions.json"))
