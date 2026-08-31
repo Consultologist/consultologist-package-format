@@ -887,6 +887,120 @@
       "specVersion": 10,
       "valid": true,
       "path": "v10/v10-classifier-scope-demo.json"
+    },
+    {
+      "id": "v11-minimal-is-v10-plus-a-line",
+      "specVersion": 11,
+      "valid": true,
+      "path": "v11/v11-minimal-is-v10-plus-a-line.json"
+    },
+    {
+      "id": "v11-macro-signed-reproducible",
+      "specVersion": 11,
+      "valid": true,
+      "path": "v11/v11-macro-signed-reproducible.json"
+    },
+    {
+      "id": "v11-macro-optional-input-warns",
+      "specVersion": 11,
+      "valid": true,
+      "path": "v11/v11-macro-optional-input-warns.json"
+    },
+    {
+      "id": "invalid-macro-orphaned",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-orphaned.json"
+    },
+    {
+      "id": "invalid-macro-reference-undeclared",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-reference-undeclared.json"
+    },
+    {
+      "id": "invalid-macro-listed-twice",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-listed-twice.json"
+    },
+    {
+      "id": "invalid-macro-file-missing",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-file-missing.json"
+    },
+    {
+      "id": "invalid-macro-file-empty",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-file-empty.json"
+    },
+    {
+      "id": "invalid-macro-id-not-snake-case",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-macro-without-label",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-without-label.json"
+    },
+    {
+      "id": "invalid-macro-token-unknown-input",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-token-unknown-input.json"
+    },
+    {
+      "id": "invalid-macro-token-unknown-run-word",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-token-unknown-run-word.json"
+    },
+    {
+      "id": "invalid-macro-token-profile-signature",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-token-profile-signature.json"
+    },
+    {
+      "id": "invalid-macro-token-unknown-namespace",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-token-unknown-namespace.json"
+    },
+    {
+      "id": "invalid-macro-token-without-namespace",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-token-without-namespace.json"
+    },
+    {
+      "id": "invalid-macros-at-v10",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-macros-at-v10.json"
+    },
+    {
+      "id": "invalid-result-macros-at-v10",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-result-macros-at-v10.json"
+    },
+    {
+      "id": "invalid-result-signature-at-v10",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-result-signature-at-v10.json"
+    },
+    {
+      "id": "invalid-reproducible-at-v10",
+      "specVersion": 10,
+      "valid": false,
+      "path": "v10/invalid-reproducible-at-v10.json"
     }
   ]
 }

@@ -17,6 +17,7 @@ engine accepts.
 | `package-format-v8.md` | typed inputs with values, and deliverables conditional on them |
 | `package-format-v9.md` | structured inputs (number, object, array), fans over caller data, the widened condition grammar, several documents per slot, and package metadata — title, description, required tags |
 | `package-format-v10.md` | the classifying node and the boundary it decides at, expression conditions (and/or/not, grouping, arithmetic, `node:`), and structure nested to any depth |
+| `package-format-v11.md` | package-owned macros with their closed placeholder grammar, the signed deliverable (the block is the profile’s), and the reproducible claim |
 
 ## Checking a package against it
 
@@ -42,7 +43,7 @@ and the outcome the engine produces:
 
 `conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
 the output-contract schemas a case may reference. Cases about one format sit
-under `v5`–`v10`; a case about the accepted set itself sits under `any`.
+under `v5`–`v11`; a case about the accepted set itself sits under `any`.
 
 **The expectations are not written by hand.** Every case is produced by running
 the engine's own validator and recording what it said, so a fixture can never
@@ -50,10 +51,10 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 148 cases, 124 are invalid ones. That ratio is deliberate: a rejected
-package that names its reason proves more than an accepted one — and the v9
-and v10 releases each added a rejection case for every publish-time refusal
-their design records name, refusal by refusal. Five v10 cases carry a second
+Of the 167 cases, 140 are invalid ones. That ratio is deliberate: a rejected
+package that names its reason proves more than an accepted one — and the v9,
+v10 and v11 releases each added a rejection case for every publish-time
+refusal their design records name, refusal by refusal. Five v10 cases carry a second
 error that follows from the first (a node of no known kind references no
 prompt) and say so in their description; every other invalid case carries
 exactly one.
@@ -61,9 +62,10 @@ exactly one.
 **Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
-invalid cases split three ways. Fifty are rejected by their version's
-schema. Seventy-three fail for reasons no schema can see — the condition grammar
-lives inside one string, a fan's target is a cross-reference, a classifier's
+invalid cases split three ways. Fifty-five are rejected by their version's
+schema. Eighty-four fail for reasons no schema can see — the condition grammar
+lives inside one string, a macro's placeholder grammar lives inside its file,
+a fan's target is a cross-reference, a classifier's
 rules are relations between nodes, trim and case-insensitive-distinctness
 rules are semantic — and the validation
 workflow's `SHAPE_BLIND` list names each one with its reason, so the boundary
@@ -92,9 +94,9 @@ credential:
 
 ```
 https://consultologistpublic.blob.core.windows.net/package-format/latest.json
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.8/spec-versions.json
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.8/package-format-v10.md
-https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.8/LICENSE
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.10/spec-versions.json
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.10/package-format-v11.md
+https://consultologistpublic.blob.core.windows.net/package-format/v2026.08.10/LICENSE
 ```
 
 `latest.json` is the only mutable blob — `{"version": "vYYYY.MM.N"}`. Published
