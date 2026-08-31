@@ -143,6 +143,22 @@ jobs:
               # Its manifest is byte-identical to a valid case; only the bundle
               # differs, and a schema never sees the bundle.
               "invalid-missing-prompt-file",
+              # v11 (#566). Macro rules are relations and file facts: the
+              # orphan and reference rules are cross-references, file
+              # presence and emptiness are the bundle's, a blank label
+              # survives minLength, and the placeholder grammar lives
+              # inside the macro's file — a schema sees none of them.
+              "invalid-macro-orphaned",
+              "invalid-macro-reference-undeclared",
+              "invalid-macro-listed-twice",
+              "invalid-macro-file-missing",
+              "invalid-macro-file-empty",
+              "invalid-macro-without-label",
+              "invalid-macro-token-unknown-input",
+              "invalid-macro-token-unknown-run-word",
+              "invalid-macro-token-profile-signature",
+              "invalid-macro-token-unknown-namespace",
+              "invalid-macro-token-without-namespace",
               # v9 (#430). A `when` condition is one string to a schema; its
               # grammar — operand types, paths, count(), literals — is the
               # validator's alone. Every condition case is schema-blind.

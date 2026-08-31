@@ -1,12 +1,13 @@
 {
-  "version": "v2026.08.9",
+  "version": "v2026.08.10",
   "supported": [
     5,
     6,
     7,
     8,
     9,
-    10
+    10,
+    11
   ],
   "documents": {
     "5": "package-format-v5.md",
@@ -14,7 +15,8 @@
     "7": "package-format-v7.md",
     "8": "package-format-v8.md",
     "9": "package-format-v9.md",
-    "10": "package-format-v10.md"
+    "10": "package-format-v10.md",
+    "11": "package-format-v11.md"
   },
   "schemas": {
     "5": "schemas/package-format-v5.schema.json",
@@ -22,7 +24,8 @@
     "7": "schemas/package-format-v7.schema.json",
     "8": "schemas/package-format-v8.schema.json",
     "9": "schemas/package-format-v9.schema.json",
-    "10": "schemas/package-format-v10.schema.json"
+    "10": "schemas/package-format-v10.schema.json",
+    "11": "schemas/package-format-v11.schema.json"
   },
   "conformance": "conformance/index.json"
 }
