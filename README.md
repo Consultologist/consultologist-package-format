@@ -93,10 +93,10 @@ Every version is published to the public registry and is fetchable with no
 credential:
 
 ```
-https://consultologistpubcaeast.blob.core.windows.net/package-format/latest.json
-https://consultologistpubcaeast.blob.core.windows.net/package-format/v2026.08.10/spec-versions.json
-https://consultologistpubcaeast.blob.core.windows.net/package-format/v2026.08.10/package-format-v11.md
-https://consultologistpubcaeast.blob.core.windows.net/package-format/v2026.08.10/LICENSE
+https://consultpubcaeast.blob.core.windows.net/package-format/latest.json
+https://consultpubcaeast.blob.core.windows.net/package-format/v2026.08.10/spec-versions.json
+https://consultpubcaeast.blob.core.windows.net/package-format/v2026.08.10/package-format-v11.md
+https://consultpubcaeast.blob.core.windows.net/package-format/v2026.08.10/LICENSE
 ```
 
 `latest.json` is the only mutable blob — `{"version": "vYYYY.MM.N"}`. Published
