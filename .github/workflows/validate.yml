@@ -309,7 +309,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION=$(python3 -c "import json;print(json.load(open('spec-versions.json'))['version'])")
-          URL="https://consultologistpubcaeast.blob.core.windows.net/package-format/$VERSION/spec-versions.json"
+          URL="https://consultpubcaeast.blob.core.windows.net/package-format/$VERSION/spec-versions.json"
           CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
           if [ "$CODE" = "200" ]; then
             echo "::warning::package-format@$VERSION is already published — bump the version before merging"

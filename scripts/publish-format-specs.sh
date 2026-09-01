@@ -9,7 +9,7 @@
 # Usage:
 #   ./scripts/publish-format-specs.sh <storage-account>
 # Example:
-#   ./scripts/publish-format-specs.sh consultologistpubcaeast
+#   ./scripts/publish-format-specs.sh consultpubcaeast
 set -euo pipefail
 
 CONTAINER="package-format"
