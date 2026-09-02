@@ -1,11 +1,11 @@
 {
   "id": "invalid-macro-token-profile-signature",
   "specVersion": 11,
-  "description": "profile:signature is deliberately absent from the grammar \u2014 the signature is the results[].signature flag, with placement and recording of its own.",
+  "description": "profile:signature arrives at 12 (the v12 fold) \u2014 on an 11-manifest it is a version requirement, never an unknown word; the signature there is the results[].signature flag.",
   "expect": {
     "valid": false,
     "errors": [
-      "Macro \u0027disclaimer\u0027 placeholder \u0027{{profile:signature}}\u0027 does not resolve."
+      "Macro \u0027disclaimer\u0027 placeholder \u0027{{profile:signature}}\u0027 requires specVersion 12."
     ],
     "warnings": []
   },
