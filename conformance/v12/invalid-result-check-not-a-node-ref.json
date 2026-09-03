@@ -1,19 +1,19 @@
 {
-  "id": "invalid-macro-id-not-snake-case",
-  "specVersion": 11,
-  "description": "A macro id with a dash. Macro ids are snake_case, the declared-id grammar; the malformed id is undeclarable, so the reference to it fails too \u2014 a second error that follows from the first.",
+  "id": "invalid-result-check-not-a-node-ref",
+  "specVersion": 12,
+  "description": "results[].check must be a node:\u003Cid\u003E reference; the unnamed check is then an orphan too \u2014 a second error that follows from the first.",
   "expect": {
     "valid": false,
     "errors": [
-      "Macro id \u0027Bad-Id\u0027 must be snake_case (a lowercase letter, then lowercase letters, digits, or underscores).",
-      "Result \u0027consult\u0027 references undeclared macro \u0027Bad-Id\u0027."
+      "Result \u0027consult\u0027 check \u0027coverage\u0027 must be a node:\u003Cid\u003E reference.",
+      "Check \u0027coverage\u0027 is not named by any result; a check gates a deliverable, or it is dead weight."
     ],
     "warnings": []
   },
   "manifest": {
     "name": "general",
     "version": "v2026.08.1",
-    "specVersion": 11,
+    "specVersion": 12,
     "templating": {
       "engine": "scriban",
       "engineVersion": "7.2.5"
@@ -178,6 +178,26 @@
         "aggregate": [
           "node:section-instructions"
         ]
+      },
+      {
+        "id": "extract-document-terms",
+        "label": "Extracting document terms",
+        "prompt": "extract-patient-concepts",
+        "bindings": {
+          "consult_draft": "node:assemble-note"
+        },
+        "output": {
+          "schema": "concept-list"
+        }
+      },
+      {
+        "id": "coverage",
+        "label": "Coverage check",
+        "kind": "check",
+        "op": "terms-subset",
+        "of": "node:extract-patient-concepts",
+        "in": "node:extract-document-terms",
+        "failWith": "The note does not cover every clinical term found in the referral."
       }
     ],
     "data": {
@@ -278,19 +298,10 @@
         "id": "consult",
         "node": "node:assemble-note",
         "label": "Consultation note",
-        "macros": [
-          "Bad-Id"
-        ]
+        "check": "coverage"
       }
     ],
-    "tags": [],
-    "macros": [
-      {
-        "id": "Bad-Id",
-        "label": "Standing disclaimer",
-        "file": "macros/Bad-Id.md"
-      }
-    ]
+    "tags": []
   },
   "files": {
     "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
@@ -307,7 +318,6 @@
     "data/standards/pmh.md": "List prior conditions with dates.",
     "data/guidelines/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022htn\u0022, \u0022name\u0022: \u0022Hypertension guideline\u0022, \u0022file\u0022: \u0022htn.md\u0022 },\n    { \u0022id\u0022: \u0022dm2\u0022, \u0022name\u0022: \u0022Diabetes guideline\u0022, \u0022file\u0022: \u0022dm2.md\u0022 }\n  ]\n}",
     "data/guidelines/htn.md": "Target blood pressure below 140/90.",
-    "data/guidelines/dm2.md": "Screen annually for nephropathy.",
-    "macros/Bad-Id.md": "This disclaimer is fixed text."
+    "data/guidelines/dm2.md": "Screen annually for nephropathy."
   }
 }

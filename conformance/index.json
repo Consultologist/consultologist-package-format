@@ -1001,6 +1001,240 @@
       "specVersion": 10,
       "valid": false,
       "path": "v10/invalid-reproducible-at-v10.json"
+    },
+    {
+      "id": "v12-minimal-is-v11-plus-a-line",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-minimal-is-v11-plus-a-line.json"
+    },
+    {
+      "id": "v12-optional-macro-with-default",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-optional-macro-with-default.json"
+    },
+    {
+      "id": "v12-macro-placed-before-section",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-macro-placed-before-section.json"
+    },
+    {
+      "id": "v12-macro-signature-token",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-macro-signature-token.json"
+    },
+    {
+      "id": "v12-check-node",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-check-node.json"
+    },
+    {
+      "id": "v12-conditional-macro",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-conditional-macro.json"
+    },
+    {
+      "id": "v12-template-node",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-template-node.json"
+    },
+    {
+      "id": "v12-all-constructs-demo",
+      "specVersion": 12,
+      "valid": true,
+      "path": "v12/v12-all-constructs-demo.json"
+    },
+    {
+      "id": "invalid-macro-optional-without-default",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-optional-without-default.json"
+    },
+    {
+      "id": "invalid-macro-default-without-optional",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-default-without-optional.json"
+    },
+    {
+      "id": "invalid-macro-placement-both-anchors",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-placement-both-anchors.json"
+    },
+    {
+      "id": "invalid-macro-placement-anchor-not-aggregated",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-placement-anchor-not-aggregated.json"
+    },
+    {
+      "id": "invalid-signature-token-in-optional-macro",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-signature-token-in-optional-macro.json"
+    },
+    {
+      "id": "invalid-signature-flag-beside-token",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-signature-flag-beside-token.json"
+    },
+    {
+      "id": "invalid-signature-token-twice",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-signature-token-twice.json"
+    },
+    {
+      "id": "invalid-check-without-op",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-without-op.json"
+    },
+    {
+      "id": "invalid-check-unknown-op",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-unknown-op.json"
+    },
+    {
+      "id": "invalid-check-without-of",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-without-of.json"
+    },
+    {
+      "id": "invalid-check-without-in",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-without-in.json"
+    },
+    {
+      "id": "invalid-check-without-fail-with",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-without-fail-with.json"
+    },
+    {
+      "id": "invalid-check-of-not-concept-list",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-of-not-concept-list.json"
+    },
+    {
+      "id": "invalid-check-declares-prompt-fields",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-declares-prompt-fields.json"
+    },
+    {
+      "id": "invalid-check-reproducible",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-reproducible.json"
+    },
+    {
+      "id": "invalid-check-members-on-a-prompt",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-members-on-a-prompt.json"
+    },
+    {
+      "id": "invalid-result-check-not-a-node-ref",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-result-check-not-a-node-ref.json"
+    },
+    {
+      "id": "invalid-result-check-not-a-check-node",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-result-check-not-a-check-node.json"
+    },
+    {
+      "id": "invalid-check-orphaned",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-check-orphaned.json"
+    },
+    {
+      "id": "invalid-macro-condition-blank",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-condition-blank.json"
+    },
+    {
+      "id": "invalid-macro-condition-value-undeclared",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-macro-condition-value-undeclared.json"
+    },
+    {
+      "id": "invalid-conditional-signature",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-conditional-signature.json"
+    },
+    {
+      "id": "invalid-template-reproducible",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-template-reproducible.json"
+    },
+    {
+      "id": "invalid-template-classification-output",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-template-classification-output.json"
+    },
+    {
+      "id": "invalid-node-kind-unknown-at-v12",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-node-kind-unknown-at-v12.json"
+    },
+    {
+      "id": "invalid-macro-optional-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-optional-at-v11.json"
+    },
+    {
+      "id": "invalid-macro-default-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-macro-default-at-v11.json"
+    },
+    {
+      "id": "invalid-result-macro-placement-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-result-macro-placement-at-v11.json"
+    },
+    {
+      "id": "invalid-result-macro-when-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-result-macro-when-at-v11.json"
+    },
+    {
+      "id": "invalid-result-check-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-result-check-at-v11.json"
+    },
+    {
+      "id": "invalid-template-kind-at-v11",
+      "specVersion": 11,
+      "valid": false,
+      "path": "v11/invalid-template-kind-at-v11.json"
     }
   ]
 }

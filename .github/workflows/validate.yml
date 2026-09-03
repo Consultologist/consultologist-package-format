@@ -256,6 +256,43 @@ jobs:
               # field's schema types it but, below the top level, does not
               # require it — the completeness rule is the validator's.
               "invalid-nested-array-field-without-items",
+              # v12 (#623). The optional pair is a two-property implication,
+              # the placement anchor is a cross-reference into the
+              # deliverable's aggregator, and the signature-token rules read
+              # the macro FILES (token presence, once-per-deliverable,
+              # never-optional) — a schema sees one property of one object.
+              "invalid-macro-optional-without-default",
+              "invalid-macro-default-without-optional",
+              "invalid-macro-placement-both-anchors",
+              "invalid-macro-placement-anchor-not-aggregated",
+              "invalid-signature-token-in-optional-macro",
+              "invalid-signature-flag-beside-token",
+              "invalid-signature-token-twice",
+              # v12 § 13. A check's shape rules are conditional on kind
+              # (op/of/in/failWith required THERE, forbidden elsewhere;
+              # members forbidden on prompts) and its bindings are
+              # cross-references to concept-list nodes; the schema types the
+              # members but cannot see the kind conditionals or relations.
+              "invalid-check-without-op",
+              "invalid-check-without-of",
+              "invalid-check-without-in",
+              "invalid-check-without-fail-with",
+              "invalid-check-of-not-concept-list",
+              "invalid-check-declares-prompt-fields",
+              "invalid-check-reproducible",
+              "invalid-check-members-on-a-prompt",
+              "invalid-check-orphaned",
+              "invalid-result-check-not-a-check-node",
+              # v12 § 14. A when is one string to a schema (the v9 sentence);
+              # its grammar, the declared-value check, and the
+              # never-on-a-signed-deliverable rule are the validator's.
+              "invalid-macro-condition-blank",
+              "invalid-macro-condition-value-undeclared",
+              "invalid-conditional-signature",
+              # v12 § 15. Reproducible-is-implied and the output ban are
+              # kind conditionals — the same blindness as the check's.
+              "invalid-template-reproducible",
+              "invalid-template-classification-output",
           }
 
           index = json.load(open("spec-versions.json"))
