@@ -1307,6 +1307,30 @@
       "specVersion": 14,
       "valid": false,
       "path": "v14/invalid-union-two-structured-arms.json"
+    },
+    {
+      "id": "v15-minimal-is-v14-plus-a-line",
+      "specVersion": 15,
+      "valid": true,
+      "path": "v15/v15-minimal-is-v14-plus-a-line.json"
+    },
+    {
+      "id": "v15-raw-template-node",
+      "specVersion": 15,
+      "valid": true,
+      "path": "v15/v15-raw-template-node.json"
+    },
+    {
+      "id": "invalid-raw-below-15",
+      "specVersion": 14,
+      "valid": false,
+      "path": "v14/invalid-raw-below-15.json"
+    },
+    {
+      "id": "invalid-raw-with-variables",
+      "specVersion": 15,
+      "valid": false,
+      "path": "v15/invalid-raw-with-variables.json"
     }
   ]
 }
