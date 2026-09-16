@@ -310,6 +310,11 @@ jobs:
               # both but cannot relate them. The below-15 case is schema-catchable
               # (the member is absent and additionalProperties is false).
               "invalid-raw-with-variables",
+              # v16 (#730). Like transcript, "image is only for a text slot"
+              # is cross-field (the enum against `type`); the schema types the
+              # channel but cannot relate it. The below-16 case is caught by the
+              # enum (image is absent from the v15 schema's expectedContent).
+              "invalid-expected-content-image-on-number",
           }
 
           index = json.load(open("spec-versions.json"))
