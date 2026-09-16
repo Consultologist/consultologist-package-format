@@ -1,18 +1,18 @@
 {
-  "id": "invalid-spec-version-unsupported",
-  "specVersion": 3,
-  "description": "A specVersion the engine does not accept. Pre-v5 packages are archived, not executable.",
+  "id": "invalid-union-two-structured-arms",
+  "specVersion": 14,
+  "description": "A union pairing array and object; a union carries at most one type that needs a sub-declaration.",
   "expect": {
     "valid": false,
     "errors": [
-      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12, 13 or 14 (pre-v5 packages are archived; see registry-operations.md)."
+      "Input \u0027either\u0027 unions \u0027array\u0027 and \u0027object\u0027, but a union carries at most one type that needs a sub-declaration (items, fields or values)."
     ],
     "warnings": []
   },
   "manifest": {
     "name": "general",
     "version": "v2026.08.1",
-    "specVersion": 3,
+    "specVersion": 14,
     "templating": {
       "engine": "scriban",
       "engineVersion": "7.2.5"
@@ -182,14 +182,121 @@
     "data": {
       "standards": "data/standards/"
     },
-    "result": "node:assemble-note",
     "inputs": [
       {
         "id": "consult_draft",
         "label": "Consult draft",
         "required": true
+      },
+      {
+        "id": "seen_on",
+        "label": "Date seen",
+        "required": true,
+        "type": "date"
+      },
+      {
+        "id": "encounter_kind",
+        "label": "Encounter kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new_patient",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "billable",
+        "label": "Billable encounter",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "id": "length_of_stay",
+        "label": "Length of stay (days)",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "id": "patient",
+        "label": "Patient record",
+        "required": false,
+        "type": "object",
+        "fields": [
+          {
+            "id": "family_name",
+            "label": "Family name",
+            "required": true
+          },
+          {
+            "id": "age",
+            "label": "Age",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "id": "sex",
+            "label": "Sex",
+            "required": false,
+            "type": "enum",
+            "values": [
+              "female",
+              "male"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "prior_notes",
+        "label": "Prior notes",
+        "required": false,
+        "type": "array",
+        "items": "text"
+      },
+      {
+        "id": "medications",
+        "label": "Medications",
+        "required": false,
+        "type": "array",
+        "items": "object",
+        "fields": [
+          {
+            "id": "name",
+            "label": "Drug",
+            "required": true
+          },
+          {
+            "id": "dose",
+            "label": "Dose",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "either",
+        "label": "Either",
+        "required": false,
+        "type": [
+          "array",
+          "object"
+        ],
+        "items": "text",
+        "fields": [
+          {
+            "id": "a",
+            "label": "A",
+            "required": true
+          }
+        ]
       }
-    ]
+    ],
+    "results": [
+      {
+        "id": "consult",
+        "node": "node:assemble-note",
+        "label": "Consultation note"
+      }
+    ],
+    "tags": []
   },
   "files": {
     "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
