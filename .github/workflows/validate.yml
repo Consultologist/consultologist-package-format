@@ -293,6 +293,13 @@ jobs:
               # kind conditionals — the same blindness as the check's.
               "invalid-template-reproducible",
               "invalid-template-classification-output",
+              # v13 (#728). expectedContent's fit with the value type is a
+              # cross-field rule (transcript only on text/array-of-text, form
+              # never on an object); the schema types the enum but cannot relate
+              # it to `type`. The unknown-channel and below-13 cases are caught
+              # by the enum and additionalProperties, so they are NOT here.
+              "invalid-expected-content-transcript-on-number",
+              "invalid-expected-content-form-on-object",
           }
 
           index = json.load(open("spec-versions.json"))

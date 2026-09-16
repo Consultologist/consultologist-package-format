@@ -1235,6 +1235,48 @@
       "specVersion": 11,
       "valid": false,
       "path": "v11/invalid-template-kind-at-v11.json"
+    },
+    {
+      "id": "v13-minimal-is-v12-plus-a-line",
+      "specVersion": 13,
+      "valid": true,
+      "path": "v13/v13-minimal-is-v12-plus-a-line.json"
+    },
+    {
+      "id": "v13-transcript-slot",
+      "specVersion": 13,
+      "valid": true,
+      "path": "v13/v13-transcript-slot.json"
+    },
+    {
+      "id": "v13-form-slot",
+      "specVersion": 13,
+      "valid": true,
+      "path": "v13/v13-form-slot.json"
+    },
+    {
+      "id": "invalid-expected-content-at-v12",
+      "specVersion": 12,
+      "valid": false,
+      "path": "v12/invalid-expected-content-at-v12.json"
+    },
+    {
+      "id": "invalid-expected-content-unknown",
+      "specVersion": 13,
+      "valid": false,
+      "path": "v13/invalid-expected-content-unknown.json"
+    },
+    {
+      "id": "invalid-expected-content-transcript-on-number",
+      "specVersion": 13,
+      "valid": false,
+      "path": "v13/invalid-expected-content-transcript-on-number.json"
+    },
+    {
+      "id": "invalid-expected-content-form-on-object",
+      "specVersion": 13,
+      "valid": false,
+      "path": "v13/invalid-expected-content-form-on-object.json"
     }
   ]
 }
