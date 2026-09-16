@@ -1,18 +1,18 @@
 {
-  "id": "invalid-spec-version-unsupported",
-  "specVersion": 3,
-  "description": "A specVersion the engine does not accept. Pre-v5 packages are archived, not executable.",
+  "id": "invalid-expected-content-form-on-object",
+  "specVersion": 13,
+  "description": "expectedContent \u0027form\u0027 on an object slot. A form answer coerces to a value, never to an object.",
   "expect": {
     "valid": false,
     "errors": [
-      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12 or 13 (pre-v5 packages are archived; see registry-operations.md)."
+      "Input \u0027patient\u0027 declares expectedContent \u0027form\u0027, which a slot of type \u0027object\u0027 cannot be filled from."
     ],
     "warnings": []
   },
   "manifest": {
     "name": "general",
     "version": "v2026.08.1",
-    "specVersion": 3,
+    "specVersion": 13,
     "templating": {
       "engine": "scriban",
       "engineVersion": "7.2.5"
@@ -182,14 +182,89 @@
     "data": {
       "standards": "data/standards/"
     },
-    "result": "node:assemble-note",
     "inputs": [
       {
         "id": "consult_draft",
         "label": "Consult draft",
         "required": true
+      },
+      {
+        "id": "seen_on",
+        "label": "Date seen",
+        "required": true,
+        "type": "date"
+      },
+      {
+        "id": "encounter_kind",
+        "label": "Encounter kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new_patient",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "billable",
+        "label": "Billable encounter",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "id": "length_of_stay",
+        "label": "Length of stay (days)",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "id": "patient",
+        "label": "Patient",
+        "required": false,
+        "type": "object",
+        "fields": [
+          {
+            "id": "age",
+            "label": "Age",
+            "required": true
+          }
+        ],
+        "expectedContent": "form"
+      },
+      {
+        "id": "prior_notes",
+        "label": "Prior notes",
+        "required": false,
+        "type": "array",
+        "items": "text"
+      },
+      {
+        "id": "medications",
+        "label": "Medications",
+        "required": false,
+        "type": "array",
+        "items": "object",
+        "fields": [
+          {
+            "id": "name",
+            "label": "Drug",
+            "required": true
+          },
+          {
+            "id": "dose",
+            "label": "Dose",
+            "required": false
+          }
+        ]
       }
-    ]
+    ],
+    "results": [
+      {
+        "id": "consult",
+        "node": "node:assemble-note",
+        "label": "Consultation note"
+      }
+    ],
+    "tags": []
   },
   "files": {
     "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
