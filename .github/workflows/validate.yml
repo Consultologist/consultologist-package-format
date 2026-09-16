@@ -305,6 +305,11 @@ jobs:
               # the schema types the arms but cannot relate them. The
               # below-14 and unknown-arm cases stay schema-catchable.
               "invalid-union-two-structured-arms",
+              # v15 (#731). "A raw prompt declares no variables" is cross-field
+              # (the raw flag against the variables array); the schema types
+              # both but cannot relate them. The below-15 case is schema-catchable
+              # (the member is absent and additionalProperties is false).
+              "invalid-raw-with-variables",
           }
 
           index = json.load(open("spec-versions.json"))

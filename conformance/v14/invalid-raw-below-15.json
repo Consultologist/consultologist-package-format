@@ -1,18 +1,18 @@
 {
-  "id": "invalid-spec-version-unsupported",
-  "specVersion": 3,
-  "description": "A specVersion the engine does not accept. Pre-v5 packages are archived, not executable.",
+  "id": "invalid-raw-below-15",
+  "specVersion": 14,
+  "description": "A raw prompt on a v14 manifest. The toggle arrives at 15; before it, a known field is an error, never ignored.",
   "expect": {
     "valid": false,
     "errors": [
-      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 or 15 (pre-v5 packages are archived; see registry-operations.md)."
+      "Prompt \u0027disclaimer\u0027 declares raw, which requires specVersion 15."
     ],
     "warnings": []
   },
   "manifest": {
     "name": "general",
     "version": "v2026.08.1",
-    "specVersion": 3,
+    "specVersion": 14,
     "templating": {
       "engine": "scriban",
       "engineVersion": "7.2.5"
@@ -80,6 +80,12 @@
           "section_name",
           "section_standard"
         ]
+      },
+      {
+        "id": "disclaimer",
+        "file": "prompts/disclaimer.md",
+        "variables": [],
+        "raw": true
       }
     ],
     "schemas": {
@@ -175,21 +181,119 @@
         "id": "assemble-note",
         "label": "Assemble note",
         "aggregate": [
-          "node:section-instructions"
+          "node:section-instructions",
+          "node:disclaimer-block"
         ]
+      },
+      {
+        "id": "disclaimer-block",
+        "label": "Disclaimer",
+        "prompt": "disclaimer",
+        "bindings": {},
+        "kind": "template"
       }
     ],
     "data": {
       "standards": "data/standards/"
     },
-    "result": "node:assemble-note",
     "inputs": [
       {
         "id": "consult_draft",
         "label": "Consult draft",
         "required": true
+      },
+      {
+        "id": "seen_on",
+        "label": "Date seen",
+        "required": true,
+        "type": "date"
+      },
+      {
+        "id": "encounter_kind",
+        "label": "Encounter kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new_patient",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "billable",
+        "label": "Billable encounter",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "id": "length_of_stay",
+        "label": "Length of stay (days)",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "id": "patient",
+        "label": "Patient record",
+        "required": false,
+        "type": "object",
+        "fields": [
+          {
+            "id": "family_name",
+            "label": "Family name",
+            "required": true
+          },
+          {
+            "id": "age",
+            "label": "Age",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "id": "sex",
+            "label": "Sex",
+            "required": false,
+            "type": "enum",
+            "values": [
+              "female",
+              "male"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "prior_notes",
+        "label": "Prior notes",
+        "required": false,
+        "type": "array",
+        "items": "text"
+      },
+      {
+        "id": "medications",
+        "label": "Medications",
+        "required": false,
+        "type": "array",
+        "items": "object",
+        "fields": [
+          {
+            "id": "name",
+            "label": "Drug",
+            "required": true
+          },
+          {
+            "id": "dose",
+            "label": "Dose",
+            "required": false
+          }
+        ]
       }
-    ]
+    ],
+    "results": [
+      {
+        "id": "consult",
+        "node": "node:assemble-note",
+        "label": "Consultation note"
+      }
+    ],
+    "tags": []
   },
   "files": {
     "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
@@ -200,6 +304,7 @@
     "prompts/standard-section-draft.md": "section_name block:\n{{ section_name }}\n\npatient_trajectory_concepts block:\n{{ patient_trajectory_concepts }}",
     "prompts/patient-section-draft.md": "standard_section_draft block:\n{{ standard_section_draft }}\n\nconsult_draft block:\n{{ consult_draft }}\n\nsection_name block:\n{{ section_name }}",
     "prompts/section-instructions.md": "patient_section_draft block:\n{{ patient_section_draft }}\n\nsection_name block:\n{{ section_name }}\n\nsection_standard block:\n{{ section_standard }}",
+    "prompts/disclaimer.md": "Return exactly: {\u0022ok\u0022: true}. Escalate per {{ policy.rules }} \u2014 the braces are literal.",
     "schemas/concept-list.json": "{\n  \u0022type\u0022: \u0022object\u0022,\n  \u0022additionalProperties\u0022: false,\n  \u0022required\u0022: [\u0022concepts\u0022],\n  \u0022properties\u0022: {\n    \u0022concepts\u0022: {\n      \u0022type\u0022: \u0022array\u0022,\n      \u0022items\u0022: {\n        \u0022type\u0022: \u0022object\u0022,\n        \u0022additionalProperties\u0022: false,\n        \u0022required\u0022: [\u0022term\u0022, \u0022type\u0022, \u0022id\u0022, \u0022isSnomedConcept\u0022, \u0022isActive\u0022, \u0022support\u0022],\n        \u0022properties\u0022: {\n          \u0022term\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022type\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022id\u0022:              { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] },\n          \u0022isSnomedConcept\u0022: { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022isActive\u0022:        { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022support\u0022:         { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] }\n        }\n      }\n    }\n  }\n}\n",
     "data/standards/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022hpi\u0022, \u0022name\u0022: \u0022History of Present Illness\u0022, \u0022file\u0022: \u0022hpi.md\u0022 },\n    { \u0022id\u0022: \u0022pmh\u0022, \u0022name\u0022: \u0022Past Medical History\u0022, \u0022file\u0022: \u0022pmh.md\u0022 }\n  ]\n}",
     "data/standards/hpi.md": "Document the presenting illness.",
