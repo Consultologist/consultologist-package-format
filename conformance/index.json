@@ -1277,6 +1277,36 @@
       "specVersion": 13,
       "valid": false,
       "path": "v13/invalid-expected-content-form-on-object.json"
+    },
+    {
+      "id": "v14-minimal-is-v13-plus-a-line",
+      "specVersion": 14,
+      "valid": true,
+      "path": "v14/v14-minimal-is-v13-plus-a-line.json"
+    },
+    {
+      "id": "v14-union-text-or-array",
+      "specVersion": 14,
+      "valid": true,
+      "path": "v14/v14-union-text-or-array.json"
+    },
+    {
+      "id": "invalid-union-below-14",
+      "specVersion": 13,
+      "valid": false,
+      "path": "v13/invalid-union-below-14.json"
+    },
+    {
+      "id": "invalid-union-unknown-arm",
+      "specVersion": 14,
+      "valid": false,
+      "path": "v14/invalid-union-unknown-arm.json"
+    },
+    {
+      "id": "invalid-union-two-structured-arms",
+      "specVersion": 14,
+      "valid": false,
+      "path": "v14/invalid-union-two-structured-arms.json"
     }
   ]
 }
