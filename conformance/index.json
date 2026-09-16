@@ -1331,6 +1331,30 @@
       "specVersion": 15,
       "valid": false,
       "path": "v15/invalid-raw-with-variables.json"
+    },
+    {
+      "id": "v16-minimal-is-v15-plus-a-line",
+      "specVersion": 16,
+      "valid": true,
+      "path": "v16/v16-minimal-is-v15-plus-a-line.json"
+    },
+    {
+      "id": "v16-image-slot",
+      "specVersion": 16,
+      "valid": true,
+      "path": "v16/v16-image-slot.json"
+    },
+    {
+      "id": "invalid-expected-content-image-below-16",
+      "specVersion": 15,
+      "valid": false,
+      "path": "v15/invalid-expected-content-image-below-16.json"
+    },
+    {
+      "id": "invalid-expected-content-image-on-number",
+      "specVersion": 16,
+      "valid": false,
+      "path": "v16/invalid-expected-content-image-on-number.json"
     }
   ]
 }
