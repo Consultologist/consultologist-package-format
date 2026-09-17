@@ -315,6 +315,10 @@ jobs:
               # channel but cannot relate it. The below-16 case is caught by the
               # enum (image is absent from the v15 schema's expectedContent).
               "invalid-expected-content-image-on-number",
+              # v17 (#673). Same cross-field shape for the ambient-note channel;
+              # the below-17 case is caught by the enum (ambient-note is absent
+              # from the v16 schema's expectedContent).
+              "invalid-expected-content-ambient-note-on-number",
           }
 
           index = json.load(open("spec-versions.json"))
