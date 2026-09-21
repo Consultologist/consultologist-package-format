@@ -319,6 +319,12 @@ jobs:
               # the below-17 case is caught by the enum (ambient-note is absent
               # from the v16 schema's expectedContent).
               "invalid-expected-content-ambient-note-on-number",
+              # v18 (#822). "A classifier may not carry a when" is a cross-field
+              # rule (the when property against the node's kind); the schema
+              # types when on every node but cannot condition it on kind. The
+              # below-18 case is schema-catchable (when is absent from the v17
+              # schema's node and additionalProperties is false).
+              "invalid-node-when-on-classifier",
           }
 
           index = json.load(open("spec-versions.json"))
