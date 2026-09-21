@@ -1,18 +1,16 @@
 {
-  "id": "invalid-spec-version-unsupported",
-  "specVersion": 3,
-  "description": "A specVersion the engine does not accept. Pre-v5 packages are archived, not executable.",
+  "id": "v18-node-when",
+  "specVersion": 18,
+  "description": "A node gated by its own when: \u0060contextualize\u0060 runs only for a follow-up, and the deliverable that consumes it cascades with it.",
   "expect": {
-    "valid": false,
-    "errors": [
-      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 or 18 (pre-v5 packages are archived; see registry-operations.md)."
-    ],
+    "valid": true,
+    "errors": [],
     "warnings": []
   },
   "manifest": {
     "name": "general",
     "version": "v2026.08.1",
-    "specVersion": 3,
+    "specVersion": 18,
     "templating": {
       "engine": "scriban",
       "engineVersion": "7.2.5"
@@ -79,6 +77,20 @@
           "patient_section_draft",
           "section_name",
           "section_standard"
+        ]
+      },
+      {
+        "id": "summarize-guideline",
+        "file": "prompts/summarize-guideline.md",
+        "variables": [
+          "guideline_text"
+        ]
+      },
+      {
+        "id": "contextualize",
+        "file": "prompts/contextualize.md",
+        "variables": [
+          "guideline_summaries"
         ]
       }
     ],
@@ -172,24 +184,91 @@
         "forEach": "data:standards"
       },
       {
+        "id": "summarize-guideline",
+        "label": "Summarizing guideline",
+        "prompt": "summarize-guideline",
+        "bindings": {
+          "guideline_text": "item:content"
+        },
+        "forEach": "data:guidelines"
+      },
+      {
+        "id": "agg-guidelines",
+        "label": "Collect guideline summaries",
+        "aggregate": [
+          "node:summarize-guideline"
+        ]
+      },
+      {
+        "id": "contextualize",
+        "label": "Contextualizing guidelines",
+        "prompt": "contextualize",
+        "bindings": {
+          "guideline_summaries": "node:agg-guidelines"
+        },
+        "when": "encounter_kind == follow_up"
+      },
+      {
         "id": "assemble-note",
         "label": "Assemble note",
         "aggregate": [
           "node:section-instructions"
         ]
+      },
+      {
+        "id": "assemble-letter",
+        "label": "Assemble letter",
+        "aggregate": [
+          "node:contextualize"
+        ]
       }
     ],
     "data": {
-      "standards": "data/standards/"
+      "standards": "data/standards/",
+      "guidelines": "data/guidelines/"
     },
-    "result": "node:assemble-note",
     "inputs": [
       {
         "id": "consult_draft",
         "label": "Consult draft",
         "required": true
+      },
+      {
+        "id": "seen_on",
+        "label": "Date seen",
+        "required": true,
+        "type": "date"
+      },
+      {
+        "id": "encounter_kind",
+        "label": "Encounter kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new_patient",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "billable",
+        "label": "Billable encounter",
+        "required": false,
+        "type": "boolean"
       }
-    ]
+    ],
+    "results": [
+      {
+        "id": "consult_note",
+        "node": "node:assemble-note",
+        "label": "Consultation note"
+      },
+      {
+        "id": "patient_letter",
+        "node": "node:assemble-letter",
+        "label": "Patient letter"
+      }
+    ],
+    "tags": []
   },
   "files": {
     "prompts/_snomed-tool-guidance.md": "Use short SNOMED search terms.",
@@ -200,6 +279,8 @@
     "prompts/standard-section-draft.md": "section_name block:\n{{ section_name }}\n\npatient_trajectory_concepts block:\n{{ patient_trajectory_concepts }}",
     "prompts/patient-section-draft.md": "standard_section_draft block:\n{{ standard_section_draft }}\n\nconsult_draft block:\n{{ consult_draft }}\n\nsection_name block:\n{{ section_name }}",
     "prompts/section-instructions.md": "patient_section_draft block:\n{{ patient_section_draft }}\n\nsection_name block:\n{{ section_name }}\n\nsection_standard block:\n{{ section_standard }}",
+    "prompts/summarize-guideline.md": "guideline_text block:\n{{ guideline_text }}",
+    "prompts/contextualize.md": "guideline_summaries block:\n{{ guideline_summaries }}",
     "schemas/concept-list.json": "{\n  \u0022type\u0022: \u0022object\u0022,\n  \u0022additionalProperties\u0022: false,\n  \u0022required\u0022: [\u0022concepts\u0022],\n  \u0022properties\u0022: {\n    \u0022concepts\u0022: {\n      \u0022type\u0022: \u0022array\u0022,\n      \u0022items\u0022: {\n        \u0022type\u0022: \u0022object\u0022,\n        \u0022additionalProperties\u0022: false,\n        \u0022required\u0022: [\u0022term\u0022, \u0022type\u0022, \u0022id\u0022, \u0022isSnomedConcept\u0022, \u0022isActive\u0022, \u0022support\u0022],\n        \u0022properties\u0022: {\n          \u0022term\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022type\u0022:            { \u0022type\u0022: \u0022string\u0022 },\n          \u0022id\u0022:              { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] },\n          \u0022isSnomedConcept\u0022: { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022isActive\u0022:        { \u0022type\u0022: \u0022boolean\u0022 },\n          \u0022support\u0022:         { \u0022type\u0022: [\u0022string\u0022, \u0022null\u0022] }\n        }\n      }\n    }\n  }\n}\n",
     "data/standards/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022hpi\u0022, \u0022name\u0022: \u0022History of Present Illness\u0022, \u0022file\u0022: \u0022hpi.md\u0022 },\n    { \u0022id\u0022: \u0022pmh\u0022, \u0022name\u0022: \u0022Past Medical History\u0022, \u0022file\u0022: \u0022pmh.md\u0022 }\n  ]\n}",
     "data/standards/hpi.md": "Document the presenting illness.",

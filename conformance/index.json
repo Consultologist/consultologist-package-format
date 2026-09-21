@@ -1379,6 +1379,30 @@
       "specVersion": 17,
       "valid": false,
       "path": "v17/invalid-expected-content-ambient-note-on-number.json"
+    },
+    {
+      "id": "v18-minimal-is-v17-plus-a-line",
+      "specVersion": 18,
+      "valid": true,
+      "path": "v18/v18-minimal-is-v17-plus-a-line.json"
+    },
+    {
+      "id": "v18-node-when",
+      "specVersion": 18,
+      "valid": true,
+      "path": "v18/v18-node-when.json"
+    },
+    {
+      "id": "invalid-node-when-below-18",
+      "specVersion": 17,
+      "valid": false,
+      "path": "v17/invalid-node-when-below-18.json"
+    },
+    {
+      "id": "invalid-node-when-on-classifier",
+      "specVersion": 18,
+      "valid": false,
+      "path": "v18/invalid-node-when-on-classifier.json"
     }
   ]
 }
