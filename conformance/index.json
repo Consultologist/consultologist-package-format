@@ -1403,6 +1403,30 @@
       "specVersion": 18,
       "valid": false,
       "path": "v18/invalid-node-when-on-classifier.json"
+    },
+    {
+      "id": "v19-minimal-is-v18-plus-a-line",
+      "specVersion": 19,
+      "valid": true,
+      "path": "v19/v19-minimal-is-v18-plus-a-line.json"
+    },
+    {
+      "id": "v19-macro-for-item",
+      "specVersion": 19,
+      "valid": true,
+      "path": "v19/v19-macro-for-item.json"
+    },
+    {
+      "id": "invalid-macro-for-item-below-19",
+      "specVersion": 18,
+      "valid": false,
+      "path": "v18/invalid-macro-for-item-below-19.json"
+    },
+    {
+      "id": "invalid-macro-for-item-missing",
+      "specVersion": 19,
+      "valid": false,
+      "path": "v19/invalid-macro-for-item-missing.json"
     }
   ]
 }
