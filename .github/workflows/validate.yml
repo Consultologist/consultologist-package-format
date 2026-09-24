@@ -267,6 +267,11 @@ jobs:
               "invalid-macro-placement-anchor-not-aggregated",
               "invalid-signature-token-in-optional-macro",
               "invalid-signature-flag-beside-token",
+              # v19 (#845). forItem must name an item of the data collection the
+              # anchor section fans — a cross-reference into the bundle's data
+              # index a schema cannot follow. (The below-19 gate stays
+              # schema-catchable: forItem is absent from the v18 schema.)
+              "invalid-macro-for-item-missing",
               "invalid-signature-token-twice",
               # v12 § 13. A check's shape rules are conditional on kind
               # (op/of/in/failWith required THERE, forbidden elsewhere;
