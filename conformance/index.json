@@ -1427,6 +1427,36 @@
       "specVersion": 19,
       "valid": false,
       "path": "v19/invalid-macro-for-item-missing.json"
+    },
+    {
+      "id": "v20-minimal-is-v19-plus-a-line",
+      "specVersion": 20,
+      "valid": true,
+      "path": "v20/v20-minimal-is-v19-plus-a-line.json"
+    },
+    {
+      "id": "v20-macro-slot",
+      "specVersion": 20,
+      "valid": true,
+      "path": "v20/v20-macro-slot.json"
+    },
+    {
+      "id": "invalid-slot-below-20",
+      "specVersion": 19,
+      "valid": false,
+      "path": "v19/invalid-slot-below-20.json"
+    },
+    {
+      "id": "invalid-slot-with-placement",
+      "specVersion": 20,
+      "valid": false,
+      "path": "v20/invalid-slot-with-placement.json"
+    },
+    {
+      "id": "invalid-slot-with-signature",
+      "specVersion": 20,
+      "valid": false,
+      "path": "v20/invalid-slot-with-signature.json"
     }
   ]
 }
