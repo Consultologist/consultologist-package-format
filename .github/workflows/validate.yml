@@ -330,6 +330,14 @@ jobs:
               # below-18 case is schema-catchable (when is absent from the v17
               # schema's node and additionalProperties is false).
               "invalid-node-when-on-classifier",
+              # v21 (#923). A schema reference names a catalog contract; whether
+              # that contract exists is a lookup into the published catalog the
+              # schema cannot follow, and "one id is not in both schemas and
+              # schemaRefs" is a cross-map relation the schema cannot express.
+              # The below-21 case stays schema-catchable (schemaRefs is absent
+              # from the v20 schema and additionalProperties is false).
+              "invalid-schema-ref-unknown-contract",
+              "invalid-schema-declared-inline-and-as-reference",
           }
 
           index = json.load(open("spec-versions.json"))

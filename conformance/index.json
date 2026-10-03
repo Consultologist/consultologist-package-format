@@ -1457,6 +1457,36 @@
       "specVersion": 20,
       "valid": false,
       "path": "v20/invalid-slot-with-signature.json"
+    },
+    {
+      "id": "v21-minimal-is-v20-plus-a-line",
+      "specVersion": 21,
+      "valid": true,
+      "path": "v21/v21-minimal-is-v20-plus-a-line.json"
+    },
+    {
+      "id": "v21-schema-ref",
+      "specVersion": 21,
+      "valid": true,
+      "path": "v21/v21-schema-ref.json"
+    },
+    {
+      "id": "invalid-schema-refs-below-21",
+      "specVersion": 20,
+      "valid": false,
+      "path": "v20/invalid-schema-refs-below-21.json"
+    },
+    {
+      "id": "invalid-schema-ref-unknown-contract",
+      "specVersion": 21,
+      "valid": false,
+      "path": "v21/invalid-schema-ref-unknown-contract.json"
+    },
+    {
+      "id": "invalid-schema-declared-inline-and-as-reference",
+      "specVersion": 21,
+      "valid": false,
+      "path": "v21/invalid-schema-declared-inline-and-as-reference.json"
     }
   ]
 }
