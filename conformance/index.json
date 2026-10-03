@@ -1487,6 +1487,36 @@
       "specVersion": 21,
       "valid": false,
       "path": "v21/invalid-schema-declared-inline-and-as-reference.json"
+    },
+    {
+      "id": "v22-minimal-is-v21-plus-a-line",
+      "specVersion": 22,
+      "valid": true,
+      "path": "v22/v22-minimal-is-v21-plus-a-line.json"
+    },
+    {
+      "id": "v22-custom-schema",
+      "specVersion": 22,
+      "valid": true,
+      "path": "v22/v22-custom-schema.json"
+    },
+    {
+      "id": "invalid-custom-schemas-below-22",
+      "specVersion": 21,
+      "valid": false,
+      "path": "v21/invalid-custom-schemas-below-22.json"
+    },
+    {
+      "id": "invalid-custom-schema-declared-in-two-maps",
+      "specVersion": 22,
+      "valid": false,
+      "path": "v22/invalid-custom-schema-declared-in-two-maps.json"
+    },
+    {
+      "id": "invalid-custom-schema-outside-the-subset",
+      "specVersion": 22,
+      "valid": false,
+      "path": "v22/invalid-custom-schema-outside-the-subset.json"
     }
   ]
 }

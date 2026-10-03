@@ -338,6 +338,15 @@ jobs:
               # from the v20 schema and additionalProperties is false).
               "invalid-schema-ref-unknown-contract",
               "invalid-schema-declared-inline-and-as-reference",
+              # v22 (#760): "one id is not in more than one of schemas/schemaRefs/
+              # customSchemas" is a cross-map relation the schema cannot express, and
+              # the strict structured-output subset is a rule on the custom body FILE
+              # (additionalProperties:false, every property required, bounded depth)
+              # which the manifest schema never sees. The below-22 case stays
+              # schema-catchable (customSchemas is absent from the v21 schema and
+              # additionalProperties is false).
+              "invalid-custom-schema-declared-in-two-maps",
+              "invalid-custom-schema-outside-the-subset",
           }
 
           index = json.load(open("spec-versions.json"))
