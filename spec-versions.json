@@ -1,5 +1,5 @@
 {
-  "version": "v2026.10.1",
+  "version": "v2026.10.2",
   "supported": [
     5,
     6,
@@ -17,7 +17,8 @@
     18,
     19,
     20,
-    21
+    21,
+    22
   ],
   "documents": {
     "5": "package-format-v5.md",
@@ -36,7 +37,8 @@
     "18": "package-format-v18.md",
     "19": "package-format-v19.md",
     "20": "package-format-v20.md",
-    "21": "package-format-v21.md"
+    "21": "package-format-v21.md",
+    "22": "package-format-v22.md"
   },
   "schemas": {
     "5": "schemas/package-format-v5.schema.json",
@@ -55,7 +57,8 @@
     "18": "schemas/package-format-v18.schema.json",
     "19": "schemas/package-format-v19.schema.json",
     "20": "schemas/package-format-v20.schema.json",
-    "21": "schemas/package-format-v21.schema.json"
+    "21": "schemas/package-format-v21.schema.json",
+    "22": "schemas/package-format-v22.schema.json"
   },
   "conformance": "conformance/index.json"
 }
