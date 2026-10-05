@@ -7,7 +7,9 @@
     "errors": [
       "Result \u0027consult\u0027 declares macro \u0027disclaimer\u0027 as a slot and also anchors it with before/after/forItem; a slot is placed by the model, so it names no anchor."
     ],
-    "warnings": []
+    "warnings": [
+      "Slot macro \u0027disclaimer\u0027 is never instructed: no prompt, standard, or prelude contains a [[slot:disclaimer]] marker, so it will never be placed."
+    ]
   },
   "manifest": {
     "name": "general",

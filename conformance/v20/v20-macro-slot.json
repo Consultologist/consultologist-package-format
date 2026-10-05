@@ -5,7 +5,9 @@
   "expect": {
     "valid": true,
     "errors": [],
-    "warnings": []
+    "warnings": [
+      "Slot macro \u0027disclaimer\u0027 is never instructed: no prompt, standard, or prelude contains a [[slot:disclaimer]] marker, so it will never be placed."
+    ]
   },
   "manifest": {
     "name": "general",
