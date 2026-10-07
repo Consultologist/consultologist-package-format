@@ -1517,6 +1517,30 @@
       "specVersion": 22,
       "valid": false,
       "path": "v22/invalid-custom-schema-outside-the-subset.json"
+    },
+    {
+      "id": "v23-minimal-is-v22-plus-a-line",
+      "specVersion": 23,
+      "valid": true,
+      "path": "v23/v23-minimal-is-v22-plus-a-line.json"
+    },
+    {
+      "id": "v23-node-macro",
+      "specVersion": 23,
+      "valid": true,
+      "path": "v23/v23-node-macro.json"
+    },
+    {
+      "id": "invalid-node-macro-undeclared",
+      "specVersion": 23,
+      "valid": false,
+      "path": "v23/invalid-node-macro-undeclared.json"
+    },
+    {
+      "id": "invalid-node-macros-at-v22",
+      "specVersion": 22,
+      "valid": false,
+      "path": "v22/invalid-node-macros-at-v22.json"
     }
   ]
 }
