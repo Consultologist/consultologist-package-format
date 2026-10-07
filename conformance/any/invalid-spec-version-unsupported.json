@@ -5,7 +5,7 @@
   "expect": {
     "valid": false,
     "errors": [
-      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 or 22 (pre-v5 packages are archived; see registry-operations.md)."
+      "specVersion 3 is not supported: this engine accepts specVersion 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 or 23 (pre-v5 packages are archived; see registry-operations.md)."
     ],
     "warnings": []
   },
