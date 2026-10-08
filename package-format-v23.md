@@ -42,7 +42,7 @@ the prompt, always) or a **placement object**:
 ```jsonc
 {
   "specVersion": 23,
-  "macros": { "tool_guidance": "macros/tool_guidance.md" },
+  "macros": [ { "id": "tool_guidance", "label": "Tool guidance", "file": "macros/tool_guidance.md" } ],
   "nodes": [
     { "id": "draft-section", "prompt": "draft-section",
       "macros": [
