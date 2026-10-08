@@ -1541,6 +1541,84 @@
       "specVersion": 22,
       "valid": false,
       "path": "v22/invalid-node-macros-at-v22.json"
+    },
+    {
+      "id": "v24-minimal-is-v23-plus-a-line",
+      "specVersion": 24,
+      "valid": true,
+      "path": "v24/v24-minimal-is-v23-plus-a-line.json"
+    },
+    {
+      "id": "v24-node-macro-per-item",
+      "specVersion": 24,
+      "valid": true,
+      "path": "v24/v24-node-macro-per-item.json"
+    },
+    {
+      "id": "invalid-node-macro-for-item-at-v23",
+      "specVersion": 23,
+      "valid": false,
+      "path": "v23/invalid-node-macro-for-item-at-v23.json"
+    },
+    {
+      "id": "invalid-node-macro-item-when-at-v23",
+      "specVersion": 23,
+      "valid": false,
+      "path": "v23/invalid-node-macro-item-when-at-v23.json"
+    },
+    {
+      "id": "invalid-node-macro-item-token-at-v23",
+      "specVersion": 23,
+      "valid": false,
+      "path": "v23/invalid-node-macro-item-token-at-v23.json"
+    },
+    {
+      "id": "invalid-node-macro-for-item-missing",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-for-item-missing.json"
+    },
+    {
+      "id": "invalid-node-macro-for-item-on-scalar-node",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-for-item-on-scalar-node.json"
+    },
+    {
+      "id": "invalid-node-macro-item-when-on-scalar-node",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-item-when-on-scalar-node.json"
+    },
+    {
+      "id": "invalid-node-macro-item-when-not-id",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-item-when-not-id.json"
+    },
+    {
+      "id": "invalid-node-macro-item-when-value-undeclared",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-item-when-value-undeclared.json"
+    },
+    {
+      "id": "invalid-node-macro-item-token-on-scalar-node",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-item-token-on-scalar-node.json"
+    },
+    {
+      "id": "invalid-node-macro-item-token-unknown-field",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-macro-item-token-unknown-field.json"
+    },
+    {
+      "id": "invalid-macro-item-token-on-result",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-macro-item-token-on-result.json"
     }
   ]
 }

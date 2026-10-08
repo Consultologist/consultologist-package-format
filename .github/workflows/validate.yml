@@ -347,6 +347,31 @@ jobs:
               # additionalProperties is false).
               "invalid-custom-schema-declared-in-two-maps",
               "invalid-custom-schema-outside-the-subset",
+              # v20 (#863) / v23 (#955), named late: "a slot macro has no
+              # before/after/forItem anchor" and "a slot macro carries no
+              # signature token" are a cross-field relation and a file fact; a
+              # node macro id that no library macro declares is a cross-reference.
+              "invalid-slot-with-placement",
+              "invalid-slot-with-signature",
+              "invalid-node-macro-undeclared",
+              # v24 (#957): the per-item layer is relations and file facts — a
+              # forItem or an item:id literal checked against the fanned
+              # collection's index, "the node fans" as a cross-field relation,
+              # an item: operand inside a when string, an {{item:…}} token inside
+              # the macro FILE. The below-24 forItem case stays schema-catchable
+              # (forItem is absent from the v23 node-macro object and
+              # additionalProperties is false); the other two below-24 cases are
+              # a when string and a file, which a schema never sees.
+              "invalid-node-macro-item-when-at-v23",
+              "invalid-node-macro-item-token-at-v23",
+              "invalid-node-macro-for-item-missing",
+              "invalid-node-macro-for-item-on-scalar-node",
+              "invalid-node-macro-item-when-on-scalar-node",
+              "invalid-node-macro-item-when-not-id",
+              "invalid-node-macro-item-when-value-undeclared",
+              "invalid-node-macro-item-token-on-scalar-node",
+              "invalid-node-macro-item-token-unknown-field",
+              "invalid-macro-item-token-on-result",
           }
 
           index = json.load(open("spec-versions.json"))
