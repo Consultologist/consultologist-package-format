@@ -149,9 +149,9 @@ The catalogue lives in the agents registry (`agents/formats.json`, one file per 
 An attested entry names an agent (`agentName`, integer `agentVersion`), a computed entry an
 `op` the engine publishes, a rendered entry neither; `custom` is a producer binding, never a
 format entry. A catalogue id is snake_case (`^[a-z][a-z0-9_]*$`), as every declared id, and so
-is a computed entry's `op` (`terms_subset`); the hyphenated spelling an earlier catalogue
-published (`concept-list`, `terms-subset`) is read by the engine until the renamed catalogue is
-pinned, never written by a 25 package. A package references a
+is a computed entry's `op` (`terms_subset`). An earlier catalogue (formats@v2026.10.1) published
+a hyphenated spelling (`concept-list`, `terms-subset`); since formats@v2026.10.2 the engine reads
+only the snake_case form. A package references a
 catalogue format **by id only, never with a version**: publish resolves the id through the
 engine's pinned index and stamps the file's canonical-JSON hash beside the catalogue version.
 
