@@ -30,11 +30,11 @@ a template references seven reserved objects, every member access is checked at 
 | Object | Members | Value |
 |---|---|---|
 | `input.<id>` | the value, bare | the supplied input, **typed** as declared: a date formats, a boolean branches, an object's fields path (`input.patient.name`), an array iterates |
-| `node.<id>` | `.text`, `.value` | `.text` is the node's **composed** output as text; `.value` is the parsed output of an `object`, `enum` or `array` format — fields path, arrays iterate, every path checked against the format's schema at publish. The bare read is refused by a sentence naming `.text`; `.value` on a `text` format is refused. |
-| `snippet.<id>` | `.id`, `.name`, `.text` | the snippet rendered |
+| `node.<id>` | `.content`, `.value` | `.content` is the node's **composed** output as text; `.value` is the parsed output of an `object`, `enum` or `array` format — fields path, arrays iterate, every path checked against the format's schema at publish. The bare read is refused by a sentence naming `.content`; `.value` on a `text` format is refused. |
+| `snippet.<id>` | `.id`, `.name`, `.content` | the snippet rendered |
 | `snippet.<folder>` | iterable | each item a snippet with the three members; a folder read bare, as a value, is refused |
-| `item` | `.id`, `.name`, `.text` (snippet-folder fan) / `.id`, `.name`, `.value` (input fan) | the fan item the instance runs for; refused on a node that does not fan |
-| `macro.<id>` | `.id`, `.name`, `.text`, `.prompt` | `.text` is the macro's text rendered, read like a snippet; `.prompt` is the inline macro's prompt text — the instruction rendered, then the mechanics sentence (see *Macros*) |
+| `item` | `.id`, `.name`, `.content` (snippet-folder fan) / `.id`, `.name`, `.value` (input fan) | the fan item the instance runs for; refused on a node that does not fan |
+| `macro.<id>` | `.id`, `.name`, `.content`, `.prompt` | `.content` is the macro's text rendered, read like a snippet; `.prompt` is the inline macro's prompt text — the instruction rendered, then the mechanics sentence (see *Macros*) |
 | `run` | `.date`, `.job`, `.package`, `.host` | the run facts, as the v11 `{{run:…}}` tokens gave them |
 | `profile` | `.name`, `.signature` | the profile facts, as the v11/v12 `{{profile:…}}` tokens gave them; a `profile.signature` read in a placed deliverable macro signs (see *Macros*); anywhere else — a prompt, an instruction, a reply — it is the node's fact, empty unless a deliverable placement carried the signature |
 
@@ -43,7 +43,7 @@ Rules:
 - **Static member access only.** A dynamic index on a reserved chain (`node[name]`,
   `input.history[s.id]`) is refused. A literal integer index on an array path is static and
   steps into the element (`node.extract.value.concepts[0].term`). A string-literal index is a
-  member spelled the only way Scriban allows a hyphen (`node["identify-problem"].text`) and
+  member spelled the only way Scriban allows a hyphen (`node["identify-problem"].content`) and
   stays a valid static access; it is never the expected spelling, since node ids are
   snake_case at 25 (see *Formats*).
 - **Loop, `with` and `capture` variables are typed from what they bind.** `for s in
@@ -52,9 +52,9 @@ Rules:
   and its members pass. A variable named one of the seven objects is refused.
 - **A reference that does not resolve, or a member outside the closed set, is refused by
   name.** A bare global that is not an object, a loop variable or a Scriban builtin is refused.
-- **Pipes are opaque.** `{{ node.extract.text | concept_context }}` is the attested rendering a
+- **Pipes are opaque.** `{{ node.extract.content | concept_context }}` is the attested rendering a
   binding's `as: concept-context` gave; the renderer set is unchanged. A loop over
-  `node.extract.value.concepts` is the package's own rendering. A bare `.text` read of a
+  `node.extract.value.concepts` is the package's own rendering. A bare `.content` read of a
   structured format renders the JSON and the validator **warns**.
 - **Everything is a template.** Snippets render, macro text renders, prompts render. `raw`
   prompts are refused; a literal `{{` is escaped the Scriban way (`{{ "{{" }}` or a
@@ -205,7 +205,7 @@ structured-output subset).
   prompt, whose id is snake_case too (every declared id is; a hyphenated prompt id is refused
   with the rename in the sentence).
 - **`with`** — exactly the parameters the format declares, every one supplied, none extra.
-  A `node` parameter is a bare `node.<id>` (it names the node, so it is an edge; `.text` /
+  A `node` parameter is a bare `node.<id>` (it names the node, so it is an edge; `.content` /
   `.value` are refused there) whose format must match the declaration's `format` when one is
   named; a `text` parameter is a string literal or an `input.<id>` reference to a text input;
   a `values` parameter is a list of snake_case values (at least two, distinct) or an
@@ -231,8 +231,8 @@ Scriban template, and a **folder** of snippets is a collection with an `index.js
 "snippets": { "standards": "snippets/standards.md", "sections": "snippets/sections/" }
 ```
 
-- A snippet is used by **reading** it — `{{ snippet.standards.text }}`, or
-  `{{ for s in snippet.sections }}{{ s.text }}{{ end }}` — from a prompt, another snippet, or
+- A snippet is used by **reading** it — `{{ snippet.standards.content }}`, or
+  `{{ for s in snippet.sections }}{{ s.content }}{{ end }}` — from a prompt, another snippet, or
   a macro's text. It is never attached to a node or a deliverable: an inline read at the top
   of a template is the prompt-side "before" of v23, and a Scriban `if` around it is that
   attachment's condition, with the edge derived like any other.
@@ -242,9 +242,9 @@ Scriban template, and a **folder** of snippets is a collection with an `index.js
   on. A `when` on a snippet that is not in a folder, or one reading a node, is refused by a
   sentence saying the template's own `if` does that.
 - A node fans over a folder as `forEach: snippet.<folder>` and over an array input as
-  `forEach: input.<id>`; `item.text` is the item's rendered text (`item.content` is retired),
+  `forEach: input.<id>`; `item.content` is the item's rendered content (the ≤24 `item:content`, under the object spelling),
   `item.value` the array element typed as declared.
-- Snippets may read snippets, inputs, nodes, `macro.<id>.text` and `macro.<id>.prompt` (the
+- Snippets may read snippets, inputs, nodes, `macro.<id>.content` and `macro.<id>.prompt` (the
   section-instructions pattern: a standard that carries an inline macro's prompt text). A snippet is
   a macro without an instruction; a snippet is only ever read, a macro may also be placed.
 
@@ -253,7 +253,7 @@ Scriban template, and a **folder** of snippets is a collection with an `index.js
 The library (`manifest.macros[]`: `id`, `label`, `file`, **`instruction`** (mandatory),
 `optional`/`default`) is the only kind of placed text. A macro's text is a Scriban template
 that renders where it is used and may read snippets, inputs, node outputs and the run and
-profile facts. It may also be **read** inline as `{{ macro.<id>.text }}`, prompt-side, exactly
+profile facts. It may also be **read** inline as `{{ macro.<id>.content }}`, prompt-side, exactly
 as a snippet is. The instruction is a Scriban template too, rendered where `macro.<id>.prompt`
 is read, over the same scope, with the same reads a snippet may make (a `.prompt` read inside
 an instruction is a reference to that macro's instruction, see *The reference rule and cycles*).
@@ -274,7 +274,7 @@ A macro is used in three ways, all on the output side:
 
 and **inline**, by writing `{{ macro.letrozole.prompt }}` in a prompt or a snippet where the
 macro goes: that read *is* the inline macro's declaration — the model is told the instruction and asked
-to write `{{ macro.letrozole.text }}` where the content belongs, and the reply renders it (see
+to write `{{ macro.letrozole.content }}` where the content belongs, and the reply renders it (see
 *The reply is a template*). There is no `at: slot`, no `use` toggle and no instruction on an
 instance (one instruction per macro; a different instruction is a different macro).
 
@@ -295,7 +295,7 @@ instance (one instruction per macro; a different instruction is a different macr
 
 Before-blocks in list order, the rendered reply, then after-blocks. Inline macros have no
 order: the model places the read, and the reply's render fills it. An instance whose `when`
-refuses is withheld and the node row records the exclusion; a reply's `macro.<id>.text` read
+refuses is withheld and the node row records the exclusion; a reply's `macro.<id>.content` read
 is never withheld (the reply renders over the node's full scope). The output-side text becomes
 part of the node's output: the record carries two per-node hashes (the agent's reply as it
 came, and the composed output), and names each macro text the reply read, in order.
@@ -317,7 +317,7 @@ search that names the path.
 the template that reads it — followed by a sentence that is a **constant of this format
 version**, appended after the render so the read it names reaches the model as written:
 
-> If so, write `{{ macro.<id>.text }}` verbatim and nothing else at that place; do not write
+> If so, write `{{ macro.<id>.content }}` verbatim and nothing else at that place; do not write
 > that content yourself — it is filled in afterward.
 
 ### The reply is a template
@@ -325,7 +325,7 @@ version**, appended after the render so the read it names reaches the model as w
 A node's reply is rendered as a Scriban template at the node's completion, over the full
 scope its prompt rendered over — its inputs, the nodes it reads, snippets and folders, the
 fan item, every macro, the run and profile facts — and the rendered text is the node's
-output (before its instances compose around it). A `{{ macro.<id>.text }}` the model wrote
+output (before its instances compose around it). A `{{ macro.<id>.content }}` the model wrote
 where an inline macro's instruction told it to becomes the macro's text, rendered; any other read a
 template could make renders the same way. What the reply may read is exactly what a template
 may read: a reply that does not parse, or reads a member the scope has no value for (a node
@@ -403,13 +403,13 @@ replacement.
 |---|---|
 | `nodes[].bindings`, `prompts[].variables` | object references; reads and edges are derived |
 | `prompts[].raw` | escaping |
-| `manifest.preludes`, `prompts[].prelude` | an inline `{{ snippet.<id>.text }}` read (the editor migrated preludes at 23) |
+| `manifest.preludes`, `prompts[].prelude` | an inline `{{ snippet.<id>.content }}` read (the editor migrated preludes at 23) |
 | `manifest.data` | `manifest.snippets` |
 | `manifest.schemas`, `schemaRefs`, `customSchemas`, `nodes[].output` | `manifest.formats` + `nodes[].format` |
 | `nodes[].kind`, `values`, `op`, `of`, `in`, `failWith` | the format and `with` |
 | `deliverables[].macros[].before` / `after` / `forItem` | a node instance |
 | `deliverables[].macros[].slot` | the inline `{{ macro.<id>.prompt }}` read |
-| `[[slot:<id>]]` in any text | `{{ macro.<id>.prompt }}` where the macro is read inline; the model writes `{{ macro.<id>.text }}` |
+| `[[slot:<id>]]` in any text | `{{ macro.<id>.prompt }}` where the macro is read inline; the model writes `{{ macro.<id>.content }}` |
 | `results`, `result` | `deliverables` |
 | a node id with a hyphen | the snake_case id |
 | a prompt id with a hyphen | the snake_case id |
@@ -431,8 +431,8 @@ ids, never silently.
 
 | At 24 | At 25 |
 |---|---|
-| `{{ <variable> }}` bound to `input:x` / `node:x` (`as: r`) / `data:x` / `item:name` | `{{ input.x }}` / `{{ node.x.text \| r }}` / `{{ snippet.x.text }}` / `{{ item.name }}`; `bindings` and `variables` dropped |
-| `item:content` / `{{ item:content }}` | `item.text` |
+| `{{ <variable> }}` bound to `input:x` / `node:x` (`as: r`) / `data:x` / `item:name` | `{{ input.x }}` / `{{ node.x.content \| r }}` / `{{ snippet.x.content }}` / `{{ item.name }}`; `bindings` and `variables` dropped |
+| `item:content` / `{{ item:content }}` | `item.content` |
 | `{{run:date}}`, `{{profile:signature}}` and the other fact tokens | `{{ run.date }}`, `{{ profile.signature }}` |
 | no contract | `format: prose` |
 | `kind: classifier` + `values` | `format: classification`, `with: { values }`, `onInvalid: fail` |
@@ -441,9 +441,9 @@ ids, never silently.
 | `schemaRefs: { s: concept-list }` + `output.schema: s` | `format: concept_list`, `onInvalid: fail` (the ≤24 contract id stays hyphenated; the 25 format id is snake_case) |
 | `customSchemas` file | `formats/<id>.json` with the schema under `schema`, `producer: custom`; `onInvalid: fail` as the migration's explicit choice, named in the notice |
 | `data` scalar / collection | a snippet / a snippet folder, files moved under `snippets/`; `forEach: data:x` → `snippet.x`, `forEach: input:x` → `input.x` |
-| a prompt-side node macro (bare / `use: prompt`) | an inline `{{ macro.x.text }}` read at the top (`before`) or bottom (`after`) of the template, wrapped in `{{ if }}` when it had a `when`; a macro never placed on any output becomes a **snippet** and the read becomes `snippet.x.text` |
+| a prompt-side node macro (bare / `use: prompt`) | an inline `{{ macro.x.content }}` read at the top (`before`) or bottom (`after`) of the template, wrapped in `{{ if }}` when it had a `when`; a macro never placed on any output becomes a **snippet** and the read becomes `snippet.x.content` |
 | an output-side node macro `at: slot` + `instruction` | the instruction moves to the library macro; the template keeps `{{ macro.x.prompt }}` |
-| `[[slot:x]]` in a prompt, standard or prelude | `{{ macro.x.prompt }}` (the model is then told to write `{{ macro.x.text }}`) |
+| `[[slot:x]]` in a prompt, standard or prelude | `{{ macro.x.prompt }}` (the model is then told to write `{{ macro.x.content }}`) |
 | a deliverable macro `before/after: node:x` (± `forItem`) | a node instance `{ id, at, forItem }` |
 | `raw: true` prompt | the text with `{{` escaped |
 | `results` / `result` | `deliverables` |
@@ -453,4 +453,4 @@ ids, never silently.
 | `when: node:scope == in_scope and kind == new` — a node's own, a node instance's, a deliverable's, a deliverable instance's | `node.scope.value == "in_scope" && input.kind == "new"`: the Scriban expression, literals typed by the input (a text or enum input compares as a string); a `when` the v10 grammar refuses is a refusal naming the site |
 
 A library macro placed on an output somewhere *and* used prompt-side elsewhere stays one
-macro: the prompt-side use is a `.text` read. Nothing is split.
+macro: the prompt-side use is a `.content` read. Nothing is split.
