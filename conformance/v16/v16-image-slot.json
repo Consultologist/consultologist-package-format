@@ -1,7 +1,7 @@
 {
   "id": "v16-image-slot",
   "specVersion": 16,
-  "description": "A slot expecting an uploaded image; its OCR\u0027d text fills the text slot, and the engine stamps the image origin.",
+  "description": "An input expecting an uploaded image; its OCR\u0027d text fills the text input, and the engine stamps the image origin.",
   "expect": {
     "valid": true,
     "errors": [],

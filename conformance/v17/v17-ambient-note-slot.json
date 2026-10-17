@@ -1,7 +1,7 @@
 {
   "id": "v17-ambient-note-slot",
   "specVersion": 17,
-  "description": "A slot expecting an ambient-scribe clinical note; its text fills the text slot, and the engine stamps the ambient-note origin.",
+  "description": "An input expecting an ambient-scribe clinical note; its text fills the text input, and the engine stamps the ambient-note origin.",
   "expect": {
     "valid": true,
     "errors": [],

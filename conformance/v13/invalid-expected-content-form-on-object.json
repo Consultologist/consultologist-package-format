@@ -1,11 +1,11 @@
 {
   "id": "invalid-expected-content-form-on-object",
   "specVersion": 13,
-  "description": "expectedContent \u0027form\u0027 on an object slot. A form answer coerces to a value, never to an object.",
+  "description": "expectedContent \u0027form\u0027 on an object input. A form answer coerces to a value, never to an object.",
   "expect": {
     "valid": false,
     "errors": [
-      "Input \u0027patient\u0027 declares expectedContent \u0027form\u0027, which a slot of type \u0027object\u0027 cannot be filled from."
+      "Input \u0027patient\u0027 declares expectedContent \u0027form\u0027, which an input of type \u0027object\u0027 cannot be filled from."
     ],
     "warnings": []
   },

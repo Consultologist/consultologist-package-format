@@ -1,7 +1,7 @@
 {
   "id": "v13-form-slot",
   "specVersion": 13,
-  "description": "An enum slot the package declares a form: its value is filled from a held form response, coerced to the declared type.",
+  "description": "An enum input the package declares a form: its value is filled from a held form response, coerced to the declared type.",
   "expect": {
     "valid": true,
     "errors": [],

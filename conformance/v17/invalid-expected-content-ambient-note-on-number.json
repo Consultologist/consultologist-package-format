@@ -1,11 +1,11 @@
 {
   "id": "invalid-expected-content-ambient-note-on-number",
   "specVersion": 17,
-  "description": "expectedContent \u0027ambient-note\u0027 on a number slot. An ambient note is read into a text slot, never a scalar.",
+  "description": "expectedContent \u0027ambient-note\u0027 on a number input. An ambient note is read into a text input, never a scalar.",
   "expect": {
     "valid": false,
     "errors": [
-      "Input \u0027length_of_stay\u0027 declares expectedContent \u0027ambient-note\u0027, which is only for a text slot or an array of text."
+      "Input \u0027length_of_stay\u0027 declares expectedContent \u0027ambient-note\u0027, which is only for a text input or an array of text."
     ],
     "warnings": []
   },
