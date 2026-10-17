@@ -64,10 +64,15 @@ Rules:
   read of `bindings` with the objects a template reads.
 - **A reference that does not resolve, or a member outside the closed set, is refused by
   name.** A bare global that is not an object, a loop variable or a Scriban builtin is refused.
-- **Pipes are opaque.** `{{ node.extract.content | concept_context }}` is the attested rendering a
-  binding's `as: concept-context` gave; the renderer set is unchanged. A loop over
+- **Renderer pipes are typed.** `{{ node.extract.content | concept_context }}` is the attested
+  rendering a binding's `as: concept-context` gave; the renderer set is unchanged. A renderer
+  renders the `.content` of a `concept_list` node and only that: the text of a node of another
+  format, a node's `.value`, an input's, a snippet's, an item's or a macro's text, a folder or a
+  literal piped through a renderer is **refused** by name; an operand the walk cannot type (an
+  assigned or loop variable, a nested expression) is judged when it renders. A loop over
   `node.extract.value.concepts` is the package's own rendering. A bare `.content` read of a
-  structured format renders the JSON and the validator **warns**.
+  structured format renders the JSON and the validator **warns**; the same read through a
+  renderer pipe does not.
 - **Everything is a template.** Snippets render, macro text renders, prompts render. `raw`
   prompts are refused; a literal `{{` is escaped the Scriban way (`{{ "{{" }}` or a
   `{%{ … }%}` block), and a `{{` never closed is refused naming its line.

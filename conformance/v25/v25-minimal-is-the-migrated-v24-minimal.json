@@ -1,18 +1,11 @@
 {
   "id": "v25-minimal-is-the-migrated-v24-minimal",
   "specVersion": 25,
-  "description": "The migration v25 promises: the v24 minimal \u2014 its prelude already a node macro, as the 23 editor leaves it \u2014 run through WorkflowPackageMigration24To25 and nothing else changed. Valid with the warning on each concept-list .content read the rewrite spelled through a renderer pipe.",
+  "description": "The migration v25 promises: the v24 minimal \u2014 its prelude already a node macro, as the 23 editor leaves it \u2014 run through WorkflowPackageMigration24To25 and nothing else changed. Valid with no warnings: each concept-list .content read the rewrite spelled through a renderer pipe is typed by the pipe (#1058).",
   "expect": {
     "valid": true,
     "errors": [],
-    "warnings": [
-      "Prompt \u0027identify_problem\u0027 reads node.extract_patient_concepts.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.extract_patient_concepts.value for the fields.",
-      "Prompt \u0027create_typical_trajectory\u0027 reads node.identify_problem.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.identify_problem.value for the fields.",
-      "Prompt \u0027create_patient_trajectory\u0027 reads node.identify_problem.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.identify_problem.value for the fields.",
-      "Prompt \u0027create_patient_trajectory\u0027 reads node.extract_patient_concepts.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.extract_patient_concepts.value for the fields.",
-      "Prompt \u0027create_patient_trajectory\u0027 reads node.create_typical_trajectory.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.create_typical_trajectory.value for the fields.",
-      "Prompt \u0027standard_section_draft\u0027 reads node.create_patient_trajectory.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.create_patient_trajectory.value for the fields."
-    ]
+    "warnings": []
   },
   "manifest": {
     "name": "general",

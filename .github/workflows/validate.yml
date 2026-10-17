@@ -489,6 +489,11 @@ jobs:
               "invalid-template-unclosed-code",
               "invalid-node-cycle",
               "invalid-template-fails-strict-rendering",
+              # #1058: a renderer pipe's operand is typed by the walker — the pipe is
+              # one string inside a template to a schema.
+              "invalid-template-renderer-pipe-on-another-format",
+              "invalid-template-renderer-pipe-on-a-value",
+              "invalid-template-renderer-pipe-on-a-snippets-text",
               "invalid-instruction-fails-strict-rendering",
               # A when is one string to a schema — a Scriban expression typed over
               # the objects; a folder item's when sits in the folder's index file.
