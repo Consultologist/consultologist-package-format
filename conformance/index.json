@@ -2611,6 +2611,24 @@
       "path": "v25/invalid-template-fails-strict-rendering.json"
     },
     {
+      "id": "invalid-template-renderer-pipe-on-another-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-renderer-pipe-on-another-format.json"
+    },
+    {
+      "id": "invalid-template-renderer-pipe-on-a-value",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-renderer-pipe-on-a-value.json"
+    },
+    {
+      "id": "invalid-template-renderer-pipe-on-a-snippets-text",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-renderer-pipe-on-a-snippets-text.json"
+    },
+    {
       "id": "invalid-instruction-fails-strict-rendering",
       "specVersion": 25,
       "valid": false,
