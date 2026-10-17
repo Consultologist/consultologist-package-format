@@ -412,7 +412,7 @@ begin "Deliverable '…'" at 25; the v5–v24 sentences do not move.
   by conditions and a node a check names; a node that reaches none is refused naming the
   deliverable's aggregator.
 
-A `form` slot (`expectedContent: form`) may be an input of type `object` with declared
+A `form` input (`expectedContent: form`) may be an input of type `object` with declared
 `fields`: the response's keys fill the fields, each coerced to its type.
 
 ## Conditions and references

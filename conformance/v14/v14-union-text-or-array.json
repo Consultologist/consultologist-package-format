@@ -1,7 +1,7 @@
 {
   "id": "v14-union-text-or-array",
   "specVersion": 14,
-  "description": "A slot accepting a text OR an array of text \u2014 the one-or-many union; the slot\u0027s items serves the array arm.",
+  "description": "An input accepting a text OR an array of text \u2014 the one-or-many union; the input\u0027s items serves the array arm.",
   "expect": {
     "valid": true,
     "errors": [],

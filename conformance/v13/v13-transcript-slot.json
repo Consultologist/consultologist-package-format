@@ -1,7 +1,7 @@
 {
   "id": "v13-transcript-slot",
   "specVersion": 13,
-  "description": "A text slot the package declares a transcript: its uploaded document stamps the transcript origin, no caller assertion needed.",
+  "description": "A text input the package declares a transcript: its uploaded document stamps the transcript origin, no caller assertion needed.",
   "expect": {
     "valid": true,
     "errors": [],

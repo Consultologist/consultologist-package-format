@@ -22,7 +22,7 @@ What 17 opens, in one sentence: a slot may declare
 `transcript`, it is a **text** channel and a submitter assertion: the submitter
 uploads a clinical note produced by an ambient scribe (e.g. Dragon Copilot), the
 engine reads its text like any document, and that text fills the slot. So
-`ambient-note` is accepted **only on a text slot or an array of text**; on any
+`ambient-note` is accepted **only on a text input or an array of text**; on any
 other value type it is refused by name.
 
 It is a **distinct channel from `transcript`** on purpose: an ambient note is an
@@ -37,7 +37,7 @@ otherwise independent: a slot declares at most one.
 
 **Refused by name:** `expectedContent: ambient-note` on a manifest below 17 (the
 channel is absent from the accepted set before 17); `ambient-note` on a slot that
-is not a text slot or an array of text.
+is not a text input or an array of text.
 
 ## Provenance (asserted, not observed)
 
@@ -60,5 +60,5 @@ statement as a fixture.
 
 A v16 package becomes a v17 package with one edit: `specVersion: 17`. Nothing
 v17 opens is required. A slot adopts the ambient-note hint by adding
-`expectedContent: ambient-note` (on a text slot or an array of text); every other
+`expectedContent: ambient-note` (on a text input or an array of text); every other
 slot is unchanged.

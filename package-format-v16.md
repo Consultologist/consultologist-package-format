@@ -20,7 +20,7 @@ a third content channel beside `transcript` and `form` (added in v13).
 `image` joins the closed set of content channels a slot may expect. Like
 `transcript`, it is a **text** channel: the submitter uploads a raw image
 (PNG/JPEG/TIFF), the engine reads it into text by OCR, and that text fills the
-slot. So `image` is accepted **only on a text slot or an array of text**; on any
+slot. So `image` is accepted **only on a text input or an array of text**; on any
 other value type it is refused by name.
 
 `expectedContent` remains **intent, label, and publish-time validation** — it
@@ -33,7 +33,7 @@ declares at most one.
 
 **Refused by name:** `expectedContent: image` on a manifest below 16 (the image
 channel is absent from the accepted set before 16); `image` on a slot that is
-not a text slot or an array of text.
+not a text input or an array of text.
 
 ## Provenance (observed, not asserted)
 
@@ -54,5 +54,5 @@ as a fixture.
 
 A v15 package becomes a v16 package with one edit: `specVersion: 16`. Nothing
 v16 opens is required. A slot adopts the image hint by adding
-`expectedContent: image` (on a text slot or an array of text); every other slot
+`expectedContent: image` (on a text input or an array of text); every other slot
 is unchanged.
