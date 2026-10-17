@@ -43,8 +43,10 @@ and the outcome the engine produces:
 ```
 
 `conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
-the output-contract schemas a case may reference. Cases about one format sit
-under `v5`–`v12`; a case about the accepted set itself sits under `any`.
+the output-contract schemas a case may reference, and `conformance/format-catalog.json`
+the format catalogue a specVersion 25 case resolves its node formats against.
+Cases about one format sit under `v5`–`v25`; a case about the accepted set
+itself sits under `any`. Case ids are unique across the suite.
 
 **The expectations are not written by hand.** Every case is produced by running
 the engine's own validator and recording what it said, so a fixture can never
@@ -52,10 +54,10 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 206 cases, 171 are invalid ones. That ratio is deliberate: a rejected
+Of the 452 cases, 387 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
-v10, v11 and v12 releases each added a rejection case for every publish-time
-refusal their design records name, refusal by refusal. A handful of cases
+v10, v11, v12 and v25 releases each added a rejection case for every publish-time
+refusal their design records name, refusal by refusal (v25 alone carries 167). A handful of cases
 carry a second error that follows from the first (a node of no known kind
 references no prompt; an unnamed check is also an orphan) and say so in
 their description — and one version gate, `invalid-result-check-at-v11`,
@@ -66,13 +68,14 @@ carries exactly one.
 **Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
-invalid cases split three ways. Sixty-four are rejected by their version's
-schema. One hundred and six fail for reasons no schema can see — the condition grammar
+invalid cases split three ways. One hundred and thirty-five are rejected by their version's
+schema. Two hundred and fifty-one fail for reasons no schema can see — the condition grammar
 lives inside one string, a macro's placeholder grammar lives inside its file,
 a fan's target is a cross-reference, a classifier's or a check's
 rules are relations between nodes, a kind's required-and-forbidden members
 are conditionals, trim and case-insensitive-distinctness
-rules are semantic — and the validation
+rules are semantic, and at 25 a format's rules live in its file and every
+template rule reads a template file — and the validation
 workflow's `SHAPE_BLIND` list names each one with its reason, so the boundary
 is a list somebody chose (`invalid-missing-prompt-file` is the oldest member:
 its manifest is byte-identical to a valid one and only its bundle differs).
