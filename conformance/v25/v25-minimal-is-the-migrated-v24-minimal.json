@@ -1,0 +1,236 @@
+{
+  "id": "v25-minimal-is-the-migrated-v24-minimal",
+  "specVersion": 25,
+  "description": "The migration v25 promises: the v24 minimal \u2014 its prelude already a node macro, as the 23 editor leaves it \u2014 run through WorkflowPackageMigration24To25 and nothing else changed. Valid with the warning on each concept-list .content read the rewrite spelled through a renderer pipe.",
+  "expect": {
+    "valid": true,
+    "errors": [],
+    "warnings": [
+      "Prompt \u0027identify_problem\u0027 reads node.extract_patient_concepts.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.extract_patient_concepts.value for the fields.",
+      "Prompt \u0027create_typical_trajectory\u0027 reads node.identify_problem.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.identify_problem.value for the fields.",
+      "Prompt \u0027create_patient_trajectory\u0027 reads node.identify_problem.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.identify_problem.value for the fields.",
+      "Prompt \u0027create_patient_trajectory\u0027 reads node.extract_patient_concepts.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.extract_patient_concepts.value for the fields.",
+      "Prompt \u0027create_patient_trajectory\u0027 reads node.create_typical_trajectory.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.create_typical_trajectory.value for the fields.",
+      "Prompt \u0027standard_section_draft\u0027 reads node.create_patient_trajectory.content of format \u0027concept_list\u0027 (object); the JSON renders as text \u2014 read node.create_patient_trajectory.value for the fields."
+    ]
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 25,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "prompts": [
+      {
+        "id": "extract_patient_concepts",
+        "file": "prompts/extract-patient-concepts.md"
+      },
+      {
+        "id": "identify_problem",
+        "file": "prompts/identify-problem.md"
+      },
+      {
+        "id": "create_typical_trajectory",
+        "file": "prompts/create-typical-trajectory.md"
+      },
+      {
+        "id": "create_patient_trajectory",
+        "file": "prompts/create-patient-trajectory.md"
+      },
+      {
+        "id": "standard_section_draft",
+        "file": "prompts/standard-section-draft.md"
+      },
+      {
+        "id": "patient_section_draft",
+        "file": "prompts/patient-section-draft.md"
+      },
+      {
+        "id": "section_instructions",
+        "file": "prompts/section-instructions.md"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "extract_patient_concepts",
+        "label": "Extracting clinical concepts",
+        "prompt": "extract_patient_concepts",
+        "format": "concept_list",
+        "onInvalid": "fail",
+        "failIfEmpty": "The consult could not be processed because clinical concepts could not be extracted from the draft."
+      },
+      {
+        "id": "identify_problem",
+        "label": "Identifying primary problem",
+        "prompt": "identify_problem",
+        "format": "concept_list",
+        "onInvalid": "fail",
+        "failIfEmpty": "No valid disease or problem concept was identified."
+      },
+      {
+        "id": "create_typical_trajectory",
+        "label": "Building reference trajectory",
+        "prompt": "create_typical_trajectory",
+        "format": "concept_list",
+        "onInvalid": "fail",
+        "failIfEmpty": "No valid typical trajectory concepts were generated."
+      },
+      {
+        "id": "create_patient_trajectory",
+        "label": "Building patient trajectory",
+        "prompt": "create_patient_trajectory",
+        "format": "concept_list",
+        "onInvalid": "fail",
+        "failIfEmpty": "No valid patient trajectory concepts were generated."
+      },
+      {
+        "id": "standard_section_draft",
+        "label": "Drafting section",
+        "prompt": "standard_section_draft",
+        "forEach": "snippet.standards",
+        "format": "prose"
+      },
+      {
+        "id": "patient_section_draft",
+        "label": "Applying patient information",
+        "prompt": "patient_section_draft",
+        "forEach": "snippet.standards",
+        "format": "prose"
+      },
+      {
+        "id": "section_instructions",
+        "label": "Applying section instructions",
+        "prompt": "section_instructions",
+        "forEach": "snippet.standards",
+        "format": "prose"
+      },
+      {
+        "id": "assemble_note",
+        "label": "Assemble note",
+        "aggregate": [
+          "node.section_instructions"
+        ]
+      }
+    ],
+    "inputs": [
+      {
+        "id": "consult_draft",
+        "label": "Consult draft",
+        "required": true
+      },
+      {
+        "id": "seen_on",
+        "label": "Date seen",
+        "required": true,
+        "type": "date"
+      },
+      {
+        "id": "encounter_kind",
+        "label": "Encounter kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new_patient",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "billable",
+        "label": "Billable encounter",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "id": "length_of_stay",
+        "label": "Length of stay (days)",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "id": "patient",
+        "label": "Patient record",
+        "required": false,
+        "type": "object",
+        "fields": [
+          {
+            "id": "family_name",
+            "label": "Family name",
+            "required": true
+          },
+          {
+            "id": "age",
+            "label": "Age",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "id": "sex",
+            "label": "Sex",
+            "required": false,
+            "type": "enum",
+            "values": [
+              "female",
+              "male"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "prior_notes",
+        "label": "Prior notes",
+        "required": false,
+        "type": "array",
+        "items": "text"
+      },
+      {
+        "id": "medications",
+        "label": "Medications",
+        "required": false,
+        "type": "array",
+        "items": "object",
+        "fields": [
+          {
+            "id": "name",
+            "label": "Drug",
+            "required": true
+          },
+          {
+            "id": "dose",
+            "label": "Dose",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "tags": [],
+    "deliverables": [
+      {
+        "id": "consult",
+        "node": "node.assemble_note",
+        "label": "Consultation note"
+      }
+    ],
+    "snippets": {
+      "snomed_tool_guidance": "snippets/snomed_tool_guidance.md",
+      "standards": "snippets/standards/"
+    }
+  },
+  "files": {
+    "snippets/snomed_tool_guidance.md": "Use short SNOMED search terms.",
+    "prompts/extract-patient-concepts.md": "{{ snippet.snomed_tool_guidance.content }}\n\nconsult_draft block:\n{{ input.consult_draft }}",
+    "prompts/identify-problem.md": "{{ snippet.snomed_tool_guidance.content }}\n\npatient_concepts block:\n{{ node.extract_patient_concepts.content | concept_bullets }}",
+    "prompts/create-typical-trajectory.md": "{{ snippet.snomed_tool_guidance.content }}\n\nproblem_concepts block:\n{{ node.identify_problem.content | concept_bullets }}",
+    "prompts/create-patient-trajectory.md": "{{ snippet.snomed_tool_guidance.content }}\n\nproblem_concepts block:\n{{ node.identify_problem.content | concept_bullets }}\n\npatient_concepts block:\n{{ node.extract_patient_concepts.content | concept_bullets }}\n\ntypical_trajectory_concepts block:\n{{ node.create_typical_trajectory.content | concept_bullets }}",
+    "prompts/standard-section-draft.md": "section_name block:\n{{ item.name }}\n\npatient_trajectory_concepts block:\n{{ node.create_patient_trajectory.content | concept_context }}",
+    "prompts/patient-section-draft.md": "standard_section_draft block:\n{{ node.standard_section_draft.content }}\n\nconsult_draft block:\n{{ input.consult_draft }}\n\nsection_name block:\n{{ item.name }}",
+    "prompts/section-instructions.md": "patient_section_draft block:\n{{ node.patient_section_draft.content }}\n\nsection_name block:\n{{ item.name }}\n\nsection_standard block:\n{{ item.content }}",
+    "snippets/standards/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022hpi\u0022, \u0022name\u0022: \u0022History of Present Illness\u0022, \u0022file\u0022: \u0022hpi.md\u0022 },\n    { \u0022id\u0022: \u0022pmh\u0022, \u0022name\u0022: \u0022Past Medical History\u0022, \u0022file\u0022: \u0022pmh.md\u0022 }\n  ]\n}",
+    "snippets/standards/hpi.md": "Document the presenting illness.",
+    "snippets/standards/pmh.md": "List prior conditions with dates.",
+    "data/guidelines/index.json": "{\n  \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022],\n  \u0022items\u0022: [\n    { \u0022id\u0022: \u0022htn\u0022, \u0022name\u0022: \u0022Hypertension guideline\u0022, \u0022file\u0022: \u0022htn.md\u0022 },\n    { \u0022id\u0022: \u0022dm2\u0022, \u0022name\u0022: \u0022Diabetes guideline\u0022, \u0022file\u0022: \u0022dm2.md\u0022 }\n  ]\n}",
+    "data/guidelines/htn.md": "Target blood pressure below 140/90.",
+    "data/guidelines/dm2.md": "Screen annually for nephropathy."
+  }
+}

@@ -241,10 +241,10 @@
       "path": "v8/invalid-fields-at-v8.json"
     },
     {
-      "id": "invalid-unknown-input-type",
+      "id": "invalid-unknown-input-type-at-v9",
       "specVersion": 9,
       "valid": false,
-      "path": "v9/invalid-unknown-input-type.json"
+      "path": "v9/invalid-unknown-input-type-at-v9.json"
     },
     {
       "id": "invalid-array-without-items",
@@ -1619,6 +1619,1098 @@
       "specVersion": 24,
       "valid": false,
       "path": "v24/invalid-macro-item-token-on-result.json"
+    },
+    {
+      "id": "v25-minimal",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-minimal.json"
+    },
+    {
+      "id": "v25-minimal-is-the-migrated-v24-minimal",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-minimal-is-the-migrated-v24-minimal.json"
+    },
+    {
+      "id": "v25-placed-and-inline-macros",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-placed-and-inline-macros.json"
+    },
+    {
+      "id": "v25-structured-content-read-warns",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-structured-content-read-warns.json"
+    },
+    {
+      "id": "v25-folder-item-lacking-the-inline-read-warns",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-folder-item-lacking-the-inline-read-warns.json"
+    },
+    {
+      "id": "invalid-deliverables-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-deliverables-at-v24.json"
+    },
+    {
+      "id": "invalid-snippets-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-snippets-at-v24.json"
+    },
+    {
+      "id": "invalid-formats-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-formats-at-v24.json"
+    },
+    {
+      "id": "invalid-macro-instruction-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-macro-instruction-at-v24.json"
+    },
+    {
+      "id": "invalid-node-format-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-format-at-v24.json"
+    },
+    {
+      "id": "invalid-node-with-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-with-at-v24.json"
+    },
+    {
+      "id": "invalid-node-on-invalid-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-on-invalid-at-v24.json"
+    },
+    {
+      "id": "invalid-node-fail-if-empty-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-node-fail-if-empty-at-v24.json"
+    },
+    {
+      "id": "invalid-result-macro-at-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-result-macro-at-at-v24.json"
+    },
+    {
+      "id": "invalid-data-item-when-at-v24",
+      "specVersion": 24,
+      "valid": false,
+      "path": "v24/invalid-data-item-when-at-v24.json"
+    },
+    {
+      "id": "invalid-preludes-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-preludes-at-25.json"
+    },
+    {
+      "id": "invalid-data-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-data-at-25.json"
+    },
+    {
+      "id": "invalid-schemas-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-schemas-at-25.json"
+    },
+    {
+      "id": "invalid-schema-refs-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-schema-refs-at-25.json"
+    },
+    {
+      "id": "invalid-custom-schemas-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-custom-schemas-at-25.json"
+    },
+    {
+      "id": "invalid-results-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-results-at-25.json"
+    },
+    {
+      "id": "invalid-result-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-result-at-25.json"
+    },
+    {
+      "id": "invalid-prompt-prelude-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-prelude-at-25.json"
+    },
+    {
+      "id": "invalid-prompt-variables-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-variables-at-25.json"
+    },
+    {
+      "id": "invalid-prompt-raw-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-raw-at-25.json"
+    },
+    {
+      "id": "invalid-node-bindings-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-bindings-at-25.json"
+    },
+    {
+      "id": "invalid-node-output-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-output-at-25.json"
+    },
+    {
+      "id": "invalid-node-kind-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-kind-at-25.json"
+    },
+    {
+      "id": "invalid-node-values-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-values-at-25.json"
+    },
+    {
+      "id": "invalid-node-op-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-op-at-25.json"
+    },
+    {
+      "id": "invalid-node-of-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-of-at-25.json"
+    },
+    {
+      "id": "invalid-node-in-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-in-at-25.json"
+    },
+    {
+      "id": "invalid-node-fail-with-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-fail-with-at-25.json"
+    },
+    {
+      "id": "invalid-deliverable-macro-before-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-macro-before-at-25.json"
+    },
+    {
+      "id": "invalid-deliverable-macro-after-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-macro-after-at-25.json"
+    },
+    {
+      "id": "invalid-deliverable-macro-for-item-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-macro-for-item-at-25.json"
+    },
+    {
+      "id": "invalid-deliverable-macro-slot-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-macro-slot-at-25.json"
+    },
+    {
+      "id": "invalid-node-id-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-prompt-id-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-format-id-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-snippet-id-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-snippet-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-macro-id-not-snake-case-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-id-not-snake-case-at-25.json"
+    },
+    {
+      "id": "invalid-deliverable-id-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-id-not-snake-case.json"
+    },
+    {
+      "id": "invalid-format-declared-twice",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-declared-twice.json"
+    },
+    {
+      "id": "invalid-format-is-a-catalogue-id",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-is-a-catalogue-id.json"
+    },
+    {
+      "id": "invalid-format-file-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-file-missing.json"
+    },
+    {
+      "id": "invalid-format-file-not-json",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-file-not-json.json"
+    },
+    {
+      "id": "invalid-format-unknown-type",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-unknown-type.json"
+    },
+    {
+      "id": "invalid-format-unknown-producer",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-unknown-producer.json"
+    },
+    {
+      "id": "invalid-format-not-custom",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-not-custom.json"
+    },
+    {
+      "id": "invalid-format-custom-not-object",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-custom-not-object.json"
+    },
+    {
+      "id": "invalid-format-object-without-schema",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-object-without-schema.json"
+    },
+    {
+      "id": "invalid-format-description-blank",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-description-blank.json"
+    },
+    {
+      "id": "invalid-format-custom-with-parameters",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-custom-with-parameters.json"
+    },
+    {
+      "id": "invalid-format-values-without-enum",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-values-without-enum.json"
+    },
+    {
+      "id": "invalid-format-output-macros-on-object",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-format-output-macros-on-object.json"
+    },
+    {
+      "id": "invalid-node-without-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-without-format.json"
+    },
+    {
+      "id": "invalid-node-format-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-format-unknown.json"
+    },
+    {
+      "id": "invalid-node-label-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-label-missing.json"
+    },
+    {
+      "id": "invalid-duplicate-node-id",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-duplicate-node-id.json"
+    },
+    {
+      "id": "invalid-aggregator-declares-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-declares-format.json"
+    },
+    {
+      "id": "invalid-aggregator-declares-prompt",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-declares-prompt.json"
+    },
+    {
+      "id": "invalid-aggregate-source-colon-spelling",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregate-source-colon-spelling.json"
+    },
+    {
+      "id": "invalid-aggregate-source-not-a-reference",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregate-source-not-a-reference.json"
+    },
+    {
+      "id": "invalid-aggregate-source-with-member",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregate-source-with-member.json"
+    },
+    {
+      "id": "invalid-aggregate-source-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregate-source-unknown.json"
+    },
+    {
+      "id": "invalid-aggregator-aggregates-itself",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-aggregates-itself.json"
+    },
+    {
+      "id": "invalid-computed-node-declares-prompt",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-computed-node-declares-prompt.json"
+    },
+    {
+      "id": "invalid-node-without-prompt",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-without-prompt.json"
+    },
+    {
+      "id": "invalid-node-prompt-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-prompt-unknown.json"
+    },
+    {
+      "id": "invalid-on-invalid-on-a-text-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-on-invalid-on-a-text-format.json"
+    },
+    {
+      "id": "invalid-on-invalid-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-on-invalid-missing.json"
+    },
+    {
+      "id": "invalid-on-invalid-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-on-invalid-unknown.json"
+    },
+    {
+      "id": "invalid-fail-if-empty-blank",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-fail-if-empty-blank.json"
+    },
+    {
+      "id": "invalid-fail-if-empty-on-a-computed-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-fail-if-empty-on-a-computed-format.json"
+    },
+    {
+      "id": "invalid-reproducible-on-a-computed-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-reproducible-on-a-computed-format.json"
+    },
+    {
+      "id": "invalid-reproducible-on-a-rendered-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-reproducible-on-a-rendered-format.json"
+    },
+    {
+      "id": "invalid-foreach-colon-spelling",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-colon-spelling.json"
+    },
+    {
+      "id": "invalid-foreach-not-a-reference",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-not-a-reference.json"
+    },
+    {
+      "id": "invalid-foreach-with-member",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-with-member.json"
+    },
+    {
+      "id": "invalid-foreach-unknown-folder",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-unknown-folder.json"
+    },
+    {
+      "id": "invalid-foreach-fans-a-file",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-fans-a-file.json"
+    },
+    {
+      "id": "invalid-foreach-fans-a-non-array-input",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-fans-a-non-array-input.json"
+    },
+    {
+      "id": "invalid-foreach-fans-undeclared-input",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-foreach-fans-undeclared-input.json"
+    },
+    {
+      "id": "invalid-non-fan-reads-a-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-non-fan-reads-a-fan.json"
+    },
+    {
+      "id": "invalid-fans-misaligned",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-fans-misaligned.json"
+    },
+    {
+      "id": "invalid-with-on-a-format-without-parameters",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-on-a-format-without-parameters.json"
+    },
+    {
+      "id": "invalid-with-missing-parameter",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-missing-parameter.json"
+    },
+    {
+      "id": "invalid-with-names-no-parameter",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-names-no-parameter.json"
+    },
+    {
+      "id": "invalid-with-node-of-another-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-node-of-another-format.json"
+    },
+    {
+      "id": "invalid-with-node-not-bare",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-node-not-bare.json"
+    },
+    {
+      "id": "invalid-with-node-not-a-reference",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-node-not-a-reference.json"
+    },
+    {
+      "id": "invalid-with-node-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-node-unknown.json"
+    },
+    {
+      "id": "invalid-with-text-from-a-non-text-input",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-text-from-a-non-text-input.json"
+    },
+    {
+      "id": "invalid-with-values-not-snake-case",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-values-not-snake-case.json"
+    },
+    {
+      "id": "invalid-with-values-from-a-non-enum-input",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-with-values-from-a-non-enum-input.json"
+    },
+    {
+      "id": "invalid-macro-without-label-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-without-label-at-25.json"
+    },
+    {
+      "id": "invalid-macro-without-instruction",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-without-instruction.json"
+    },
+    {
+      "id": "invalid-macro-file-missing-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-file-missing-at-25.json"
+    },
+    {
+      "id": "invalid-duplicate-macro-id",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-duplicate-macro-id.json"
+    },
+    {
+      "id": "invalid-macro-never-placed-or-read",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-never-placed-or-read.json"
+    },
+    {
+      "id": "invalid-node-instance-undeclared",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-undeclared.json"
+    },
+    {
+      "id": "invalid-node-instance-at-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-at-unknown.json"
+    },
+    {
+      "id": "invalid-node-instance-placed-twice",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-placed-twice.json"
+    },
+    {
+      "id": "invalid-node-instance-on-a-format-without-output-macros",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-on-a-format-without-output-macros.json"
+    },
+    {
+      "id": "invalid-inline-macro-on-a-format-without-output-macros",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-inline-macro-on-a-format-without-output-macros.json"
+    },
+    {
+      "id": "invalid-aggregator-places-a-macro",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-places-a-macro.json"
+    },
+    {
+      "id": "invalid-node-instance-for-item-without-a-folder-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-for-item-without-a-folder-fan.json"
+    },
+    {
+      "id": "invalid-node-instance-for-item-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-for-item-unknown.json"
+    },
+    {
+      "id": "invalid-node-instance-reads-item-without-a-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-instance-reads-item-without-a-fan.json"
+    },
+    {
+      "id": "invalid-prompt-reaches-item-through-a-snippet",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-reaches-item-through-a-snippet.json"
+    },
+    {
+      "id": "invalid-inline-fill-reads-item-without-a-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-inline-fill-reads-item-without-a-fan.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-reads-item",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-reads-item.json"
+    },
+    {
+      "id": "invalid-prompt-reads-item-without-a-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-prompt-reads-item-without-a-fan.json"
+    },
+    {
+      "id": "invalid-fan-item-member-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-fan-item-member-unknown.json"
+    },
+    {
+      "id": "invalid-deliverables-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverables-missing.json"
+    },
+    {
+      "id": "invalid-deliverables-empty",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverables-empty.json"
+    },
+    {
+      "id": "invalid-deliverable-label-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-label-missing.json"
+    },
+    {
+      "id": "invalid-duplicate-deliverable-id",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-duplicate-deliverable-id.json"
+    },
+    {
+      "id": "invalid-deliverable-node-colon-spelling",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-node-colon-spelling.json"
+    },
+    {
+      "id": "invalid-deliverable-node-not-a-reference",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-node-not-a-reference.json"
+    },
+    {
+      "id": "invalid-deliverable-node-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-node-unknown.json"
+    },
+    {
+      "id": "invalid-deliverable-node-not-an-aggregator",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-node-not-an-aggregator.json"
+    },
+    {
+      "id": "invalid-deliverables-share-an-aggregator",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverables-share-an-aggregator.json"
+    },
+    {
+      "id": "invalid-deliverable-check-colon-spelling",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-check-colon-spelling.json"
+    },
+    {
+      "id": "invalid-deliverable-check-not-computed",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-check-not-computed.json"
+    },
+    {
+      "id": "invalid-deliverable-check-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-check-unknown.json"
+    },
+    {
+      "id": "invalid-check-not-named",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-check-not-named.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-without-at",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-without-at.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-at-unknown",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-at-unknown.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-placed-twice",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-placed-twice.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-undeclared",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-undeclared.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-reads-a-fanned-node",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-instance-reads-a-fanned-node.json"
+    },
+    {
+      "id": "invalid-deliverable-signature-flag-and-macro",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-signature-flag-and-macro.json"
+    },
+    {
+      "id": "invalid-deliverable-two-signature-macros",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-two-signature-macros.json"
+    },
+    {
+      "id": "invalid-deliverable-without-a-fan",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-without-a-fan.json"
+    },
+    {
+      "id": "invalid-node-does-not-feed-the-deliverable",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-does-not-feed-the-deliverable.json"
+    },
+    {
+      "id": "invalid-snippet-cycle",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-snippet-cycle.json"
+    },
+    {
+      "id": "invalid-instruction-cycle",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-instruction-cycle.json"
+    },
+    {
+      "id": "invalid-macro-text-reaches-an-inline-read",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-text-reaches-an-inline-read.json"
+    },
+    {
+      "id": "invalid-template-assigns-a-reserved-object",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-assigns-a-reserved-object.json"
+    },
+    {
+      "id": "invalid-template-captures-a-reserved-object",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-captures-a-reserved-object.json"
+    },
+    {
+      "id": "invalid-template-loop-variable-is-reserved",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-loop-variable-is-reserved.json"
+    },
+    {
+      "id": "invalid-template-iterates-a-non-array",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-iterates-a-non-array.json"
+    },
+    {
+      "id": "invalid-template-indexes-a-non-array",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-indexes-a-non-array.json"
+    },
+    {
+      "id": "invalid-template-dynamic-access",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-dynamic-access.json"
+    },
+    {
+      "id": "invalid-template-reads-data",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-data.json"
+    },
+    {
+      "id": "invalid-template-reads-bindings",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-bindings.json"
+    },
+    {
+      "id": "invalid-template-placeholder-grammar",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-placeholder-grammar.json"
+    },
+    {
+      "id": "invalid-template-reads-undeclared-node",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-undeclared-node.json"
+    },
+    {
+      "id": "invalid-template-reads-undeclared-input",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-undeclared-input.json"
+    },
+    {
+      "id": "invalid-template-reads-undeclared-snippet",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-undeclared-snippet.json"
+    },
+    {
+      "id": "invalid-template-reads-undeclared-macro",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-undeclared-macro.json"
+    },
+    {
+      "id": "invalid-template-reads-a-node-bare",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-a-node-bare.json"
+    },
+    {
+      "id": "invalid-template-reads-a-snippet-bare",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-a-snippet-bare.json"
+    },
+    {
+      "id": "invalid-template-reads-value-of-a-text-format",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-value-of-a-text-format.json"
+    },
+    {
+      "id": "invalid-template-unknown-node-member",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-unknown-node-member.json"
+    },
+    {
+      "id": "invalid-template-unknown-field",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-unknown-field.json"
+    },
+    {
+      "id": "invalid-template-field-of-a-scalar",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-field-of-a-scalar.json"
+    },
+    {
+      "id": "invalid-template-reads-a-folder-as-a-value",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-reads-a-folder-as-a-value.json"
+    },
+    {
+      "id": "invalid-template-unknown-root",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-unknown-root.json"
+    },
+    {
+      "id": "invalid-template-unknown-run-fact",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-unknown-run-fact.json"
+    },
+    {
+      "id": "invalid-template-unclosed-code",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-unclosed-code.json"
+    },
+    {
+      "id": "invalid-node-cycle",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-cycle.json"
+    },
+    {
+      "id": "invalid-template-fails-strict-rendering",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-template-fails-strict-rendering.json"
+    },
+    {
+      "id": "invalid-instruction-fails-strict-rendering",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-instruction-fails-strict-rendering.json"
+    },
+    {
+      "id": "invalid-condition-legacy-grammar",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-legacy-grammar.json"
+    },
+    {
+      "id": "invalid-condition-blank-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-blank-at-25.json"
+    },
+    {
+      "id": "invalid-condition-is-a-template",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-is-a-template.json"
+    },
+    {
+      "id": "invalid-condition-enum-value-undeclared-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-enum-value-undeclared-at-25.json"
+    },
+    {
+      "id": "invalid-condition-orders-an-enum-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-orders-an-enum-at-25.json"
+    },
+    {
+      "id": "invalid-condition-tests-a-text-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-tests-a-text-at-25.json"
+    },
+    {
+      "id": "invalid-condition-tests-an-enum",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-tests-an-enum.json"
+    },
+    {
+      "id": "invalid-condition-reads-a-text-value",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-reads-a-text-value.json"
+    },
+    {
+      "id": "invalid-condition-reads-undeclared-input-at-25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-reads-undeclared-input-at-25.json"
+    },
+    {
+      "id": "invalid-condition-operator-not-allowed",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-operator-not-allowed.json"
+    },
+    {
+      "id": "invalid-condition-yields-a-text",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-yields-a-text.json"
+    },
+    {
+      "id": "invalid-condition-item-id-undeclared",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-item-id-undeclared.json"
+    },
+    {
+      "id": "invalid-folder-item-when-reads-a-node",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-folder-item-when-reads-a-node.json"
+    },
+    {
+      "id": "invalid-snippet-file-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-snippet-file-missing.json"
+    },
+    {
+      "id": "invalid-snippet-folder-without-index",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-snippet-folder-without-index.json"
+    },
+    {
+      "id": "invalid-snippet-folder-item-file-missing",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-snippet-folder-item-file-missing.json"
     }
   ]
 }

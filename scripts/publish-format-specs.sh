@@ -76,7 +76,7 @@ for c in json.load(open('conformance/index.json'))['cases']: print('conformance/
 		az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
 			--file "$CASE" --name "$VERSION/$CASE" --output none
 	done
-	for SUPPORT in conformance/catalog-schemas.json conformance/index.json; do
+	for SUPPORT in conformance/catalog-schemas.json conformance/format-catalog.json conformance/index.json; do
 		echo "Uploading $VERSION/$SUPPORT"
 		az storage blob upload "${AUTH[@]}" --container-name "$CONTAINER" \
 			--file "$SUPPORT" --name "$VERSION/$SUPPORT" --output none

@@ -1,0 +1,168 @@
+{
+  "id": "invalid-fans-misaligned",
+  "specVersion": 25,
+  "description": "A fan over an input reading a fan over a snippet folder \u2014 two fans align only over one source.",
+  "expect": {
+    "valid": false,
+    "errors": [
+      "Node \u0027per_event\u0027 reads node \u0027section_notes\u0027 across fans (\u0027input.history\u0027 vs \u0027snippet.sections\u0027); two fans align only over one source."
+    ],
+    "warnings": []
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 25,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "prompts": [
+      {
+        "id": "assessment",
+        "file": "prompts/assessment.md"
+      },
+      {
+        "id": "extract",
+        "file": "prompts/extract.md"
+      },
+      {
+        "id": "scope",
+        "file": "prompts/scope.md"
+      },
+      {
+        "id": "section",
+        "file": "prompts/section.md"
+      },
+      {
+        "id": "per_event",
+        "file": "prompts/per_event.md"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "extract",
+        "label": "Extract concepts",
+        "prompt": "extract",
+        "format": "concept_list",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "scope",
+        "label": "Scope",
+        "prompt": "scope",
+        "format": "classification",
+        "with": {
+          "values": [
+            "in_scope",
+            "out_of_scope"
+          ]
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "assessment",
+        "label": "Assessment",
+        "prompt": "assessment",
+        "macros": [
+          {
+            "id": "closing",
+            "at": "after"
+          }
+        ],
+        "format": "prose"
+      },
+      {
+        "id": "section_notes",
+        "label": "Section notes",
+        "prompt": "section",
+        "forEach": "snippet.sections",
+        "format": "prose"
+      },
+      {
+        "id": "coverage",
+        "label": "Coverage",
+        "format": "terms_subset",
+        "with": {
+          "of": "node.extract",
+          "in": "node.extract",
+          "failWith": "The note names problems the source does not."
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "all",
+        "label": "Everything",
+        "aggregate": [
+          "node.assessment",
+          "node.section_notes",
+          "node.per_event"
+        ]
+      },
+      {
+        "id": "per_event",
+        "label": "Per event",
+        "prompt": "per_event",
+        "forEach": "input.history",
+        "format": "prose"
+      }
+    ],
+    "inputs": [
+      {
+        "id": "notes",
+        "label": "Referral notes",
+        "required": true
+      },
+      {
+        "id": "kind",
+        "label": "Kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new",
+          "follow_up"
+        ]
+      },
+      {
+        "id": "history",
+        "label": "History",
+        "required": true,
+        "type": "array",
+        "items": "text"
+      }
+    ],
+    "tags": [],
+    "macros": [
+      {
+        "id": "closing",
+        "label": "Closing",
+        "file": "macros/closing.md",
+        "instruction": "Add a closing line if the plan changed."
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "consult",
+        "node": "node.all",
+        "label": "Consultation note",
+        "check": "node.coverage"
+      }
+    ],
+    "snippets": {
+      "standards": "snippets/standards.md",
+      "sections": "snippets/sections/"
+    }
+  },
+  "files": {
+    "prompts/assessment.md": "Assess.\n{{ snippet.standards.content }}\n{{ input.notes }}\n{{ for c in node.extract.value.concepts }}- {{ c }}\n{{ end }}",
+    "prompts/extract.md": "Extract the concepts from:\n{{ input.notes }}",
+    "prompts/scope.md": "Is this in scope? {{ input.notes }}",
+    "prompts/section.md": "{{ item.name }}: {{ item.content }}",
+    "snippets/standards.md": "Follow the local standards.",
+    "snippets/sections/index.json": "{ \u0022fields\u0022: [\u0022id\u0022, \u0022name\u0022, \u0022content\u0022], \u0022items\u0022: [ { \u0022id\u0022: \u0022hpi\u0022, \u0022name\u0022: \u0022HPI\u0022, \u0022file\u0022: \u0022hpi.md\u0022 }, { \u0022id\u0022: \u0022plan\u0022, \u0022name\u0022: \u0022Plan\u0022, \u0022file\u0022: \u0022plan.md\u0022, \u0022when\u0022: \u0022input.kind == \\\u0022new\\\u0022\u0022 } ] }",
+    "snippets/sections/hpi.md": "History: {{ input.notes }}",
+    "snippets/sections/plan.md": "Plan.",
+    "macros/closing.md": "Closing: {{ profile.name }}.",
+    "prompts/per_event.md": "{{ item.value }} {{ node.section_notes.content }}"
+  }
+}
