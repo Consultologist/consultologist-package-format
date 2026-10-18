@@ -430,6 +430,10 @@ jobs:
               "invalid-macro-file-missing-at-25",
               "invalid-duplicate-macro-id",
               "invalid-macro-never-placed-or-read",
+              # #1067: a use is reachability — a read from a template the run
+              # renders, a relation over templates no shape expresses.
+              "invalid-macro-read-only-by-its-own-instruction",
+              "invalid-macro-read-only-by-an-unplaced-macros-text",
               "invalid-node-instance-undeclared",
               "invalid-node-instance-placed-twice",
               "invalid-node-instance-on-a-format-without-output-macros",

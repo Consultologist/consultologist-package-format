@@ -2227,6 +2227,24 @@
       "path": "v25/invalid-macro-never-placed-or-read.json"
     },
     {
+      "id": "invalid-macro-read-only-by-its-own-instruction",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-read-only-by-its-own-instruction.json"
+    },
+    {
+      "id": "invalid-macro-read-only-by-an-unplaced-macros-text",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-macro-read-only-by-an-unplaced-macros-text.json"
+    },
+    {
+      "id": "valid-macro-instruction-reads-its-own-content",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/valid-macro-instruction-reads-its-own-content.json"
+    },
+    {
       "id": "invalid-node-instance-undeclared",
       "specVersion": 25,
       "valid": false,

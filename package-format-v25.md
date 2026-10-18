@@ -335,7 +335,10 @@ instance (one instruction per macro; a different instruction is a different macr
   folder it fans); anything else is refused by name. Items of a fanned folder that lack the
   read are named in a warning.
 - Identity is (id, at, forItem) on a node and (id, at) on a deliverable; the same identity
-  twice is refused. A library macro never placed and never read is refused as unused.
+  twice is refused. A library macro never placed and never read **from a template a run
+  renders** — a node's prompt, the folder items it fans, a placed text, a condition, and what
+  those reach — is refused as unused; what an unplaced macro's own instruction or text reads,
+  or a snippet nothing reads, does not count (#1067).
 - **Item reads follow the node.** A macro's text may read `item.<member>` only where it is
   composed on a node that fans — directly, through a snippet the text reads ("reaches
   `item.name` through snippet 'x'"), or as the fill of an inline macro whose `.prompt` the
@@ -373,6 +376,10 @@ version**, appended after the render so the read it names reaches the model as w
 
 > If so, write `{{ macro.<id>.content }}` verbatim and nothing else at that place; do not write
 > that content yourself — it is filled in afterward.
+
+The instruction says *when and where*; this sentence names the read. An instruction that reads
+its own `macro.<id>.content` is warned (#1067): the instruction renders, so that read puts the
+macro's text in the prompt — right before the sentence telling the model not to write it.
 
 ### The reply is a template
 
