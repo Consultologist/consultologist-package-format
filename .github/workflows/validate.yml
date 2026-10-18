@@ -413,6 +413,12 @@ jobs:
               "invalid-foreach-fans-a-non-array-input",
               "invalid-foreach-fans-undeclared-input",
               "invalid-non-fan-reads-a-fan",
+              # #1065: an aggregator's composed text is readable; what may read it
+              # and how are relations over templates and sites, not shapes.
+              "invalid-aggregator-read-as-a-value",
+              "invalid-aggregator-read-through-a-renderer-pipe",
+              "invalid-aggregator-declares-for-each",
+              "invalid-condition-reads-an-aggregator",
               "invalid-fans-misaligned",
               "invalid-with-on-a-format-without-parameters",
               "invalid-with-missing-parameter",

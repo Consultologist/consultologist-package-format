@@ -1639,6 +1639,36 @@
       "path": "v25/v25-placed-and-inline-macros.json"
     },
     {
+      "id": "v25-prompt-reads-an-aggregator",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-prompt-reads-an-aggregator.json"
+    },
+    {
+      "id": "invalid-aggregator-read-as-a-value",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-read-as-a-value.json"
+    },
+    {
+      "id": "invalid-aggregator-read-through-a-renderer-pipe",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-read-through-a-renderer-pipe.json"
+    },
+    {
+      "id": "invalid-aggregator-declares-for-each",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-aggregator-declares-for-each.json"
+    },
+    {
+      "id": "invalid-condition-reads-an-aggregator",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-condition-reads-an-aggregator.json"
+    },
+    {
       "id": "v25-structured-content-read-warns",
       "specVersion": 25,
       "valid": true,

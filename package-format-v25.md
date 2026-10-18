@@ -36,7 +36,7 @@ a template references seven reserved objects, every member access is checked at 
 | Object | Members | Value |
 |---|---|---|
 | `input.<id>` | the value, bare | the supplied input, **typed** as declared: a date formats, a boolean branches, an object's fields path (`input.patient.name`), an array iterates |
-| `node.<id>` | `.content`, `.value` | `.content` is the node's **composed** output as text; `.value` is the parsed output of an `object`, `enum` or `array` format — fields path, arrays iterate, every path checked against the format's schema at publish. The bare read is refused by a sentence naming `.content`; `.value` on a `text` format is refused. |
+| `node.<id>` | `.content`, `.value` | `.content` is the node's **composed** output as text — an **aggregator's** is its composed sections, before deliverable macros and the signature; it has no `.value` and no renderer renders it (#1065); `.value` is the parsed output of an `object`, `enum` or `array` format — fields path, arrays iterate, every path checked against the format's schema at publish. The bare read is refused by a sentence naming `.content`; `.value` on a `text` format is refused. |
 | `snippet.<id>` | `.id`, `.name`, `.content` | the snippet rendered |
 | `snippet.<folder>` | iterable | each item a snippet with the three members; a folder read bare, as a value, is refused |
 | `item` | `.id`, `.name`, `.content` (snippet-folder fan) / `.id`, `.name`, `.value` (input fan) | the fan item the instance runs for; refused on a node that does not fan |
@@ -228,9 +228,11 @@ structured-output subset).
 - **`label`** — required, not blank (the record and the editor name the node by it).
 - **`format`** — required on every node that does not aggregate; a catalogue id or a
   package-local id, anything else refused as neither. An **aggregator** (`aggregate`) is
-  structural: no `format`, no `prompt`, no `with`, no `onInvalid`, and no `macros` (place them
-  on the nodes it aggregates or on the deliverable); its sources are declared nodes, never
-  itself.
+  structural: no `format`, no `prompt`, no `with`, no `onInvalid`, no `forEach`, and no `macros`
+  (place them on the nodes it aggregates or on the deliverable); its sources are declared nodes,
+  never itself. A template may read it — `node.<id>.content` is its composed text, and the read
+  is an edge the reader waits on; a `when` may not, since a condition decides before the sections
+  compose (#1065).
 - **`prompt`** — required unless the producer is `computed`, refused then; names a declared
   prompt, whose id is snake_case too (every declared id is; a hyphenated prompt id is refused
   with the rename in the sentence).
