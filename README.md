@@ -54,10 +54,10 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 455 cases, 390 are invalid ones. That ratio is deliberate: a rejected
+Of the 458 cases, 392 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
 v10, v11, v12 and v25 releases each added a rejection case for every publish-time
-refusal their design records name, refusal by refusal (v25 alone carries 170). A handful of cases
+refusal their design records name, refusal by refusal (v25 alone carries 172). A handful of cases
 carry a second error that follows from the first (a node of no known kind
 references no prompt; an unnamed check is also an orphan) and say so in
 their description — and one version gate, `invalid-result-check-at-v11`,
@@ -69,7 +69,7 @@ carries exactly one.
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
 invalid cases split three ways. One hundred and thirty-five are rejected by their version's
-schema. Two hundred and fifty-four fail for reasons no schema can see — the condition grammar
+schema. Two hundred and fifty-six fail for reasons no schema can see — the condition grammar
 lives inside one string, a macro's placeholder grammar lives inside its file,
 a fan's target is a cross-reference, a classifier's or a check's
 rules are relations between nodes, a kind's required-and-forbidden members
