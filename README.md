@@ -54,7 +54,7 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 463 cases, 396 are invalid ones. That ratio is deliberate: a rejected
+Of the 464 cases, 396 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
 v10, v11, v12 and v25 releases each added a rejection case for every publish-time
 refusal their design records name, refusal by refusal (v25 alone carries 176). A handful of cases

@@ -73,6 +73,11 @@ Rules:
   `node.extract.value.concepts` is the package's own rendering. A bare `.content` read of a
   structured format renders the JSON and the validator **warns**; the same read through a
   renderer pipe does not.
+- **A literal the enum never answers warns.** An `==` / `!=` in a template between an enum (an
+  enum input, an enum-format node's `.value`) and a string literal the enum does not declare,
+  and a `case`'s `when` with such a literal, **warn** by name — the branch never runs (a `!=`:
+  the test is always true) — and never refuse: a template's `if` is prose. A manifest `when`
+  with the same literal is refused (the condition grammar above).
 - **Everything is a template.** Snippets render, macro text renders, prompts render. `raw`
   prompts are refused; a literal `{{` is escaped the Scriban way (`{{ "{{" }}` or a
   `{%{ … }%}` block), and a `{{` never closed is refused naming its line.
