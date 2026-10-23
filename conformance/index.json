@@ -1675,6 +1675,12 @@
       "path": "v25/v25-structured-content-read-warns.json"
     },
     {
+      "id": "v25-literal-outside-the-enum-warns",
+      "specVersion": 25,
+      "valid": true,
+      "path": "v25/v25-literal-outside-the-enum-warns.json"
+    },
+    {
       "id": "v25-folder-item-lacking-the-inline-read-warns",
       "specVersion": 25,
       "valid": true,
