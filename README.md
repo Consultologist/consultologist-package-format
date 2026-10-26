@@ -19,6 +19,20 @@ engine accepts.
 | `package-format-v10.md` | the classifying node and the boundary it decides at, expression conditions (and/or/not, grouping, arithmetic, `node:`), and structure nested to any depth |
 | `package-format-v11.md` | package-owned macros with their closed placeholder grammar, the signed deliverable (the block is the profile’s), and the reproducible claim |
 | `package-format-v12.md` | the chosen macro (optional + default), the placed macro, the embedded signature token, the conditional macro, the check that gates a deliverable, and the template node — the rendering executor |
+| `package-format-v13.md` | declarable content: the transcript slot and the form slot (`expectedContent`) |
+| `package-format-v14.md` | the union type — a slot that accepts one of several |
+| `package-format-v15.md` | plain-text prompts: the `raw` toggle |
+| `package-format-v16.md` | image inputs: the `image` channel |
+| `package-format-v17.md` | ambient notes: the `ambient-note` channel |
+| `package-format-v18.md` | node condition gates: `when` on a node |
+| `package-format-v19.md` | per-fan-item macro placement: `forItem` |
+| `package-format-v20.md` | inline macro slots: `slot` and the `[[slot:<id>]]` marker |
+| `package-format-v21.md` | schema references: `schemaRefs` |
+| `package-format-v22.md` | custom output schemas: `customSchemas` |
+| `package-format-v23.md` | node macros — a macro placed on a node |
+| `package-format-v24.md` | per-item node macros |
+| `package-format-v25.md` | the template is the source of truth: object reads with closed member sets, derived edges, formats, snippets and macros, `deliverables` — a full grammar |
+| `package-format-v26.md` | the manifest is a program: flow nodes (`for`, `if`, `case`), gates keyed `if`, a deliverable's `sources[]` and `deliverable.<id>.content`, the prompt by path, the JSON header on texts and folders of one shape, the renderer pipe on the node — a full grammar; listed in `spec-versions.json` once the engine's bump runs it |
 
 ## Checking a package against it
 
