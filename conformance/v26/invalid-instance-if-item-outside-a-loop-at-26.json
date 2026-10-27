@@ -1,0 +1,129 @@
+{
+  "id": "invalid-instance-if-item-outside-a-loop-at-26",
+  "specVersion": 26,
+  "description": "An instance if reading item.id on a node that runs in no loop.",
+  "expect": {
+    "valid": false,
+    "errors": [
+      "Node \u0027assessment\u0027 macro \u0027closing\u0027 if reads item.id, but the node does not fan."
+    ],
+    "warnings": []
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 26,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "nodes": [
+      {
+        "id": "extract",
+        "label": "Extract concepts",
+        "prompt": "prompts/extract.md",
+        "format": "concept_list",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "scope",
+        "label": "Scope",
+        "prompt": "prompts/scope.md",
+        "format": "classification",
+        "with": {
+          "values": [
+            "in_scope",
+            "out_of_scope"
+          ]
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "assessment",
+        "label": "Assessment",
+        "prompt": "prompts/assessment.md",
+        "macros": [
+          {
+            "id": "closing",
+            "at": "after",
+            "if": "item.id == \u0022hpi\u0022"
+          }
+        ],
+        "format": "prose"
+      },
+      {
+        "id": "section_notes",
+        "label": "Section notes",
+        "prompt": "prompts/section.md",
+        "format": "prose"
+      },
+      {
+        "id": "coverage",
+        "label": "Coverage",
+        "format": "terms_subset",
+        "with": {
+          "of": "node.extract",
+          "in": "node.extract",
+          "failWith": "The note names problems the source does not."
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "sections",
+        "label": "Sections",
+        "for": "item in snippet.sections",
+        "nodes": [
+          "section_notes"
+        ],
+        "ret": "node.section_notes"
+      }
+    ],
+    "inputs": [
+      {
+        "id": "notes",
+        "label": "Referral notes",
+        "required": true
+      },
+      {
+        "id": "kind",
+        "label": "Kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new",
+          "follow_up"
+        ]
+      }
+    ],
+    "tags": [],
+    "macros": {
+      "closing": "macros/closing.md"
+    },
+    "deliverables": [
+      {
+        "id": "consult",
+        "label": "Consultation note",
+        "check": "node.coverage",
+        "sources": [
+          "node.assessment",
+          "node.sections"
+        ]
+      }
+    ],
+    "snippets": {
+      "standards": "snippets/standards.md",
+      "sections": "snippets/sections/"
+    }
+  },
+  "files": {
+    "prompts/assessment.md": "Assess.\n{{ snippet.standards.content }}\n{{ input.notes }}\n{{ for c in node.extract.value.concepts }}- {{ c }}\n{{ end }}",
+    "prompts/extract.md": "Extract the concepts from:\n{{ input.notes }}",
+    "prompts/scope.md": "Is this in scope? {{ input.notes }}",
+    "prompts/section.md": "{{ item.label }}: {{ item.content }}",
+    "snippets/standards.md": "{\n  \u0022label\u0022: \u0022Local standards\u0022\n}\nFollow the local standards.",
+    "snippets/sections/index.json": "[ { \u0022id\u0022: \u0022hpi\u0022, \u0022file\u0022: \u0022hpi.md\u0022 }, { \u0022id\u0022: \u0022plan\u0022, \u0022file\u0022: \u0022plan.md\u0022 } ]",
+    "snippets/sections/hpi.md": "{\n  \u0022label\u0022: \u0022HPI\u0022\n}\nHistory: {{ input.notes }}",
+    "snippets/sections/plan.md": "{\n  \u0022label\u0022: \u0022Plan\u0022\n}\nPlan.",
+    "macros/closing.md": "{\n  \u0022label\u0022: \u0022Closing\u0022,\n  \u0022instruction\u0022: \u0022Add a closing line if the plan changed.\u0022\n}\nClosing: {{ profile.name }}."
+  }
+}

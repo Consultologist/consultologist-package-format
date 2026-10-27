@@ -32,7 +32,7 @@ engine accepts.
 | `package-format-v23.md` | node macros — a macro placed on a node |
 | `package-format-v24.md` | per-item node macros |
 | `package-format-v25.md` | the template is the source of truth: object reads with closed member sets, derived edges, formats, snippets and macros, `deliverables` — a full grammar |
-| `package-format-v26.md` | the manifest is a program: flow nodes (`for`, `if`, `case`), gates keyed `if`, a deliverable's `sources[]` and `deliverable.<id>.content`, the prompt by path, the JSON header on texts and folders of one shape, the renderer pipe on the node — a full grammar; listed in `spec-versions.json` once the engine's bump runs it |
+| `package-format-v26.md` | the manifest is a program: flow nodes (`for`, `if`, `case`), gates keyed `if`, a deliverable's `sources[]` and `deliverable.<id>.content`, the prompt by path, the JSON header on texts and folders of one shape, the renderer pipe on the node — a full grammar |
 
 ## Checking a package against it
 
@@ -58,8 +58,8 @@ and the outcome the engine produces:
 
 `conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
 the output-contract schemas a case may reference, and `conformance/format-catalog.json`
-the format catalogue a specVersion 25 case resolves its node formats against.
-Cases about one format sit under `v5`–`v25`; a case about the accepted set
+the format catalogue a specVersion 25 or 26 case resolves its node formats against.
+Cases about one format sit under `v5`–`v26`; a case about the accepted set
 itself sits under `any`. Case ids are unique across the suite.
 
 **The expectations are not written by hand.** Every case is produced by running
@@ -68,10 +68,10 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 464 cases, 396 are invalid ones. That ratio is deliberate: a rejected
+Of the 585 cases, 498 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
-v10, v11, v12 and v25 releases each added a rejection case for every publish-time
-refusal their design records name, refusal by refusal (v25 alone carries 176). A handful of cases
+v10, v11, v12, v25 and v26 releases each added a rejection case for every publish-time
+refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 94, and eight below-26 gates sit under v25). A handful of cases
 carry a second error that follows from the first (a node of no known kind
 references no prompt; an unnamed check is also an orphan) and say so in
 their description — and one version gate, `invalid-result-check-at-v11`,
@@ -82,14 +82,15 @@ carries exactly one.
 **Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
-invalid cases split three ways. One hundred and thirty-five are rejected by their version's
-schema. Two hundred and sixty fail for reasons no schema can see — the condition grammar
+invalid cases split three ways. One hundred and forty-eight are rejected by their version's
+schema. Three hundred and forty-nine fail for reasons no schema can see — the condition grammar
 lives inside one string, a macro's placeholder grammar lives inside its file,
 a fan's target is a cross-reference, a classifier's or a check's
 rules are relations between nodes, a kind's required-and-forbidden members
 are conditionals, trim and case-insensitive-distinctness
-rules are semantic, and at 25 a format's rules live in its file and every
-template rule reads a template file — and the validation
+rules are semantic, at 25 a format's rules live in its file and every
+template rule reads a template file, and at 26 a flow node's body, a gate's
+expression, a source's shape and a file's header are relations and file facts — and the validation
 workflow's `SHAPE_BLIND` list names each one with its reason, so the boundary
 is a list somebody chose (`invalid-missing-prompt-file` is the oldest member:
 its manifest is byte-identical to a valid one and only its bundle differs).

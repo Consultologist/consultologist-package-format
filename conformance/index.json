@@ -2783,6 +2783,732 @@
       "specVersion": 25,
       "valid": false,
       "path": "v25/invalid-snippet-folder-item-file-missing.json"
+    },
+    {
+      "id": "v26-minimal-is-the-migrated-v25-minimal",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-minimal-is-the-migrated-v25-minimal.json"
+    },
+    {
+      "id": "v26-minimal",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-minimal.json"
+    },
+    {
+      "id": "v26-if-node",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-if-node.json"
+    },
+    {
+      "id": "v26-case-node",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-case-node.json"
+    },
+    {
+      "id": "v26-loop-read-outside",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-loop-read-outside.json"
+    },
+    {
+      "id": "v26-two-deliverables-share-a-source",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-two-deliverables-share-a-source.json"
+    },
+    {
+      "id": "v26-deliverable-content-read",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-deliverable-content-read.json"
+    },
+    {
+      "id": "invalid-prompts-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-prompts-at-26.json"
+    },
+    {
+      "id": "invalid-node-foreach-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-node-foreach-at-26.json"
+    },
+    {
+      "id": "invalid-node-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-node-when-at-26.json"
+    },
+    {
+      "id": "invalid-node-aggregate-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-node-aggregate-at-26.json"
+    },
+    {
+      "id": "invalid-instance-foritem-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-foritem-at-26.json"
+    },
+    {
+      "id": "invalid-instance-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-when-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-node-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-when-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-instance-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-instance-when-at-26.json"
+    },
+    {
+      "id": "invalid-folder-item-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-folder-item-when-at-26.json"
+    },
+    {
+      "id": "invalid-two-flow-keys-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-two-flow-keys-at-26.json"
+    },
+    {
+      "id": "invalid-flow-node-with-format-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-flow-node-with-format-at-26.json"
+    },
+    {
+      "id": "invalid-body-key-without-flow-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-body-key-without-flow-at-26.json"
+    },
+    {
+      "id": "invalid-then-on-a-for-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-then-on-a-for-at-26.json"
+    },
+    {
+      "id": "invalid-loop-grammar-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-loop-grammar-at-26.json"
+    },
+    {
+      "id": "invalid-loop-over-a-file-snippet-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-loop-over-a-file-snippet-at-26.json"
+    },
+    {
+      "id": "invalid-loop-over-a-node-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-loop-over-a-node-value-at-26.json"
+    },
+    {
+      "id": "invalid-loop-without-body-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-loop-without-body-at-26.json"
+    },
+    {
+      "id": "invalid-ret-missing-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-ret-missing-at-26.json"
+    },
+    {
+      "id": "invalid-ret-not-in-body-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-ret-not-in-body-at-26.json"
+    },
+    {
+      "id": "invalid-ret-not-node-dot-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-ret-not-node-dot-at-26.json"
+    },
+    {
+      "id": "invalid-node-in-two-bodies-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-node-in-two-bodies-at-26.json"
+    },
+    {
+      "id": "invalid-undeclared-body-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-undeclared-body-node-at-26.json"
+    },
+    {
+      "id": "invalid-for-inside-a-for-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-for-inside-a-for-at-26.json"
+    },
+    {
+      "id": "invalid-if-inside-a-for-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-if-inside-a-for-at-26.json"
+    },
+    {
+      "id": "invalid-if-without-then-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-if-without-then-at-26.json"
+    },
+    {
+      "id": "invalid-case-without-branches-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-case-without-branches-at-26.json"
+    },
+    {
+      "id": "invalid-case-over-a-text-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-case-over-a-text-at-26.json"
+    },
+    {
+      "id": "invalid-branch-value-outside-the-set-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-branch-value-outside-the-set-at-26.json"
+    },
+    {
+      "id": "invalid-value-in-two-branches-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-value-in-two-branches-at-26.json"
+    },
+    {
+      "id": "invalid-empty-when-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-empty-when-at-26.json"
+    },
+    {
+      "id": "invalid-outside-reads-a-body-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-outside-reads-a-body-node-at-26.json"
+    },
+    {
+      "id": "invalid-bodies-of-two-loops-align-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-bodies-of-two-loops-align-at-26.json"
+    },
+    {
+      "id": "invalid-body-node-reads-its-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-body-node-reads-its-loop-at-26.json"
+    },
+    {
+      "id": "invalid-if-expression-reads-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-if-expression-reads-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-body-node-neither-returned-nor-read-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-body-node-neither-returned-nor-read-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-without-sources-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-without-sources-at-26.json"
+    },
+    {
+      "id": "invalid-source-not-node-dot-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-not-node-dot-at-26.json"
+    },
+    {
+      "id": "invalid-source-unknown-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-unknown-at-26.json"
+    },
+    {
+      "id": "invalid-source-twice-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-twice-at-26.json"
+    },
+    {
+      "id": "invalid-source-a-concept-list-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-a-concept-list-at-26.json"
+    },
+    {
+      "id": "invalid-source-a-check-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-a-check-at-26.json"
+    },
+    {
+      "id": "invalid-source-a-body-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-a-body-node-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-if-reads-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-if-reads-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-content-in-a-condition-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-content-in-a-condition-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-content-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-content-value-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-content-piped-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-content-piped-at-26.json"
+    },
+    {
+      "id": "invalid-source-reads-its-deliverable-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-source-reads-its-deliverable-at-26.json"
+    },
+    {
+      "id": "invalid-deliverable-without-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-deliverable-without-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-node-feeds-no-deliverable-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-node-feeds-no-deliverable-at-26.json"
+    },
+    {
+      "id": "invalid-prompt-is-an-id-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-prompt-is-an-id-at-26.json"
+    },
+    {
+      "id": "invalid-prompt-file-missing-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-prompt-file-missing-at-26.json"
+    },
+    {
+      "id": "v26-header-every-key",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-header-every-key.json"
+    },
+    {
+      "id": "invalid-snippet-without-header-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-snippet-without-header-at-26.json"
+    },
+    {
+      "id": "invalid-folder-item-without-header-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-folder-item-without-header-at-26.json"
+    },
+    {
+      "id": "invalid-macro-without-header-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-without-header-at-26.json"
+    },
+    {
+      "id": "invalid-header-on-a-prompt-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-on-a-prompt-at-26.json"
+    },
+    {
+      "id": "invalid-header-unknown-key-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-unknown-key-at-26.json"
+    },
+    {
+      "id": "invalid-header-reserved-key-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-reserved-key-at-26.json"
+    },
+    {
+      "id": "invalid-snippet-header-with-instruction-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-snippet-header-with-instruction-at-26.json"
+    },
+    {
+      "id": "invalid-header-without-label-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-without-label-at-26.json"
+    },
+    {
+      "id": "invalid-header-wrong-type-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-wrong-type-at-26.json"
+    },
+    {
+      "id": "invalid-header-not-an-object-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-header-not-an-object-at-26.json"
+    },
+    {
+      "id": "v26-placed-only-macro-without-instruction",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-placed-only-macro-without-instruction.json"
+    },
+    {
+      "id": "invalid-inline-read-macro-without-instruction-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-inline-read-macro-without-instruction-at-26.json"
+    },
+    {
+      "id": "invalid-index-object-shape-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-index-object-shape-at-26.json"
+    },
+    {
+      "id": "invalid-index-item-name-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-index-item-name-at-26.json"
+    },
+    {
+      "id": "invalid-reads-name-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-reads-name-at-26.json"
+    },
+    {
+      "id": "invalid-item-reads-name-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-item-reads-name-at-26.json"
+    },
+    {
+      "id": "invalid-folder-item-if-reads-a-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-folder-item-if-reads-a-node-at-26.json"
+    },
+    {
+      "id": "v26-instance-if",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-instance-if.json"
+    },
+    {
+      "id": "v26-instance-if-on-item-id",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-instance-if-on-item-id.json"
+    },
+    {
+      "id": "invalid-instance-if-undeclared-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-if-undeclared-value-at-26.json"
+    },
+    {
+      "id": "invalid-instance-if-reads-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-if-reads-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-instance-if-item-outside-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-if-item-outside-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-instance-if-item-the-loop-lacks-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-instance-if-item-the-loop-lacks-at-26.json"
+    },
+    {
+      "id": "v26-macro-if-over-a-node-value",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-macro-if-over-a-node-value.json"
+    },
+    {
+      "id": "invalid-macro-if-undeclared-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-if-undeclared-value-at-26.json"
+    },
+    {
+      "id": "invalid-macro-if-reads-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-if-reads-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-macro-if-reads-item-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-if-reads-item-at-26.json"
+    },
+    {
+      "id": "invalid-macro-if-reads-a-deliverable-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-if-reads-a-deliverable-at-26.json"
+    },
+    {
+      "id": "v26-snippet-if",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-snippet-if.json"
+    },
+    {
+      "id": "v26-folder-item-if-on-item-id",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-folder-item-if-on-item-id.json"
+    },
+    {
+      "id": "invalid-snippet-if-undeclared-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-snippet-if-undeclared-value-at-26.json"
+    },
+    {
+      "id": "invalid-snippet-if-reads-item-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-snippet-if-reads-item-at-26.json"
+    },
+    {
+      "id": "invalid-snippet-if-reads-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-snippet-if-reads-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-folder-item-if-reads-item-label-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-folder-item-if-reads-item-label-at-26.json"
+    },
+    {
+      "id": "invalid-folder-item-if-item-the-folder-lacks-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-folder-item-if-item-the-folder-lacks-at-26.json"
+    },
+    {
+      "id": "v26-macro-folder",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-macro-folder.json"
+    },
+    {
+      "id": "invalid-macro-folder-without-index-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-without-index-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-item-without-header-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-item-without-header-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-placed-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-placed-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-item-placed-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-item-placed-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-prompt-read-without-instruction-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-prompt-read-without-instruction-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-read-as-a-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-read-as-a-value-at-26.json"
+    },
+    {
+      "id": "v26-direct-item-read",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-direct-item-read.json"
+    },
+    {
+      "id": "v26-direct-macro-item-read",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-direct-macro-item-read.json"
+    },
+    {
+      "id": "invalid-direct-item-undeclared-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-direct-item-undeclared-at-26.json"
+    },
+    {
+      "id": "invalid-direct-macro-item-prompt-without-instruction-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-direct-macro-item-prompt-without-instruction-at-26.json"
+    },
+    {
+      "id": "v26-renderer-pipe-on-the-node",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-renderer-pipe-on-the-node.json"
+    },
+    {
+      "id": "v26-renderer-pipe-on-a-body-node-in-a-loop",
+      "specVersion": 26,
+      "valid": true,
+      "path": "v26/v26-renderer-pipe-on-a-body-node-in-a-loop.json"
+    },
+    {
+      "id": "invalid-renderer-pipe-on-content-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-renderer-pipe-on-content-at-26.json"
+    },
+    {
+      "id": "invalid-renderer-pipe-on-value-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-renderer-pipe-on-value-at-26.json"
+    },
+    {
+      "id": "invalid-renderer-pipe-on-a-loop-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-renderer-pipe-on-a-loop-at-26.json"
+    },
+    {
+      "id": "invalid-renderer-pipe-on-a-loop-elements-content-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-renderer-pipe-on-a-loop-elements-content-at-26.json"
+    },
+    {
+      "id": "invalid-renderer-pipe-on-a-text-node-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-renderer-pipe-on-a-text-node-at-26.json"
+    },
+    {
+      "id": "invalid-node-for-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-for-at-v25.json"
+    },
+    {
+      "id": "invalid-node-if-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-if-at-v25.json"
+    },
+    {
+      "id": "invalid-node-case-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-case-at-v25.json"
+    },
+    {
+      "id": "invalid-node-ret-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-ret-at-v25.json"
+    },
+    {
+      "id": "invalid-node-macro-if-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-node-macro-if-at-v25.json"
+    },
+    {
+      "id": "invalid-deliverable-sources-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-sources-at-v25.json"
+    },
+    {
+      "id": "invalid-deliverable-if-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-if-at-v25.json"
+    },
+    {
+      "id": "invalid-deliverable-macro-if-at-v25",
+      "specVersion": 25,
+      "valid": false,
+      "path": "v25/invalid-deliverable-macro-if-at-v25.json"
     }
   ]
 }
