@@ -19,10 +19,9 @@ sentence, the reply as a template, the strict render probe, a deliverable's `che
 `signature`, and the macro's `optional` and `default` (now in its header). Their v25 sentences hold.
 
 A manifest declares the rule set it was validated under. The engine accepts exactly
-**{5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25}** today; this
-version joins `spec-versions.json`, and the set, once the engine's bump
-([#1149](https://github.com/Consultologist/Consultologist-Blazor/issues/1149)) runs it. v5–v25
-packages keep validating and executing under their frozen rules. A v25 package becomes a v26
+**{5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26}** (since the
+engine's bump, [#1149](https://github.com/Consultologist/Consultologist-Blazor/issues/1149)).
+v5–v25 packages keep validating and executing under their frozen rules. A v25 package becomes a v26
 package through the **migration** (see *Migration*): the rewrite is mechanical and byte-identical
 in what the model sees.
 
@@ -387,10 +386,10 @@ condition's with its site — *"Node 'x' if"*, *"Node 'x' macro 'm' if"*, *"Deli
 's' if"*; a header refusal opens with the file's path; a renderer refusal ends *"(node.<id>)"*; a
 shape the next version takes names it.
 
-Every sentence above is pinned by a vector under `conformance/v26/` once this version is listed
-(#1149), with the below-26 gates (*"… requires specVersion 26"*) under `conformance/v25/`; until
-then the engine's own suite holds the 26 vectors behind its accepted set and pins every sentence
-through its test seam. A 26 case resolves its catalogue formats against
+Every sentence above is pinned by a vector under `conformance/v26/`, with the below-26 gates
+(*"… requires specVersion 26"*) under `conformance/v25/` (the `macros` map below 26 is pinned in
+the engine's suite alone: a 25 manifest's typed writer spells the list, so no vector can carry
+the shape). A 26 case resolves its catalogue formats against
 `conformance/format-catalog.json`. The JSON schema (`schemas/package-format-v26.schema.json`)
 catches the retired keys, the `macros` map, the flow keys and the closed body shapes, `sources[]`
 and `if`, the id patterns and the required members; everything cross-field — a flow node's body
