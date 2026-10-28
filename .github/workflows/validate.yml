@@ -263,6 +263,12 @@ jobs:
               # never-optional) — a schema sees one property of one object.
               "invalid-macro-optional-without-default",
               "invalid-macro-default-without-optional",
+              # v2026.10.13 (#1224): the same pair judged over the macro FILE's header at 26 —
+              # a standalone macro's and a folder item's — a fact no manifest schema sees at all.
+              "invalid-macro-optional-without-default-at-26",
+              "invalid-macro-default-without-optional-at-26",
+              "invalid-macro-folder-item-optional-without-default-at-26",
+              "invalid-macro-folder-item-default-without-optional-at-26",
               "invalid-macro-placement-both-anchors",
               "invalid-macro-placement-anchor-not-aggregated",
               "invalid-signature-token-in-optional-macro",

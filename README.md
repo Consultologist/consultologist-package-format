@@ -68,7 +68,7 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 585 cases, 498 are invalid ones. That ratio is deliberate: a rejected
+Of the 589 cases, 502 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
 v10, v11, v12, v25 and v26 releases each added a rejection case for every publish-time
 refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 94, and eight below-26 gates sit under v25). A handful of cases
@@ -83,7 +83,7 @@ carries exactly one.
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
 invalid cases split three ways. One hundred and forty-eight are rejected by their version's
-schema. Three hundred and forty-nine fail for reasons no schema can see — the condition grammar
+schema. Three hundred and fifty-three fail for reasons no schema can see — the condition grammar
 lives inside one string, a macro's placeholder grammar lives inside its file,
 a fan's target is a cross-reference, a classifier's or a check's
 rules are relations between nodes, a kind's required-and-forbidden members
