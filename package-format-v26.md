@@ -16,7 +16,10 @@ sentence.
 `formats` table and the format file (producer classes, the catalogue, parameters), a node's
 `format`, `with`, `onInvalid`, `failIfEmpty` and `reproducible`, the derived edges, the mechanics
 sentence, the reply as a template, the strict render probe, a deliverable's `check` and
-`signature`, and the macro's `optional` and `default` (now in its header). Their v25 sentences hold.
+`signature`, and the macro's `optional` and `default` (now in its header). Their v25 sentences hold —
+the optional/default pair judged over the header from package-format v2026.10.13 (engine #1224), on a
+standalone macro and on a folder item keyed `<folder>/<item>`, in the v12 words; before that version
+the pair in a 26 header was not judged (an engine ran an optional macro with no default as false).
 
 A manifest declares the rule set it was validated under. The engine accepts exactly
 **{5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26}** (since the

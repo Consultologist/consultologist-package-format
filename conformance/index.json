@@ -3145,6 +3145,18 @@
       "path": "v26/v26-header-every-key.json"
     },
     {
+      "id": "invalid-macro-optional-without-default-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-optional-without-default-at-26.json"
+    },
+    {
+      "id": "invalid-macro-default-without-optional-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-default-without-optional-at-26.json"
+    },
+    {
       "id": "invalid-snippet-without-header-at-26",
       "specVersion": 26,
       "valid": false,
@@ -3371,6 +3383,18 @@
       "specVersion": 26,
       "valid": false,
       "path": "v26/invalid-macro-folder-item-without-header-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-item-optional-without-default-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-item-optional-without-default-at-26.json"
+    },
+    {
+      "id": "invalid-macro-folder-item-default-without-optional-at-26",
+      "specVersion": 26,
+      "valid": false,
+      "path": "v26/invalid-macro-folder-item-default-without-optional-at-26.json"
     },
     {
       "id": "invalid-macro-folder-placed-at-26",
