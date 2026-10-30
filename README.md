@@ -33,6 +33,7 @@ engine accepts.
 | `package-format-v24.md` | per-item node macros |
 | `package-format-v25.md` | the template is the source of truth: object reads with closed member sets, derived edges, formats, snippets and macros, `deliverables` — a full grammar |
 | `package-format-v26.md` | the manifest is a program: flow nodes (`for`, `if`, `case`), gates keyed `if`, a deliverable's `sources[]` and `deliverable.<id>.content`, the prompt by path, the JSON header on texts and folders of one shape, the renderer pipe on the node — a full grammar |
+| `package-format-v27.md` | a flow node inside a `for`: an `if` or `case` in a loop's body, decided once per item over the item, the inputs and the loop's earlier body nodes, the loop returning it, one level — a full grammar; listed in `spec-versions.json` once the engine's bump runs it |
 
 ## Checking a package against it
 
@@ -71,7 +72,7 @@ code that enforces them from drifting apart.
 Of the 589 cases, 502 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
 v10, v11, v12, v25 and v26 releases each added a rejection case for every publish-time
-refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 94, and eight below-26 gates sit under v25). A handful of cases
+refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 98, and eight below-26 gates sit under v25; the below-27 gate, an `if` inside a `for`, is a v26 case since package-format v2026.10.14). A handful of cases
 carry a second error that follows from the first (a node of no known kind
 references no prompt; an unnamed check is also an orphan) and say so in
 their description — and one version gate, `invalid-result-check-at-v11`,

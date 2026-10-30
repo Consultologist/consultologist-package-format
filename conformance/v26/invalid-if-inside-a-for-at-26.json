@@ -1,11 +1,11 @@
 {
   "id": "invalid-if-inside-a-for-at-26",
   "specVersion": 26,
-  "description": "An if node inside a loop\u0027s body \u2014 at 26 a body holds plain nodes.",
+  "description": "An if node inside a loop\u0027s body \u2014 a flow node inside a loop requires specVersion 27 (#1234).",
   "expect": {
     "valid": false,
     "errors": [
-      "Node \u0027triage\u0027 runs inside loop \u0027sections\u0027; at specVersion 26 a body holds plain nodes \u2014 a flow node inside a body is a later issue."
+      "Node \u0027triage\u0027 runs inside loop \u0027sections\u0027; a flow node inside a loop requires specVersion 27."
     ],
     "warnings": []
   },
