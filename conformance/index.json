@@ -3487,6 +3487,114 @@
       "path": "v26/invalid-renderer-pipe-on-a-text-node-at-26.json"
     },
     {
+      "id": "v27-minimal-is-the-v26-minimal-raised",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-minimal-is-the-v26-minimal-raised.json"
+    },
+    {
+      "id": "v27-loop-returns-an-if",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-loop-returns-an-if.json"
+    },
+    {
+      "id": "v27-loop-returns-a-case-on-the-items-enum-field",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-loop-returns-a-case-on-the-items-enum-field.json"
+    },
+    {
+      "id": "v27-loop-returns-a-plain-node-beside-a-gated-branch",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-loop-returns-a-plain-node-beside-a-gated-branch.json"
+    },
+    {
+      "id": "v27-condition-reads-an-earlier-body-node",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-condition-reads-an-earlier-body-node.json"
+    },
+    {
+      "id": "v27-outside-iterates-a-loop-returning-an-if",
+      "specVersion": 27,
+      "valid": true,
+      "path": "v27/v27-outside-iterates-a-loop-returning-an-if.json"
+    },
+    {
+      "id": "invalid-branch-node-attached-twice-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-branch-node-attached-twice-at-27.json"
+    },
+    {
+      "id": "invalid-if-inside-an-if-inside-a-for-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-if-inside-an-if-inside-a-for-at-27.json"
+    },
+    {
+      "id": "invalid-condition-reads-its-loop-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-condition-reads-its-loop-at-27.json"
+    },
+    {
+      "id": "invalid-condition-reads-its-own-branch-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-condition-reads-its-own-branch-at-27.json"
+    },
+    {
+      "id": "invalid-condition-reads-another-loops-body-node-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-condition-reads-another-loops-body-node-at-27.json"
+    },
+    {
+      "id": "invalid-case-on-a-folder-items-field-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-case-on-a-folder-items-field-at-27.json"
+    },
+    {
+      "id": "invalid-case-on-a-text-field-of-the-item-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-case-on-a-text-field-of-the-item-at-27.json"
+    },
+    {
+      "id": "invalid-loop-value-over-disagreeing-branches-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-loop-value-over-disagreeing-branches-at-27.json"
+    },
+    {
+      "id": "invalid-inner-flow-neither-returned-nor-read-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-inner-flow-neither-returned-nor-read-at-27.json"
+    },
+    {
+      "id": "invalid-outside-reads-the-inner-flow-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-outside-reads-the-inner-flow-at-27.json"
+    },
+    {
+      "id": "invalid-loop-sibling-reads-a-branch-node-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-loop-sibling-reads-a-branch-node-at-27.json"
+    },
+    {
+      "id": "invalid-branch-node-reads-its-loop-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-branch-node-reads-its-loop-at-27.json"
+    },
+    {
       "id": "invalid-node-for-at-v25",
       "specVersion": 25,
       "valid": false,

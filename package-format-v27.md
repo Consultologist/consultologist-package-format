@@ -20,12 +20,9 @@ and the folders of one shape, a deliverable's `sources[]`, `check` and `signatur
 *Refused at 26*. Their v26 sentences hold.
 
 A manifest declares the rule set it was validated under. The engine accepts exactly
-**{5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26}**; 27 is
-listed in `spec-versions.json` once the engine's bump
-([#1237](https://github.com/Consultologist/Consultologist-Blazor/issues/1237)) runs it. Until then
-a 27 manifest meets the accepted-set sentence, and this document says what the engine's validator
-already says at 27 (pinned in its own suite). v5–v26 packages keep validating and executing under
-their frozen rules.
+**{5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27}** (since
+the engine's bump, [#1237](https://github.com/Consultologist/Consultologist-Blazor/issues/1237)).
+v5–v26 packages keep validating and executing under their frozen rules.
 
 What 27 opens, in one sentence: a `for`'s `nodes[]` may name an **`if` or `case` node**, whose
 branches' nodes are body nodes of the loop too — attached once, through the flow node — and whose
@@ -191,8 +188,8 @@ Everything *Refused at 26* holds. Named at 27:
 ## Validation
 
 The sentence conventions are 26's. The sentences this document names are pinned by the engine's
-suite at the seam; their vectors sit under `conformance/v27/` once the bump lists 27, and the
-below-27 gate (*"… a flow node inside a loop requires specVersion 27"*) under `conformance/v26/`
+suite; their vectors sit under `conformance/v27/` (since package-format v2026.10.15, the bump
+#1237), and the below-27 gate (*"… a flow node inside a loop requires specVersion 27"*) under `conformance/v26/`
 (`invalid-if-inside-a-for-at-26`) from package-format v2026.10.14. The JSON schema for 27 is the 26
 shape with its version: the permission is cross-field — a flow node's membership of a loop's body
 — so every 27 refusal is the validator's and is listed `SHAPE_BLIND` in the registry's own check.

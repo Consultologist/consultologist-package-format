@@ -1,0 +1,173 @@
+{
+  "id": "invalid-loop-value-over-disagreeing-branches-at-27",
+  "specVersion": 27,
+  "description": "The outside reads .value of a loop returning an if whose branches return different formats; the deliverable sourcing it names the non-prose branch.",
+  "expect": {
+    "valid": false,
+    "errors": [
+      "Node \u0027assessment\u0027 prompt reads node.sections.value, but loop \u0027sections\u0027 returns \u0027triage\u0027, whose branches return \u0027object\u0027 and \u0027text\u0027; node.sections.value needs one format \u2014 read node.sections.content.",
+      "Node \u0027patient_draft\u0027 prompt reads item.label, but the node does not fan.",
+      "Node \u0027patient_draft\u0027 prompt reads node \u0027section_notes\u0027, which runs inside loop \u0027sections\u0027; read node.sections.",
+      "Deliverable \u0027consult\u0027 source node.sections loops over \u0027triage\u0027, whose then returns \u0027full_extract\u0027 of format \u0027concept_list\u0027; a deliverable composes prose.",
+      "Node \u0027patient_draft\u0027 does not feed the deliverable: every node must transitively reach \u0027consult\u0027s sources. Read it from a node that does, or name it among the deliverable\u0027s sources.",
+      "Node \u0027section_notes\u0027 in loop \u0027sections\u0027 is neither returned nor read; name it with ret or read it from a body node."
+    ],
+    "warnings": []
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 27,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "nodes": [
+      {
+        "id": "extract",
+        "label": "Extract concepts",
+        "prompt": "prompts/extract.md",
+        "format": "concept_list",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "scope",
+        "label": "Scope",
+        "prompt": "prompts/scope.md",
+        "format": "classification",
+        "with": {
+          "values": [
+            "in_scope",
+            "out_of_scope"
+          ]
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "assessment",
+        "label": "Assessment",
+        "prompt": "prompts/assessment.md",
+        "macros": [
+          {
+            "id": "closing",
+            "at": "after"
+          }
+        ],
+        "format": "prose"
+      },
+      {
+        "id": "section_notes",
+        "label": "Section notes",
+        "prompt": "prompts/section.md",
+        "format": "prose"
+      },
+      {
+        "id": "coverage",
+        "label": "Coverage",
+        "format": "terms_subset",
+        "with": {
+          "of": "node.extract",
+          "in": "node.extract",
+          "failWith": "The note names problems the source does not."
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "sections",
+        "label": "Sections",
+        "for": "item in snippet.sections",
+        "nodes": [
+          "section_notes",
+          "triage"
+        ],
+        "ret": "node.triage"
+      },
+      {
+        "id": "patient_draft",
+        "label": "Patient draft",
+        "prompt": "prompts/patient.md",
+        "format": "prose"
+      },
+      {
+        "id": "table_draft",
+        "label": "Table draft",
+        "prompt": "prompts/table.md",
+        "format": "prose"
+      },
+      {
+        "id": "triage",
+        "label": "Triage",
+        "if": "item.id == \u0022hpi\u0022",
+        "then": {
+          "nodes": [
+            "full_extract"
+          ],
+          "ret": "node.full_extract"
+        },
+        "else": {
+          "nodes": [
+            "table_draft"
+          ],
+          "ret": "node.table_draft"
+        }
+      },
+      {
+        "id": "full_extract",
+        "label": "Full extract",
+        "prompt": "prompts/full_extract.md",
+        "format": "concept_list",
+        "onInvalid": "fail"
+      }
+    ],
+    "inputs": [
+      {
+        "id": "notes",
+        "label": "Referral notes",
+        "required": true
+      },
+      {
+        "id": "kind",
+        "label": "Kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new",
+          "follow_up"
+        ]
+      }
+    ],
+    "tags": [],
+    "macros": {
+      "closing": "macros/closing.md"
+    },
+    "deliverables": [
+      {
+        "id": "consult",
+        "label": "Consultation note",
+        "check": "node.coverage",
+        "sources": [
+          "node.assessment",
+          "node.sections"
+        ]
+      }
+    ],
+    "snippets": {
+      "standards": "snippets/standards.md",
+      "sections": "snippets/sections/"
+    }
+  },
+  "files": {
+    "prompts/assessment.md": "Assess. {{ node.sections.value }}",
+    "prompts/extract.md": "Extract the concepts from:\n{{ input.notes }}",
+    "prompts/scope.md": "Is this in scope? {{ input.notes }}",
+    "prompts/section.md": "{{ item.label }}: {{ item.content }}",
+    "snippets/standards.md": "{\n  \u0022label\u0022: \u0022Local standards\u0022\n}\nFollow the local standards.",
+    "snippets/sections/index.json": "[ { \u0022id\u0022: \u0022hpi\u0022, \u0022file\u0022: \u0022hpi.md\u0022 }, { \u0022id\u0022: \u0022plan\u0022, \u0022file\u0022: \u0022plan.md\u0022 } ]",
+    "snippets/sections/hpi.md": "{\n  \u0022label\u0022: \u0022HPI\u0022\n}\nHistory: {{ input.notes }}",
+    "snippets/sections/plan.md": "{\n  \u0022label\u0022: \u0022Plan\u0022\n}\nPlan.",
+    "macros/closing.md": "{\n  \u0022label\u0022: \u0022Closing\u0022,\n  \u0022instruction\u0022: \u0022Add a closing line if the plan changed.\u0022\n}\nClosing: {{ profile.name }}.",
+    "prompts/patient.md": "Patient {{ item.label }}: {{ node.section_notes.content }}",
+    "prompts/table.md": "Table of {{ item.content }}.",
+    "prompts/full_extract.md": "Extract from {{ item.content }}."
+  }
+}

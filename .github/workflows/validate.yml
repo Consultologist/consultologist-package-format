@@ -625,6 +625,21 @@ jobs:
               "invalid-renderer-pipe-on-content-at-26",
               "invalid-renderer-pipe-on-value-at-26",
               "invalid-renderer-pipe-on-a-text-node-at-26",
+              # v27 (#1237): a flow node inside a loop — a branch node's one attachment and the one level: relations between nodes.
+              "invalid-branch-node-attached-twice-at-27",
+              "invalid-if-inside-an-if-inside-a-for-at-27",
+              # v27 (#1237): the inner condition's reach — the item's typed field, inputs and earlier body nodes; never the loop, its own branches or another loop's body — all inside one string.
+              "invalid-condition-reads-its-loop-at-27",
+              "invalid-condition-reads-its-own-branch-at-27",
+              "invalid-condition-reads-another-loops-body-node-at-27",
+              "invalid-case-on-a-folder-items-field-at-27",
+              "invalid-case-on-a-text-field-of-the-item-at-27",
+              # v27 (#1237): the loop returning or reading its inner flow, and what the outside may read of it: template reads and relations.
+              "invalid-loop-value-over-disagreeing-branches-at-27",
+              "invalid-inner-flow-neither-returned-nor-read-at-27",
+              "invalid-outside-reads-the-inner-flow-at-27",
+              "invalid-loop-sibling-reads-a-branch-node-at-27",
+              "invalid-branch-node-reads-its-loop-at-27",
           }
 
           index = json.load(open("spec-versions.json"))
