@@ -3595,6 +3595,132 @@
       "path": "v27/invalid-branch-node-reads-its-loop-at-27.json"
     },
     {
+      "id": "v28-minimal",
+      "specVersion": 28,
+      "valid": true,
+      "path": "v28/v28-minimal.json"
+    },
+    {
+      "id": "v28-folder-label",
+      "specVersion": 28,
+      "valid": true,
+      "path": "v28/v28-folder-label.json"
+    },
+    {
+      "id": "v28-macro-folder",
+      "specVersion": 28,
+      "valid": true,
+      "path": "v28/v28-macro-folder.json"
+    },
+    {
+      "id": "v28-flow-node-description",
+      "specVersion": 28,
+      "valid": true,
+      "path": "v28/v28-flow-node-description.json"
+    },
+    {
+      "id": "invalid-prompt-key-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-prompt-key-at-28.json"
+    },
+    {
+      "id": "invalid-macros-map-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-macros-map-at-28.json"
+    },
+    {
+      "id": "invalid-snippets-map-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-snippets-map-at-28.json"
+    },
+    {
+      "id": "invalid-macro-entry-not-snake-case-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-macro-entry-not-snake-case-at-28.json"
+    },
+    {
+      "id": "invalid-description-on-a-plain-node-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-description-on-a-plain-node-at-28.json"
+    },
+    {
+      "id": "invalid-description-empty-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-description-empty-at-28.json"
+    },
+    {
+      "id": "invalid-missing-implied-prompt-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-missing-implied-prompt-at-28.json"
+    },
+    {
+      "id": "invalid-computed-node-with-a-prompt-file-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-computed-node-with-a-prompt-file-at-28.json"
+    },
+    {
+      "id": "invalid-missing-folder-index-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-missing-folder-index-at-28.json"
+    },
+    {
+      "id": "invalid-index-bare-list-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-index-bare-list-at-28.json"
+    },
+    {
+      "id": "invalid-index-unknown-key-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-index-unknown-key-at-28.json"
+    },
+    {
+      "id": "invalid-index-empty-items-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-index-empty-items-at-28.json"
+    },
+    {
+      "id": "invalid-index-object-item-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-index-object-item-at-28.json"
+    },
+    {
+      "id": "invalid-index-duplicate-item-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-index-duplicate-item-at-28.json"
+    },
+    {
+      "id": "invalid-folder-item-id-not-snake-case-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-folder-item-id-not-snake-case-at-28.json"
+    },
+    {
+      "id": "v28-stray-files-warn",
+      "specVersion": 28,
+      "valid": true,
+      "path": "v28/v28-stray-files-warn.json"
+    },
+    {
+      "id": "invalid-macros-id-list-at-27",
+      "specVersion": 27,
+      "valid": false,
+      "path": "v27/invalid-macros-id-list-at-27.json"
+    },
+    {
       "id": "invalid-node-for-at-v25",
       "specVersion": 25,
       "valid": false,

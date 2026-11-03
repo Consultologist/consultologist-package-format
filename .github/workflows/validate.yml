@@ -640,6 +640,18 @@ jobs:
               "invalid-outside-reads-the-inner-flow-at-27",
               "invalid-loop-sibling-reads-a-branch-node-at-27",
               "invalid-branch-node-reads-its-loop-at-27",
+              # v28 (#1286): a file's name is its id — whether the file each id implies is in the package, and what a folder's index.json says: the file set, which no manifest schema sees.
+              "invalid-missing-implied-prompt-at-28",
+              "invalid-computed-node-with-a-prompt-file-at-28",
+              "invalid-missing-folder-index-at-28",
+              "invalid-index-bare-list-at-28",
+              "invalid-index-unknown-key-at-28",
+              "invalid-index-empty-items-at-28",
+              "invalid-index-object-item-at-28",
+              "invalid-index-duplicate-item-at-28",
+              "invalid-folder-item-id-not-snake-case-at-28",
+              # v28 (#1270): a description belongs to a for, if or case node — a relation between a node's members.
+              "invalid-description-on-a-plain-node-at-28",
           }
 
           index = json.load(open("spec-versions.json"))
