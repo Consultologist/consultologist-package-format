@@ -652,6 +652,22 @@ jobs:
               "invalid-folder-item-id-not-snake-case-at-28",
               # v28 (#1270): a description belongs to a for, if or case node — a relation between a node's members.
               "invalid-description-on-a-plain-node-at-28",
+              # v29 (#1301): a loop over a node's value and a folder item's if reading a node — the for text and the item's header if are strings to the schema, and what they may reach is a relation to the nodes the manifest declares.
+              "invalid-loop-over-a-whole-value-at-29",
+              "invalid-loop-over-a-string-field-at-29",
+              "invalid-loop-over-an-undeclared-field-at-29",
+              "invalid-loop-over-a-prose-node-at-29",
+              "invalid-loop-over-a-nodes-content-at-29",
+              "invalid-loop-over-an-undeclared-node-at-29",
+              "invalid-loop-over-a-flow-node-at-29",
+              "invalid-loop-over-a-body-node-at-29",
+              "invalid-loop-source-reads-the-loop-at-29",
+              "invalid-loop-item-undeclared-field-at-29",
+              "invalid-folder-item-if-reads-content-at-29",
+              "invalid-folder-item-if-reads-a-loop-at-29",
+              # v29 (#1307): below 29 the same two reads are the version gate — still a string's reach.
+              "invalid-loop-over-a-node-value-at-28",
+              "invalid-folder-item-if-reads-a-node-at-28",
           }
 
           index = json.load(open("spec-versions.json"))

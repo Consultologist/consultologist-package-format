@@ -1,11 +1,11 @@
 {
   "id": "invalid-folder-item-if-reads-a-node-at-26",
   "specVersion": 26,
-  "description": "A folder item\u0027s header if reading a node \u2014 inputs only, so the folder\u0027s size is known at job start.",
+  "description": "A folder item\u0027s header if reading a node\u0027s value at 26 \u2014 it requires specVersion 29.",
   "expect": {
     "valid": false,
     "errors": [
-      "Snippet folder \u0027sections\u0027 item \u0027plan\u0027 if reads node.scope; a folder item\u0027s if reads inputs and item.id only, so the folder\u0027s size is known at job start (the template\u0027s own if gates anything else)."
+      "Snippet folder \u0027sections\u0027 item \u0027plan\u0027 if reads node.scope.value, which requires specVersion 29."
     ],
     "warnings": []
   },

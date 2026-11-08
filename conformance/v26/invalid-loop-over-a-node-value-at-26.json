@@ -1,11 +1,11 @@
 {
   "id": "invalid-loop-over-a-node-value-at-26",
   "specVersion": 26,
-  "description": "A loop over a node\u0027s value \u2014 waits for the scheduler redesign.",
+  "description": "A loop over a node\u0027s value at 26 \u2014 it requires specVersion 29.",
   "expect": {
     "valid": false,
     "errors": [
-      "Loop \u0027sections\u0027 iterates node.extract.value; a loop over a node\u0027s value waits for the scheduler redesign \u2014 iterate an input or a snippet folder.",
+      "Loop \u0027sections\u0027 iterates node.extract.value, which requires specVersion 29.",
       "Node \u0027section_notes\u0027 prompt reads item.label, but the node does not fan.",
       "Node \u0027section_notes\u0027 prompt reads item.content, but the node does not fan."
     ],

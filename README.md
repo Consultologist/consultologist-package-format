@@ -35,6 +35,7 @@ engine accepts.
 | `package-format-v26.md` | the manifest is a program: flow nodes (`for`, `if`, `case`), gates keyed `if`, a deliverable's `sources[]` and `deliverable.<id>.content`, the prompt by path, the JSON header on texts and folders of one shape, the renderer pipe on the node — a full grammar |
 | `package-format-v27.md` | a flow node inside a `for`: an `if` or `case` in a loop's body, decided once per item over the item, the inputs and the loop's earlier body nodes, the loop returning it, one level — a full grammar |
 | `package-format-v28.md` | a file name is its id: no `prompt` on a node (each prompt is `prompts/<id>.md`), `macros` and `snippets` as lists of ids, a folder's `index.json` an object `{ label?, items }`, a flow node's display-only `description`; stray files a warning — a full grammar |
+| `package-format-v29.md` | a count the run discovers: a `for` over a field path under a node's value its format types as an array, its count settled when that node completes; a folder item's `if` reading a scalar node's value, the item kept and skipped by condition; record storage 10 — a full grammar |
 
 ## Checking a package against it
 
@@ -60,8 +61,8 @@ and the outcome the engine produces:
 
 `conformance/index.json` lists them; `conformance/catalog-schemas.json` carries
 the output-contract schemas a case may reference, and `conformance/format-catalog.json`
-the format catalogue a specVersion 25, 26, 27 or 28 case resolves its node formats against.
-Cases about one format sit under `v5`–`v28`; a case about the accepted set
+the format catalogue a specVersion 25, 26, 27, 28 or 29 case resolves its node formats against.
+Cases about one format sit under `v5`–`v29`; a case about the accepted set
 itself sits under `any`. Case ids are unique across the suite.
 
 **The expectations are not written by hand.** Every case is produced by running
@@ -70,10 +71,10 @@ claim an error the engine does not actually produce. The engine replays the
 published suite in its own tests, which is what keeps these documents and the
 code that enforces them from drifting apart.
 
-Of the 628 cases, 530 are invalid ones. That ratio is deliberate: a rejected
+Of the 645 cases, 544 are invalid ones. That ratio is deliberate: a rejected
 package that names its reason proves more than an accepted one — and the v9,
-v10, v11, v12, v25, v26, v27 and v28 releases each added a rejection case for every publish-time
-refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 98, and eight below-26 gates sit under v25; v27 carries 12, and the below-27 gate, an `if` inside a `for`, is a v26 case since package-format v2026.10.14; v28 carries 15, and the below-28 gate, `macros` as a list of ids, is a v27 case). A handful of cases
+v10, v11, v12, v25, v26, v27, v28 and v29 releases each added a rejection case for every publish-time
+refusal their design records name, refusal by refusal (v25 carries 176; v26 carries 98, and eight below-26 gates sit under v25; v27 carries 12, and the below-27 gate, an `if` inside a `for`, is a v26 case since package-format v2026.10.14; v28 carries 15, and the below-28 gate, `macros` as a list of ids, is a v27 case; v29 carries 12, and the two below-29 gates, a loop over a node's value and a folder item's `if` reading a node, are v28 cases). A handful of cases
 carry a second error that follows from the first (a node of no known kind
 references no prompt; an unnamed check is also an orphan) and say so in
 their description — and one version gate, `invalid-result-check-at-v11`,
@@ -84,8 +85,8 @@ carries exactly one.
 **Where the schemas stop.** `schemas/package-format-v{N}.schema.json` is the
 machine-readable half — what an editor or a linter reads. Run the conformance
 suite against them and the boundary is exact: every valid case passes, and the
-invalid cases split three ways. One hundred and forty-eight are rejected by their version's
-schema. Three hundred and sixty-five fail for reasons no schema can see — the condition grammar
+invalid cases split three ways. One hundred and fifty-four are rejected by their version's
+schema. Three hundred and eighty-nine fail for reasons no schema can see — the condition grammar
 lives inside one string, a macro's placeholder grammar lives inside its file,
 a fan's target is a cross-reference, a classifier's or a check's
 rules are relations between nodes, a kind's required-and-forbidden members
@@ -95,7 +96,7 @@ template rule reads a template file, at 26 a flow node's body, a gate's
 expression, a source's shape and a file's header are relations and file facts, and at 27 a branch
 node's one attachment, an inner condition's reach and the loop's read of its inner flow are
 relations between nodes, and at 28 whether the file each id implies is there, what a folder's
-index says and a description's node are the file set and a relation — and the validation
+index says and a description's node are the file set and a relation, and at 29 what a loop's source and a folder item's `if` may reach is a relation to the nodes the manifest declares — and the validation
 workflow's `SHAPE_BLIND` list names each one with its reason, so the boundary
 is a list somebody chose (`invalid-missing-prompt-file` is the oldest member:
 its manifest is byte-identical to a valid one and only its bundle differs).
