@@ -3721,6 +3721,108 @@
       "path": "v27/invalid-macros-id-list-at-27.json"
     },
     {
+      "id": "v29-minimal",
+      "specVersion": 29,
+      "valid": true,
+      "path": "v29/v29-minimal.json"
+    },
+    {
+      "id": "v29-loop-over-strings",
+      "specVersion": 29,
+      "valid": true,
+      "path": "v29/v29-loop-over-strings.json"
+    },
+    {
+      "id": "v29-folder-item-if-reads-a-node",
+      "specVersion": 29,
+      "valid": true,
+      "path": "v29/v29-folder-item-if-reads-a-node.json"
+    },
+    {
+      "id": "invalid-loop-over-a-whole-value-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-whole-value-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-string-field-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-string-field-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-an-undeclared-field-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-an-undeclared-field-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-prose-node-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-prose-node-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-nodes-content-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-nodes-content-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-an-undeclared-node-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-an-undeclared-node-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-flow-node-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-flow-node-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-body-node-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-over-a-body-node-at-29.json"
+    },
+    {
+      "id": "invalid-loop-source-reads-the-loop-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-source-reads-the-loop-at-29.json"
+    },
+    {
+      "id": "invalid-loop-item-undeclared-field-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-item-undeclared-field-at-29.json"
+    },
+    {
+      "id": "invalid-folder-item-if-reads-content-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-folder-item-if-reads-content-at-29.json"
+    },
+    {
+      "id": "invalid-folder-item-if-reads-a-loop-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-folder-item-if-reads-a-loop-at-29.json"
+    },
+    {
+      "id": "invalid-loop-over-a-node-value-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-loop-over-a-node-value-at-28.json"
+    },
+    {
+      "id": "invalid-folder-item-if-reads-a-node-at-28",
+      "specVersion": 28,
+      "valid": false,
+      "path": "v28/invalid-folder-item-if-reads-a-node-at-28.json"
+    },
+    {
       "id": "invalid-node-for-at-v25",
       "specVersion": 25,
       "valid": false,
