@@ -5,7 +5,7 @@
   "expect": {
     "valid": false,
     "errors": [
-      "Node \u0027detail\u0027 runs inside node \u0027triage\u0027, which runs inside loop \u0027sections\u0027; at specVersion 27 a branch holds plain nodes.",
+      "Node \u0027detail\u0027 runs inside node \u0027triage\u0027, which requires specVersion 30.",
       "Node \u0027table_draft\u0027 runs inside node \u0027triage\u0027 and inside node \u0027detail\u0027; a node runs in one body.",
       "Node \u0027detail\u0027 if reads item.id, but the node does not fan."
     ],
