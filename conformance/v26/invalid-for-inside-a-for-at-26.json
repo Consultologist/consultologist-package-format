@@ -5,7 +5,7 @@
   "expect": {
     "valid": false,
     "errors": [
-      "Loop \u0027paragraphs\u0027 runs inside loop \u0027outer\u0027; nesting waits for the scheduler redesign.",
+      "Loop \u0027paragraphs\u0027 runs inside loop \u0027outer\u0027, which requires specVersion 30.",
       "Deliverable \u0027consult\u0027 source node.assessment runs inside loop \u0027paragraphs\u0027; name node.paragraphs.",
       "Node \u0027assessment\u0027 does not feed the deliverable: every node must transitively reach \u0027consult\u0027s sources. Read it from a node that does, or name it among the deliverable\u0027s sources.",
       "Node \u0027paragraphs\u0027 does not feed the deliverable: every node must transitively reach \u0027consult\u0027s sources. Read it from a node that does, or name it among the deliverable\u0027s sources.",

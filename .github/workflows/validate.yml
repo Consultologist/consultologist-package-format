@@ -668,6 +668,38 @@ jobs:
               # v29 (#1307): below 29 the same two reads are the version gate — still a string's reach.
               "invalid-loop-over-a-node-value-at-28",
               "invalid-folder-item-if-reads-a-node-at-28",
+              # v30 (#1339): nesting — a body is a list of ids and a for's text a string; what an inner loop may iterate and what a body may read are relations to the loops that enclose it.
+              "invalid-body-holds-its-holder-at-30",
+              "invalid-inner-over-a-text-field-at-30",
+              "invalid-inner-over-an-undeclared-field-at-30",
+              "invalid-inner-over-the-item-id-at-30",
+              "invalid-top-level-over-item-at-30",
+              "invalid-inner-over-an-unrelated-loop-node-at-30",
+              "invalid-item-parent-in-a-top-level-loop-at-30",
+              "invalid-inner-body-read-from-outside-at-30",
+              "invalid-inner-source-reads-the-inner-loop-at-30",
+              # v30 (#1339): while and until — a while's bound being required, its cap of 10, until and checkFirst belonging to a for or a while, and what pass may read are relations between a node's members and the whiles that enclose it.
+              "invalid-while-without-max-at-30",
+              "invalid-while-max-above-the-cap-at-30",
+              "invalid-until-on-a-plain-node-at-30",
+              "invalid-pass-outside-a-while-at-30",
+              "invalid-pass-previous-of-an-outside-node-at-30",
+              "invalid-body-reads-its-while-at-30",
+              "invalid-pass-parent-with-no-outer-while-at-30",
+              "invalid-check-first-on-a-for-at-30",
+              "invalid-outside-history-previous-at-30",
+              "invalid-pass-history-as-a-value-at-30",
+              # v30 (#1339): let and labelField — a let's type, policy and expression, and the field an item is named by, are relations to the formats and to what the expression yields.
+              "invalid-let-without-type-at-30",
+              "invalid-let-of-a-text-format-at-30",
+              "invalid-let-retry-at-30",
+              "invalid-let-with-a-format-at-30",
+              "invalid-let-reads-the-clock-at-30",
+              "invalid-let-type-mismatch-at-30",
+              "invalid-label-field-not-a-field-at-30",
+              "invalid-label-field-enum-at-30",
+              # v30 (#1347): below 30 nesting is the version gate — still a list of ids to the schema. (The new keys' gates are not here: the closed 29 schema refuses them itself.)
+              "invalid-loop-inside-a-loop-at-29",
           }
 
           index = json.load(open("spec-versions.json"))

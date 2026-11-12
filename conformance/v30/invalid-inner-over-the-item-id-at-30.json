@@ -1,0 +1,207 @@
+{
+  "id": "invalid-inner-over-the-item-id-at-30",
+  "specVersion": 30,
+  "description": "An inner loop over item.id \u2014 it iterates a list field of the outer item.",
+  "expect": {
+    "valid": false,
+    "errors": [
+      "Loop \u0027paragraphs\u0027 iterates item.id; an inner loop iterates a list field of the outer item \u2014 item.value.\u003Cfield\u003E.",
+      "Node \u0027draft_paragraph\u0027 prompt reads item.parent, but the node does not fan.",
+      "Node \u0027draft_paragraph\u0027 prompt reads item.id, but the node does not fan.",
+      "Node \u0027draft_paragraph\u0027 prompt reads item.value, but the node does not fan."
+    ],
+    "warnings": []
+  },
+  "manifest": {
+    "name": "general",
+    "version": "v2026.08.1",
+    "specVersion": 30,
+    "templating": {
+      "engine": "scriban",
+      "engineVersion": "7.2.5"
+    },
+    "nodes": [
+      {
+        "id": "extract",
+        "label": "Extract concepts",
+        "format": "concept_list",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "scope",
+        "label": "Scope",
+        "format": "classification",
+        "with": {
+          "values": [
+            "in_scope",
+            "out_of_scope"
+          ]
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "assessment",
+        "label": "Assessment",
+        "macros": [
+          {
+            "id": "closing",
+            "at": "after"
+          }
+        ],
+        "format": "prose"
+      },
+      {
+        "id": "section_notes",
+        "label": "Section notes",
+        "format": "prose"
+      },
+      {
+        "id": "coverage",
+        "label": "Coverage",
+        "format": "terms_subset",
+        "with": {
+          "of": "node.extract",
+          "in": "node.extract",
+          "failWith": "The note names problems the source does not."
+        },
+        "onInvalid": "fail"
+      },
+      {
+        "id": "sections",
+        "label": "Sections",
+        "for": "item in snippet.sections",
+        "nodes": [
+          "section_notes"
+        ],
+        "ret": "node.section_notes"
+      },
+      {
+        "id": "find_problems",
+        "label": "Find problems",
+        "format": "problem_list",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "draft_problem",
+        "label": "Draft problem",
+        "format": "prose"
+      },
+      {
+        "id": "problems",
+        "label": "Problems",
+        "for": "item in node.find_problems.value.problems",
+        "nodes": [
+          "draft_problem"
+        ],
+        "ret": "node.draft_problem"
+      },
+      {
+        "id": "plan",
+        "label": "Plan the sections",
+        "format": "section_plan",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "outline",
+        "label": "Outline the section",
+        "format": "outline",
+        "onInvalid": "fail"
+      },
+      {
+        "id": "draft_paragraph",
+        "label": "Draft paragraph",
+        "format": "prose"
+      },
+      {
+        "id": "parts",
+        "label": "Parts",
+        "for": "item in node.plan.value.sections",
+        "nodes": [
+          "outline",
+          "paragraphs"
+        ],
+        "ret": "node.paragraphs"
+      },
+      {
+        "id": "paragraphs",
+        "label": "Paragraphs",
+        "for": "item in item.id",
+        "nodes": [
+          "draft_paragraph"
+        ],
+        "ret": "node.draft_paragraph"
+      }
+    ],
+    "inputs": [
+      {
+        "id": "notes",
+        "label": "Referral notes",
+        "required": true
+      },
+      {
+        "id": "kind",
+        "label": "Kind",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "new",
+          "follow_up"
+        ]
+      }
+    ],
+    "tags": [],
+    "macros": [
+      "closing"
+    ],
+    "deliverables": [
+      {
+        "id": "consult",
+        "label": "Consultation note",
+        "check": "node.coverage",
+        "sources": [
+          "node.assessment",
+          "node.sections",
+          "node.problems",
+          "node.parts"
+        ]
+      }
+    ],
+    "snippets": [
+      "standards",
+      "sections/"
+    ],
+    "formats": [
+      {
+        "id": "problem_list",
+        "file": "formats/problem_list.json"
+      },
+      {
+        "id": "section_plan",
+        "file": "formats/section_plan.json"
+      },
+      {
+        "id": "outline",
+        "file": "formats/outline.json"
+      }
+    ]
+  },
+  "files": {
+    "prompts/assessment.md": "Assess.\n{{ snippet.standards.content }}\n{{ input.notes }}\n{{ for c in node.extract.value.concepts }}- {{ c }}\n{{ end }}",
+    "prompts/extract.md": "Extract the concepts from:\n{{ input.notes }}",
+    "prompts/scope.md": "Is this in scope? {{ input.notes }}",
+    "formats/problem_list.json": "{ \u0022type\u0022: \u0022object\u0022, \u0022producer\u0022: \u0022custom\u0022, \u0022outputMacros\u0022: false,\n  \u0022description\u0022: \u0022The problems a referral names.\u0022,\n  \u0022schema\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022problems\u0022, \u0022summary\u0022],\n              \u0022properties\u0022: {\n                \u0022summary\u0022: { \u0022type\u0022: \u0022string\u0022 },\n                \u0022problems\u0022: { \u0022type\u0022: \u0022array\u0022, \u0022items\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022name\u0022, \u0022severity\u0022],\n                                                          \u0022properties\u0022: { \u0022name\u0022: { \u0022type\u0022: \u0022string\u0022 },\n                                                                          \u0022severity\u0022: { \u0022type\u0022: \u0022string\u0022, \u0022enum\u0022: [\u0022low\u0022, \u0022high\u0022] } } } } } } }",
+    "snippets/standards.md": "{\n  \u0022label\u0022: \u0022Local standards\u0022\n}\nFollow the local standards.",
+    "snippets/sections/index.json": "{ \u0022items\u0022: [\u0022hpi\u0022, \u0022plan\u0022] }",
+    "snippets/sections/hpi.md": "{\n  \u0022label\u0022: \u0022HPI\u0022\n}\nHistory: {{ input.notes }}",
+    "snippets/sections/plan.md": "{\n  \u0022label\u0022: \u0022Plan\u0022\n}\nPlan.",
+    "macros/closing.md": "{\n  \u0022label\u0022: \u0022Closing\u0022,\n  \u0022instruction\u0022: \u0022Add a closing line if the plan changed.\u0022\n}\nClosing: {{ profile.name }}.",
+    "prompts/section_notes.md": "{{ item.label }}: {{ item.content }}",
+    "prompts/find_problems.md": "List the problems this referral names: {{ input.notes }}",
+    "prompts/draft_problem.md": "Problem {{ item.id }}: {{ item.value.name }} ({{ item.value.severity }}).",
+    "formats/section_plan.json": "{ \u0022type\u0022: \u0022object\u0022, \u0022producer\u0022: \u0022custom\u0022, \u0022outputMacros\u0022: false,\n  \u0022description\u0022: \u0022The sections a note needs.\u0022,\n  \u0022schema\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022sections\u0022],\n              \u0022properties\u0022: {\n                \u0022sections\u0022: { \u0022type\u0022: \u0022array\u0022, \u0022items\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022title\u0022, \u0022kind\u0022, \u0022topics\u0022],\n                                                          \u0022properties\u0022: { \u0022title\u0022: { \u0022type\u0022: \u0022string\u0022 },\n                                                                          \u0022kind\u0022: { \u0022type\u0022: \u0022string\u0022, \u0022enum\u0022: [\u0022history\u0022, \u0022plan\u0022] },\n                                                                          \u0022topics\u0022: { \u0022type\u0022: \u0022array\u0022, \u0022items\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022topic\u0022],\n                                                                                                                  \u0022properties\u0022: { \u0022topic\u0022: { \u0022type\u0022: \u0022string\u0022 } } } } } } } } } }",
+    "formats/outline.json": "{ \u0022type\u0022: \u0022object\u0022, \u0022producer\u0022: \u0022custom\u0022, \u0022outputMacros\u0022: false,\n  \u0022description\u0022: \u0022One section\u0027s outline.\u0022,\n  \u0022schema\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022points\u0022],\n              \u0022properties\u0022: {\n                \u0022points\u0022: { \u0022type\u0022: \u0022array\u0022, \u0022items\u0022: { \u0022type\u0022: \u0022object\u0022, \u0022additionalProperties\u0022: false, \u0022required\u0022: [\u0022point\u0022],\n                                                        \u0022properties\u0022: { \u0022point\u0022: { \u0022type\u0022: \u0022string\u0022 } } } } } } }",
+    "prompts/plan.md": "Plan the sections this referral needs: {{ input.notes }}",
+    "prompts/outline.md": "Outline the section {{ item.value.title }}.",
+    "prompts/draft_paragraph.md": "Section {{ item.parent.value.title }}, point {{ item.id }}: {{ item.value.point }}. Of {{ node.outline.value.points | array.size }} points."
+  }
+}

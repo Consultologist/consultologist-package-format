@@ -3823,6 +3823,342 @@
       "path": "v28/invalid-folder-item-if-reads-a-node-at-28.json"
     },
     {
+      "id": "v30-minimal",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-minimal.json"
+    },
+    {
+      "id": "v30-three-levels",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-three-levels.json"
+    },
+    {
+      "id": "v30-inner-over-the-outer-item-field",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-inner-over-the-outer-item-field.json"
+    },
+    {
+      "id": "v30-loop-in-a-branch-in-a-loop",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-loop-in-a-branch-in-a-loop.json"
+    },
+    {
+      "id": "v30-nested-list-in-a-template",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-nested-list-in-a-template.json"
+    },
+    {
+      "id": "invalid-body-holds-its-holder-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-body-holds-its-holder-at-30.json"
+    },
+    {
+      "id": "invalid-inner-over-a-text-field-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-over-a-text-field-at-30.json"
+    },
+    {
+      "id": "invalid-inner-over-an-undeclared-field-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-over-an-undeclared-field-at-30.json"
+    },
+    {
+      "id": "invalid-inner-over-the-item-id-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-over-the-item-id-at-30.json"
+    },
+    {
+      "id": "invalid-top-level-over-item-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-top-level-over-item-at-30.json"
+    },
+    {
+      "id": "invalid-inner-over-an-unrelated-loop-node-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-over-an-unrelated-loop-node-at-30.json"
+    },
+    {
+      "id": "invalid-item-parent-in-a-top-level-loop-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-item-parent-in-a-top-level-loop-at-30.json"
+    },
+    {
+      "id": "invalid-inner-body-read-from-outside-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-body-read-from-outside-at-30.json"
+    },
+    {
+      "id": "invalid-inner-source-reads-the-inner-loop-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-inner-source-reads-the-inner-loop-at-30.json"
+    },
+    {
+      "id": "v30-while",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while.json"
+    },
+    {
+      "id": "v30-while-in-a-loop",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while-in-a-loop.json"
+    },
+    {
+      "id": "v30-while-in-a-while",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while-in-a-while.json"
+    },
+    {
+      "id": "v30-while-passes-and-stopped",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while-passes-and-stopped.json"
+    },
+    {
+      "id": "v30-for-until",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-for-until.json"
+    },
+    {
+      "id": "invalid-while-without-max-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-while-without-max-at-30.json"
+    },
+    {
+      "id": "invalid-while-max-above-the-cap-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-while-max-above-the-cap-at-30.json"
+    },
+    {
+      "id": "invalid-while-max-zero-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-while-max-zero-at-30.json"
+    },
+    {
+      "id": "invalid-until-on-a-plain-node-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-until-on-a-plain-node-at-30.json"
+    },
+    {
+      "id": "invalid-pass-outside-a-while-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-pass-outside-a-while-at-30.json"
+    },
+    {
+      "id": "invalid-pass-previous-of-an-outside-node-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-pass-previous-of-an-outside-node-at-30.json"
+    },
+    {
+      "id": "invalid-body-reads-its-while-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-body-reads-its-while-at-30.json"
+    },
+    {
+      "id": "invalid-pass-parent-with-no-outer-while-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-pass-parent-with-no-outer-while-at-30.json"
+    },
+    {
+      "id": "v30-pass-history",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-pass-history.json"
+    },
+    {
+      "id": "v30-while-check-first",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while-check-first.json"
+    },
+    {
+      "id": "v30-while-until",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-while-until.json"
+    },
+    {
+      "id": "v30-for-max",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-for-max.json"
+    },
+    {
+      "id": "invalid-check-first-on-a-for-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-check-first-on-a-for-at-30.json"
+    },
+    {
+      "id": "invalid-for-max-zero-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-for-max-zero-at-30.json"
+    },
+    {
+      "id": "invalid-outside-history-previous-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-outside-history-previous-at-30.json"
+    },
+    {
+      "id": "invalid-pass-history-as-a-value-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-pass-history-as-a-value-at-30.json"
+    },
+    {
+      "id": "v30-let",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-let.json"
+    },
+    {
+      "id": "v30-let-in-a-loop",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-let-in-a-loop.json"
+    },
+    {
+      "id": "v30-let-of-a-format",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-let-of-a-format.json"
+    },
+    {
+      "id": "v30-label-field",
+      "specVersion": 30,
+      "valid": true,
+      "path": "v30/v30-label-field.json"
+    },
+    {
+      "id": "invalid-let-without-type-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-without-type-at-30.json"
+    },
+    {
+      "id": "invalid-let-of-a-text-format-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-of-a-text-format-at-30.json"
+    },
+    {
+      "id": "invalid-let-retry-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-retry-at-30.json"
+    },
+    {
+      "id": "invalid-let-with-a-format-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-with-a-format-at-30.json"
+    },
+    {
+      "id": "invalid-let-reads-the-clock-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-reads-the-clock-at-30.json"
+    },
+    {
+      "id": "invalid-let-type-mismatch-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-let-type-mismatch-at-30.json"
+    },
+    {
+      "id": "invalid-label-field-not-a-field-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-label-field-not-a-field-at-30.json"
+    },
+    {
+      "id": "invalid-label-field-enum-at-30",
+      "specVersion": 30,
+      "valid": false,
+      "path": "v30/invalid-label-field-enum-at-30.json"
+    },
+    {
+      "id": "invalid-loop-inside-a-loop-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-loop-inside-a-loop-at-29.json"
+    },
+    {
+      "id": "invalid-while-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-while-at-29.json"
+    },
+    {
+      "id": "invalid-max-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-max-at-29.json"
+    },
+    {
+      "id": "invalid-until-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-until-at-29.json"
+    },
+    {
+      "id": "invalid-check-first-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-check-first-at-29.json"
+    },
+    {
+      "id": "invalid-let-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-let-at-29.json"
+    },
+    {
+      "id": "invalid-type-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-type-at-29.json"
+    },
+    {
+      "id": "invalid-label-field-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-label-field-at-29.json"
+    },
+    {
+      "id": "invalid-input-label-field-at-29",
+      "specVersion": 29,
+      "valid": false,
+      "path": "v29/invalid-input-label-field-at-29.json"
+    },
+    {
       "id": "invalid-node-for-at-v25",
       "specVersion": 25,
       "valid": false,
