@@ -315,3 +315,27 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   contract (`provenance-record.md` §§ 6.3 and 6.14) follow "exactly `lock.json`'s shape", with
   `resolver` and `runtime` nested as the lock nests them. Whether `lock.json`'s `documentVersion`,
   `package`, `resolve` and `catalogues` appear in `versionsRan` is not stated.
+- **`publishedBy`'s "`ci` with the tag".**
+  [Chapter 7 § 7.9](../../package-format-v31.md#79-the-publish-report)'s member table gives
+  `publishedBy` as "`ci` with the tag, `editor`, `api` or `operator-migration`" and does not say how
+  the tag is written (inside the string, or beside it). `publish-report.schema.json` admits the four
+  bare values, `"ci"` among them, and holds no tag; the shape of a CI publish's value is not settled.
+- **A manifest `title` of `null` has no compiled form.**
+  [Chapter 1 § 1.3](../../package-format-v31.md#13-the-manifest) lets the manifest's `title` be `null`
+  ("`null` shows the ref"), while
+  [chapter 7 § 7.2.2](../../package-format-v31.md#722-top-level-members) makes `resolve.json`'s `title`
+  "the manifest's title", a string that is never `null`. A package with `title: null` is valid as
+  source but cannot compile to a valid `resolve.json`; neither chapter says what the compiled title
+  is then.
+- **A skipped deliverable's state cannot be expected alone.**
+  [Chapter 7 § 7.8.3](../../package-format-v31.md#783-expectations)'s `deliverables` expectation is
+  `{ state, text }` or `{ state, hash }`, so every expected deliverable names its composed text or its
+  hash. A deliverable skipped by its condition composes nothing, and the text does not say what its
+  `text` or `hash` is, so a test cannot expect the state `skipped` on its own.
+- **Whether a `markdown_block` renderer escapes what it reads.**
+  [Chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats) escapes plain text and `string`
+  data read into a Markdown deliverable, and
+  [chapter 5 § 5.8.3](../../package-format-v31.md#583-where-placing-the-instruction) escapes a
+  `plaintext` macro placed in a Markdown node. Neither says whether a renderer whose `format` is `markdown_block` escapes the
+  `string` members it reads (`c.term` in `concept_bullets`). The built-in renderers are proven byte
+  for byte against the C# renderers on raw Scriban output, with no escaping.
