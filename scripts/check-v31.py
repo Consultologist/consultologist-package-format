@@ -4,6 +4,7 @@
 Each group is a function check_<group>() -> list[str] of failures, registered in CHECKS.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -45,6 +46,30 @@ LIMITS_KEYS = ["descriptionCodePoints", "matchesPatternCodePoints", "matchesRepe
                "templateOutputBytes", "testsSeconds", "itemNameCharacters"]
 BUILTINS_KEYS = ["concept_bullets", "concept_context", "formats", "markdown_escape",
                  "plain_conversion", "printer"]
+
+# Constants' list and object members, value for value (parts 01 to 09).
+CONSTANT_MEMBERS = {
+    "standardOperations": ["var", "missing", "if", "===", "!==", "<", "<=", ">", ">=", "and", "or",
+                           "!", "in", "cat", "+", "-", "*", "/", "%", "min", "max"],
+    "kinds": ["agent", "rendered", "computed", "for", "while", "if", "case", "call"],
+    "features": ["parallel", "macro-markers", "parts", "run-spots", "check-loops"],
+    "producers": {"accepted": ["generated", "computed"],
+                  "reserved": ["grounded", "extracted", "attention"]},
+    "runFacts": ["date", "id", "package", "engine"],
+    "channels": ["transcript", "image", "ambient-note", "form"],
+    "deliveryKinds": ["email", "pdf", "emr", "zip"],
+    "whenEmpty": ["release", "hold", "fail"],
+    "states": ["completed", "skipped", "not_run"],
+    "deliverableStates": ["released", "held", "failed", "skipped", "blocked"],
+    "edgeKinds": ["reads", "if", "for", "ret", "placed", "calls", "aligned", "gates"],
+    "mediaTypes": {"resolve": "application/vnd.consultologist.resolve+json",
+                   "lock": "application/vnd.consultologist.lock+json",
+                   "publishReport": "application/vnd.consultologist.publish-report+json"},
+    "limits": {"descriptionCodePoints": 500, "matchesPatternCodePoints": 200,
+               "matchesRepetition": 100, "matchesTextBytes": 1048576,
+               "templateForIterations": 1000, "templateNesting": 15,
+               "templateOutputBytes": 1048576, "testsSeconds": 60, "itemNameCharacters": 120},
+}
 
 PROFILE_FIELDS = {  # field -> (format, label), part 06 section 10.1 and part 09 section 9
     "name": ("string", "name"),
@@ -90,8 +115,12 @@ def check_constants():
                {name: "1.0.0" for name in BUILTINS_KEYS})
         expect(failures, "constants.evaluator", constants.get("evaluator"), "1.0.0")
         expect(failures, "constants.limits keys", list(constants.get("limits", {})), LIMITS_KEYS)
+        for name, expected in CONSTANT_MEMBERS.items():
+            expect(failures, f"constants.{name}", constants.get(name), expected)
         markdig = constants.get("markdig", {})
         expect(failures, "constants.markdig keys", list(markdig), ["version", "extensions"])
+        if not re.fullmatch(r"0\.41\.\d+", str(markdig.get("version"))):
+            failures.append(f"constants.markdig.version: expected 0.41.x, found {markdig.get('version')!r}")
         if not markdig.get("extensions"):
             failures.append("constants.markdig.extensions: empty")
 
@@ -110,6 +139,9 @@ def check_constants():
                    ["format", "label", "preview"])
             expect(failures, f"profile.fields.{name}.format", field.get("format"), fmt)
             expect(failures, f"profile.fields.{name}.label", field.get("label"), label)
+            preview = field.get("preview")
+            if not isinstance(preview, str) or not preview:
+                failures.append(f"profile.fields.{name}.preview: expected a non-empty string, found {preview!r}")
 
     versions, errors = load(ROOT / "spec-versions.json")
     failures += errors
