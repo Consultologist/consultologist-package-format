@@ -45,10 +45,11 @@ The `formats` check group does enforce the first of these on the built-in format
   (part 02 § 3.1), so `"type": ["string", "null"]` with `format: "date"` is refused. Part 02 does
   not say whether an optional date is written some other way.
 - **Nine shared flow members, not eight.** Part 04 § 1 says "Members every flow node's `index.json`
-  has" and part 04 §§ 2.1, 3.1, 5.1 and 5.2 count "§ 1's eight members", but § 1's table lists nine
-  (`kind`, `label`, `description`, `format`, `reproducible`, `producer`, `modelDerived`,
-  `runDependent`, `profileCarrying`). All nine are required, so a `for` has seventeen members, a
-  `while` fifteen, an `if` and a `case` twelve (the printed sixteen, fourteen and eleven count eight).
+  has" and part 04 §§ 2.1, 3.1, 5.1 and 5.2 count "§ 1's eight members", totalling sixteen (`for`),
+  fourteen (`while`), eleven (`if`) and eleven (`case`), but § 1's table lists nine (`kind`,
+  `label`, `description`, `format`, `reproducible`, `producer`, `modelDerived`, `runDependent`,
+  `profileCarrying`), all required. The published text and the schemas follow the nine-row table,
+  so a `for` has seventeen members, a `while` fifteen, an `if` and a `case` twelve.
 - **Header examples that omit members.** Part 01 § 4's agent header ends in `…`; part 05 § 7.2's
   `section_instructions` ends in `…` (it omits `if`); part 04 § 7.7's `call` ends "plus part 01's
   remaining leaf members" (it omits `if`); part 04 §§ 7.6 and 7.10's computed nodes omit

@@ -503,6 +503,14 @@ def plain(text):
     return re.sub(r"\s+", " ", text)
 
 
+def parses(text):
+    try:
+        json.loads(text)
+    except json.JSONDecodeError:
+        return False
+    return True
+
+
 def check_document():
     if not DOCUMENT.exists():
         return [f"{DOCUMENT.name}: missing"]
@@ -534,6 +542,10 @@ def check_document():
                 failures.append(f"line {number}: link to {path}, which does not exist")
             elif not path and fragment not in slugs:
                 failures.append(f"line {number}: anchor #{fragment} matches no heading")
+    for block in re.finditer(r"(?ms)^```json\n(.*?)^```", text):
+        if not parses(block.group(1)) and not parses("{" + block.group(1) + "}"):
+            line = text[:block.start()].count("\n") + 1
+            failures.append(f"line {line}: a json block does not parse")
     document, load_failures = load(V31 / "sentences.json")
     if document is None:
         return failures + load_failures

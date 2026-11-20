@@ -41,9 +41,10 @@ job's record proves both.
   package's own text, an id, a path, a count or a limit, and never with patient text.
 - **Fictional examples only.** Every example person and every clinical text in this document is
   invented.
-- **Section numbers** are written `N.k.j`: chapter N, section k, subsection j. `§ 5.3` inside
-  chapter 1 means section 1.5.3; from another chapter it is written "chapter 1 § 5.3". Chapters
-  not yet linked are named in plain text.
+- **Section numbers** are written `N.k.j` in headings: chapter N, section k, subsection j. Inside
+  a chapter a reference carries the full number (`§ 1.5.3`); from another chapter it is written
+  "chapter 1 § 5.3", meaning section 5.3 of chapter 1, the heading numbered 1.5.3. Chapters not
+  yet linked are named in plain text.
 - **`jsonc` blocks** are annotated JSON, for reading only; every file in a package is strict JSON
   (RFC 8259), with no comments.
 
@@ -568,8 +569,7 @@ Data types for snippets are [#1467](https://github.com/Consultologist/Consultolo
 #### 1.5.3 Snippet folders are typed
 
 A snippet folder's `index.json` declares the `format` its items' headers are checked against, and
-carries no naming pointer: naming items is only a loop's business
-business.
+carries no naming pointer: naming items is only a loop's business.
 
 ```json
 {
@@ -629,15 +629,15 @@ An id names a file or folder, or a member of a keyed object.
 
 A spec-level object of limits on a package's source.
 
-| Member | Value | Largest package when this was written |
-|---|---|---|
-| `files` | 512 files | 31 |
-| `fileBytes` | 256 KiB (262,144 bytes) per file | 7 KB |
-| `totalBytes` | 2 MiB (2,097,152 bytes) in all | 15.7 KB |
-| `pathLength` | 200 characters, counted from the package root | — |
-| `idLength` | 64 characters | — |
-| `jsonDepth` | 32 levels of nesting in any JSON value (a file, a header, an inline schema) | — |
-| `expressionNodes` | 1,000 nodes (operations, `var`s and literals) in one JSON Logic expression | — |
+| Member | Value |
+|---|---|
+| `files` | 512 files |
+| `fileBytes` | 256 KiB (262,144 bytes) per file |
+| `totalBytes` | 2 MiB (2,097,152 bytes) in all |
+| `pathLength` | 200 characters, counted from the package root |
+| `idLength` | 64 characters |
+| `jsonDepth` | 32 levels of nesting in any JSON value (a file, a header, an inline schema) |
+| `expressionNodes` | 1,000 nodes (operations, `var`s and literals) in one JSON Logic expression |
 
 - **Published in the format-spec release as [`v31/bounds.json`](v31/bounds.json).** The library, the Editor, publish,
   import and CI all read them from there. **They are not deployment settings:** a package's
@@ -1581,8 +1581,8 @@ the macro's `if` reads**, with no member of its own on the macro:
 
 | The macro is | Test in the macro's `if` | While the input is unset |
 |---|---|---|
-| offered only when the input is yes | `{ "===: [ { "var": "input.<id>.value" }, true ] }` | `null === true` is false: not offered |
-| offered unless the input is no | `{ "!==: [ { "var": "input.<id>.value" }, false ] }` | `null !== false` is true: offered |
+| offered only when the input is yes | `{ "===": [ { "var": "input.<id>.value" }, true ] }` | `null === true` is false: not offered |
+| offered unless the input is no | `{ "!==": [ { "var": "input.<id>.value" }, false ] }` | `null !== false` is true: offered |
 
 The input:
 
@@ -1596,7 +1596,9 @@ The input:
 }
 ```
 
-- **A macro's own `if` and the test** are joined with `and`: `{ "and": [ <its if>, <the test> ] }`.
+- **The input takes the macro's id and label,** and the test is joined with `and` to any existing
+  `if`: `{ "and": [ <its if>, <the test> ] }`. Where the macro's id is already an input's id, the
+  migration adds a suffix to the input's (chapter 10).
 - **The Create page shows an optional boolean as three choices** (unset, yes, no), so "unset" keeps
   the macro's default, and **unset is sent as `null`**. A plain checkbox would show a default-on choice
   unchecked while meaning on (chapter 9).
@@ -1724,7 +1726,7 @@ A JSON Logic **rule** is one of:
 
 #### 3.2.2 The canonical form
 
-`resolve.json` holds JSON Logic "in one canonical form" The canonical form is also the
+`resolve.json` holds JSON Logic "in one canonical form". The canonical form is also the
 only form an author may write, so what is written is byte-for-byte what is stored:
 
 - **`var` takes one string**, the path: `{ "var": "input.kind.value" }`. The array form and the
@@ -1782,7 +1784,7 @@ Printed (§ 3.8): `item.id ≠ "billing" or input.include_billing.value = true`.
   anything. Dynamic folder sizes are [#1468](https://github.com/Consultologist/Consultologist-Blazor/issues/1468) (Milestone 40).
 - **A production leaf's own condition is spelled `if`,** a required member that is a condition or
   `null`, so every header gate has one name. A `case` branch keeps `when` for its list of values
-  (chapter 4 § 5.2).
+  (chapter 4 § 5.2). The migration rewrites a node's `when` to `if` (chapter 10).
 
 ### 3.4 What each site may read
 
@@ -1976,7 +1978,7 @@ nullable; "text" is any text format (`plaintext`, `markdown_block`, `markdown_in
 `substr`;
 `!!` (with `!` limited to booleans it only repeats its operand) and `?:` (a second spelling of
 `if`); `missing_some`, `merge` and `log`; `map`, `filter`, `reduce`, `all`, `some` and `none`
-(they change what `var` names inside them, which the checker's typing of § 3.7 doesn't cover); three-operand comparisons; and Corvus's non-standard extras
+(they change what `var` names inside them, which the checker's typing of § 3.7 doesn't cover; none is used by a published package at 31's release); three-operand comparisons; and Corvus's non-standard extras
 (`asDouble`, `asLong`, …).
 
 #### 3.5.2 Custom text operations
@@ -2025,7 +2027,7 @@ version, pinned by golden tests and listed in `lock.json` (chapter 7). All are v
 - **No flags:** always case-sensitive. Case-insensitive matching lowers the text and writes the
   pattern in lower case: `matches(lower(x), "letrozole|femara")`.
 - **Typing:** `x` is a text format or `string` data. On Markdown it searches the source.
-- **Engine:** the I-Regexp pattern is translated to .NET per RFC 9485 § 3.5 (for example `.`
+- **Engine:** the I-Regexp pattern is translated to .NET per RFC 9485 § 5 (for example `.`
   becomes `[^\n\r]`) and run with `RegexOptions.NonBacktracking | RegexOptions.CultureInvariant`.
 - **`matches` doesn't depend on the clock**: there is no wall-clock time-out, so a
   replay gives the same decision. Each pattern is compiled at publish with the engine's exact
@@ -2378,6 +2380,11 @@ count toward the per-job ceiling is stated here; the engine side is chapter 9. C
 these declarations are JSON Logic, defined in [chapter 3](#3-expressions); folders, ids and scopes
 are [chapter 1](#1-files-and-scopes); formats are [chapter 2](#2-types-and-inputs).
 
+Where this chapter's rules are unchanged from specVersion 30 and the design defers to it, the text
+restates them: §§ 4.2.2 (item paths, alignment and counts per instance), 4.2.4 (an empty list),
+4.2.6 (`item.parent`), 4.3.2 to 4.3.4 (how a `while` runs, the pass object, reading it from
+outside) and 4.4 (reading across levels).
+
 ### 4.1 Flow nodes are folders
 
 A `for`, `while`, `if` or `case` is a folder, `nodes/…/<id>/`, described by its `index.json`.
@@ -2418,7 +2425,7 @@ read without knowing which folder the file sits in. The resolver checks that `re
 child of that body and refuses anything else (§ 4.10). `ret` is the only member that takes this
 qualified form: references elsewhere still resolve outward by bare id (chapter 1 § 9), and a
 node's fields are always reached through `.value` or `.items`, so `node.sections.paragraphs` is
-never read as a field path. (`example-nested-note`'s loop is called `sections`, because `parts` is a reserved id, chapter 1 § 6.)
+never read as a field path. (`example-nested-note`'s loop is called `sections`, because `parts` is a reserved id, chapter 1 § 6; the migration renames it, chapter 10.)
 
 ### 4.2 `for`
 
@@ -2435,7 +2442,7 @@ never read as a field path. (`example-nested-note`'s loop is called `sections`, 
 | `nodes` | array of ids, at least one | never | the body, in order |
 | `ret` | the child's full name (§ 4.1) | never | the body node whose value is each item's value |
 
-Together with § 4.1's eight members, a `for`'s `index.json` has exactly sixteen members.
+Together with § 4.1's nine members, a `for`'s `index.json` has exactly seventeen members.
 
 #### 4.2.2 What a loop iterates
 
@@ -2484,7 +2491,7 @@ A list that has to be computed is a `computed` node, which `in` then names (comp
 
 #### 4.2.4 `until`, `max` and `.stopped`
 
-`until`, `max` and `.stopped`:
+A `for` can stop early with `until`, or run only its first items with `max`, and says how it ended through `.stopped`:
 
 - **`until` is checked after each item**, over that item's body nodes by bare id, `item`, and
   anything that runs before the loop (chapter 3 § 4.2). The loop stops after the item where it
@@ -2524,7 +2531,7 @@ Example, fictional: reading prior letters in order until one answers the referra
 |---|---|---|
 | `.value` | `list<T>`, `T` its `ret`'s format | the values of the items that **completed**, in item order |
 | `.items` | a list of the element of § 4.2.6 | every item, in item order, each paired with its outputs by identity |
-| `.content` | `markdown_block` | the standard rendering (`## <item name>`, then the item's text, joined by blank lines), so a reader of the loop gets one document (chapter 5) |
+| `.content` | `markdown_block` | the standard rendering (`## <item name>`, then the item's text, joined by blank lines), which keeps specVersion 30's bytes (chapter 5) |
 | `.state` | `"completed"` \| `"skipped"` \| `"not_run"` | the loop node's own state (inside an untaken branch, a loop is `skipped`) |
 | `.stopped` | `"until"` \| `"bound"` \| `"end"` | § 4.2.4 |
 
@@ -2584,7 +2591,7 @@ loop's, outward (`item.parent.parent`), skipping any `while` between. A paragrap
   in the record.
 - **Position names:** with `"itemLabel": null`, items are named `<loop label> <n>`, the loop's
   `label` and the 1-based position: *"Sections 2"*
-  (the loop owns naming).
+  (an input's own label does not name its items; the loop owns naming).
 - **Retention:** a name is trimmed and cut to 120
   characters ending in "…", and is **kept in the record past the retention sweep only when it
   comes from package text** (a snippet folder's header). A name drawn from an input or a model's
@@ -2658,7 +2665,7 @@ Every loop writes every member of its kind, `null` for each one it does not use.
 | `nodes` | array of ids, at least one | never | the body, in order |
 | `ret` | the child's full name (§ 4.1) | never | the body node whose last pass's value the while returns |
 
-With § 4.1's eight members, a `while`'s `index.json` has fourteen members. A `while` has no `parallel`,
+With § 4.1's nine members, a `while`'s `index.json` has fifteen members. A `while` has no `parallel`,
 `maxParallel` or `itemLabel`: it is sequential by definition and its passes are numbered.
 `checkFirst` is required.
 
@@ -2685,6 +2692,8 @@ element of `pass.history` have `.number` (from 1), `.node.<id>`, `.previous`, `.
 | `pass.previous.node.judge` | one pass back; `null` on the first pass | no |
 | `pass.parent.number` | the enclosing while's pass, skipping any `for` between | this pass: yes |
 | `pass.history` | every earlier pass, oldest first | no |
+
+A pass's `node.<id>` has that node's format, and `pass.number` is a number.
 
 In conditions, `pass.history` is readable only through `size`; templates may loop over it
 (chapter 5)
@@ -2750,7 +2759,7 @@ passes none of them on to what it chooses.
 | `then` | a body: `{ "nodes": [ids], "ret": full name }` | never | runs when the condition holds |
 | `else` | a body | `null` = no else | runs when it doesn't |
 
-With § 4.1's eight members, eleven members. A body object has exactly `nodes` (at least one id) and
+With § 4.1's nine members, twelve members. A body object has exactly `nodes` (at least one id) and
 `ret`.
 
 #### 4.5.2 `case`
@@ -2761,7 +2770,7 @@ With § 4.1's eight members, eleven members. A body object has exactly `nodes` (
 | `branches` | array, at least one, of `{ "when": [values], "nodes": [ids], "ret": full name }`; an empty branch writes `"nodes": []` and `"ret": null` | never | one branch per set of values |
 | `else` | a body | `null` only when the branches list every value and the subject can't be `null` | runs when no branch's values match, and when the subject is `null` |
 
-With § 4.1's eight members, eleven members.
+With § 4.1's nine members, twelve members.
 
 - **The subject** is a reference string, never a JSON Logic expression (chapter 3 § 3); a subject
   that has to be computed is a `computed` node the `case` names. It must be typed as an
