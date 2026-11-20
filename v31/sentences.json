@@ -2462,14 +2462,14 @@
       "id": "S09-002",
       "part": "09",
       "section": "3.5 The publish note",
-      "sentence": "Up to <n> agent calls could run at once; this engine runs at most <ceiling> per job, so the > rest wait their turn.",
+      "sentence": "Up to <n> agent calls could run at once; this engine runs at most <ceiling> per job, so the rest wait their turn.",
       "audience": "author"
     },
     {
       "id": "S09-003",
       "part": "09",
       "section": "3.5 The publish note",
-      "sentence": "An unbounded number of agent calls could run at once, since <loop key> has no maxParallel and > reads a list of unknown length; this engine runs at most <ceiling> per job, so the rest wait > their turn.",
+      "sentence": "An unbounded number of agent calls could run at once, since <loop key> has no maxParallel and reads a list of unknown length; this engine runs at most <ceiling> per job, so the rest wait their turn.",
       "audience": "author"
     },
     {

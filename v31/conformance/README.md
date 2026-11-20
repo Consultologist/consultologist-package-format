@@ -281,15 +281,10 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   source files and `dag.mmd`, then `lock.json`, then the publish report, then `resolve.json` last
   (item 5), and then the "published" stamp last (item 6). Both are called "last"; the text keeps
   both as the design has them, `resolve.json` last of the files and the stamp last of all.
-- **The publish note's stray `>` characters (S09-002, S09-003).** The design's sentence table
-  writes the two publish notes with `>` characters inside them ("so the > rest wait their turn",
-  "and > reads a list of unknown length", "wait > their turn"), blockquote markers that leaked
-  into the sentences. `sentences.json` and
-  [chapter 11](../../package-format-v31.md#11-every-sentence)'s rows keep them as the table writes
-  them, and [chapter 8 § 8.8](../../package-format-v31.md#88-the-publish-note) quotes them in that
-  form. The same note is worded differently in
-  [chapter 4 § 4.10.2](../../package-format-v31.md#4102-notes-and-warnings-at-publish)'s source
-  ("…could run at once; this engine runs at most \<N\> per job…", and a differently worded
-  unbounded note) and without the characters in
-  [chapter 8 § 8.13](../../package-format-v31.md#813-sentences-the-engine-shows). Which wording is the
-  sentence an engine writes is not settled.
+- **The publish note is worded twice (S04-072 and S04-073 beside S09-002 and S09-003).**
+  [Chapter 4 § 4.10.2](../../package-format-v31.md#4102-notes-and-warnings-at-publish) words the
+  publish note "…could run at once; this engine runs at most \<N\> per job…", and its unbounded note
+  "(loop '\<id\>' has no cap over a list known only at run time)", while
+  [chapter 8 § 8.8](../../package-format-v31.md#88-the-publish-note) says "\<ceiling\>" and "since
+  \<loop key\> has no maxParallel and reads a list of unknown length". Both are published, each under
+  its own id. Which wording is the sentence an engine writes is not settled.

@@ -5904,16 +5904,11 @@ when publish knows it** (a snippet folder), **and otherwise counts as unbounded,
 says. Requiring a non-null `maxParallel` is
 [#1474](https://github.com/Consultologist/Consultologist-Blazor/issues/1474) (Milestone 40).
 
-*"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the \> rest wait their turn."*
+*"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the rest wait their turn."*
 
 For an unbounded worst case:
 
-*"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and \> reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait \> their turn."*
-
-The `>` characters inside these two sentences are in the published sentence table as written; they
-are kept as written here and in [chapter 11](#11-every-sentence), and § 8.13 gives the same note
-without them. Which form is the sentence is an open point
-([`v31/conformance/README.md`](v31/conformance/README.md)).
+*"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait their turn."*
 
 The ceiling quoted is the publishing engine's setting. A package valid on one deployment is valid
 on every deployment; only the note's numbers differ.
@@ -6890,8 +6885,8 @@ running a workflow).
 | S08-008 | 9 · Sentences the record holds | *"blocked: check '\<id\>' could not run (\<error\>)"* | clinician |
 | S08-009 | 9 · Sentences the record holds | *"cancelled: the job didn't finish within \<n\> minutes"* | clinician |
 | S09-001 | 8 · Which spec versions an engine admits | *"specVersion 31 is not supported: this engine accepts specVersion \<list\> (pre-v5 packages are archived; see registry-operations.md)."* | author |
-| S09-002 | 8 · The publish note | *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the \> rest wait their turn."* | author |
-| S09-003 | 8 · The publish note | *"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and \> reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait \> their turn."* | author |
+| S09-002 | 8 · The publish note | *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the rest wait their turn."* | author |
+| S09-003 | 8 · The publish note | *"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait their turn."* | author |
 | S09-004 | 8 · Sentences the pages show | *"migrated by the operator from \<old version\>"* | author |
 | S09-005 | 8 · Sentences the pages show | *"\<deliverable label\> was blocked: check '\<check id\>' failed (\<check detail\>)."* | author |
 | S09-006 | 8 · Sentences the pages show | *"16 November 2026"* | author |
