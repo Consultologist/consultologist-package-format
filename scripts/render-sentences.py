@@ -3,7 +3,8 @@
 
 Usage: render-sentences.py [sentences.json]. The chapter cell is the document's chapter number
 and the section's title ("1 · Refusals"). The sentence cell is *"..."* with these written
-as escapes: <, >, | and *, and a backslash before punctuation.
+as escapes: <, >, | and *, and a backslash before punctuation. A quotation mark is not escaped
+(parse() takes the cell between its first two and last two characters, so it round-trips).
 """
 import json
 import re
