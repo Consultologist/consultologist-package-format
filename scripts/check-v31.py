@@ -751,15 +751,17 @@ def sentence_pattern(id_, row):
 
 def check_refusal_packages():
     """Chapter 12 § 12.3's refusal packages: the family lists exactly the case folders on disk; each
-    expect.json is { about, valid, sentences }, valid as its folder says; an invalid case's sentence
-    is its row of sentences.json, as a pattern (an A<area>-<n> case is this implementation's sentence,
-    judged by shape only); every package has its manifest.json."""
+    expect.json is { about, valid, sentences }, valid as its folder says; in an invalid case whose id
+    has a row of sentences.json, each sentence is the row of some published id and one is the case's
+    own, as a pattern (an A<area>-<n> case is this implementation's sentence, judged by shape only);
+    every package has its manifest.json."""
     index, failures = load(V31 / "conformance" / "index.json")
     document, errors = load(V31 / "sentences.json")
     failures += errors
     if index is None or document is None:
         return failures
     rows = {entry["id"]: entry["sentence"] for entry in document.get("sentences", [])}
+    patterns = {row_id: sentence_pattern(row_id, row) for row_id, row in rows.items()}
     family = next((f for f in index.get("families", []) if f.get("id") == "refusal-packages"), None)
     if family is None:
         return failures + ["the index has no refusal-packages family"]
@@ -796,10 +798,13 @@ def check_refusal_packages():
             continue
         if (side == "valid") == bool(sentences):
             failures.append(f"{where}/expect.json: a valid package says no sentence, an invalid one at least one")
-        # A case that cannot break its rule alone lists every sentence the parser gives; one is its own.
+        # A case that cannot break its rule alone lists every sentence the parser gives: each is some
+        # published row's, and one is its own.
         if side == "invalid" and id_ in rows and sentences:
-            pattern = sentence_pattern(id_, rows[id_])
-            if not any(re.fullmatch(pattern, sentence, re.DOTALL) for sentence in sentences):
+            for sentence in sentences:
+                if not any(re.fullmatch(p, sentence, re.DOTALL) for p in patterns.values()):
+                    failures.append(f"{where}/expect.json: a sentence is no published row's: {sentence[:70]}")
+            if not any(re.fullmatch(patterns[id_], sentence, re.DOTALL) for sentence in sentences):
                 failures.append(f"{where}/expect.json: no sentence is {id_}'s row: {sentences[0][:70]}")
     return failures
 
@@ -808,9 +813,14 @@ PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 
 
 def check_citations():
-    """A reader has the document's chapters, not the design's parts: no JSON under v31/ cites a part."""
+    """A reader has the document's chapters, not the design's parts: no JSON under v31/ cites a part.
+    The refusal packages' package/ folders are skipped: they are uploads as a reader receives them,
+    and may hold bytes that are not UTF-8 or JSON on purpose."""
     failures = []
     for path in sorted(V31.rglob("*.json")):
+        relative = path.relative_to(REFUSAL_PACKAGES).parts if path.is_relative_to(REFUSAL_PACKAGES) else ()
+        if "package" in relative[2:3]:
+            continue
         for match in PART_CITATION.finditer(path.read_text(encoding="utf-8")):
             failures.append(f"{path.relative_to(ROOT)}: cites '{match.group(0)}'; cite the chapter")
     return failures
