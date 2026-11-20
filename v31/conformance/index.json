@@ -601,6 +601,7 @@
         "resolve/invalid-deliverable-key-wrong-root.json",
         "resolve/invalid-deliverable-missing-reads.json",
         "resolve/invalid-edge-kind.json",
+        "resolve/invalid-input-format-bare-id.json",
         "resolve/invalid-missing-bindings.json",
         "resolve/invalid-missing-checks.json",
         "resolve/invalid-missing-deliverables.json",

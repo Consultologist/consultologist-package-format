@@ -527,10 +527,10 @@
               }
             },
             {
-              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef"
+              "$ref": "urn:consultologist:spec:31:dialect#/$defs/inline"
             }
           ],
-          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema."
+          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema; never a bare format id, which is rewritten to #/$defs/<id> (chapter 7 § 7.2.3)."
         },
         "required": {
           "type": "boolean",
