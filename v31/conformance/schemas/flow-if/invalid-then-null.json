@@ -1,0 +1,24 @@
+{
+  "about": "then is never null: an if runs a then body.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": null,
+    "else": null
+  }
+}

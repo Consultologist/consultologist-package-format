@@ -1,0 +1,33 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "label": "Draft a section",
+    "inputs": {
+      "standard": {
+        "label": "Standard",
+        "description": null,
+        "format": "standard_section"
+      },
+      "draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": "markdown_block"
+      }
+    },
+    "uses": {
+      "snippets": [],
+      "macros": [],
+      "formats": [
+        "standard_section"
+      ],
+      "renderers": []
+    },
+    "nodes": [
+      "standard_draft",
+      "patient_draft",
+      "apply_instructions"
+    ],
+    "ret": "node.apply_instructions",
+    "format": "plaintext"
+  }
+}

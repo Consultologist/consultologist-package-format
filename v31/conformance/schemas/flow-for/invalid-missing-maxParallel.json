@@ -1,0 +1,32 @@
+{
+  "about": "Every member is written: 'maxParallel' is missing.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "plaintext"
+        }
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "about": "A function with no parameters writes inputs {}; its ret may be a nested key.",
+  "instance": {
+    "label": "Draft a section",
+    "description": [
+      "Drafts one consult section from a standard, then applies the patient's facts."
+    ],
+    "inputs": {},
+    "uses": {
+      "snippets": [
+        "snomed_tool_guidance"
+      ],
+      "macros": [
+        "letrozole_prescription_text"
+      ],
+      "formats": [],
+      "renderers": [
+        "concept_bullets"
+      ]
+    },
+    "nodes": [
+      "standard_draft",
+      "patient_draft",
+      "apply_instructions"
+    ],
+    "ret": "node.sections.paragraphs",
+    "format": {
+      "type": "array",
+      "items": {
+        "$ref": "plaintext"
+      }
+    }
+  }
+}

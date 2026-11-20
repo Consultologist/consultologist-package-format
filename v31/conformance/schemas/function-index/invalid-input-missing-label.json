@@ -1,0 +1,30 @@
+{
+  "about": "A parameter is written in full: 'label' is missing.",
+  "instance": {
+    "label": "Draft a section",
+    "description": [
+      "Drafts one consult section from a standard, then applies the patient's facts."
+    ],
+    "inputs": {
+      "standard": {
+        "description": null,
+        "format": "standard_section"
+      }
+    },
+    "uses": {
+      "snippets": [],
+      "macros": [],
+      "formats": [
+        "standard_section"
+      ],
+      "renderers": []
+    },
+    "nodes": [
+      "standard_draft",
+      "patient_draft",
+      "apply_instructions"
+    ],
+    "ret": "node.apply_instructions",
+    "format": "plaintext"
+  }
+}

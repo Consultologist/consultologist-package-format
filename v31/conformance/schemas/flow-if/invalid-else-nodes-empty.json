@@ -1,0 +1,32 @@
+{
+  "about": "An else body has at least one id.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.patient_summary"
+    },
+    "else": {
+      "nodes": [],
+      "ret": "node.x"
+    }
+  }
+}

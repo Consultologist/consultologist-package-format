@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:flow-case",
+  "title": "nodes/<path>/<id>/index.json, kind case",
+  "description": "A case branch: a folder described by its index.json (plain JSON, no front matter).",
+  "type": "object",
+  "required": [
+    "kind",
+    "label",
+    "description",
+    "format",
+    "reproducible",
+    "producer",
+    "modelDerived",
+    "runDependent",
+    "profileCarrying",
+    "case",
+    "branches",
+    "else"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "case",
+      "description": "The node's kind: case."
+    },
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the flow node (the rail, History and the diagram show it); never empty or whitespace."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the flow node)."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+      "description": "The node's return type, written, and checked against the type its ret gives it: a format name or an inline schema."
+    },
+    "reproducible": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true only if everything in its body that its result depends on is true."
+    },
+    "producer": {
+      "const": "computed",
+      "description": "A flow node is computed even when its body holds agent nodes."
+    },
+    "modelDerived": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when its ret, or anything its result is made from, is model-derived."
+    },
+    "runDependent": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when its source or its ret is run-dependent."
+    },
+    "profileCarrying": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when its source or its ret is profile-carrying."
+    },
+    "case": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/referenceString",
+      "description": "The subject, a reference string typed as an enumerated string."
+    },
+    "branches": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "when",
+          "nodes",
+          "ret"
+        ],
+        "properties": {
+          "when": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "The subject's values this branch takes: one or more raw enum values, never null."
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+            },
+            "uniqueItems": true,
+            "description": "The branch's body, in order; [] only for an explicitly empty branch."
+          },
+          "ret": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/childName"
+              }
+            ],
+            "description": "The body node whose value the branch returns; null only for an explicitly empty branch."
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "nodes": {
+                "minItems": 1
+              },
+              "ret": {
+                "$ref": "#/$defs/childName"
+              }
+            }
+          },
+          {
+            "properties": {
+              "nodes": {
+                "maxItems": 0
+              },
+              "ret": {
+                "type": "null"
+              }
+            }
+          }
+        ]
+      },
+      "description": "One branch per set of values; an empty branch writes nodes [] and ret null together, and only together."
+    },
+    "else": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/body"
+        }
+      ],
+      "description": "The body that runs when no branch matches and when the subject is null, or null for no else."
+    }
+  },
+  "$defs": {
+    "childName": {
+      "allOf": [
+        {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/rootedKey"
+        },
+        {
+          "pattern": "^(node|check)\\."
+        }
+      ]
+    },
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodes",
+        "ret"
+      ],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The body, in order: at least one id, each once.",
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "ret": {
+          "$ref": "#/$defs/childName",
+          "description": "The body node whose value the branch returns."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "maxParallel": null,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs"
+  }
+}

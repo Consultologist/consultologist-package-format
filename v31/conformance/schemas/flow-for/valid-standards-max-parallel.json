@@ -1,0 +1,29 @@
+{
+  "about": "The loop of part 04 section 7.7: parallel, at most four at once.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Standards",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "$ref": "plaintext"
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "snippet.standards",
+    "parallel": true,
+    "maxParallel": 4,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "section"
+    ],
+    "ret": "node.standards.section"
+  }
+}

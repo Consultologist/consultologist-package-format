@@ -1,0 +1,33 @@
+{
+  "about": "A case with an else body and several values in one branch (made up).",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "branches": [
+      {
+        "when": [
+          "narrative",
+          "table"
+        ],
+        "nodes": [
+          "draft"
+        ],
+        "ret": "node.sections_draft.route.draft"
+      }
+    ],
+    "else": {
+      "nodes": [
+        "fallback"
+      ],
+      "ret": "node.sections_draft.route.fallback"
+    }
+  }
+}

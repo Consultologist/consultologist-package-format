@@ -1,0 +1,27 @@
+{
+  "about": "A body has at least one id.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": {
+      "nodes": [],
+      "ret": "node.x"
+    },
+    "else": null
+  }
+}

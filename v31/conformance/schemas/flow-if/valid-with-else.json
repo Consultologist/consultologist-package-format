@@ -1,0 +1,34 @@
+{
+  "about": "An if with an else body (made up).",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.patient_summary"
+    },
+    "else": {
+      "nodes": [
+        "short_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.short_summary"
+    }
+  }
+}

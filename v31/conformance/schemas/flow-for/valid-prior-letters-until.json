@@ -1,0 +1,37 @@
+{
+  "about": "The loop of part 04 section 2.4: sequential with an until condition.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Prior letters",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "$ref": "plaintext"
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "input.prior_letters.value",
+    "parallel": false,
+    "maxParallel": null,
+    "until": {
+      "===": [
+        {
+          "var": "node.read_letter.value.answers_question"
+        },
+        true
+      ]
+    },
+    "max": null,
+    "itemLabel": null,
+    "nodes": [
+      "read_letter",
+      "letter_summary"
+    ],
+    "ret": "node.letters.letter_summary"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "about": "A while has no parallel: it is sequential by definition.",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 3,
+    "until": null,
+    "checkFirst": false,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary",
+    "parallel": false
+  }
+}

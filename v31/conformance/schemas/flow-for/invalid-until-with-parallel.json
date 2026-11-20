@@ -1,0 +1,40 @@
+{
+  "about": "A non-null until requires parallel false.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "plaintext"
+        }
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "maxParallel": null,
+    "until": {
+      "===": [
+        {
+          "var": "item.value.title"
+        },
+        "x"
+      ]
+    },
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "about": "A flow node's label is never null.",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": null,
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 3,
+    "until": null,
+    "checkFirst": false,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary"
+  }
+}

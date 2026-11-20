@@ -1,0 +1,30 @@
+{
+  "about": "max is at most FormatBounds.passes (15).",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 16,
+    "until": null,
+    "checkFirst": false,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary"
+  }
+}

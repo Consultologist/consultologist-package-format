@@ -1,0 +1,37 @@
+{
+  "about": "A while with an until, checked first, with the most passes (15).",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 15,
+    "until": {
+      ">": [
+        {
+          "var": "pass.number"
+        },
+        2
+      ]
+    },
+    "checkFirst": true,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary"
+  }
+}

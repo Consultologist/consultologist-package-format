@@ -1,0 +1,34 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "plaintext"
+        }
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "maxParallel": null,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs",
+    "extra": null
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "about": "ret is the child's full name, with its root.",
+  "instance": {
+    "label": "Draft a section",
+    "description": [
+      "Drafts one consult section from a standard, then applies the patient's facts."
+    ],
+    "inputs": {
+      "standard": {
+        "label": "Standard",
+        "description": null,
+        "format": "standard_section"
+      },
+      "draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": "markdown_block"
+      }
+    },
+    "uses": {
+      "snippets": [],
+      "macros": [],
+      "formats": [
+        "standard_section"
+      ],
+      "renderers": []
+    },
+    "nodes": [
+      "standard_draft",
+      "patient_draft",
+      "apply_instructions"
+    ],
+    "ret": "apply_instructions",
+    "format": "plaintext"
+  }
+}

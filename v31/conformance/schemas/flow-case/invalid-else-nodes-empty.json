@@ -1,0 +1,46 @@
+{
+  "about": "An else body has at least one id.",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "branches": [
+      {
+        "when": [
+          "narrative"
+        ],
+        "nodes": [
+          "narrative_draft"
+        ],
+        "ret": "node.sections_draft.route.narrative_draft"
+      },
+      {
+        "when": [
+          "table"
+        ],
+        "nodes": [
+          "table_draft"
+        ],
+        "ret": "node.sections_draft.route.table_draft"
+      },
+      {
+        "when": [
+          "omit"
+        ],
+        "nodes": [],
+        "ret": null
+      }
+    ],
+    "else": {
+      "nodes": [],
+      "ret": null
+    }
+  }
+}

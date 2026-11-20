@@ -1,0 +1,26 @@
+{
+  "about": "Every member is written: 'nodes' is missing.",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 3,
+    "until": null,
+    "checkFirst": false,
+    "ret": "node.refine.draft_summary"
+  }
+}

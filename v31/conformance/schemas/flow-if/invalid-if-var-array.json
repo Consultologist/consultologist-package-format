@@ -1,0 +1,26 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "var": [
+        "item.value.kind"
+      ]
+    },
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.patient_summary"
+    },
+    "else": null
+  }
+}

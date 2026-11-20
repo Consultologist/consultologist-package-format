@@ -1,0 +1,29 @@
+{
+  "about": "A flow node's label is never null.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": null,
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.patient_summary"
+    },
+    "else": null
+  }
+}

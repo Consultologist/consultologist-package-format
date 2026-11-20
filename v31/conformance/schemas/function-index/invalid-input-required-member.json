@@ -1,0 +1,32 @@
+{
+  "about": "A parameter has label, description and format only; required is refused.",
+  "instance": {
+    "label": "Draft a section",
+    "description": [
+      "Drafts one consult section from a standard, then applies the patient's facts."
+    ],
+    "inputs": {
+      "standard": {
+        "label": "Standard",
+        "description": null,
+        "format": "standard_section",
+        "required": true
+      }
+    },
+    "uses": {
+      "snippets": [],
+      "macros": [],
+      "formats": [
+        "standard_section"
+      ],
+      "renderers": []
+    },
+    "nodes": [
+      "standard_draft",
+      "patient_draft",
+      "apply_instructions"
+    ],
+    "ret": "node.apply_instructions",
+    "format": "plaintext"
+  }
+}

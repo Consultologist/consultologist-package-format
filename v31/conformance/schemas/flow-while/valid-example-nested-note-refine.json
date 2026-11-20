@@ -1,0 +1,30 @@
+{
+  "about": "nodes/refine/index.json of example-nested-note (part 04 section 3.5).",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": {
+      "!==": [
+        {
+          "var": "node.judge.value.verdict"
+        },
+        "good"
+      ]
+    },
+    "max": 3,
+    "until": null,
+    "checkFirst": false,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary"
+  }
+}

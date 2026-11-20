@@ -1,0 +1,31 @@
+{
+  "about": "nodes/standards/index.json of test/general.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Standards",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "$ref": "plaintext"
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "snippet.standards",
+    "parallel": true,
+    "maxParallel": null,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "section_instructions",
+      "patient_section_draft",
+      "standard_section_draft"
+    ],
+    "ret": "node.standards.section_instructions"
+  }
+}

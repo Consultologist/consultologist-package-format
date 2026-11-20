@@ -1,0 +1,25 @@
+{
+  "about": "format is never null.",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "format": null,
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "maxParallel": null,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs"
+  }
+}

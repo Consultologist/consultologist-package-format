@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:function-index",
+  "title": "functions/<id>/index.json",
+  "description": "A function: a named, sealed sub-workflow with typed inputs, its body listed in nodes and one returned node.",
+  "type": "object",
+  "required": [
+    "label",
+    "description",
+    "inputs",
+    "uses",
+    "nodes",
+    "ret",
+    "format"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the function; never empty or whitespace."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the function)."
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "description",
+          "format"
+        ],
+        "properties": {
+          "label": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+            "description": "The display name of the parameter, shown in the Editor and History; never empty or whitespace."
+          },
+          "description": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+            "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the parameter)."
+          },
+          "format": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+            "description": "The parameter's type: a format name or an inline schema."
+          }
+        }
+      },
+      "description": "The parameters keyed by id, in written order; {} for none. Every parameter is required at a call."
+    },
+    "uses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snippets",
+        "macros",
+        "formats",
+        "renderers"
+      ],
+      "properties": {
+        "snippets": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The package's snippets the function uses, by id; [] for none."
+        },
+        "macros": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The package's macros the function uses, by id; [] for none."
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The package's formats the function uses, by id; [] for none."
+        },
+        "renderers": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The package's renderers the function uses, by id; [] for none."
+        }
+      },
+      "description": "The package definitions the function uses and so lists."
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The function's top-level body, in order: at least one id, each once.",
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "ret": {
+      "$ref": "#/$defs/childName",
+      "description": "The body node the function returns, counted from the function's root."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+      "description": "The function's result type, equal to its ret's format: a format name or an inline schema."
+    }
+  },
+  "$defs": {
+    "childName": {
+      "allOf": [
+        {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/rootedKey"
+        },
+        {
+          "pattern": "^(node|check)\\."
+        }
+      ]
+    }
+  }
+}

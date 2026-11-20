@@ -1,0 +1,25 @@
+{
+  "about": "A branch's when names one or more values.",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "branches": [
+      {
+        "when": [],
+        "nodes": [
+          "narrative_draft"
+        ],
+        "ret": "node.sections_draft.route.narrative_draft"
+      }
+    ],
+    "else": null
+  }
+}

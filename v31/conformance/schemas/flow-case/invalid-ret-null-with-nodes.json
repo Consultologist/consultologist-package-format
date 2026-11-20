@@ -1,0 +1,27 @@
+{
+  "about": "ret null goes with nodes [] and only then.",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "branches": [
+      {
+        "when": [
+          "omit"
+        ],
+        "nodes": [
+          "table_draft"
+        ],
+        "ret": null
+      }
+    ],
+    "else": null
+  }
+}

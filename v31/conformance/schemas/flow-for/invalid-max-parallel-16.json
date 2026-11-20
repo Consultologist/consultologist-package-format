@@ -1,0 +1,33 @@
+{
+  "about": "maxParallel is at most FormatBounds.parallel (15).",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Sections",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "plaintext"
+        }
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.plan.value.sections",
+    "parallel": true,
+    "maxParallel": 16,
+    "until": null,
+    "max": null,
+    "itemLabel": "title",
+    "nodes": [
+      "outline",
+      "paragraphs"
+    ],
+    "ret": "node.sections.paragraphs"
+  }
+}

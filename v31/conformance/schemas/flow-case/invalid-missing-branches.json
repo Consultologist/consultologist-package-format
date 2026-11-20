@@ -1,0 +1,16 @@
+{
+  "about": "Every member is written: 'branches' is missing.",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "else": null
+  }
+}

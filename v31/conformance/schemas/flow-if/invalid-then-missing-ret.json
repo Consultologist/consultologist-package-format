@@ -1,0 +1,28 @@
+{
+  "about": "A body has exactly nodes and ret: ret is missing.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    },
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ]
+    },
+    "else": null
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "about": "Every member of a branch is written: 'ret' is missing.",
+  "instance": {
+    "kind": "case",
+    "producer": "computed",
+    "label": "Routing a section by its kind",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "case": "item.value.kind",
+    "branches": [
+      {
+        "when": [
+          "narrative"
+        ],
+        "nodes": [
+          "narrative_draft"
+        ]
+      }
+    ],
+    "else": null
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "about": "The while condition is never null.",
+  "instance": {
+    "kind": "while",
+    "producer": "computed",
+    "label": "Refining the summary",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "while": null,
+    "max": 3,
+    "until": null,
+    "checkFirst": false,
+    "nodes": [
+      "draft_summary",
+      "judge"
+    ],
+    "ret": "node.refine.draft_summary"
+  }
+}

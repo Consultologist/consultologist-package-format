@@ -1,0 +1,22 @@
+{
+  "about": "An if's decision is never null.",
+  "instance": {
+    "kind": "if",
+    "producer": "computed",
+    "label": "Narrative sections only",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "then": {
+      "nodes": [
+        "patient_summary"
+      ],
+      "ret": "node.patient_summaries.narrative_only.patient_summary"
+    },
+    "else": null
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "about": "nodes/sections/paragraphs/index.json: a loop with position names (itemLabel null).",
+  "instance": {
+    "kind": "for",
+    "producer": "computed",
+    "label": "Paragraphs",
+    "description": null,
+    "format": {
+      "type": "array",
+      "items": {
+        "$ref": "plaintext"
+      }
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "in": "node.outline.value.points",
+    "parallel": true,
+    "maxParallel": null,
+    "until": null,
+    "max": null,
+    "itemLabel": null,
+    "nodes": [
+      "draft_paragraph"
+    ],
+    "ret": "node.sections.paragraphs.draft_paragraph"
+  }
+}
