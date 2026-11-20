@@ -74,7 +74,7 @@ checks over all of the above.
 |---|---|
 | [1 Files and scopes](#1-files-and-scopes) | the folder layout, file kinds, every member required, ids, namespaces and qualified keys, `SourceBounds`, `FormatBounds` |
 | [2 Types and inputs](#2-types-and-inputs) | `kind` and `format`, the dialect, text formats, format `$id`s, inputs, enum labels |
-| 3 Expressions | JSON Logic: conditions, `computed`, every operation, null rules, `run.*`, the printer, the evaluator, `matches` and `has_word` |
+| [3 Expressions](#3-expressions) | JSON Logic: conditions, `computed`, every operation, null rules, `run.*`, the printer, the evaluator, `matches` and `has_word` |
 | 4 Loops and functions | `for`, `while`, `until`, branches, `.items`, functions and `call` |
 | 5 Templates and macros | the Scriban dialect, renderers, snippets, parts, macros, whitespace, run spots |
 | 6 Checks, deliverables and the profile | checks and check loops, deliverables as files, gating, the profile |
@@ -493,7 +493,7 @@ is an error.**
 | `producer` | string: `"generated"` or `"computed"` at 31 | no | every node and check, checked against its kind ([chapter 2 § 1.3](#213-producer)) |
 | `modelDerived` | boolean | no | every node and check, checked against the derived value ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
 | `runDependent` | boolean | no | every node and check, checked against the derived value ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
-| `profileCarrying` | boolean | no | every node and check, checked against the derived value (chapter 3 § 4.6) |
+| `profileCarrying` | boolean | no | every node and check, checked against the derived value ([chapter 3 § 4.6](#346-profile-carrying-is-contagious)) |
 | `if` | a JSON Logic condition (chapter 3) | yes: always | every production leaf (`agent`, `rendered`, `computed`, `call`), check, snippet, macro, macro folder and deliverable. A node's own condition is spelled `if`, replacing 30's `when`; a `case` branch keeps `when` for its values (chapter 4) |
 
 - **`label` may not be empty or whitespace**.
@@ -864,7 +864,7 @@ written in, the built-in, catalogue and package formats with their `$id` URNs, t
 data and text, the annotations (`contentMediaType`, `x-markdown`), each node's `producer`, how a
 model's output reaches its attested agent, the input grammar and how inputs are read, enum labels,
 and per-run macro choices as optional boolean inputs. JSON Logic's typed operations are
-chapter 3; where each kind's file lives is [chapter 1](#1-files-and-scopes).
+[chapter 3](#3-expressions); where each kind's file lives is [chapter 1](#1-files-and-scopes).
 
 ### 2.1 Kind
 
@@ -1686,3 +1686,688 @@ Every sentence below is used as written; chapter 11 lists every sentence of this
 **Strict mode's size limits:**
 - *"Format '<name>' declares <n> properties; a format sent to a model declares at most <limit>."*
 - *"Format '<name>' nests <n> levels deep at <path>; a format sent to a model nests at most <limit>."*
+
+## 3. Expressions
+
+This chapter defines the one language a version 31 package uses to **decide** (every header
+condition) and to **compute** (a `kind: computed` node's `expression`): JSON Logic, written
+directly in the header, with a fixed set of standard and custom operations, typed against the
+format dialect of [chapter 2](#2-types-and-inputs). It covers where expressions appear and what
+each site may read, `run.*` reads and the contagious flags, the date operations, null semantics,
+strict equality, the printer, and the evaluator. Scriban, the presentation language, is chapter 5.
+
+### 3.1 The rule: JSON Logic decides and computes; Scriban presents
+
+| Purpose | Language | Where |
+|---|---|---|
+| decide | JSON Logic | every header condition (§ 3.3) |
+| compute | JSON Logic, plus the custom operations (`object` among them) | a `kind: computed` node's `expression` |
+| present | Scriban (chapter 5) | prompt bodies, `rendered` bodies, renderers, deliverable templates, snippet and macro bodies |
+| describe types | the JSON Schema dialect (chapter 2) | formats |
+
+- **Authors write JSON Logic directly.** What is written in the header is what `resolve.json`
+  stores and what the engine runs. There is no expression-string syntax in the spec. The
+  converter (chapter 10) turns expressions into JSON Logic and back as a tool, not as the
+  format.
+- **Decisions live in headers; bodies only present.** Whether a node runs, an item is included, a
+  part or macro is used or a loop stops is a header condition, evaluated and recorded by the
+  engine.
+- **`let` is gone.** One no-model kind, `computed`, holds one JSON Logic expression in its member
+  `expression`; `op` and `with` are retired.
+
+### 3.2 The written form
+
+#### 3.2.1 Shape
+
+A JSON Logic **rule** is one of:
+
+- a **literal**: a JSON string, number, `true`, `false` or `null`;
+- an **array** of rules, which evaluates each element and yields the list (lists are native);
+- an **operation**: a JSON object with exactly one member, whose name is the operation and whose
+  value is its operands.
+
+#### 3.2.2 The canonical form
+
+`resolve.json` holds JSON Logic "in one canonical form" The canonical form is also the
+only form an author may write, so what is written is byte-for-byte what is stored:
+
+- **`var` takes one string**, the path: `{ "var": "input.kind.value" }`. The array form and the
+  default second operand are refused (fixed arity). An empty path (the whole data) is
+  refused.
+- **`object` takes one object**, a map from field names to rules (§ 3.5.4).
+- **Every other operation takes an array**, even with one operand: `{ "!": [ … ] }`,
+  `{ "size": [ { "var": "input.prior_notes.value" } ] }`.
+- **Paths** are dot-separated segments: a root (§ 3.4), then member and field names, each matching
+  `^[a-z_][a-z0-9_]*$` or a format's declared property name. Numeric segments (list indexes) are
+  refused: a positional read of a list is the zip the format rules out; a loop's `.items` pairs by
+  identity instead.
+
+The serialisation in `resolve.json` (member order, number form, RFC 8785) is
+chapter 7's.
+
+#### 3.2.3 Example
+
+The `applies` branch of `example-conditional-sections`, migrated from
+`item.id != "billing" || input.include_billing == true`:
+
+```json
+{ "or": [
+    { "!==": [ { "var": "item.id" }, "billing" ] },
+    { "===": [ { "var": "input.include_billing.value" }, true ] } ] }
+```
+
+Printed (§ 3.8): `item.id ≠ "billing" or input.include_billing.value = true`.
+
+### 3.3 Where expressions appear
+
+| Site | Member | Defined in | Must type as |
+|---|---|---|---|
+| an `if` flow node | `if` | chapter 4 § 5 | condition |
+| a `while` | `while` | chapter 4 § 3 | condition |
+| a `for` or `while` | `until` (or `null`) | chapter 4 §§ 2–3 | condition |
+| a check | `if` (or `null`) | chapter 6 | condition |
+| a deliverable | `if` (or `null`) | chapter 6 | condition |
+| a part (a node's `parts`) | `if` (or `null`) | chapter 5 | condition |
+| a macro, and a macro folder | `if` (or `null`) | chapter 5 | condition |
+| a production leaf (`agent`, `rendered`, `computed`, `call`) | `if` (or `null`) | chapter 1 | condition (see below) |
+| a `computed` node | `expression` | chapter 1; § 3.5 here | the node's declared `format` |
+
+- **A condition** must type as `boolean` (or `boolean | null`), or as the list `missing`
+  returns (§ 3.5.1). It is tested by truthiness (§ 3.6.4).
+- **A `computed` expression** must type as the node's declared `format`, checked through each
+  operation's typed result (§ 3.7). A computed node's header is judged by
+  [`v31/schemas/node-computed.schema.json`](v31/schemas/node-computed.schema.json).
+- **Not expressions:** a `for`'s source (`in`), a `case` subject and a `call`'s `with` arguments
+  are **reference strings** (chapter 4), never JSON Logic expressions.
+  Each names one readable thing. A list, subject or argument that has to be computed is a
+  `computed` node, which the reference then names: compute, then name. Author documentation for
+  this pattern is [#1473](https://github.com/Consultologist/Consultologist-Blazor/issues/1473).
+- **Snippet folder items have no `if`**,
+  so a folder's size is its number of files and there is no folder-item condition to read
+  anything. Dynamic folder sizes are [#1468](https://github.com/Consultologist/Consultologist-Blazor/issues/1468) (Milestone 40).
+- **A production leaf's own condition is spelled `if`,** a required member that is a condition or
+  `null`, so every header gate has one name. A `case` branch keeps `when` for its list of values
+  (chapter 4 § 5.2).
+
+### 3.4 What each site may read
+
+#### 3.4.1 The roots
+
+| Root | Means | Typed by |
+|---|---|---|
+| `input.<id>` | a package input, read like a node: `.value` (the raw value, every input), `.content` (a text-format input's text), `.title` (the chosen `oneOf` arm's title, at any depth); a bare `input.<id>` is refused | the input's `format` (chapter 2) |
+| `node.<id>` | a visible node: `.value`, `.content`, `.state`, and per kind `.items`, `.passes`, `.stopped`, `.history` (chapter 4) | the node's `format` |
+| `check.<id>` | a visible check: `.value` (a `check_result`), `.state`; a check loop's `.items` | chapter 6 |
+| `item` | the innermost loop's item: `.id`, `.value`, `.parent` (chapter 4 § 2.6) | the loop source's element |
+| `pass` | the enclosing `while`'s pass: `.number`, `.node.<id>`, `.previous`, `.parent`, `.history` (chapter 4 § 3.3) | the format of the node it names (chapter 4 § 3.3) |
+| `param.<id>` | a function's parameter, inside a function only: `.value`, `.content` (chapter 4 § 7) | the parameter's `format` |
+| `run.<fact>` | a run fact (§ 3.4.3) | § 3.4.3 |
+
+**Never readable by JSON Logic:** `profile.*` (no condition and no computed expression reads the
+profile),
+`snippet.*`, `part.*`, `macro.*`, `renderer.*` and `deliverable.*`. A snippet folder's item data
+is read through the loop that iterates it (`item.value.title`).
+
+**`.title` may be compared** in conditions and computed expressions, as a `string`: publish
+checks that the literal is one of the format's titles, and `.title` on a plain `enum` is refused.
+The stored and recorded value is always the raw value; the record prints the condition with both
+the raw value and the title (§ 3.10).
+
+Visibility (which `node.<id>` a site can see, alignment by path, reading into a loop's body) is
+the rule of chapter 1 § 9, and the same for JSON Logic as for templates.
+Every `var` is a dependency edge, as every template read is, except reads of earlier passes
+(`pass.previous…`, `pass.history`).
+
+#### 3.4.2 Per site
+
+| Site | May read | Refused |
+|---|---|---|
+| `if` flow node | everything visible at its place: `input`, `node`, `check`, `item`, `pass`, `param`, `run` | `profile` and the others of § 3.4.1 |
+| `while` | its body's nodes by bare id (this pass), `pass`, and anything that runs before the loop; `item`, `param`, `run` | as above |
+| `until` on a `for` | the item's body nodes by bare id, `item`, anything that runs before the loop; `pass`, `param`, `run` | as above |
+| `until` on a `while` | as the `while` | as above |
+| check `if` | as chapter 6 says; in a check loop, `item` is the `.items` element (`item.state`) | as above |
+| deliverable `if` | `input`, a node's **`.value`** (data), `run` | `.content` (text), `check.*` (a possible cycle), `profile`, deliverables |
+| part `if` | what the node's prompt reads, data roots only | as above |
+| macro `if`, macro folder `if` | evaluated **where the macro is placed**: what the placing node's prompt reads, data roots only | `param.*` (a shared macro must not depend on one function's parameter) |
+| production leaf `if` (§ 3.3) | what a template at its place reads, data roots only | as above |
+| `computed` `expression` | everything visible at its place: `input`, `node`, `check`, `item`, `pass`, `param`, `run` | as above |
+
+**Inside a function** every site reads only `param.*` and the function's own nodes; `input.*`,
+outer nodes, an outer `item` or `pass`, `run.*`, `check.*` and `profile.*` are refused
+(chapter 4 § 7.4).
+
+#### 3.4.3 Run facts
+
+JSON Logic may read the same `run.*` set as bodies: `run.date`, `run.id`,
+`run.package`, `run.engine`.
+
+| Fact | Type | Value |
+|---|---|---|
+| `run.date` | `date` (`string`, `format: date`) | the job's start date in the account's time zone, an IANA name recorded beside it |
+| `run.id` | `string` | the job's id |
+| `run.package` | `string` | `<name>@<version>` of the package version run |
+| `run.engine` | `string` | the engine's release version, in the `v2026.11.5` form |
+
+- **Recorded like any read:** the raw value of each run fact the package reads is recorded once
+  per run (chapter 8).
+- **No time zone, no job:** every job is refused at start until the account's time zone is set,
+  whether or not the package reads `run.date` (chapter 9).
+
+#### 3.4.4 Run-dependence is contagious
+
+- **A value is run-dependent** when its expression reads `run.*`, directly or through any value
+  that is itself run-dependent.
+- **A decision is run-dependent** when its condition reads `run.*` or a run-dependent value. The
+  record marks it so, and History can say a branch differed because a run fact differed.
+- **A decision doesn't pass the flag on** to what it chooses: the flags describe content only.
+  A node that runs because a run-dependent `if` was true isn't run-dependent for that; the
+  decision has its own row.
+- **The run-neutral hash of a run-dependent computed value** covers its recipe (the expression
+  and its other reads), not the value, so two runs with the same inputs share it even when the
+  dates differ.
+- **A body's read of a run-dependent value is a run spot** (chapter 5): a marker in the
+  run-neutral render, filled afterwards at the position recorded while rendering (chapter 5 § 4).
+- **The advance warning** (Editor and publish) names every run-dependent value and decision,
+  not only direct `run.*` reads (§ 3.11.2).
+
+**How far it spreads**.
+Run-dependence passes through everything a value is made from:
+
+- `computed` and `rendered` nodes that read a run-dependent value;
+- `agent` nodes whose prompt reads `run.*` or a run-dependent value;
+- a `call`'s result when any argument is run-dependent (the parameter bound to it is
+  run-dependent inside the function);
+- a flow node whose `ret` is run-dependent;
+- a loop's items when its source is.
+
+It never passes through a condition: a branch's `if`, a `case` subject or a `while` condition
+decides which content exists, not what it is made from.
+
+It is worked out from `resolve.json`'s edges before any run, so the warning can name each value
+before a job starts. Each row records it as `runDependent` (chapter 8). **Every node header
+writes it too, as `runDependent: true | false`, checked against the derived value** like
+`reproducible`; a mismatch is refused. Requiring a run-dependent value in a read is [#1478](https://github.com/Consultologist/Consultologist-Blazor/issues/1478)
+(Milestone 40).
+
+#### 3.4.5 Model-derived is contagious
+
+**Model-derived** is a second contagious flag, beside run-dependence and worked out the same
+way. It says a value came from a model's output somewhere upstream.
+
+- **Where it starts:**
+  - the output of every node whose `producer` isn't `computed` (chapter 2 § 1.3), so every
+    `agent` node's output is model-derived (the reverse doesn't hold: a `computed` value can be
+    model-derived too);
+  - an input element from a previous run's deliverable, whose record links to the job it
+    came from (chapter 4 § 4).
+
+  Typed text and uploaded documents start clean. Other machine sources (OCR, transcription) are
+  producers reserved for Milestone 40 (`extracted`; chapter 2 § 1.3).
+- **How it spreads:** exactly as run-dependence does (§ 3.4.4): through `computed` and `rendered`
+  nodes, `agent` prompts, `call` arguments and results, a flow node's `ret`, and a loop's items.
+  A decision whose condition reads a model-derived value is model-derived; as with
+  run-dependence, the decision doesn't pass the flag on to what it chooses.
+- **Formats are shape only.** `lower`, `trim` and any other `computed` expression return their
+  operand's format unchanged, so `trim` of an agent's `plaintext` is `plaintext`; the node's
+  producer is `computed` and its `reproducible` stays `true`. The value keeps its lineage through
+  the flag, never through its format.
+- **It is recorded and shown:** each row carries `modelDerived` (chapter 8), and History, the
+  diagram and the Editor show it: *"computed from model text: node.draft"*.
+- **It is worked out, and written on every node header:** the resolver computes it from
+  `resolve.json`'s edges before any run, and each header declares `modelDerived: true | false`,
+  checked against that value; a mismatch is refused. It stays a node member, never a
+  format's. Requiring a model-derived value in a read is [#1478](https://github.com/Consultologist/Consultologist-Blazor/issues/1478) (Milestone 40).
+
+Example, fictional: a `computed` node that checks whether a model's draft names a drug:
+
+```json
+{ "in": [ "letrozole", { "lower": [ { "var": "node.draft.content" } ] } ] }
+```
+
+It returns `boolean`, its producer is `computed`, it is reproducible, and it is model-derived,
+because `node.draft` is an `agent` node's output: its header writes `modelDerived: true` and
+`runDependent: false`. A macro's `if` that reads it is a model-derived
+decision.
+
+#### 3.4.6 Profile-carrying is contagious
+
+**Profile-carrying** is a third contagious flag, beside run-dependence and the model-derived
+flag, worked out the same way from `resolve.json`'s edges and describing content only.
+
+- **Where it starts:** any value whose text had a profile-reading macro substituted into it
+  (chapter 5 § 8). No JSON Logic expression reads `profile.*` (§ 3.4.1), so it starts only in text.
+- **How it spreads:** as the other two do (§ 3.4.4): through `computed` and `rendered` nodes,
+  `agent` prompts, `call` arguments and results, a flow node's `ret`, and a loop's items. A
+  condition doesn't pass it on.
+- **Where it may be read:** deliverables may read a profile-carrying value. A prompt, a part or
+  a condition that reads one is refused at publish (§ 3.11.1), so a clinician's signature or
+  credentials never reach a model or decide a branch.
+- **It is written and recorded:** every node header writes `profileCarrying: true | false`,
+  checked against the derived value like `runDependent`; a mismatch is refused.
+  Each row carries `profileCarrying` (chapter 8), and a row that is
+  profile-carrying follows the profile's retention.
+
+### 3.5 The operations
+
+#### 3.5.1 Standard JSON Logic operations
+
+The allowed standard operations are `var`, `missing`; `if` (with an else); `===`, `!==`, and
+`<`, `<=`, `>`, `>=` with two operands; `and`, `or`, `!`, `in`, `cat`; `+`, `-`, `*`, `/`, `%`,
+`min`, `max`. Every operation not in this table or §§ 3.5.2–3.5.5 is refused at publish (§ 3.11.1).
+Reviewing the whole set is [#1471](https://github.com/Consultologist/Consultologist-Blazor/issues/1471) (Milestone 40).
+
+"data" is `string`, `number`, `boolean` and `date`, plus `null` where the operand's type is
+nullable; "text" is any text format (`plaintext`, `markdown_block`, `markdown_inline`).
+
+| Operation | Operands | Operand types | Result | Null behaviour | Notes |
+|---|---|---|---|---|---|
+| `var` | one path string | n/a | the path's type | absent or null reads as `null` | § 3.2.2 |
+| `missing` | one array of literal path strings | paths of the site's roots | `list<string>` (the absent paths) | a path is missing when its value is `null`, absent or `""` (as json-logic-js does, so an unsupplied text input counts as missing) | tested by truthiness (empty list is false) |
+| `if` | 3 or more, odd count: `[c1, a1, c2, a2, …, else]` | conditions, then branches of one type | the branches' type | a `null` condition is false | lazy; an even count (no else) is refused, since every member is explicit |
+| `and`, `or` | 2 or more | `boolean` (nullable allowed) | `boolean` | `null` is false | short-circuits; standard JSON Logic returns an operand, which is a boolean here because operands are typed boolean |
+| `!` | 1 | `boolean` (nullable allowed) | `boolean` | `!null` is `true` | refused on text, numbers, lists and objects (not a blank test) |
+| `===`, `!==` | 2 | two data values of one type, or either `null` | `boolean` | `null` is compared as a value: `null === null` is true | refused on text, lists and objects; an enum literal must be a value of the enum |
+| `<`, `>`, `<=`, `>=` | exactly 2 | two `number`s, or two `date`s | `boolean` | **false** when either operand is `null` (no coercion to 0) | dates compare chronologically; the 3-operand "between" form is refused (one spelling: `and` of two comparisons) |
+| `+`, `*` | 2 or more | `number` | `number` | `null` if any operand is `null` | strings are never coerced |
+| `-` | 1 (negation) or 2 | `number` | `number` | `null` if any operand is `null` | |
+| `/`, `%` | 2 | `number` | `number` | `null` if any operand is `null`; division or remainder by zero gives `null` | |
+| `min`, `max` | 1 or more | `number` | `number` | `null` if any operand is `null` | part of arithmetic |
+| `in` (list) | 2: `[needle, list]` | data needle; a `list` of the same data type | `boolean` | `null` needle: true only if the list holds `null`; `null` list: false | membership: `input.note_type.value in ["consult", "follow_up"]` |
+| `in` (text) | 2: `[needle, haystack]` | a `string` needle; a text or `string` haystack | `boolean` | either `null`: false | exact, case-sensitive substring search (ordinal); on Markdown it searches the source |
+| `cat` | 2 or more | `string`, `number`, plain-text formats | `string` when every operand is `string`; `plaintext` otherwise | a `null` operand contributes `""` (json-logic-js writes `"null"`) | Markdown operands refused (convert with `plain` first, so one result has one media type); numbers in the invariant culture |
+
+**Refused standard operations** (§ 3.11.1): `==` and `!=` (strict equality only);
+`substr`;
+`!!` (with `!` limited to booleans it only repeats its operand) and `?:` (a second spelling of
+`if`); `missing_some`, `merge` and `log`; `map`, `filter`, `reduce`, `all`, `some` and `none`
+(they change what `var` names inside them, which the checker's typing of § 3.7 doesn't cover); three-operand comparisons; and Corvus's non-standard extras
+(`asDouble`, `asLong`, …).
+
+#### 3.5.2 Custom text operations
+
+Every custom operation has a **fixed arity with no optional operands**, runs in the
+**invariant culture**,
+and is **versioned** with a semantic version where any change to output bytes is a major
+version, pinned by golden tests and listed in `lock.json` (chapter 7). All are version
+`1.0.0` at 31.
+
+"Text-like" below means a text format or `string`. Characters are **Unicode scalar values**
+(code points), never UTF-16 units. Whitespace is Unicode `White_Space`.
+
+| Operation | Signature | Result | Meaning | Null behaviour |
+|---|---|---|---|---|
+| `size` | `size(x)` | `number` | text-like: the count of code points; a list: its element count | `null` |
+| `blank` | `blank(x)` | `boolean` | true if `x` is empty or only whitespace | `true` |
+| `words` | `words(x)` | `number` | the count of maximal runs of non-whitespace characters | `null` |
+| `lines` | `lines(x)` | `number` | `0` for `""`; otherwise 1 plus the count of line breaks (`\r\n`, `\n`, `\r`), not counting one at the very end | `null` |
+| `lower` | `lower(x)` | text-like (see below) | lower-cased by the invariant culture's simple case mapping | `null` |
+| `trim` | `trim(x)` | text-like (see below) | leading and trailing whitespace removed | `null` |
+| `starts_with` | `starts_with(x, prefix)` | `boolean` | ordinal, case-sensitive prefix test; on Markdown, of the source | `false` if either is `null` |
+| `ends_with` | `ends_with(x, suffix)` | `boolean` | ordinal, case-sensitive suffix test | `false` if either is `null` |
+| `plain` | `plain(x)` | `plaintext` | Markdown converted to plain text by the same conversion as plain-text output (Markdig with the listed extensions); a plain-text operand is returned unchanged | `null` |
+| `matches` | `matches(x, pattern)` | `boolean` | § 3.5.3 | `false` if `x` is `null` |
+| `has_word` | `has_word(x, word)` | `boolean` | § 3.5.3 | `false` if `x` is `null` |
+
+- **`lower` and `trim` return their operand's format unchanged:** `plaintext` stays `plaintext`, `markdown_block` stays `markdown_block`,
+  `markdown_inline` stays `markdown_inline`, `string` stays `string`. A computed node that trims
+  an agent's text has producer `computed`, and its value stays **model-derived** (§ 3.4.5).
+- **Case-insensitive search** is written by lowering the haystack:
+  `{ "in": [ "letrozole", { "lower": [ { "var": "node.draft.content" } ] } ] }`. `in` stays
+  standard.
+- **Text searched as read** is written with `plain`:
+  `"letrozole" in plain(input.consult_draft.content)`.
+
+#### 3.5.3 `matches` and `has_word`
+
+**`matches(x, pattern)`**
+- **Dialect: I-Regexp (RFC 9485), with search semantics:** true if the pattern occurs
+  **anywhere** in `x` (JSONPath's `search()`, not its whole-string `match()`).
+- **I-Regexp has no `\b`, no `\d`/`\w`/`\s`, and no `^`/`$` anchors.** A start or end is tested
+  with `starts_with`/`ends_with`; a whole word with `has_word`.
+- **`pattern` is a literal string** in the package, never computed, checked against RFC 9485's
+  grammar at publish, at most **200** characters long (counted in code points).
+- **No flags:** always case-sensitive. Case-insensitive matching lowers the text and writes the
+  pattern in lower case: `matches(lower(x), "letrozole|femara")`.
+- **Typing:** `x` is a text format or `string` data. On Markdown it searches the source.
+- **Engine:** the I-Regexp pattern is translated to .NET per RFC 9485 § 3.5 (for example `.`
+  becomes `[^\n\r]`) and run with `RegexOptions.NonBacktracking | RegexOptions.CultureInvariant`.
+- **`matches` doesn't depend on the clock**: there is no wall-clock time-out, so a
+  replay gives the same decision. Each pattern is compiled at publish with the engine's exact
+  options; a counted repetition (`{n,m}`) is at most **100**; the text searched is at most
+  **1 MiB** (longer text fails the node that owns the condition, § 3.11.3). .NET's non-backtracking
+  matching is linear in the text, so these bounds bound the work. Decision times come from the
+  orchestration's replay-safe clock. (.NET matches UTF-16
+  units, so the conformance suite carries vectors with characters outside the Basic
+  Multilingual Plane to prove the translation counts code points.)
+- **The record** keeps the pattern (package text, part of the printed condition) and the true or
+  false result. **The matched text is never recorded.**
+
+**`has_word(x, word)`**
+- True if `word` occurs in `x` (ordinal, case-sensitive) with a **word boundary** on each side:
+  the character before the occurrence, if any, and the character after it, if any, are not word
+  characters. Word characters are .NET's: Unicode letters (`L*`), marks (`M*`), decimal digits
+  (`Nd`) and connector punctuation (`Pc`, which includes `_`).
+  `has_word(input.draft.content, "pain")` is false for "painful" and "Spain".
+- **`word` is a literal, non-blank string,** checked at publish like a pattern, so it is package
+  text in the record. It may contain spaces (`"chest pain"`).
+- **Typing** as `matches`.
+- A broader `has_word` is [#1472](https://github.com/Consultologist/Consultologist-Blazor/issues/1472) (Milestone 40).
+
+#### 3.5.4 Custom structural and check operations
+
+| Operation | Signature | Operand types | Result | Null behaviour |
+|---|---|---|---|---|
+| `object` | `{ "object": { "<field>": rule, … } }` | each field's rule typed against the target format's property | an object | a field's rule may yield `null` only where the property is nullable (checked at publish) |
+| `terms_subset` | `terms_subset(of, in, failWith)` | `concept_list`, `concept_list`, literal `string` | `check_result` | a `null` list reads as empty |
+| `all_pass` | `all_pass(list, failWith)` | a check loop's `.value` or `.items`, literal `string` | `check_result` | elements that did not complete are ignored; a `null` or empty list (nothing judged) **fails**, with `failWith` |
+| `count_pass` | `count_pass(list, min, failWith)` | as `all_pass`; `min` a non-negative integer **literal** | `check_result` | counts passed elements among those that completed |
+
+**Check operations judge only `completed` items, and always return a `check_result`, never
+`null`**.
+The `check_result` shape (`pass`, `message`, `uncovered`, `untested`, `passed`, `total`, every
+member present) is chapter 6's.
+
+- **`object` builds objects.** Lists are native arrays; a JSON object in a rule is read as an
+  operation, so `object` is the one way to build one. Its operand is one map; each field may use
+  any allowed operation, including a nested `object`. Fields are checked at publish against the
+  computed node's `format`, field by field: every property present (every property is in
+  `required`, chapter 2 § 3.3; a nullable one may be `null`), no other field.
+- **`failWith` is a literal string,** checked at publish: a failed check speaks the package's
+  own sentence, never a computed one.
+- **`terms_subset`** passes when every codable concept in `of` (an active SNOMED CT concept with
+  an id) has the same concept id in `in`; uncovered and untested terms are reported in the `check_result`.
+  The `check_result` shape is chapter 6's.
+- **The `list` operand of `all_pass` and `count_pass` is a check loop's `.value` or its
+  `.items`;** both are accepted, and chapter 6's rule that check operations judge only `completed` items reads
+  the same either way. A `.value` is
+  `list<check_result>` of the items that completed (chapter 4 § 2.5); with `.items`, each
+  element's `value` is used and an element whose `state` is not `completed` is ignored. Ignoring
+  unrun items lets a check loop's `if` skip sections that weren't produced without failing the
+  aggregate.
+
+Migrated check example (chapter 6 owns checks; shown for the expression):
+
+```json
+{ "kind": "computed", "producer": "computed", "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "format": "check_result",
+  "expression": { "terms_subset": [ { "var": "node.extract_input_terms.value" },
+                                    { "var": "node.extract_note_terms.value" },
+                                    "The note does not cover every clinical term found in the referral." ] } }
+```
+
+#### 3.5.5 Date operations
+
+All take and give `date` values (`string` with `format: date`, `YYYY-MM-DD`, no time of day),
+in the proleptic Gregorian calendar, with no time zone arithmetic (`run.date` is already a date
+in the account's zone).
+
+| Operation | Signature | Result | Meaning | Null behaviour |
+|---|---|---|---|---|
+| `days_between` | `days_between(a, b)` | `number` (integer) | whole days from `a` to `b`; negative if `b` is earlier | `null` if either is `null` |
+| `years_between` | `years_between(a, b)` | `number` (integer) | **completed** years from `a` to `b`: a year counts once its anniversary is reached; negative if `b` is earlier (the same rule mirrored) | `null` if either is `null` |
+| `add_days` | `add_days(date, n)` | `date` | `date` plus `n` days | `null` if either is `null` |
+
+- **29 February:** in a year with no 29 February, an anniversary of 29 February is reached on
+  **1 March**. Someone born on 2008-02-29 is 0 on 2009-02-28 and 1 on 2009-03-01.
+- **`n` in `add_days`:** a `number`; a non-integer, or a result outside years 0001–9999, gives
+  `null`.
+- **A malformed date at run time** gives `null`. It can only arise from data that escaped
+  validation, since date inputs and date fields are validated against `format: date`.
+- **Comparing dates** uses `<`, `>`, `<=`, `>=` and `===` on two `date`s (§ 3.5.1).
+
+Example, fictional: *a reminder about bone density screening, for patients 65 or older at the
+date of the run.*
+
+```json
+{ ">=": [ { "years_between": [ { "var": "input.date_of_birth.value" }, { "var": "run.date" } ] }, 65 ] }
+```
+
+Printed: `years_between(input.date_of_birth.value, run.date) ≥ 65`. It reads `run.date`, so the
+decision is run-dependent (§ 3.4.4).
+
+### 3.6 Values, absence and null
+
+#### 3.6.1 What a read gives
+
+| Read | Gives |
+|---|---|
+| `input.<id>.value` (or `.content`, `.title`) of a supplied input | its raw value (its text, the chosen arm's title), typed by its format |
+| an unsupplied or blank optional input | `null` for `.value`, `.content` and `.title`, whatever its format; a template renders it as nothing (chapter 2 § 8's table) |
+| `node.<id>.value` of a node that completed | its value |
+| `node.<id>.value`, `.content` of a node that did not complete (skipped, not run) | `null`; `.state` says why |
+| `node.<id>.state` | `"completed"`, `"skipped"` or `"not_run"` |
+| a nullable field holding `null` | `null` |
+| `pass.previous…` on the first pass | `null` |
+
+#### 3.6.2 The null rules
+
+Milestone 39 implements **runtime semantics**: nullable operands are not refused at publish, and
+`null` behaves as each operation's row in § 3.5 says.
+In summary:
+
+- **comparisons** (`<`, `>`, `<=`, `>=`) with a `null` operand are **false**; `null` is never
+  coerced to `0`;
+- **`===` and `!==` compare `null` as a value;**
+- **arithmetic and the date operations give `null`** when any operand is `null`;
+- **the text operations:** `size`, `words`, `lines`, `lower`, `trim` and `plain` give `null`;
+  `blank` gives `true`; `starts_with`, `ends_with`, `matches` and `has_word` give `false`;
+- **`cat`** reads `null` as `""`; **`missing`** counts `null` and `""` as missing;
+- **truthiness:** `null` is false (§ 3.6.4);
+- **evaluation never throws;** division by zero gives `null`.
+
+**The pitfall stated for authors:** under these rules `{ "!": [ { ">": [ { "var": "input.age.value" }, 65 ] } ] }`
+is **true** when the age is missing: "not over 65" includes "unknown". An author who means
+"known and not over 65" writes the `null` test:
+`{ "and": [ { "!==": [ { "var": "input.age.value" }, null ] }, { "<=": [ { "var": "input.age.value" }, 65 ] } ] }`.
+
+Revisiting the rule (required guards, or a library's default behaviour) is
+[#1453](https://github.com/Consultologist/Consultologist-Blazor/issues/1453), Milestone 40. It does not change 31.
+
+#### 3.6.3 Each operation's null behaviour is a conformance vector
+
+The conformance suite (chapter 10) carries a vector for every row of §§ 3.5.1–3.5.5 with a `null`
+operand, and for every absence case of § 3.6.1.
+
+#### 3.6.4 Truthiness
+
+A condition's result is tested by truthiness: `false`, `null` and the empty list are false;
+`true` and a non-empty list are true. Because conditions must type as `boolean` or as `missing`'s
+list (§ 3.3), the other cases of JSON Logic's truthiness (`0`, `""`, objects) never reach a
+decision.
+
+### 3.7 Typing
+
+The checker types every rule against the dialect (chapter 2), reading formats as they are,
+`$ref`s and `anyOf` included.
+
+- **Data and text are separate types**:
+  - **data** (`string`, `number`, `boolean`, `date`) supports `===`, `!==`, `in` (membership),
+    and orderings on numbers and dates;
+  - **text** supports `blank`, `size`, `words`, `lines`, `in` (search), `starts_with`,
+    `ends_with`, `matches`, `has_word`, `lower`, `trim`, `plain` and `cat` (plain text only).
+- **Refused on text:** `===`/`!==` against a literal or another text; `<`, `>`, `<=`, `>=`;
+  `substr`; `!` as a blank test.
+- **Numbers** are IEEE doubles. An operation whose result isn't finite (an overflow,
+  `NaN`) gives `null`. `integer` is a kind of `number`: an `integer` value may go where a
+  `number` is expected, not the reverse. A built-in format name equals its schema under type
+  equality (chapter 2).
+- **A nested field is data unless it `$ref`s a text format:** `verdict.verdict` (a
+  `string` enum) is data; `verdict.feedback` (`$ref: plaintext`) is text.
+- **Enums:** a literal compared with an enum-typed value (a `string` with `enum`, or `oneOf` of
+  `const`) must be one of its values; `in` against a literal list checks each element. A literal
+  compared with a `.title` must be one of the `oneOf`'s titles; `.title` on a plain `enum` is
+  refused (chapter 2).
+- **Unions:** a read of `.value` is allowed only if every member of the union has a value;
+  `.value.<field>` only if every member declares that field compatibly.
+- **`if`:** the branches must have one type. A `null` branch makes the result nullable.
+- **`object`:** checked field by field against the computed node's format.
+- **A computed node's result** must match its `format` (type equality, chapter 2). Its producer is
+  `computed`, whatever it reads; where its value came from is the model-derived flag's job
+  (§ 3.4.5), not its format's.
+- **Reads must exist** at the site, with the visibility rules of chapter 1 and the per-site rules
+  of § 3.4.
+
+### 3.8 The printer
+
+**One printer** turns JSON Logic into text for the Editor, History, the record's reason
+sentences, the validator's sentences and the diagram's labels.
+It writes ordinary infix, functions as `name(args)`, and strict equality as **`=`** and **`≠`**.
+Its other rules: `and`, `or` and `not` as words; `≤` and `≥`; standard precedence, with
+parentheses only where needed, so the printed text parses back to exactly the tree written.
+
+| Rule | Printed |
+|---|---|
+| `{ "var": "a.b" }` | `a.b` |
+| a string literal | JSON text: double quotes, JSON escapes (`"table"`) |
+| a number | its RFC 8785 form (`65`, `0.5`) |
+| `true`, `false`, `null` | `true`, `false`, `null` |
+| an array | `[a, b, c]` |
+| `===`, `!==` | `a = b`, `a ≠ b` |
+| `<`, `>`, `<=`, `>=` | `a < b`, `a > b`, `a ≤ b`, `a ≥ b` |
+| `in` | `a in b` |
+| `and`, `or` | `a and b and c`, `a or b` |
+| `!` | `not a` |
+| `+`, `-`, `*`, `/`, `%` | infix; one-operand `-` as `-a` |
+| `if` | `if c then a else b`; more pairs as `if c1 then a else if c2 then b else d` |
+| `object` | `{ title: a, content: b }`, fields in written order |
+| every other operation | `name(a, b)`: `size(input.prior_notes.value)`, `missing(["input.age.value"])` |
+
+- **Precedence**, tightest first: function forms and literals; `not` and unary `-`;
+  `*`, `/`, `%`; `+`, `-`; the comparisons and `in`; `and`; `or`; `if … then … else`.
+- **Parentheses** only where needed to keep the tree: a child operation is parenthesised when its
+  precedence is lower than **or equal to** its parent's (an `and` inside an `and` prints
+  `(a and b) and c`, since a flat `and` of three is a different tree), so the printed text maps
+  back to exactly one tree.
+- **Spacing:** one space either side of an infix operator, `, ` between arguments, none inside
+  brackets.
+- **Byte-stable and versioned:** printed text is recorded (reasons, decisions), so the printer is
+  versioned like a custom operation (any change to its output is a major version) and locked in
+  `lock.json`'s `builtins` (chapter 7). The converter (chapter 10) parses its output back to the
+  identical tree, and the conformance suite tests the round trip.
+- **`.title` reads** print as written (`input.specialty.title = "Medical oncology"`); the record
+  shows the raw value beside the title (§ 3.10).
+
+**Reason sentences** are built from the printed condition:
+*"skipped: input.kind.value = "table" is false"*.
+
+### 3.9 The evaluator
+
+- **The evaluator is `Corvus.Text.Json.JsonLogic` (Apache-2.0)**, pinned exactly and listed in
+  `lock.json`.
+  The research found version 5.8.11; the build pins the version current when it starts.
+- **`requires.evaluator` names our evaluator's version,** not Corvus's: packages depend on our
+  behaviour (the custom operations, the null rules, `===`/`!==` only), with Corvus underneath.
+  Moving towards standard components, possibly including the evaluator, is [#1477](https://github.com/Consultologist/Consultologist-Blazor/issues/1477)
+  (Milestone 40).
+- **Behind our own interface** in `Consultologist.PackageFormat`: `IJsonLogicEvaluator`, with one implementation, `CorvusJsonLogicEvaluator`. The engine, the
+  validator's probe, the Editor and the in-package tests (chapter 7) all evaluate through it.
+- **Our custom operations** (§§ 3.5.2–3.5.5) are registered through Corvus's `IOperatorCompiler`.
+- **Our null rules override Corvus's defaults** wherever they differ, by registering our own
+  compilers for the affected built-ins (custom operators are checked before built-ins):
+  `<`, `>`, `<=`, `>=`, the arithmetic, `min`, `max`, `in` and `cat`, per § 3.5.1's null column.
+  Strict `===`/`!==` is standard and needs no override.
+- **Refused operations are refused twice:** at publish by the checker, and at run time by the
+  evaluator, which declines a rule naming any operation outside § 3.5, so a hand-edited
+  or corrupted `resolve.json` can never fall through to Corvus's defaults.
+- **Invariant culture**, always.
+- **Compiled once:** each rule in a `resolve.json` is compiled to Corvus's cached delegate tree
+  once per package version and cached.
+- **A condition that yields no boolean at run time fails its node**, with the
+  reason recorded: impossible after the checker, except through data that escaped validation; the
+  node that owns the condition fails with § 3.11.3's sentence.
+- **Eventually** json-everything's `JsonLogic`, paying its maintenance fee, is [#1458](https://github.com/Consultologist/Consultologist-Blazor/issues/1458) (no
+  milestone); a swap must give byte-identical golden tests and corpus re-render.
+
+### 3.10 What the record holds
+
+The record's shape is chapter 8's. For expressions:
+
+- **A decision for every condition**,
+  in the job's one `decisions` list:
+  its site, the printed condition, its result, a hash of each value it read, whether it was
+  run-dependent and model-derived, and an `expressionHash` of its canonical JSON Logic. A
+  condition reading `.title` is printed with both the raw value and the title.
+- **A computed node's row:** the input hash (over the canonical expression and the values it
+  read), the value as canonical JSON, the output hash (its producer is `computed`),
+  `reproducible: true`, `modelDerived` (§ 3.4.5), and `runDependent` with the run-neutral hash of
+  its recipe (§ 3.4.4).
+- **`matches`:** the pattern (in the printed condition) and the result; never the matched text.
+- **Run facts:** each one read, once per run, `run.date` with its time zone.
+- **`lock.json`'s hash** (`lockHash`) ties every decision to the evaluator and operation
+  versions that made it.
+
+### 3.11 Refusals
+
+Every sentence below is used as written; chapter 11 lists every sentence of this format.
+
+#### 3.11.1 Refusals at publish
+
+Placeholders: `<site>` names the declaration as its sentences do elsewhere: `Node 'x'`,
+`Loop 'x'`, `While 'x'`, `Check 'x'`, `Deliverable 'x'`, `Macro 'x'`, `Part 'p' of node 'x'`,
+`Computed node 'x'`, and inside a function
+`Node 'x' in function 'f'`. `<member>` is `if`, `while`, `until` or `expression`. `<path>` is a
+`var` path; `<format>` a format's type string (chapter 2).
+
+| Sentence |
+|---|
+| *"\<site\> compares \<path\> (\<format\>) with a literal; text is tested by whether it is blank, its size, or in."* |
+| *"\<site\> compares \<path\> (\<format\>) with \<path\> (\<format\>); text is tested by whether it is blank, its size, or in."* |
+| *"\<site\> uses ==; equality is written === (shown as =)."* |
+| *"\<site\> uses !=; inequality is written !== (shown as ≠)."* |
+| *"\<site\> uses \<operation\>, which is not a JSON Logic operation of this format (\<the allowed list\>)."* |
+| *"\<site\> uses substr; text is cut with trim or plain, and measured with size."* |
+| *"\<site\> orders \<path\> (\<format\>); \<, \>, ≤ and ≥ compare numbers or dates."* |
+| *"\<site\> tests \<path\> (\<format\>) with not; not takes a boolean — test text with blank."* |
+| *"\<site\> gives \<operation\> \<n\> operands; it takes \<m\>."* |
+| *"\<site\> writes \<operation\> with a bare operand; operands are written as an array."* |
+| *"\<site\> reads var with a default; every read is one path."* |
+| *"\<site\> reads \<path\>, a position in a list; lists are read whole, or by identity through .items."* |
+| *"\<site\> reads \<path\>, which doesn't exist here."* |
+| *"\<site\> reads input.\<id\>; an input is read as input.\<id\>.value, .content or .title."* |
+| *"\<site\> reads \<path\>.title, but \<format\> is a plain enum with no titles; read .value, or give the format oneOf with const and title."* |
+| *"\<site\> compares \<path\>.title with "\<text\>", which is not one of its titles (\<titles\>)."* |
+| *"\<site\> reads profile.\<field\>; profile fields are read only in deliverable templates and macro bodies, never in conditions or computed expressions."* |
+| *"\<site\> reads \<root\>.\<rest\>; JSON Logic reads input, node, check, item, pass, param and run."* (for `snippet`, `part`, `macro`, `renderer`, `deliverable`) |
+| *"Deliverable '\<id\>' if reads node.\<id\>.content; a deliverable's if reads data (.value), not text."* |
+| *"Deliverable '\<id\>' if reads check.\<id\>; a deliverable's existence can't depend on a check."* |
+| *"Macro '\<id\>' if reads param.\<name\>; a macro's if is shared, so it can't depend on one function's parameter."* |
+| *"\<site\> compares \<path\> with "\<value\>", which is not one of its values (\<values\>)."* |
+| *"\<site\> reads \<path\>.value.\<field\>, which not every member of \<format\> declares."* |
+| *"\<site\> \<member\> yields \<format\>; a condition yields a boolean."* |
+| *"Computed node '\<id\>' yields \<format\>; it declares \<format\>."* |
+| *"Computed node '\<id\>' builds \<format\> without \<field\>; object must give every property of the format."* |
+| *"Computed node '\<id\>' builds \<format\> with \<field\>, which the format doesn't declare."* |
+| *"\<site\> gives \<operation\> a computed \<operand\>; \<operand\> must be written as a literal."* |
+| *"\<site\> gives count_pass a min of \<n\>; min is a whole number, 0 or more."* |
+| *"\<site\> pattern "\<pattern\>" is not I-Regexp (RFC 9485): \<reason\>."* |
+| *"\<site\> pattern "\<pattern\>" is \<n\> characters long; the most is 200."* |
+| *"\<site\> pattern "\<pattern\>" repeats \<n\> times; a counted repetition is at most 100."* |
+| *"\<site\> pattern "\<pattern\>" doesn't compile with the engine's options: \<reason\>."* |
+| *"\<site\> reads \<path\>, which carries profile text; prompts, parts and conditions don't read profile text."* |
+| *"\<site\> gives has_word a blank word; has_word finds one word or phrase."* |
+| *"\<site\> uses if without an else; write the else."* |
+| *"\<site\> cats \<path\> (\<format\>); convert Markdown with plain first."* |
+| *"Node '\<id\>' declares \<modelDerived \| runDependent \| profileCarrying\> \<value\>, but its reads make it \<derived\>: \<the read that does, or none\>."* |
+
+In the sentence about a computed operand, `<operand>` is `pattern`, `word`, `failWith` or `count_pass`'s `min`.
+
+#### 3.11.2 Warnings at publish and in the Editor
+
+- **Run-dependence**,
+  one line per value or decision:
+  *"\<site\> \<member\> reads run.\<fact\>; its decision can differ between runs with the same inputs."*
+  and *"Computed node '\<id\>' reads \<run.fact or path\>, which is run-dependent; its value can differ between runs with the same inputs."*
+- **Model-derived** is shown, not warned: History, the diagram and the Editor mark each
+  model-derived value and decision (§ 3.4.5); the Editor shows:
+  *"computed from model text: node.\<id\>"*.
+
+#### 3.11.3 Failures at run time
+
+The rules are in § 3.5.3 (text over 1 MiB fails the node), § 3.6.2 (evaluation never
+throws) and § 3.9 (a condition that yields no boolean fails its node).
+
+- *"\<site\> \<member\> could not be decided: matches was given \<n\> MiB of text; the most is 1 MiB."* The node that
+  owns the condition fails, recorded with this reason.
+- *"\<site\> \<member\> yields \<a value kind\>; a condition yields a boolean."* The node that owns
+  the condition fails (§ 3.9).
