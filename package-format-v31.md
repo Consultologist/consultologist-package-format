@@ -5910,6 +5910,11 @@ For an unbounded worst case:
 
 *"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and \> reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait \> their turn."*
 
+The `>` characters inside these two sentences are in the published sentence table as written; they
+are kept as written here and in [chapter 11](#11-every-sentence), and § 8.13 gives the same note
+without them. Which form is the sentence is an open point
+([`v31/conformance/README.md`](v31/conformance/README.md)).
+
 The ceiling quoted is the publishing engine's setting. A package valid on one deployment is valid
 on every deployment; only the note's numbers differ.
 
@@ -6089,16 +6094,25 @@ record's JSON form (camelCase).
   | `lockHash` | string (`sha256:…`) | null below 31 | the SHA-256 of the canonical `lock.json` bytes |
   | `versionsRan` | object | null below 31 | **the exact versions that actually ran,** which can differ from the lock within its range. It takes **exactly `lock.json`'s shape,** so the two compare member by member: `packageFormat`, `dialect`, `libraries` (`Scriban`, `Markdig`, `Corvus.Text.Json.JsonLogic`, `Corvus.JsonSchema`), `evaluator`, `operations` (those the package uses), `builtins`, `culture` (`"invariant"`), `runtime` (the .NET runtime) and `unicode` (its Unicode version) ([chapter 7 § 7.4.1](#741-members)) |
   | `recordHash` | string (`sha256:…`) | allowed | the hash of the canonical record document, sealed when delivery ends ([chapter 8 § 8.10](#810-where-the-record-is-written)); `null` until then, and below 31 |
-  | `limits` | object `{ maxAgentCalls, capacityWaitMinutes, serviceAttempts, jobMinutes, deliveryMinutes, deliveryAttempts, loopItems, jobAgentCalls, renderSteps }`, each an integer | null below 31 | every engine limit in force at job start, recorded once ([chapter 8 § 8.7](#87-retries-and-limits)) |
+  | `limits` | object `{ maxAgentCalls, capacityWaitMinutes, serviceAttempts, jobMinutes, deliveryMinutes, deliveryAttempts, loopItems, jobAgentCalls, renderSteps }`, each an integer | null below 31 | every engine limit in force at job start, recorded once ([chapter 8 § 8.7](#87-retries-and-limits)): the per-job ceiling on agent calls in flight, the minutes a node may wait on 429s in all, the attempts allowed for another service failure, the minutes a job may run from orchestration start, the minutes delivery may take and the attempts each destination gets, and the total-work limits: items per loop instance, agent calls per job, and steps per render |
+  | `runFacts` | object | null below 31 | the raw value of each run fact the package reads, once per run; `{}` when it reads none |
+  | `startedAtUtc` | string | never | when the job's orchestration started; the job limit is timed from here, not from creation or scheduling, so time queued or waiting behind a drain doesn't count |
+  | `signatureBlockId` | string | allowed | the profile signature block the job used, by **id**, never its text; `null` when the package doesn't read `profile.signature` |
+  | `signatureChosen` | `"default"` or `"job"` | allowed | whether the block was the account's chosen block (`ChosenId`) or picked on the Create page for this job; `null` with `signatureBlockId` |
+  | `decisions` | array of decision | never | every condition decision of the job; `[]` for none. Each decision is stored as its own table row and gathered here in the canonical record document ([chapter 8 § 8.10](#810-where-the-record-is-written)) |
 
-- **The same header** holds `startedAtUtc` (when the job's orchestration started; the job limit is
-  timed from it), `runFacts` (the raw value of each run fact the package reads, once per run;
-  `{}` when it reads none), `signatureBlockId` and `signatureChosen` (the profile signature block
-  by **id**, never its text, and whether it was the account's default or this job's pick; both
-  `null` when the package doesn't read `profile.signature`), and `decisions` (every condition
-  decision of the job, `[]` for none). Its unchanged members are `packageSpecVersion` (31),
-  `workflowPackage`, `packageFormatRef`, `provenanceRef`, `formatsRef`, `catalogRef`,
-  `engineCommit`, `engineRelease`, `apiHost` and the terminology snapshot.
+- **Unchanged and still recorded:** `packageSpecVersion` (31), `workflowPackage`, `packageFormatRef`,
+  `provenanceRef`, `formatsRef`, `catalogRef`, `engineCommit`, `engineRelease`, `apiHost`, the
+  terminology snapshot. `formatsRef` and the agents catalogue version now also appear in `lockHash`'s
+  document; the header keeps them for readers of older records.
+- **Retired at 12** (never written by a 31 job; older records are read exactly as today):
+  `macroChoices` and `excludedMacros`, since per-run macro choices are boolean inputs at 31 and their
+  effect is recorded as decisions, and `classifications`, since every classifier is an ordinary
+  agent node with its own row.
+- **Everything storage 11 holds keeps its meaning:** paths for item keys, `loopInstances`, `while`
+  rows with `passes` and `stopped`, the not-run state, item progress per loop, the 120-character item
+  name. The `let` row of storage 11 is the `computed` row at 12, with `producer: computed` as before.
+  At 12 **every row records the node's `producer`.**
 - **A row's `producer`, `modelDerived`, `runDependent` and `profileCarrying`** are the node's own,
   as written and checked ([chapter 2 § 2.1.3](#213-producer), [chapter 3](#3-expressions)); every row
   records its `producer`.
