@@ -1,0 +1,14 @@
+{
+  "about": "Every member is listed exactly once.",
+  "instance": {
+    "description": [
+      "The nine standard sections of a consult note, in order.",
+      "Each item's header holds its title; its body holds the section's instructions."
+    ],
+    "items": [
+      "hpi",
+      "hpi"
+    ],
+    "format": "standard_section"
+  }
+}

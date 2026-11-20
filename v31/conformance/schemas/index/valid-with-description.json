@@ -1,0 +1,12 @@
+{
+  "about": "A description is an array of lines.",
+  "instance": {
+    "description": [
+      "The macros of this package.",
+      "Each one is offered by its own condition."
+    ],
+    "items": [
+      "letrozole_prescription_text"
+    ]
+  }
+}

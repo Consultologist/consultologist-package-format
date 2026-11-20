@@ -1,0 +1,21 @@
+{
+  "about": "The folder's format may be an inline schema.",
+  "instance": {
+    "description": null,
+    "items": [
+      "hpi"
+    ],
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

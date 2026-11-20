@@ -1,0 +1,14 @@
+{
+  "about": "A JSON Logic operation is one of the dialect's.",
+  "instance": {
+    "description": null,
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": {
+      "eval": [
+        1
+      ]
+    }
+  }
+}

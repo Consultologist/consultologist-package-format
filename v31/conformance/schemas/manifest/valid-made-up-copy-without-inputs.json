@@ -1,0 +1,13 @@
+{
+  "about": "A made-up package copied from another, with no title, no description and no inputs ({}).",
+  "instance": {
+    "name": "example-minimal",
+    "version": "v2026.01.12",
+    "specVersion": 31,
+    "derivedFrom": "example-nested-note@v2026.12.1",
+    "title": null,
+    "description": null,
+    "tags": [],
+    "inputs": {}
+  }
+}

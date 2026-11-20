@@ -1,0 +1,15 @@
+{
+  "about": "bundle is zip or null.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [
+      "emr"
+    ],
+    "bundle": "tar"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:index",
+  "title": "index.json of nodes/, checks/, functions/, renderers/, snippets/, macros/, formats/, tests/ and a function's four definition folders",
+  "description": "A folder's plain index: its description and its members in order. A folder that defines nothing writes \"items\": [].",
+  "type": "object",
+  "required": [
+    "description",
+    "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the folder)."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The folder's members by bare id, in order, each exactly once.",
+      "uniqueItems": true
+    }
+  }
+}

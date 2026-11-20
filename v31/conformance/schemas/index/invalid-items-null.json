@@ -1,0 +1,7 @@
+{
+  "about": "items is an array, never null.",
+  "instance": {
+    "description": null,
+    "items": null
+  }
+}

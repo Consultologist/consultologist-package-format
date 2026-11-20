@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:manifest",
+  "title": "manifest.json",
+  "description": "A package's identity and inputs; plain JSON with no front matter. Nodes, macros, snippets, formats and deliverables are listed by their folders' index.json.",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "specVersion",
+    "derivedFrom",
+    "title",
+    "description",
+    "tags",
+    "inputs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The package's name, for example example-nested-note or test/general."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v\\d{4}\\.(0[1-9]|1[0-2])\\.[1-9]\\d*$",
+      "description": "The package version, vYYYY.MM.N."
+    },
+    "specVersion": {
+      "const": 31,
+      "description": "The package format version: 31."
+    },
+    "derivedFrom": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name@version this package was copied from, or null if none."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The display title, or null to show the ref."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the package)."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The package's tags; [] when none."
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "description",
+          "format",
+          "required",
+          "channel"
+        ],
+        "properties": {
+          "label": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+            "description": "The display name of the input on the Create page; never empty or whitespace."
+          },
+          "description": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+            "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the input's help text)."
+          },
+          "format": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+            "description": "The input's type, which picks the widget: a format name or an inline schema."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the user must supply it; an input that is not required reads null when left blank."
+          },
+          "channel": {
+            "enum": [
+              "transcript",
+              "image",
+              "ambient-note",
+              "form",
+              null
+            ],
+            "description": "The content channel, or null for any input."
+          }
+        }
+      },
+      "description": "The inputs keyed by id, in Create page order; {} when none."
+    }
+  }
+}

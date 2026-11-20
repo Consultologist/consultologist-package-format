@@ -1,0 +1,81 @@
+{
+  "about": "The inputs of example-conditional-sections at 31 (part 02 section 8.4), an inline array format with a labelled oneOf and a nullable field, in a manifest written out around them (the name, version and description are made up).",
+  "instance": {
+    "name": "example-conditional-sections",
+    "version": "v2026.12.1",
+    "specVersion": 31,
+    "derivedFrom": null,
+    "title": null,
+    "description": null,
+    "tags": [],
+    "inputs": {
+      "consult_draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": "markdown_block",
+        "required": true,
+        "channel": null
+      },
+      "sections": {
+        "label": "Sections to produce",
+        "description": null,
+        "format": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "kind",
+              "notes"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "title": "Title"
+              },
+              "kind": {
+                "type": "string",
+                "title": "Kind",
+                "oneOf": [
+                  {
+                    "const": "narrative",
+                    "title": "Narrative"
+                  },
+                  {
+                    "const": "table",
+                    "title": "Table"
+                  },
+                  {
+                    "const": "omit",
+                    "title": "Leave out"
+                  }
+                ]
+              },
+              "notes": {
+                "anyOf": [
+                  {
+                    "$ref": "markdown_block"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Notes for this section"
+              }
+            }
+          }
+        },
+        "required": true,
+        "channel": null
+      },
+      "include_billing": {
+        "label": "Include the billing section",
+        "description": null,
+        "format": "boolean",
+        "required": false,
+        "channel": null
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:snippet-folder-index",
+  "title": "snippets/<folder>/index.json",
+  "description": "A typed snippet folder: its items' headers are checked against its format; each item's body is its content.",
+  "type": "object",
+  "required": [
+    "description",
+    "items",
+    "format"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the folder)."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The folder's members by bare id, in order, each exactly once.",
+      "uniqueItems": true
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+      "description": "The format each item's header is checked against: a format name or an inline schema."
+    }
+  }
+}

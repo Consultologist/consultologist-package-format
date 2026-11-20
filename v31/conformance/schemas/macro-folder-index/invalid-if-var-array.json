@@ -1,0 +1,14 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "description": null,
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": {
+      "var": [
+        "input.x.value"
+      ]
+    }
+  }
+}

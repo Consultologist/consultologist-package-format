@@ -1,0 +1,9 @@
+{
+  "about": "Members are listed by bare id, with no trailing slash.",
+  "instance": {
+    "description": null,
+    "items": [
+      "standards/"
+    ]
+  }
+}

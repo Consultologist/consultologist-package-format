@@ -1,0 +1,10 @@
+{
+  "about": "A reserved id cannot name a member.",
+  "instance": {
+    "description": null,
+    "items": [
+      "macro"
+    ],
+    "if": null
+  }
+}

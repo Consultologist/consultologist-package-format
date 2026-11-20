@@ -1,0 +1,13 @@
+{
+  "about": "delivery is an array of kinds.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": "email",
+    "bundle": null
+  }
+}

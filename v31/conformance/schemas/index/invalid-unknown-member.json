@@ -1,0 +1,13 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "description": null,
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ],
+    "extra": null
+  }
+}

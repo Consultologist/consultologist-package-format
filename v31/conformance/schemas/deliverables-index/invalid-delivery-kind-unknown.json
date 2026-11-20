@@ -1,0 +1,15 @@
+{
+  "about": "delivery names email, pdf, emr or zip only.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [
+      "sms"
+    ],
+    "bundle": null
+  }
+}

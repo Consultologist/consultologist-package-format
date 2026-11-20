@@ -1,0 +1,11 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ]
+  }
+}

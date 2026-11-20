@@ -1,0 +1,29 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "name": "example-nested-note",
+    "version": "v2026.12.1",
+    "specVersion": 31,
+    "derivedFrom": null,
+    "title": "Nested note demo",
+    "description": [
+      "A demonstration of nesting: a node plans the note's sections, a loop outlines each",
+      "section and drafts one paragraph per point, and a while redrafts the opening summary",
+      "until a judge calls it good. Not intended for clinical use."
+    ],
+    "tags": [
+      "demo",
+      "nested"
+    ],
+    "inputs": {
+      "consult_draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": "markdown_block",
+        "required": true,
+        "channel": null
+      }
+    },
+    "extra": null
+  }
+}

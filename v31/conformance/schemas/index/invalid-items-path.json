@@ -1,0 +1,9 @@
+{
+  "about": "Lists name ids, never paths.",
+  "instance": {
+    "description": null,
+    "items": [
+      "sections/outline"
+    ]
+  }
+}

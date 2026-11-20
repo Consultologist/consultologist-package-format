@@ -1,0 +1,11 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "description": null,
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": null,
+    "extra": null
+  }
+}

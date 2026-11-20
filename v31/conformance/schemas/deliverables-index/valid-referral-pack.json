@@ -1,0 +1,14 @@
+{
+  "about": "deliverables/referral_pack/index.json, bundled as one archive.",
+  "instance": {
+    "description": null,
+    "items": [
+      "gp_letter",
+      "summary"
+    ],
+    "delivery": [
+      "email"
+    ],
+    "bundle": "zip"
+  }
+}

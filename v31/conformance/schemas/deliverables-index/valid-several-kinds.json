@@ -1,0 +1,17 @@
+{
+  "about": "A folder may name several kinds of destination.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [
+      "email",
+      "pdf",
+      "emr"
+    ],
+    "bundle": null
+  }
+}

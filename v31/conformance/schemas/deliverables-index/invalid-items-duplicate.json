@@ -1,0 +1,14 @@
+{
+  "about": "Every member is listed exactly once.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "consult"
+    ],
+    "delivery": [
+      "emr"
+    ],
+    "bundle": null
+  }
+}

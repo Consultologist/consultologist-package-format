@@ -1,0 +1,12 @@
+{
+  "about": "nodes/index.json of example-nested-note (part 01 section 3).",
+  "instance": {
+    "description": null,
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ]
+  }
+}

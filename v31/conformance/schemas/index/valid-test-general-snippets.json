@@ -1,0 +1,10 @@
+{
+  "about": "snippets/index.json of test/general: a single snippet and a folder are listed alike, by bare id.",
+  "instance": {
+    "description": null,
+    "items": [
+      "snomed_tool_guidance",
+      "standards"
+    ]
+  }
+}

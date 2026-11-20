@@ -1,0 +1,10 @@
+{
+  "about": "Every member is written: 'items' is missing.",
+  "instance": {
+    "description": [
+      "The nine standard sections of a consult note, in order.",
+      "Each item's header holds its title; its body holds the section's instructions."
+    ],
+    "format": "standard_section"
+  }
+}

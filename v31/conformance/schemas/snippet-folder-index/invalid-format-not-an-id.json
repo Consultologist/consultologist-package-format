@@ -1,0 +1,21 @@
+{
+  "about": "A format name follows the id rule.",
+  "instance": {
+    "description": [
+      "The nine standard sections of a consult note, in order.",
+      "Each item's header holds its title; its body holds the section's instructions."
+    ],
+    "items": [
+      "hpi",
+      "pmh",
+      "medications",
+      "allergies",
+      "social_history",
+      "family_history",
+      "exam",
+      "investigations",
+      "assessment_plan"
+    ],
+    "format": "Standard Section"
+  }
+}

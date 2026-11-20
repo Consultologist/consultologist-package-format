@@ -1,0 +1,16 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [
+      "emr"
+    ],
+    "bundle": null,
+    "extra": null
+  }
+}

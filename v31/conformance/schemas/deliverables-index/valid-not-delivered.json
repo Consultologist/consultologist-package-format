@@ -1,0 +1,13 @@
+{
+  "about": "delivery [] means deliberately not delivered.",
+  "instance": {
+    "description": null,
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [],
+    "bundle": null
+  }
+}

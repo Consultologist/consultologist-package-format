@@ -1,0 +1,10 @@
+{
+  "about": "A made-up macro folder offered always (if null).",
+  "instance": {
+    "description": null,
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": null
+  }
+}

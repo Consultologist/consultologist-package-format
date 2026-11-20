@@ -1,0 +1,12 @@
+{
+  "about": "A description is null for none; [] is refused.",
+  "instance": {
+    "description": [],
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "items": [
+      "consult",
+      "patient",
+      "referral_pack"
+    ],
+    "delivery": [
+      "emr"
+    ],
+    "bundle": null
+  }
+}

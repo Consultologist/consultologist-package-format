@@ -1,0 +1,11 @@
+{
+  "about": "A macro folder has no format member.",
+  "instance": {
+    "description": null,
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": null,
+    "format": "plaintext"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "about": "formats/index.json of example-nested-note: a plain index.",
+  "instance": {
+    "description": null,
+    "items": [
+      "section_plan",
+      "outline",
+      "verdict"
+    ]
+  }
+}

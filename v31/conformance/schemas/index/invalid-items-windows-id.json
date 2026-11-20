@@ -1,0 +1,9 @@
+{
+  "about": "A Windows reserved id cannot name a member: con.",
+  "instance": {
+    "description": null,
+    "items": [
+      "con"
+    ]
+  }
+}

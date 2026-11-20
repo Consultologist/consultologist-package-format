@@ -1,0 +1,13 @@
+{
+  "about": "A plain index has no delivery member; that is deliverables/index.json's.",
+  "instance": {
+    "description": null,
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ],
+    "delivery": []
+  }
+}

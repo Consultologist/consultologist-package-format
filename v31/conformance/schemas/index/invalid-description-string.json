@@ -1,0 +1,12 @@
+{
+  "about": "A description is an array of lines, not a string.",
+  "instance": {
+    "description": "none",
+    "items": [
+      "plan",
+      "section_count",
+      "sections",
+      "refine"
+    ]
+  }
+}

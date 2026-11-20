@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:deliverables-index",
+  "title": "deliverables/index.json and a delivery folder's index.json",
+  "description": "The deliverables and sub-folders of a delivery folder, with its delivery settings. Every index.json states its own delivery in full; delivery folders are one level deep.",
+  "type": "object",
+  "required": [
+    "description",
+    "items",
+    "delivery",
+    "bundle"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the folder)."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The folder's members by bare id, in order, each exactly once.",
+      "uniqueItems": true
+    },
+    "delivery": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "email",
+          "pdf",
+          "emr",
+          "zip"
+        ]
+      },
+      "description": "The kinds of destination; [] means deliberately not delivered (kept in History only)."
+    },
+    "bundle": {
+      "enum": [
+        "zip",
+        null
+      ],
+      "description": "\"zip\" sends the folder's deliverables together as one archive; null for none."
+    }
+  }
+}

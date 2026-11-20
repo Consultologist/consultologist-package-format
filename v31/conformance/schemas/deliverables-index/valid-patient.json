@@ -1,0 +1,13 @@
+{
+  "about": "deliverables/patient/index.json, delivery by email.",
+  "instance": {
+    "description": null,
+    "items": [
+      "patient_letter"
+    ],
+    "delivery": [
+      "email"
+    ],
+    "bundle": null
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:macro-folder-index",
+  "title": "macros/<folder>/index.json",
+  "description": "A macro folder, a namespace for macro.<folder>.<id>. When the folder and a macro both have an if, both must hold.",
+  "type": "object",
+  "required": [
+    "description",
+    "items",
+    "if"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the folder)."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The folder's members by bare id, in order, each exactly once.",
+      "uniqueItems": true
+    },
+    "if": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+      "description": "A JSON Logic condition for whether the folder's macros are offered, or null for always."
+    }
+  }
+}

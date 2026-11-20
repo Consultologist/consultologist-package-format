@@ -1,0 +1,9 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "items": [
+      "letrozole_prescription_text"
+    ],
+    "if": null
+  }
+}
