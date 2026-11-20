@@ -110,7 +110,7 @@ The `formats` check group does enforce the first of these on the built-in format
   `nodes` map") and is otherwise open, since part 04 owns its other members. An input's
   `description` is the manifest's written form (lines or `null`), where § 2.3 says "lines or
   `null`" and the abridged example shows only `null`.
-- **Three sentences of the member tables are coupled in the schemas:** `publishedAtUtc` is `null`
+- **Four sentences of the member tables are coupled in the schemas:** `publishedAtUtc` is `null`
   when `outcome` is `refused`; `refusals` is `[]` when it is `published`; a test's `firstMismatch`
   is `null` when its `result` is `pass`; a migration text's `explanation` is `null` unless
   `expected` is true. The tables do not say the converse (that a published report has a time, or
