@@ -40,7 +40,31 @@ The exporting area fixes the exact files in the release that carries the cases
 - **`refusal-packages`:** a case is a folder holding a package and an `expect.json` with `valid`
   (a boolean) and, for an invalid package, the sentences the checker must produce, exactly as
   [chapter 11](../../package-format-v31.md#11-every-sentence) prints them (`<…>` filled in). There is
-  a valid and an invalid package for every refusal sentence.
+  a valid and an invalid package for every refusal sentence. On disk, a sentence's case is two
+  folders, each an `expect.json` beside a `package/`:
+
+  ```
+  refusal-packages/<sentence id>/valid/expect.json
+  refusal-packages/<sentence id>/valid/package/manifest.json, nodes/index.json, …
+  refusal-packages/<sentence id>/invalid/expect.json
+  refusal-packages/<sentence id>/invalid/package/manifest.json, nodes/index.json, …
+  ```
+
+  `package/` holds the package's files byte for byte, as an upload gives them to a reader (the
+  repository's `.gitattributes` keeps git from changing a byte-order mark or a carriage return
+  there). `expect.json` has exactly three members, in this order: `about` (the rule, what the
+  invalid package does to break it, and what the valid one does to keep it, in words), `valid` (a
+  boolean, `true` in `valid/` and `false` in `invalid/`) and `sentences` (a list of strings: `[]` for
+  a valid package; for an invalid one, every sentence the reader gives, in the reader's order). It is
+  written with 2-space indentation, `\n` line ends and a final newline, and writes `'`, `≠`, `–`
+  and `…` as themselves. The index lists a case as `<sentence id>/valid` and
+  `<sentence id>/invalid`. **The cases are exported by the library's parser and are never written
+  by hand:** the exporter runs each package through the reader and writes what it said. An invalid
+  package breaks its rule alone and gives that one sentence; where a rule cannot be broken without
+  another sentence also being given, its `about` says so and `sentences` lists them all.
+  `python3 scripts/check-v31.py` (group `refusal-packages`) holds the folders to the index, each
+  `expect.json` to this shape, and an invalid case's sentence to its row of `sentences.json`, read
+  as a pattern in which each `<…>` stands for any text.
 - **Goldens and vectors** (`operation-goldens`, `printer-goldens`, `renderer-goldens`,
   `dialect-goldens`, `null-vectors`, `text-vectors`, `number-vectors`, `date-vectors`,
   `markdown-escape-vectors`): a case holds an input and the bytes a generator produced for it.
@@ -49,6 +73,47 @@ The exporting area fixes the exact files in the release that carries the cases
 - **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices.
 - **`schemas`:** a hand-written instance of one schema, valid or invalid by its file name (next
   section). These are examples, not goldens.
+
+## The refusal packages of the file model (area 02)
+
+Area 02, the parser and file model, exports the cases of the sentences its reader gives: those of
+[chapter 1](../../package-format-v31.md#1-files-and-scopes) (`S01-…`), chapter 2's unknown kind
+(`S02-007`), and the sentences of [chapter 4](../../package-format-v31.md#4-loops-and-functions)
+that a flow node's or a function's own members give, which the file model judges before any type is
+known: `S04-009`, `S04-010`, `S04-011`, `S04-012`, `S04-013`, `S04-018`, `S04-019`, `S04-021`,
+`S04-022`, `S04-023`, `S04-024`, `S04-031`, `S04-033`, `S04-034`, `S04-041`, `S04-042`, `S04-043`,
+`S04-048`, `S04-062`, `S04-067` and `S04-076`. Each invalid package gives its one sentence.
+
+- **`S01-037` to `S01-039` ship no files.** Their packages would be 513 files, a file of 257 KiB and
+  a package over 2 MiB; the library's tests prove them, and the suite does not carry megabytes to
+  say three sentences. `S01-040` (a path of 201 characters) and `S01-041` (JSON nested 33 deep) are
+  small and ship.
+- **Chapter 1's other rows have no case here.** `S01-001` (*"Did you mean 'label'?"*) is the hint
+  that ends `S01-023`'s sentence, not a sentence of its own; `S01-004`, `S01-027` and `S01-029` need
+  types, reads or the call graph and are later areas' cases.
+- **A valid package is valid by the file model only.** Area 02 judges files, folders, headers,
+  members and ids; it does not type an expression, follow a read or resolve a format. A later area
+  that finds a `valid` package of area 02 invalid by its own rules corrects the package, and the
+  cases are exported again.
+- **`S01-017`'s `<parser message>` is the reader's JSON parser's own words** (here .NET's
+  `System.Text.Json`). An outside implementation's parser words it differently; compare that sentence
+  by its row, as the check script does.
+
+**This implementation's sentences.** The text gives no sentence for eight rules the reader holds,
+so it says its own, under `A02-…` ids that are not rows of `sentences.json`. They are this
+implementation's, not [chapter 11](../../package-format-v31.md#11-every-sentence)'s, and each is an
+open point for the text, which should give the rule a sentence:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A02-001` | *"\<Declaration> declares '\<member>' as \<what it is>; it is \<what it must be>."* | a member of the wrong JSON type ([chapter 1 § 1.5](../../package-format-v31.md#15-members-every-one-written)) |
+| `A02-002` | *"File '\<path>' is not valid UTF-8; save it as UTF-8."* | a file is UTF-8 ([chapter 1 § 1.2.4](../../package-format-v31.md#124-encoding-and-line-endings)) |
+| `A02-003` | *"The package has no manifest.json; it holds the package's name, version and inputs."* | the manifest is at the root ([chapter 1 § 1.3](../../package-format-v31.md#13-the-manifest)); this case's invalid package is the one without a `manifest.json` |
+| `A02-004` | *"The manifest declares specVersion \<n>; this reader reads 31."* | `specVersion` is 31 ([chapter 1 § 1.3](../../package-format-v31.md#13-the-manifest)) |
+| `A02-005` | *"File '\<path>' must hold one JSON object."* | an `index.json`, the manifest, a format and a test are each one JSON object ([chapter 1 § 1.2.1](../../package-format-v31.md#121-which-file-holds-what)) |
+| `A02-006` | *"Node '\<id>' is kind \<kind> in a file; a \<kind> is a folder with an index.json."* | a flow node is a folder ([chapter 4 § 4.1](../../package-format-v31.md#41-flow-nodes-are-folders)) |
+| `A02-007` | *"Node '\<id>' is kind \<kind> in a folder; a \<kind> node is a file, \<id>.md."* | a leaf node is a file ([chapter 1 § 1.2.1](../../package-format-v31.md#121-which-file-holds-what)) |
+| `A02-008` | *"\<subject> has no body; name the nodes that run in nodes."* | a `then`, an `else`, a non-empty branch or a function lists at least one node; `S04-018` and `S04-034` name loops and whiles only ([chapter 4 § 4.5](../../package-format-v31.md#45-branches-if-and-case)) |
 
 ## The schemas' examples
 
@@ -339,3 +404,29 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   `plaintext` macro placed in a Markdown node. Neither says whether a renderer whose `format` is `markdown_block` escapes the
   `string` members it reads (`c.term` in `concept_bullets`). The built-in renderers are proven byte
   for byte against the C# renderers on raw Scriban output, with no escaping.
+- **"The header of" for a plain JSON file.** `S01-017` and `S01-018` say *"The header of
+  '\<path>' …"*, written for a `.md` file's front matter, and the text gives no other sentence for
+  a plain JSON file (`index.json`, `manifest.json`, a format, a test) that is not JSON or writes a
+  member twice. The reader uses the two sentences as written for those files too, so they say "the
+  header of 'nodes/index.json'".
+- **Two sentences for a call's body.** `S01-020` (*"… has a body; a \<computed node | call |
+  check> keeps everything in its header."*) and `S04-071` (*"Call '\<id>' has a body; a call is a
+  header only."*) both refuse a `call` with a body. The reader gives `S01-020`, which names the call;
+  `S04-071` is not given.
+- **One sentence under two ids.** `S04-020` and `S01-005` (a `maxParallel` above 15), `S04-032` and
+  `S01-003` (a while's `max` above 15), and `S02-009` and `S01-028` (a producer the kind does not
+  have) are the same words. The reader gives the `S01-…` id, and the cases are filed under it.
+- **`S04-009` is printed for `Loop` only.** Its row in `sentences.json` and in
+  [chapter 11](../../package-format-v31.md#11-every-sentence) reads *"Loop '\<id>' declares label
+  null; …"*, while [chapter 4 § 4.10.1](../../package-format-v31.md#4101-refusals-at-publish) prints
+  the sentence with "(also `While`, `If`, `Case`)". The reader writes the flow kind's word, and the
+  check script reads the row's first word as any of the four.
+- **A snippet folder item's body.** [Chapter 1 § 1.4](../../package-format-v31.md#14-front-matter)'s
+  table requires a snippet folder item's text, while
+  [chapter 5 § 5.6.2](../../package-format-v31.md#562-snippet-folders) lets a folder item's body be
+  empty (its `item.content` is then `""`). Chapter 5's is the later decision, and the reader follows
+  it: an empty folder item body is not refused.
+- **Templates that read awkwardly when filled in.** `S01-028`'s *"a \<kind> node's producer"* gives
+  "a agent node's producer", and this implementation's `A02-007` gives "a agent node is a file" the
+  same way; `S01-025`'s *"\<Declaration>'s description"* gives "Node 'plan''s description". The
+  sentences are used as written.
