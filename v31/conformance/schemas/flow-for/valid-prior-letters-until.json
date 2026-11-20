@@ -1,5 +1,5 @@
 {
-  "about": "The loop of part 04 section 2.4: sequential with an until condition.",
+  "about": "The loop of chapter 4 § 4.2.4: sequential with an until condition.",
   "instance": {
     "kind": "for",
     "producer": "computed",

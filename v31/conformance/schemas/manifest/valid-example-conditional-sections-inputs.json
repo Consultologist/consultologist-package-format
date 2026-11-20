@@ -1,5 +1,5 @@
 {
-  "about": "The inputs of example-conditional-sections at 31 (part 02 section 8.4), an inline array format with a labelled oneOf and a nullable field, in a manifest written out around them (the name, version and description are made up).",
+  "about": "The inputs of example-conditional-sections at 31 (chapter 2 § 2.8.4), an inline array format with a labelled oneOf and a nullable field, in a manifest written out around them (the name, version and description are made up).",
   "instance": {
     "name": "example-conditional-sections",
     "version": "v2026.12.1",

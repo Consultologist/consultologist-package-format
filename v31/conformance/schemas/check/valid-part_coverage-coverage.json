@@ -1,5 +1,5 @@
 {
-  "about": "checks/part_coverage/coverage.md (part 06 section 3.4): a check in a check loop, skipping unrun items.",
+  "about": "checks/part_coverage/coverage.md (chapter 6 § 6.3.4): a check in a check loop, skipping unrun items.",
   "instance": {
     "kind": "computed",
     "producer": "computed",

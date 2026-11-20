@@ -1,5 +1,5 @@
 {
-  "about": "tests/two_sections.json of example-checks (part 07 section 8.5), its hash written as 64 zeros.",
+  "about": "tests/two_sections.json of example-checks (chapter 7 § 7.8.5), its hash written as 64 zeros.",
   "instance": {
     "description": [
       "Two planned sections; the second fails coverage; the note is held."

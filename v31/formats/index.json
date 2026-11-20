@@ -1,6 +1,6 @@
 {
   "description": [
-    "The nine built-in formats of specVersion 31, part 02 section 4."
+    "The nine built-in formats of specVersion 31, chapter 2 § 2.4."
   ],
   "items": [
     "string",

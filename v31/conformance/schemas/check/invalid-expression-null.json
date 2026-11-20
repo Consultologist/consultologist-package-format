@@ -1,5 +1,5 @@
 {
-  "about": "expression is never null (part 06 section 1.1).",
+  "about": "expression is never null (chapter 6 § 6.1.1).",
   "instance": {
     "kind": "computed",
     "producer": "computed",

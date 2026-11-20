@@ -114,7 +114,7 @@
       "pattern": "^(node|check|deliverable|input|macro|snippet|renderer)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
     },
     "jsonLogic": {
-      "description": "A JSON Logic rule in its written form (part 03 section 2): a literal, an array of rules, or an operation. Structural only; the checker types it.",
+      "description": "A JSON Logic rule in its written form (chapter 3 § 3.2): a literal, an array of rules, or an operation. Structural only; the checker types it.",
       "anyOf": [
         {
           "type": [

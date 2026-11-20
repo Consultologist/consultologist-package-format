@@ -1,5 +1,5 @@
 {
-  "about": "The loop of part 04 section 7.7: parallel, at most four at once.",
+  "about": "The loop of chapter 4 § 4.7.7: parallel, at most four at once.",
   "instance": {
     "kind": "for",
     "producer": "computed",

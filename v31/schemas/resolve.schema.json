@@ -568,7 +568,7 @@
           "description": "The function's own flat nodes map, keyed by rooted keys local to the function."
         }
       },
-      "description": "A function, with its own flat nodes map; its remaining members are the source schemas' (part 04)."
+      "description": "A function, with its own flat nodes map; its remaining members are the source schemas' (chapter 4)."
     },
     "entry": {
       "type": "object",

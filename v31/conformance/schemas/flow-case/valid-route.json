@@ -1,5 +1,5 @@
 {
-  "about": "nodes/sections_draft/route/index.json (part 04 section 5.4): the omit branch is explicitly empty.",
+  "about": "nodes/sections_draft/route/index.json (chapter 4 § 4.5.4): the omit branch is explicitly empty.",
   "instance": {
     "kind": "case",
     "producer": "computed",

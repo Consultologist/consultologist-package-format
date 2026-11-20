@@ -720,10 +720,23 @@ def check_conformance_index():
     return failures
 
 
+PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
+
+
+def check_citations():
+    """A reader has the document's chapters, not the design's parts: no JSON under v31/ cites a part."""
+    failures = []
+    for path in sorted(V31.rglob("*.json")):
+        for match in PART_CITATION.finditer(path.read_text(encoding="utf-8")):
+            failures.append(f"{path.relative_to(ROOT)}: cites '{match.group(0)}'; cite the chapter")
+    return failures
+
+
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
           ("renderers", check_renderers), ("self", check_self),
-          ("conformance", check_conformance_index), ("document", check_document)]
+          ("conformance", check_conformance_index), ("document", check_document),
+          ("citations", check_citations)]
 
 
 def main():

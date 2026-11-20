@@ -1,5 +1,5 @@
 {
-  "about": "An optional argument is passed as the literal null (part 04 section 7.2.1).",
+  "about": "An optional argument is passed as the literal null (chapter 4 § 4.7.2.1).",
   "instance": {
     "kind": "call",
     "producer": "computed",

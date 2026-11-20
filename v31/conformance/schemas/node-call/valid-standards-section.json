@@ -1,5 +1,5 @@
 {
-  "about": "nodes/standards/section.md (part 04 section 7.7), with part 01's remaining leaf member written out (if null).",
+  "about": "nodes/standards/section.md (chapter 4 § 4.7.7), with chapter 1's remaining leaf member written out (if null).",
   "instance": {
     "kind": "call",
     "producer": "computed",

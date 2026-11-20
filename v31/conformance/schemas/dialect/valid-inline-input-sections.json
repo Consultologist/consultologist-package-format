@@ -1,5 +1,5 @@
 {
-  "about": "Part 02 section 8.4's sections input format, judged as an inline schema (the dialect's $defs/inline): an array of objects with a title on each property, a labelled oneOf and a nullable $ref by anyOf.",
+  "about": "Chapter 2 § 2.8.4's sections input format, judged as an inline schema (the dialect's $defs/inline): an array of objects with a title on each property, a labelled oneOf and a nullable $ref by anyOf.",
   "against": "#/$defs/inline",
   "instance": {
     "type": "array",

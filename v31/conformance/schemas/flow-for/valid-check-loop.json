@@ -1,5 +1,5 @@
 {
-  "about": "checks/section_coverage/index.json (part 04 section 7.11): a check loop over .items, returning a check.",
+  "about": "checks/section_coverage/index.json (chapter 4 § 4.7.11): a check loop over .items, returning a check.",
   "instance": {
     "kind": "for",
     "producer": "computed",

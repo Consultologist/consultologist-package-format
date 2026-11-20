@@ -1,5 +1,5 @@
 {
-  "about": "The closing node of part 04 section 7.6 that builds an object, with the elided leaf members written out (description null, reproducible true, if null).",
+  "about": "The closing node of chapter 4 § 4.7.6 that builds an object, with the elided leaf members written out (description null, reproducible true, if null).",
   "instance": {
     "kind": "computed",
     "producer": "computed",

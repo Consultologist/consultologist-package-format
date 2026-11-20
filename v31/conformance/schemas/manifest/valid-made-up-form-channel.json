@@ -1,5 +1,5 @@
 {
-  "about": "An input may name a channel (part 02 section 8.3).",
+  "about": "An input may name a channel (chapter 2 § 2.8.3).",
   "instance": {
     "name": "example-nested-note",
     "version": "v2026.12.1",

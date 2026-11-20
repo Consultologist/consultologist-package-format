@@ -1,5 +1,5 @@
 {
-  "about": "nodes/standards/section.md (part 06 section 6.5), the node that builds the pair for a loop.",
+  "about": "nodes/standards/section.md (chapter 6 § 6.6.5), the node that builds the pair for a loop.",
   "instance": {
     "kind": "computed",
     "producer": "computed",

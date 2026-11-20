@@ -1,5 +1,5 @@
 {
-  "about": "nodes/standards/section_instructions.md of test/general (part 05 section 7.2), with the printed elision written out (if null).",
+  "about": "nodes/standards/section_instructions.md of test/general (chapter 5 § 5.7.2), with the printed elision written out (if null).",
   "instance": {
     "kind": "agent",
     "producer": "generated",
