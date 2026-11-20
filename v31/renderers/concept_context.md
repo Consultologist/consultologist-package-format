@@ -5,7 +5,7 @@
 {{~ if value.concepts.size == 0 ~}}
 (none){{~ else ~}}
 {{~ for c in value.concepts ~}}
-- {{ c.term }} ({{ c.type }}) - {{ c.id }}; active: {{ if c.isActive }}True{{ else }}False{{ end }}; source: {{ if c.support != null && (c.support | string.strip) != "" }} support: {{ c.support }}{{ end }}{{ if !for.last }}
+- {{ c.term }} ({{ c.type }}) - {{ c.id }}; active: {{ if c.isActive }}True{{ else }}False{{ end }}; source: {{ c.source }}{{ if c.support != null && (c.support | string.strip) != "" }} support: {{ c.support }}{{ end }}{{ if !for.last }}
 {{ end ~}}
 {{~ end ~}}
 {{~ end ~}}

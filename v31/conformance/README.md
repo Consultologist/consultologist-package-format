@@ -30,6 +30,12 @@ The `formats` check group does enforce the first of these on the built-in format
 
 ## Open points found while writing
 
+- **`concept_context` reads `source`.** The built-in `concept_context` reads `source` on each
+  concept, which the catalogue's `concept_list` format does not declare (its objects are closed).
+  So the value an engine pipes into this renderer is the stored concept list, with `source`
+  stamped from the producing node; the format and the stored value disagree by that one member.
+  The area that builds renderers (07) inherits the question of whether `concept_list` gains
+  `source` or the renderer loses it.
 - **`check_result`'s nullable arrays.** Part 06 § 2.1 writes `uncovered` and `untested` as
   `{ "type": ["array", "null"], "items": … }`, a type array of a non-scalar plus `null`, while
   part 02 § 3.2 keeps type arrays for scalars. The built-in keeps part 06's shape, and the
