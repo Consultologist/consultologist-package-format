@@ -63,7 +63,7 @@ text names them:
 - [`v31/formats/`](v31/formats): the built-in formats, one file each, with their index;
 - [`v31/renderers/`](v31/renderers): the built-in renderers, with their index;
 - [`v31/sentences.json`](v31/sentences.json): every refusal, warning and recorded sentence;
-- `v31/scriban-dialect.md`: the template dialect, version 1.0.0 (written beside chapter 5).
+- [`v31/scriban-dialect.md`](v31/scriban-dialect.md): the template dialect, version 1.0.0 (`scriban-dialect@1.0.0`), the rules of chapter 5 § 2 in reference form.
 
 [`v31/conformance/`](v31/conformance) holds hand-written examples of valid and invalid files for each
 schema. They are examples, not goldens. `python3 scripts/check-v31.py` runs the registry's
@@ -77,8 +77,8 @@ checks over all of the above.
 | [2 Types and inputs](#2-types-and-inputs) | `kind` and `format`, the dialect, text formats, format `$id`s, inputs, enum labels |
 | [3 Expressions](#3-expressions) | JSON Logic: conditions, `computed`, every operation, null rules, `run.*`, the printer, the evaluator, `matches` and `has_word` |
 | [4 Loops and functions](#4-loops-and-functions) | `for`, `while`, `until`, branches, `.items`, functions and `call` |
-| 5 Templates and macros | the Scriban dialect, renderers, snippets, parts, macros, whitespace, run spots |
-| 6 Checks, deliverables and the profile | checks and check loops, deliverables as files, gating, the profile |
+| [5 Templates and macros](#5-templates-and-macros) | the Scriban dialect, renderers, snippets, parts, macros, whitespace, run spots |
+| [6 Checks, deliverables and the profile](#6-checks-deliverables-and-the-profile) | checks and check loops, deliverables as files, gating, the profile |
 | 7 The compiled documents | `resolve.json`, `lock.json`, evidence and views, in-package tests, the publish report |
 | 8 The record | record storage 12 and the provenance contract |
 | 9 The engine and the pages | loading and scheduling, the per-job ceiling, the satellites' contract, the pages |
@@ -3364,3 +3364,1583 @@ string (chapter 2).
 | *"Loop '\<id\>' iterates \<reference\>, which could hold more than \<limit\> items; this engine runs at most \<limit\> per loop, and fails the loop beyond that."* | note |
 | *"Up to \<n\> agent calls could run in one job; this engine runs at most \<limit\> per job, and fails the job beyond that."* | note |
 | *"Function '\<f\>' lists \<snippet \| macro \| format \| renderer\> '\<id\>' in uses but never uses it."* | warning |
+
+## 5. Templates and macros
+
+This chapter defines every template a version 31 package holds and the one template language they
+share: the Consultologist Scriban dialect, renderers as package templates, snippets, parts, and
+macros with their whether and where. It states what each template may read, how placements carry
+whitespace, how run facts are kept out of the comparable hash (run spots), and every refusal
+sentence. The dialect's rules are stated here in full and published in their versioned form as
+[`v31/scriban-dialect.md`](v31/scriban-dialect.md) (`scriban-dialect@1.0.0`). Deliverable
+templates are templates too: their reads are listed here, and everything else about them is in
+[chapter 6](#6-checks-deliverables-and-the-profile). Personal (account-level) macros are not in
+version 31 ([#1417](https://github.com/Consultologist/Consultologist-Blazor/issues/1417), Milestone 40).
+
+### 5.1 Templates present; headers decide
+
+**The rule:** decisions are recorded, so they live in headers as JSON Logic
+([chapter 3](#3-expressions)). Bodies only present.
+
+- **Whether** a node runs, an item is included, a part or snippet is used, a macro is offered,
+  a loop stops or a deliverable exists is a header condition, evaluated and recorded by the
+  engine.
+- **A body** only lays out what it's given: loops over lists, joins, formatting, and the
+  choice of how a recorded fact (a skipped item, a failed check) appears.
+
+#### 5.1.1 The template sites
+
+| Site | Where it lives | Rendered | Its output |
+|---|---|---|---|
+| prompt | the body of `nodes/…/<id>.md`, `kind: agent` | before the model call, per instance | the text sent to the model |
+| `rendered` node | the body of `nodes/…/<id>.md`, `kind: rendered` | per instance, no model | the node's text value |
+| renderer | the body of `renderers/<id>.md` | at each pipe use | text spliced at the pipe |
+| snippet body | the body of `snippets/…/<id>.md` | where it's placed, in that scope | text spliced at the placement |
+| part text | `parts.<id>.text` in an agent node's header | where it's placed, when its `if` holds | text spliced at the placement |
+| macro instruction | `instruction` in `macros/…/<id>.md` | where it's placed, when the macro is triggered | prompt text, with the macro's marker |
+| macro body | the body of `macros/…/<id>.md` | after the model replies, before substitution | text substituted for the marker |
+| deliverable | the body of `deliverables/…/<id>.md` | once, after its reads complete | the deliverable's composed text |
+
+A `computed` node and a check have no template: their expression is JSON Logic in the header
+member `expression`, and their body must be empty ([chapter 3](#3-expressions)).
+
+#### 5.1.2 An agent node's prompt members
+
+An agent node's header is judged by the schema [`node-agent`](v31/schemas/node-agent.schema.json).
+
+Beside `kind`, `label`, `description`, `format`, `reproducible` (always `false` for an agent
+node, [chapter 1](#1-files-and-scopes)) and `producer` (always `"generated"`,
+[chapter 2 § 1.3](#213-producer)), `modelDerived` (always `true` for an agent
+node) and `runDependent` (`true` when its prompt reads `run.*` or a run-dependent value) and
+`profileCarrying` (`true` when its prompt places a macro whose body reads `profile.*`, or reads such a
+value), all
+checked against the derived values ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)), and its agent binding, chosen by format and
+producer ([chapter 2](#2-types-and-inputs)),
+a `kind: agent` node's header holds the members that govern its prompt and reply:
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `onInvalid` | `"retry"` or `"fail"` | no | what an invalid reply does: a reply that fails its format, or a macro marker check (§ 5.8.6). `retry` asks once more; `fail` fails the job. As at version 30. |
+| `failIfEmpty` | string | yes: an empty value doesn't fail | the sentence the job fails with when the reply's value is empty. Carried over from version 30 unchanged, and always written (`null` when unused). |
+| `parts` | object | yes: none | the node's conditional prompt text (§ 5.7) |
+| `ordered` | boolean | no | whether triggered macro markers must come back in order (§ 5.8.5) |
+
+### 5.2 The dialect
+
+The dialect is a published, versioned spec in the package-format registry, beside the JSON
+Schema dialect ([chapter 2](#2-types-and-inputs)), with conformance vectors: a valid and an
+invalid template for every rule and every refusal sentence below. **Anything not listed as
+allowed is refused at publish, with a sentence**.
+
+The engine renders with **Scriban 7.2.5**, pinned exactly. The dialect's version is recorded in
+`lock.json` and listed in `requires` (chapter 7).
+
+#### 5.2.1 Statements
+
+**Allowed:**
+
+| Construct | Written | Notes |
+|---|---|---|
+| output | `{{ x }}` | `x` is an access path, optionally piped (§ 5.2.2, § 5.5) |
+| member access | `node.plan.value.sections` | index access (`list[0]`) is refused (below) |
+| literals | `"text"`, `12`, `true`, `false`, `null` | as arguments to built-ins and in `if` comparisons |
+| `for` | `{{ for x in list }} … {{ end }}` | over a list only; position variables `for.first`, `for.last`, `for.index`, `for.even`, `for.odd` |
+| `if` | `{{ if … }} … {{ else if … }} … {{ else }} … {{ end }}` | restricted to recorded facts (§ 5.2.5) |
+| pipe | `x \| string.strip`, `x \| renderer.concept_bullets` | to the allowed built-ins (§ 5.2.2) and to renderers (§ 5.5) only |
+| comment | `{{# a note }}` | rendered as nothing |
+| raw block | `{%{ … }%}` | literal braces, not interpreted |
+
+**Refused:**
+- assignment (`x = …`) and `capture`;
+- `func`, `include`, `import`, `with`, `wrap`;
+- Scriban's `while`, `break` and `continue`;
+- `case` / `when`;
+- `tablerow`;
+- arithmetic (`+`, `-`, `*`, `/`, `%`, `//`) and string concatenation by `+`. Markdown numbers a
+  `1.` list itself, and a computed value belongs in a `computed` node.
+- a `for` over anything but a list (a range `1..3`, an object), and the `for` options `limit:`,
+  `offset:` and `reversed`: they choose which elements appear, which is a decision;
+- `for.rindex`, `for.length` and `for.changed`;
+- **index access** (`list[0]`, `node.plan.value.sections[2]`): a list is read whole, by
+  a `for`, or by identity through `.items`, as in JSON Logic ([chapter 3 § 2.2](#322-the-canonical-form)). Pairing by position
+  across the format is [#1485](https://github.com/Consultologist/Consultologist-Blazor/issues/1485).
+
+  These `for` forms are refused; no published package uses them. Revisiting
+  them is [#1475](https://github.com/Consultologist/Consultologist-Blazor/issues/1475) (Milestone 40).
+
+**Equality in bodies.** Scriban has no `===`. A body `if` compares with Scriban's `==` and
+`!=`, only within § 5.2.5's recorded facts. The `===`/`!==`-only rule is JSON Logic's
+([chapter 3](#3-expressions)), which is where every value comparison lives.
+
+#### 5.2.2 Built-ins
+
+Built-ins are pure, and versioned like the built-in operations: each is listed in `requires`
+with a caret range and in `lock.json` at its exact version.
+
+| Built-in | Signature | Result | Null in |
+|---|---|---|---|
+| `string.upcase` | `(text: string \| text format) → same format` | invariant upper case | null (renders as nothing) |
+| `string.downcase` | `(text: string \| text format) → same format` | invariant lower case | null |
+| `string.capitalize` | `(text: string \| text format) → same format` | first character upper case, invariant | null |
+| `string.strip` | `(text: string \| text format) → same format` | leading and trailing whitespace removed | null |
+| `array.join` | `(list: list<string> \| list<text format>, separator: string literal) → string`, or the elements' text format | the elements joined by `separator` | null list gives null; a null element fails the node |
+| `array.size` | `(list: list<any>) → number` | the element count | null |
+| `date.to_string` | `(date: date, pattern: string literal) → string` | the date formatted by `pattern` | null |
+
+- **`date.to_string` requires an explicit pattern,** a string literal (Scriban's `%` patterns,
+  for example `"%d %B %Y"`). A date output without it renders as ISO `%Y-%m-%d`.
+- **Refused:** `date.now`, random numbers and environment access (they break reproducibility);
+  `truncate` (it cuts clinical text); `object.default` (it chooses text, which is a decision);
+  every other built-in.
+- **Null:** a null value output directly renders as nothing, and **a built-in given null returns
+  null**, matching JSON Logic's rule that operations on null give null
+  ([chapter 3](#3-expressions)). The one exception is `array.join`: a list holding a `null`
+  element fails the node.
+
+#### 5.2.3 Limits and carried-over behaviour
+
+The limits are dialect constants, separate from `FormatBounds`
+([chapter 1](#1-files-and-scopes)):
+
+| Limit | Value | Past it |
+|---|---|---|
+| iterations per `for` | 1,000 | the render fails with a sentence (§ 5.11, R-L1) |
+| `if` and `for` nesting | 15 deep | refused at publish (R-L2) |
+| rendered output | 1 MiB (1,048,576 bytes, UTF-8) | the render fails with a sentence (R-L3) |
+| steps per render | 100,000, an engine setting, chapter 9 § 3.4 | the render fails with a sentence (R-L4) |
+| recursion | none possible | there's no `func` or `include`; snippet cycles are refused at publish (§ 5.3.2) |
+
+A render failure fails the node (or the deliverable) as a definition error: no retry. A prompt
+that fails to render is never sent. The failure follows the node's normal failure path, not
+`onInvalid`, which is about replies.
+
+**Carried over from version 30:**
+- **strict variables:** reading a member that doesn't exist is refused at publish, and a render
+  that meets one fails;
+- **dates render as ISO** (`%Y-%m-%d`) unless formatted;
+- **an empty list counts as false** where a truth value is read.
+
+#### 5.2.4 The invariant culture
+
+Every render runs in the invariant culture: English month and day names in `date.to_string`,
+culture-free case mapping in `string.upcase`, `downcase` and `capitalize`, and invariant number
+formatting. It's stated in the dialect and recorded in `lock.json`, so a host's culture can
+never change a note's bytes or hashes.
+A clinician's locale is [#1452](https://github.com/Consultologist/Consultologist-Blazor/issues/1452) (Milestone 40).
+
+#### 5.2.5 A body `if` tests recorded facts only
+
+A body `if`, in every template (snippet and macro bodies included), may test only facts the
+engine has already decided and recorded:
+
+| Fact | Written | Values |
+|---|---|---|
+| loop position | `for.first`, `for.last`, `for.index`, `for.even`, `for.odd` | as Scriban gives them |
+| an item's or node's state | `s.state == "completed"` | the closed set `completed`, `skipped`, `not_run` ([chapter 6 § 6.2](#662-item-states)) |
+| whether a check passed | `check.coverage.value.pass` | `true` or `false` |
+
+- The tests combine with `!`, `&&`, `||` and parentheses.
+- A `state` is compared only with a literal from the closed set.
+- **Testing anything else is refused:** a data value, an input, a node's text, a run fact. The
+  one exception is a renderer's body, which may test its own `value` (§ 5.5.1). The
+  sentence points to the header forms: a part (§ 5.7), a snippet's `if` (§ 5.6) or a macro's `if`
+  (§ 5.8). The revisit of this rule is [#1428](https://github.com/Consultologist/Consultologist-Blazor/issues/1428) (Milestone 40).
+- **Completeness:** an `if` that branches on a `state` must handle every state or end with an
+  `else`.
+  An `else` keeps the template safe when a state is added later.
+
+```scriban
+{{~ for s in node.sections.items ~}}
+{{~ if s.state == "completed" ~}}
+{{ s.value }}
+{{~ else if s.state == "skipped" ~}}
+{{~ else ~}}
+_{{ s.reason }}_
+{{~ end ~}}
+{{~ end ~}}
+```
+
+#### 5.2.6 Placement forms and whitespace
+
+A **placement** is an output tag whose expression is a unit: `snippet.<id>.content`,
+`part.<id>` or `macro.<id>` (each possibly qualified, `snippet.<folder>.<id>.content`).
+A snippet's text is read as `.content`, like a node's or an input's (§ 5.6.3); it's a placement
+because, like a part or a macro, it may be absent. Its text is entirely the
+author's: no rule on how it starts or ends.
+
+| Written | Result |
+|---|---|
+| `{{~ x }}` alone on its line, nothing after it | **allowed** (a block). When the unit is absent, an empty line remains. |
+| `{{ x }}` anywhere inside a line, including against a word (`diabetes{{ x }}.`) | **allowed** (inline). Nothing is removed. |
+| `{{ x }}` alone on its line | allowed: the indentation before it stays. The Editor writes `{{~ x }}` when inserting on an empty line. |
+| `~}}` on a placement | refused: it removes the line's newline, joining two lines |
+| `-` on a placement (`{{- x }}`, `{{ x -}}`) | refused: it removes blank lines between paragraphs |
+| `{{~ x }}` inside a line | refused: it removes the space the author wrote before it |
+| `{{~ x }}` with text after it on its line | refused: a block placement stands alone on its line |
+
+Scriban's markers, as tested on 7.2.5: `~` removes spaces and tabs on its side, and on the right
+also the one newline ending the line; `-` removes all whitespace on its side, blank lines
+included.
+
+**Statements and ordinary outputs** (`if`, `for`, `else`, `end`, `{{ node.x.content }}`) may
+use `~` on either side, as the renderer templates need for byte-exact output (§ 5.5.5).
+**`-` is refused on every tag,** not only placements, because it removes blank lines no preview
+explains.
+
+**The Editor** previews each placement with and without its unit, side by side. That's
+information, not a warning.
+
+### 5.3 What each template reads
+
+#### 5.3.1 The table
+
+| Site | Reads | Never |
+|---|---|---|
+| prompt | `node.*`, `input.*`, `check.*`, `item`, `pass`, `param` (in functions), `snippet.*`, `part.*` (its own node's), `macro.*`, the `renderer.` pipe, `run.*` | `profile.*`, `deliverable.*` |
+| `rendered` node | `node.*`, `input.*`, `check.*`, `item`, `pass`, `param`, `snippet.*`, the `renderer.` pipe, `run.*` | `profile.*`, `part.*`, `macro.*`, `deliverable.*` |
+| renderer | its piped `value` only | everything else, the `renderer.` pipe included |
+| snippet body | what the template that places it reads (§ 5.3.2) | what that template may not read; and, placed in a macro body, a part's text or a macro instruction, `macro.*` and `part.*` (the guard, § 5.6.3) |
+| part text | what its node's prompt reads, `macro.*` (§ 5.8.3) and `snippet.*` (under the guard) included; no `if` of its own | `profile.*`, `part.*` |
+| macro instruction | what the placing prompt reads, `snippet.*` (under the guard) included, except `macro.*` and `part.*`; its own marker (§ 5.8.4) | `profile.*` |
+| macro body | `node.*`, `input.*`, `check.*`, `item`, `pass`, `param`, `snippet.*`, the `renderer.` pipe, `run.*`, **plus `profile.*`** | `macro.*`, `part.*`, `deliverable.*` |
+| deliverable | `node.*`, `input.*`, `snippet.*`, `check.*` (not its own), `profile.*`, `run.*`, the `renderer.` pipe | `item`/`pass` outside its own `for`, `part.*`, `macro.*`, `deliverable.*` |
+
+The rules this table gives for macros and parts: a part's text may place a macro, which is then
+offered only when both the part's `if` and the macro's own `if` hold (§ 5.8.3); snippets may be
+placed in a part's text and in a macro's instruction, under the guard (§ 5.6.3); a renderer's body pipes
+into no renderer, so chaining happens only at a use site (§ 5.5.2) and renderers form no graph
+of their own.
+
+- **`run.*`** is the set `run.date`, `run.id`, `run.package`, `run.engine`, read under § 5.4's run
+  spot rule, piped to built-ins or renderers ([chapter 3](#3-expressions) defines the values). Inside a function, whether
+  `run.*` is read directly or only as a parameter is [chapter 4](#4-loops-and-functions)'s.
+- **`profile.*`** is never sent to a model, never read by a condition, and inside a function
+  arrives only as a parameter that reaches macro bodies
+  ([chapter 6 § 10](#610-the-profile)).
+- **`check.*`** in a prompt or `rendered` node is a dependency edge like any read. A body `if`
+  may test `check.x.value.pass` (§ 5.2.5).
+
+#### 5.3.2 Snippet and macro bodies are templates
+
+- **They're rendered in the scope where they're placed:** per item inside a loop, per pass
+  inside a `while`, and in the function's sealed scope inside a function.
+- **Their reads count as the placing node's reads.** They become dependency edges and are
+  recorded under that node.
+- **A snippet's body must check in every place it's placed.** Where a read isn't available
+  (`item` outside a loop, `profile.*` in a prompt), that placement is refused with a sentence
+  naming both the snippet and the place.
+- **Cycles are refused at publish:** a snippet or macro that, through its reads and
+  placements, reaches itself. A snippet placed in a part's text or a macro's instruction places
+  no `part.*` or `macro.*` at all (the guard, § 5.6.3).
+- **A macro body is rendered before literal substitution.** The model's reply is never rendered
+  (§ 5.8.6).
+
+### 5.4 Run spots and the two hashes
+
+**The rule:** an output expression that reads `run.*` reads nothing else, for example
+`{{ run.date | date.to_string "%d %B %Y" }}`. Each such expression is a **run spot**.
+A body's read of a **run-dependent** value (a `computed` value or decision derived from `run.*`,
+transitively, [chapter 3](#3-expressions)) is a run spot too, under the same rule.
+
+- **A run spot may pipe to built-ins and to renderers** (`{{ run.date | renderer.long_date }}`).
+  The spot covers the whole pipeline: the marker stands for its final output, and each
+  renderer's sub-row is marked run-dependent.
+- Run facts can't be tested in a body `if` (§ 5.2.5), can't feed a `for`, and can't be combined
+  arithmetically (§ 5.2.1).
+
+**Rendering, in three steps:**
+1. Render the body with every read substituted **except the run spots**. Each spot becomes a
+   marker naming its site: the literal text `{{run:<n>}}`, where `<n>` is the spot's 1-based
+   position in the body's source order. It's fixed text, so the hash below is
+   defined to the byte.
+2. Hash that text: the **run-neutral hash**. With the same inputs, package and libraries it's
+   identical across runs, whatever the date or job.
+3. Put each spot's output at the **position recorded while rendering** step 1, and hash the
+   result: the **sent-text hash**, which stays the body's main hash. The engine never searches
+   the text for `{{run:<n>}}`: a value that happens to hold those characters is left as it is.
+
+**Downstream text.** When a template reads a `rendered` or `computed` node, its run-neutral
+render uses that node's run-neutral text (a `rendered` node) or treats the read as a run spot
+(a run-dependent `computed` value). An agent's output has no neutral form: the model saw the
+real values, so a template reading it is run-specific through that read.
+
+**What a read of a run-dependent value does, by producer**:
+
+| The value read | In the run-neutral render | Kept permanently in the record |
+|---|---|---|
+| a raw `run.*` fact (`run.date`) | a run spot | the spot's output |
+| a run-dependent `computed` value | a run spot | its output only if it reads nothing but `run.*`; otherwise it follows 7-day retention (chapter 8) |
+| a run-dependent `rendered` node | that node's run-neutral text, its own spots kept as spots | as for that node's spots |
+| a run-dependent `agent` node's output | the output itself: the model saw the real values | nothing extra; it follows 7-day retention |
+| a run-dependent flow node's `ret` or call result | as its `ret`'s producer, by this table | as its `ret`'s producer |
+
+**A body with no run spot** has one hash. The record's `runNeutralHash` is written only when the
+body has a run spot, and is `null` otherwise (chapter 8).
+
+**The advance warning.** The Editor and publish say when a package reads `run.*` or a
+run-dependent value, naming each spot. The warning text is W-1 (§ Refusals). The record side
+(each spot's output and hash, the run facts kept once per run) is in chapter 8.
+
+### 5.5 Renderers
+
+A renderer turns a value into text. It's a package template, versioned with the package and
+embedded in `resolve.json`.
+
+#### 5.5.1 The file
+
+`renderers/<id>.md`, listed in `renderers/index.json` ([chapter 1](#1-files-and-scopes)). Its header is judged by the schema [`renderer`](v31/schemas/renderer.schema.json).
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | no | the display name |
+| `kind` | `"rendered"` | no | the mechanism; the folder gives the role |
+| `description` | array of strings (lines) | yes: none | for people only, never sent to a model |
+| `input` | a format name, or an inline schema | no | the format it accepts: any format, including `string` and text formats |
+| `format` | `"plaintext"`, `"markdown_block"` or `"markdown_inline"` | no | what it returns: always a text format |
+
+`description` is on every header ([chapter 1](#1-files-and-scopes)). **`input` is written like a
+node's `format`:** a name, or an inline schema.
+
+The body is a non-empty template that reads **only `value`**, the piped value (§ 5.3.1). A
+renderer is reproducible by construction: the same value always gives the same bytes. Its body
+pipes into no renderer (R-N7); chaining happens at a use site (§ 5.5.2).
+
+```
+renderers/concept_bullets.md
+---
+{ "label": "Concepts as bullets", "kind": "rendered", "description": null,
+  "input": "concept_list", "format": "markdown_block" }
+---
+{{~ if value.size == 0 ~}}
+(none)
+{{~ else ~}}
+…
+```
+
+(The `if` above tests a list's size, which § 5.2.5 refuses in other bodies. **A renderer's body
+may test its own `value` in an `if`**: a renderer decides nothing that's
+recorded, since its whole output is a function of `value`, hashed as one sub-row. Without this,
+the two built-in renderers can't be written.)
+
+#### 5.5.2 The call: a pipe to the root `renderer.`
+
+- **The one call form is the pipe:** `{{ node.extract_patient_concepts.value | renderer.concept_bullets }}`.
+  The call form (`renderer.concept_bullets(x)`) is refused.
+- **The root `renderer.`** can't collide with Scriban's built-ins or with `node.`, `check.`,
+  `input.`, `snippet.` and `macro.`.
+- **`.value` is the input,** the typed object: `node.x.value | renderer.concept_bullets`. The
+  node itself (`node.x | concept_bullets`) and its text (`node.x.content | …`) are not the input.
+- **Typed at publish:** the piped value's format must match the renderer's `input`. The
+  result's format is the renderer's `format`.
+- **Chaining is allowed where a template uses renderers**: `{{ node.extract.value | renderer.concept_list | renderer.bullets }}`.
+  Each step's output type is checked against the next renderer's `input` at publish, and each
+  step is its own sub-row (`…/render:1`, `…/render:2`, § 5.5.5).
+- **`run.*` may pipe to renderers** (`{{ run.date | renderer.long_date }}`): the run spot covers
+  the whole pipeline (§ 5.4).
+- **Allowed in:** prompts, `rendered` nodes, snippet bodies, part text, macro instructions,
+  macro bodies and deliverables. **Not in renderer bodies:** a renderer's own body may not pipe
+  into another renderer (R-N7).
+
+#### 5.5.3 Built-in renderers
+
+`concept_bullets` and `concept_context` are written as templates.
+The C# renderers (`ConceptRenderers`, `WorkflowConceptRenderers`) **stay in version 31 as the
+byte-equivalence reference** and are removed in Milestone 40 ([#1404](https://github.com/Consultologist/Consultologist-Blazor/issues/1404)).
+
+- **The proof:** a test renders each template and compares it byte for byte with the C# output,
+  on the Editor's fixture and every edge case (empty, not SNOMED, inactive, with and without
+  `support`). The pitfalls are booleans (`True`/`False`), line endings (no trailing newline) and
+  `concept_context`'s `source` and blank `support`.
+- **The built-in renderers are Scriban templates in the package-format registry**, [`v31/renderers/concept_bullets.md`](v31/renderers/concept_bullets.md) and [`v31/renderers/concept_context.md`](v31/renderers/concept_context.md): read-only, versioned and locked like the operations (in `requires`, and in
+  `lock.json`'s `builtins`, chapter 7), and embedded in
+  `resolve.json`. **Their ids are reserved:** a package renderer may not take one (R-N6,
+  [chapter 1](#1-files-and-scopes)). Scoping between built-in, catalogue and package ids is
+  [#1469](https://github.com/Consultologist/Consultologist-Blazor/issues/1469).
+- **`concept_context` reads `source` on each concept,** a member the `concept_list` format does not declare: the value piped into it is the stored concept list, with `source` stamped from the producing node, so the format and the stored value differ by that one member.
+- **A loop's `.content`** keeps version 30's bytes (`## label`, then the text, joined by blank
+  lines) as a standard rendering typed `markdown_block`.
+
+#### 5.5.4 Media-type warnings
+
+Each text format carries `contentMediaType`, and Markdown carries `x-markdown: block | inline`
+([chapter 2](#2-types-and-inputs)). Publish warns (W-2) when a `markdown_block` renderer is
+piped inside a line.
+
+#### 5.5.5 In the record and History
+
+A renderer use is not a node: it isn't scheduled, waits on nothing and can't fail on its own.
+It's a **sub-row of the node (or deliverable) that uses it**, one per pipe use, in source order,
+per instance, **keyed by the use's position** (`node.identify_problem/render:1`); inside a loop, the item path comes
+first, then the render site (`node.sections.paragraphs.draft_paragraph:2/1/render:1`).
+Each holds the renderer's id, its template hash, the source read, the input hash and size, and
+the output hash and length.
+A chain gives one sub-row per step, in pipe order. Every key is written with its root
+([chapter 1](#1-files-and-scopes)).
+The text itself follows the 7-day retention sweep. History shows the sub-rows under the node
+when it's expanded. The diagram draws them inside the node's frame (chapter 9).
+
+### 5.6 Snippets
+
+A snippet is **input text: the model reads it**, and may use, paraphrase or ignore it. Its body is a
+template (§ 5.3.2).
+
+#### 5.6.1 A single snippet
+
+`snippets/<id>.md`, whose header is judged by the schema [`snippet`](v31/schemas/snippet.schema.json):
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | no | the display name |
+| `description` | array of strings | yes: none | for people only, never sent to a model |
+| `if` | JSON Logic | yes: always | whether the snippet's text is placed |
+| `format` | `"plaintext"`, `"markdown_block"` or `"markdown_inline"` | no | the body's text format, so a deliverable's strict reads ([chapter 6 § 6.4](#664-strict-formats)) can check it |
+
+The body must be non-empty and suit `format`. **A snippet's header is these four members,** with
+a text format ([chapter 1](#1-files-and-scopes)). Data types for snippets are [#1467](https://github.com/Consultologist/Consultologist-Blazor/issues/1467).
+
+#### 5.6.2 Snippet folders
+
+A snippet folder's `index.json`, judged by the schema [`snippet-folder-index`](v31/schemas/snippet-folder-index.schema.json), holds `description`, `items` (the ids, in order) and a
+**`format`**: each item's header is its **value**, checked against that format,
+and its body is its **content**. A header's `label` no longer names the item; the loop's
+`itemLabel` does ([chapter 4](#4-loops-and-functions)).
+
+```
+snippets/standards/index.json
+{ "description": [ "The nine standard sections of a consult note, in order." ],
+  "items": [ "hpi", "pmh", "medications", "allergies", "social_history",
+             "family_history", "exam", "investigations", "assessment_plan" ],
+  "format": "standard_section" }
+
+snippets/standards/hpi.md
+---
+{ "title": "History of Present Illness" }
+---
+Chronological prose narrative. Open with a one-sentence orientation to the patient …
+```
+
+- A folder is read by a loop (`"in": "snippet.standards"`), where `item.value.title` is the
+  header and `item.content` the body, rendered in the loop's scope.
+- **Folder items carry no `if`**: a folder item's header is data, so a
+  folder's size is its number of files, and conditional inclusion of a folder item is an `if`
+  branch in the loop body, as `example-conditional-sections` does with `applies`. Dynamic folder
+  sizes are [#1468](https://github.com/Consultologist/Consultologist-Blazor/issues/1468).
+- **A folder item's body may be empty**: its `item.content` is then `""`, and its header
+  still carries the value. Revisiting this is [#1484](https://github.com/Consultologist/Consultologist-Blazor/issues/1484).
+
+#### 5.6.3 Placing a snippet
+
+- **A snippet is read as `snippet.<id>.content`**, the same member rule as
+  `input.<id>.content` and `node.<id>.content`: `{{~ snippet.<id>.content }}` alone on a line, or
+  `{{ snippet.<id>.content }}` inside a line (§ 5.2.6). A bare `snippet.<id>` is refused (R-S3). A
+  folder item outside a loop is `snippet.<folder>.<id>.content`.
+- **Its `if` is evaluated at each placement**, under that place's read rules (§ 5.3.1): a
+  snippet placed in two prompts is decided twice, and its `if` must be readable at every place
+  that places it (R-R3).
+- When its `if` holds, its rendered body is spliced in. When it doesn't, nothing is, and the
+  decision is recorded with its reason.
+- **Placed in:** prompts, `rendered` nodes, other snippets, macro bodies, deliverables, **a
+  part's text and a macro's instruction**.
+- **The guard:** a snippet placed in a part's text or a macro's instruction may not place
+  `part.*` or `macro.*`, directly or through a snippet it places (R-S4). Otherwise it reads what
+  its host reads. This rules out a part inside a part and a macro inside an instruction.
+  Narrowing the guard to refuse only an actual cycle is [#1476](https://github.com/Consultologist/Consultologist-Blazor/issues/1476) (Milestone 40).
+
+### 5.7 Parts
+
+A part is **short conditional prompt text that belongs to one agent node**.
+Longer or shared conditional text is a snippet with an `if`.
+
+#### 5.7.1 The member
+
+`parts`, in an agent node's header, required:
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `parts` | object keyed by part id | yes: none | the node's parts. `{}` also means none. |
+| `parts.<id>.if` | JSON Logic | yes: always | whether the part's text is placed |
+| `parts.<id>.text` | array of strings | no | the lines, joined with `\n`; a blank line is `""` |
+
+- A part id follows the one id rule (`^[a-z][a-z0-9_]*`, at most 64 characters) and the reserved
+  list ([chapter 1](#1-files-and-scopes)). The member `parts` and the root `part.<id>` keep their
+  names.
+- `text` is always an array, never a single string. No newline is added after the last line.
+- The text may use presentation templating (§ 5.3.1), may place a macro (§ 5.8.3) and snippets
+  (under the guard, § 5.6.3), but has no `if` and places no `part.*`.
+- Parts are allowed on `kind: agent` nodes only.
+
+#### 5.7.2 Placing a part
+
+The body places each part with `{{~ part.<id> }}` or `{{ part.<id> }}` (§ 5.2.6).
+- A placement naming no declared part is refused (R-P1).
+- A declared part the body never places is refused (R-P2).
+- **Each part is placed exactly once** (R-P3): a part placed twice would
+  record one decision for two texts.
+
+```
+nodes/standards/section_instructions.md
+---
+{ "kind": "agent", "producer": "generated", "label": "Applying section instructions", "description": null,
+  "format": "plaintext", "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "onInvalid": "fail", "failIfEmpty": null, "ordered": false,
+  "parts": {
+    "no_standard": {
+      "if": { "blank": [ { "var": "item.content" } ] },
+      "text": [ "No changes. Preserve the patient-updated draft's clinical content and",
+                "produce polished final prose for this section." ] } },
+  … }
+---
+Requested section:
+{{ item.value.title }}
+
+Section standard and section-specific instructions:
+{{~ part.no_standard }}
+{{ item.content }}
+```
+
+(A body `if` that tests `(item.content | string.strip) == ""` is refused (§ 5.2.5). The test
+moves to the part's `if`, using the `blank` operation ([chapter 3](#3-expressions)), and is
+recorded. How the migration from version 30 rewrites such a test is chapter 10's.)
+
+### 5.8 Macros
+
+A macro is **output text: guaranteed exact, placed by the model.** The model decides only
+**where** it goes. Whether it applies is decided before the prompt is sent, by its header `if`,
+and recorded.
+
+| | Snippet | Macro |
+|---|---|---|
+| Side | input: the model reads it | output: it ends up in the result |
+| The model | may use, paraphrase or ignore it | only places its marker |
+| The text | part of the prompt | inserted verbatim, never rewritten |
+
+#### 5.8.1 The file
+
+`macros/<id>.md`, or `macros/<folder>/<id>.md`, whose header is judged by the schema [`macro`](v31/schemas/macro.schema.json):
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | no | the display name |
+| `description` | array of strings | yes: none | for people only, never sent to a model |
+| `if` | JSON Logic | yes: always triggered | whether the macro is offered |
+| `format` | `"plaintext"`, `"markdown_block"` or `"markdown_inline"` | no | the body's text format |
+| `instruction` | array of strings | no | where to place it, joined with `\n` |
+
+- `layout` and `at:` placements are gone (§ 5.10).
+- The body is the macro's content: non-empty, a template (§ 5.3.1), checked against `format`.
+
+**A macro folder's `index.json`** (schema [`macro-folder-index`](v31/schemas/macro-folder-index.schema.json)) carries `description`, `items` and an **`if`**
+(`null` for always). When a folder and a macro both have an `if`, **both must hold**, and the
+record shows which was false. The folder is a namespace: `macro.<folder>.<id>`.
+
+#### 5.8.2 Whether: the header `if`
+
+- The `if` may read anything a condition reads ([chapter 3](#3-expressions)), typically a
+  **classifier node**: an ordinary `kind: agent` node (`producer: "generated"`) with the built-in
+  format `judgement` (`{ answer: boolean, reason: plaintext }`), read as
+  `node.<id>.value.answer`; the record and History show its `reason` beside the answer.
+- **It's evaluated in the scope where the macro is placed:** per item when it reads a node in
+  the loop body, once when it reads a node outside. Inside a function it's the function's
+  sealed scope, and the `if` may not name a `param` (R-M10).
+- **Per-run choices are optional boolean inputs** the `if` reads:
+  a choice that defaults off is `{ "===": [ { "var": "input.x.value" }, true ] }`; one that
+  defaults on is `{ "!==": [ { "var": "input.x.value" }, false ] }`, which holds while the input
+  is unset. An explicit `default` is [#1456](https://github.com/Consultologist/Consultologist-Blazor/issues/1456) (Milestone 40).
+- **A per-run choice input takes the macro's id and label**, and is joined
+  with `and` to any existing `if`. The Create page shows three states (unset, yes, no), and unset
+  is sent as `null`. A migrated choice whose id is already an input's id gets the suffix
+  `_macro` (`letrozole` → `letrozole_macro`), reported by the migration.
+- One classifier per macro, per node, per item. A classifier answering several questions is
+  [#1416](https://github.com/Consultologist/Consultologist-Blazor/issues/1416) (Milestone 40).
+
+#### 5.8.3 Where: placing the instruction
+
+- The prompt places the macro with `{{~ macro.<id> }}` or `{{ macro.<id> }}` (§ 5.2.6).
+- **Only triggered macros reach the prompt.** A triggered placement renders the instruction; an
+  untriggered one renders nothing.
+- The instruction says only where: never "if …, otherwise nothing".
+- **Only `kind: agent` nodes place macros**: in the prompt, in one of the node's parts' text, or
+  through a snippet placed in the prompt. A `rendered` or `computed` node, a deliverable, a macro
+  instruction, a macro body, and a snippet placed in a part's text or a macro's instruction place
+  none.
+- **A part's text may place a macro**. The macro is then offered only when
+  both the part's `if` and the macro's own `if` hold, and its row links both decisions (§ 5.8.8).
+- **The node's `producer` is `generated` and its `format` a text format** (`plaintext`,
+  `markdown_block`, `markdown_inline`). A marker has no place in an object reply.
+- **Format match**: Markdown content into a `plaintext` node is refused
+  (R-M5); a `markdown_block` macro is refused in a `markdown_inline` node; a `plaintext`
+  macro in a Markdown node is escaped as plain text is in deliverables
+  ([chapter 6 § 6.4](#664-strict-formats)), and the content hash is
+  taken after escaping.
+- **Two nodes may place the same macro;** if both trigger it, the text appears twice. **A macro
+  is placed once per template,** counting the text of the node's parts (R-M7). The same macro twice in one template is [#1457](https://github.com/Consultologist/Consultologist-Blazor/issues/1457) (Milestone 40).
+
+#### 5.8.4 The marker
+
+**The marker is `macro.<id>.content`** (qualified: `macro.<folder>.<id>.content`). Each
+instruction contains its own macro's marker **exactly once**, in one of two forms, and no other
+macro's marker:
+
+| Form in the instruction | What the model must write |
+|---|---|
+| `{{~ macro.<id>.content }}` alone on a line of the instruction | the marker alone on its own line (a block) |
+| `{{ macro.<id>.content }}` inside a line | the marker inside a sentence (inline) |
+
+When the instruction is rendered, **its marker renders as its own literal source text**
+(`macro.<id>.content` between its braces), so the model sees exactly the marker to write. The
+dialect treats the marker as literal inside an instruction.
+
+```
+macros/letrozole_prescription_text.md
+---
+{ "label": "Letrozole prescription text", "description": null,
+  "if": { "===": [ { "var": "node.prescribes_letrozole.value.answer" }, true ] },
+  "format": "plaintext",
+  "instruction": [
+    "Place the following marker, alone on its own line, in the assessment and plan,",
+    "after the medication discussion:",
+    "{{~ macro.letrozole_prescription_text.content }}" ] }
+---
+Discussed side effects including: hot flashes, joint or muscle pain, fatigue, headache, nausea,
+and bone thinning. Advised to monitor side effects.
+```
+
+The classifier is an ordinary node file, for example `nodes/standards/prescribes_letrozole.md`
+(`kind: agent`, `producer: "generated"`, format `judgement`), and shows in the graph and the record like any node.
+
+#### 5.8.5 Order
+
+**`ordered`, `true` or `false`, is a required member of every `kind: agent` node header**. `true` requires the triggered markers in the reply in the order their
+placements appear in the prompt; `false` accepts any order.
+
+#### 5.8.6 Processing the reply
+
+The reply is **never rendered**. Rendering it would run whatever the model wrote between braces
+(template injection), break legitimate braces and run code no checker saw. The engine replaces
+exact marker strings literally.
+
+**1. The check:**
+- every triggered macro's marker appears **exactly once**, in the form its instruction asked
+  for;
+- no marker of an untriggered macro appears;
+- a marker naming an unknown macro is an error;
+- near-misses (`{{macro.x.content}}`, `{{ macro.X.content }}`) aren't markers: the triggered
+  macro then counts as missing;
+- with `ordered: true`, the markers appear in order.
+
+**2. Invalid** (each goes to the node's `onInvalid`: `retry` asks again, `fail` fails the job
+naming the macro):
+- a marker missing, repeated, unknown, or out of order;
+- `{{~ … }}` written inside a sentence;
+- `{{ … }}` written alone on a line when the block form was asked for;
+- any text other than spaces after a block marker on its line.
+
+**3. The replacement:**
+
+| Marker in the reply | What the engine does |
+|---|---|
+| `{{~ macro.x.content }}` alone on its line | removes the indentation before the marker, replaces the marker with the macro's rendered body, **removes any spaces after it**, and keeps the line's newline |
+| `{{ macro.x.content }}` inside a line | replaces the marker exactly where it is |
+
+Trailing spaces after a block marker are removed, never a failure: in Markdown two spaces make a
+hard line break, and in plain text they'd still be in the hashed bytes.
+
+**4. The body** is rendered by the engine, in the placing scope, **before** substitution
+(§ 5.3.2). It's the package's own text, checked at publish. **A body that reads `profile.*`
+makes the node's value profile-carrying** ([chapter 3 § 4.6](#346-profile-carrying-is-contagious)): a prompt, a part or a
+condition that reads that value afterwards is refused at publish (R-R6); a deliverable may read it.
+
+**A retry message never quotes the reply**: a `retry` sends fixed engine text
+naming each macro and what was wrong, since the reply may hold patient text.
+
+#### 5.8.7 What publish checks
+
+- **Each instruction:** its own marker exactly once, in an allowed form; no other macro's
+  marker; no `macro.*` or `part.*` placement; snippets only under the guard (§ 5.6.3); no
+  `profile.*`.
+- **Each template:** a macro placed at most once, counting its parts' text.
+- **Each body:** it suits `format` (no Markdown in a `plaintext` macro); no markers; no
+  placement of `macro.*` or `part.*`; its reads within § 5.3.1's macro-body column; no cycles.
+
+#### 5.8.8 In the record
+
+A **macro row per macro per node instance**,
+a sub-row keyed `…/macro:<id>`, with its decision at `…/if:<site>`, for example `node.standards.assessment:7/macro:letrozole_prescription_text`
+and `node.standards.assessment:7/if:macro.letrozole_prescription_text`:
+- whether it was **offered**, linking to its `if` decision (and the folder's, and the part's when
+  a part's text placed it) and to the classifier's row;
+- whether it was **placed**: its marker found exactly once;
+- its **content hash** (the rendered body);
+- when the marker was missing, repeated or altered, the node's `onInvalid` outcome, on the
+  node's row.
+
+Under a loop the rows are per item, and History and the lineage show them under each
+item. The shape of the rows is chapter 8's.
+
+### 5.9 Decisions recorded for snippets and parts
+
+Every header `if` decision (a snippet's, a part's, a macro's, a macro folder's) is an entry in
+the job's one `decisions` list (chapter 8): its site, the printed
+condition, its result, a hash of each value it read, whether it was run-dependent, and an
+`expressionHash` of its canonical JSON Logic. Rows link to their decisions by id. Reasons read,
+for example, *"skipped: input.kind.value = "table" is false"*; the
+printer shows `=` and `≠` ([chapter 3](#3-expressions), chapter 8). A placed unit's
+text is recorded by hash under the node that placed it.
+
+### 5.10 What changes from version 30
+
+| At 30 | At 31 |
+|---|---|
+| Scriban conditions in bodies (`{{ if input.x == "y" }}`) decide what the model sees, unrecorded | a body `if` tests recorded facts only; decisions are parts, snippet `if`s and macro `if`s, recorded |
+| any Scriban built-in the walker accepts, arithmetic, assignment | the dialect's closed list (§ 5.2) |
+| the host's culture | the invariant culture |
+| `concept_bullets`, `concept_context` are C#, piped the node: `node.x \| concept_bullets` | renderers are templates in `renderers/`, piped `.value`: `node.x.value \| renderer.concept_bullets` |
+| a snippet header holds `label`, which names folder items | a single snippet has `label`, `description`, `if` and `format`; a folder item's header is typed data, with no `if`; `itemLabel` names items |
+| `{{ snippet.x.content }}`, placed in prompts and deliverables | unchanged, now a placement (§ 5.2.6); also placed in parts' text and macro instructions, under the guard |
+| `prose`, and the `agent_*` formats | the plain format of the same shape (`plaintext`, `markdown_block`, `markdown_inline`); the node's `producer` says a model wrote it ([chapter 2 § 1.3](#213-producer)) |
+| a macro's `instruction` is one string, often "if …, otherwise nothing"; the prompt places `{{ macro.x.prompt }}` | `instruction` is lines saying only where, with the marker; `if` decides whether; `{{ macro.x }}` |
+| `at: before`, `after`, `append`, item-level placements, deliverable macros | removed: fixed text is a snippet read in the deliverable template |
+| optional at most once, required exactly once | triggered exactly once, untriggered never |
+| prompt hashes vary with run facts and nothing says so | run spots, with a run-neutral hash beside the sent-text hash |
+
+### 5.11 Refusals
+
+Every sentence below is used as written; chapter 11 lists every sentence of this format. `<…>`
+marks a placeholder.
+
+**The dialect**
+- R-D1: *"\<Subject\> uses \<construct\> at line \<n\>; templates present text and may not use assignment, capture, func, include, import, with, wrap, while, break, continue, case, tablerow or arithmetic."*
+- R-D2: *"\<Subject\> calls \<built-in\> at line \<n\>; the allowed built-ins are string.upcase, string.downcase, string.capitalize, string.strip, array.join, array.size and date.to_string."*
+- R-D3: *"\<Subject\> calls truncate at line \<n\>; truncate cuts clinical text."*
+- R-D4: *"\<Subject\> calls object.default at line \<n\>; choosing text is a decision: put it in a header condition."*
+- R-D5: *"\<Subject\> calls date.to_string at line \<n\> without a pattern; write the pattern, for example "%d %B %Y"."*
+- R-D6: *"\<Subject\> runs a for over \<expr\> at line \<n\>; a for runs over a list."*
+- R-D7: *"\<Subject\> tests \<expr\> in a body if at line \<n\>; a body if tests only loop position, state and whether a check passed. Decide it in a header: a part, a snippet's if or a macro's if."*
+- R-D8: *"Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else."*, generalised as *"\<Subject\> branches on \<expr\> and handles \<states\>, but not \<missing\>: add it or an else."*
+- R-D9: *"\<Subject\> compares \<expr\> with "\<value\>" at line \<n\>; a state is completed, skipped or not_run."*
+- R-D10: *"\<Subject\> reads \<path\> at line \<n\>, which \<format or root\> doesn't have."*
+- R-D11: *"\<Subject\> reads \<path\>[\<n\>] at line \<n\>, a position in a list; lists are read whole, with a for, or by identity through .items."*
+
+**Limits**
+- R-L1: *"\<Subject\> stopped rendering: the for at line \<n\> reached 1,000 iterations."*
+- R-L2: *"\<Subject\> nests if and for \<n\> deep at line \<m\>; the limit is 15."*
+- R-L3: *"\<Subject\> stopped rendering: its output passed 1 MiB."*
+- R-L4: *"\<Subject\> stopped rendering: it took more than \<limit\> steps."*
+
+**Placements**
+- R-W1: *"\<Subject\> places \<unit\> with ~}} at line \<n\>; it removes the line's newline, joining two lines. Use {{~ \<unit\> }} alone on a line."*
+- R-W2: *"\<Subject\> places \<unit\> with - at line \<n\>; it removes blank lines between paragraphs."*
+- R-W3: *"\<Subject\> places {{~ \<unit\> }} inside a line at line \<n\>; it removes the space before it. Use {{ \<unit\> }}."*
+- R-W4: *"\<Subject\> has text after {{~ \<unit\> }} at line \<n\>; a block placement stands alone on its line."*
+- R-W5 (§ 5.2.6): *"\<Subject\> uses - at line \<n\>; it removes blank lines between paragraphs. Use ~."*
+
+**Reads**
+- R-R1: *"\<Subject\> reads \<root\> at line \<n\>; \<site\> reads \<allowed roots\>."*
+- R-R2: *"Node '\<id\>' reads profile.\<field\>; the clinician's profile is never sent to a model. Read it in a deliverable or a macro body."*
+- R-R3: *"Snippet '\<id\>' reads \<path\>, which isn't available where \<subject\> places it at line \<n\>."*
+- R-R4: *"\<Kind\> '\<id\>' reaches itself: \<chain\>."*
+- R-R6: *"\<Subject\> reads \<path\> at line \<n\>, which carries profile text through macro '\<id\>'; a prompt or a part doesn't read profile text. Read it in a deliverable."*
+- R-R5: *"\<Subject\> reads \<path\> and run.\<fact\> in one output at line \<n\>; an output that reads a run fact reads nothing else."* (also for a run-dependent value: *"… reads \<path\> and the run-dependent \<value\> in one output …"*)
+
+**Renderers**
+- R-N1: *"\<Subject\> pipes \<source\> (\<format\>) into renderer.\<id\>, which renders \<input format\>."*, for example *"Node 'identify_problem' pipes node.plan.value (section_plan) into renderer.concept_bullets, which renders concept_list."*
+- R-N2: *"Renderer '\<id\>' declares format \<format\>; a renderer returns plaintext, markdown_block or markdown_inline."*
+- R-N3: *"Renderer '\<id\>' reads \<root\>; a renderer reads only the value piped into it."*
+- R-N4: *"\<Subject\> calls renderer.\<id\> at line \<n\>; pipe into it: \<value\> | renderer.\<id\>."*
+- R-N5: *"\<Subject\> pipes into renderer.\<id\>, which this package doesn't define."*
+- R-N6: *"Renderer '\<id\>' takes the id of a built-in renderer."*
+- R-N7: *"Renderer '\<id\>' pipes into renderer.\<other\> at line \<n\>; chain renderers where they're used, not inside a renderer."*
+- R-N8: *"\<Subject\> pipes renderer.\<id\> (\<format\>) into renderer.\<next\>, which renders \<input format\>."*
+
+**Snippets**
+- R-S1: *"\<Subject\> places snippet.\<id\>, which this package doesn't define."*
+- R-S2: *"Snippet '\<folder\>/\<id\>' has a header that doesn't match format \<format\>: \<schema error\>."*
+- R-S3 (§ 5.6.3): *"\<Subject\> reads snippet.\<id\> at line \<n\>; read its text as snippet.\<id\>.content."*
+- R-S4 (§ 5.6.3): *"Snippet '\<id\>' places \<part.\* or macro.\*\>, and \<subject\> places it in \<a part's text | a macro's instruction\>; a snippet placed there doesn't place parts or macros."*
+
+**Parts**
+- R-P1: *"Node '\<id\>' places part.\<name\>, which its header doesn't declare."*
+- R-P2: *"Node '\<id\>' declares part '\<name\>' but never places it."*
+- R-P3: *"Node '\<id\>' places part.\<name\> \<n\> times; place a part once."*
+- R-P4: *"Node '\<id\>' declares parts, and only agent nodes have parts."*
+- R-P5: *"Part '\<name\>' of node '\<id\>' uses \<if or part.\*\>; a part's text only presents."*
+
+**Macros**
+- R-M1: *"Macro '\<id\>' places macro.\<other\> in its body; a macro body is output text, written after the model replies. Put shared text in a snippet and place it in both."* (and for `part.*`: *"Macro '\<id\>' places part.\<name\> in its body; …"*, the rest unchanged)
+- R-M2: *"Macro '\<id\>' places \<macro.\* or part.\*\> in its instruction; combine instructions by placing each macro in the prompt."*
+- R-M3: *"Macro '\<id\>' has \<n\> markers in its instruction; it must hold {{~ macro.\<id\>.content }} or {{ macro.\<id\>.content }} exactly once."*
+- R-M4: *"Macro '\<id\>' has the marker of macro '\<other\>' in its instruction."*
+- R-M5: *"Node '\<id\>' places macro.\<macro\>, whose format is \<format\>; an \<node format\> node takes \<allowed\>."*
+- R-M6: *"\<Subject\> places macro.\<id\>; only agent nodes place macros, in their prompt or a part's text."*
+- R-M7: *"\<Subject\> places macro.\<id\> twice, counting its parts' text; place a macro once in a template."*
+- R-M11: *"Node '\<id\>' places macro.\<macro\>, and returns \<format\>; macros are placed only in agent nodes returning a text format."*
+- R-M8: *"Macro '\<id\>' has format \<format\>, and its body \<reason, e.g. writes Markdown at line 2\>."*
+- R-M9: *"Macro '\<id\>' has a marker in its body; a body is the text that replaces the marker."*
+- R-M10: *"Macro '\<id\>' reads param.\<name\> in its if; decide outside the function and pass the answer in, or classify inside it."*
+
+**Invalid replies** (sent to `onInvalid`, recorded on the node's row)
+- V-1: *"The reply has no marker for macro '\<id\>'."*
+- V-2: *"The reply has the marker for macro '\<id\>' \<n\> times."*
+- V-3: *"The reply has a marker for macro '\<id\>', which wasn't offered."*
+- V-4: *"The reply has a marker for '\<id\>', which isn't a macro."*
+- V-5: *"The reply writes the marker for macro '\<id\>' \<inside a sentence | alone on a line\>, but it was asked for \<alone on a line | inside a sentence\>."*
+- V-6: *"The reply has text after the marker for macro '\<id\>' on its line."*
+- V-7: *"The reply has the markers out of order: '\<id\>' before '\<other\>'."*
+
+**Warnings** (publish and the Editor; not refusals)
+- W-1: *"\<Subject\> reads \<run.fact or run-dependent value\> at line \<n\>. Its main hash differs between runs; runs are compared on the run-neutral hash."*
+- W-2: *"\<Subject\> pipes renderer.\<id\>, a markdown_block, inside a line at line \<n\>."*
+
+## 6. Checks, deliverables and the profile
+
+This chapter defines verification and output: checks in their own folder and root, check loops
+aligned with a production loop's items and the aggregate checks that gate a document, deliverables
+as files with composition templates, derived sources, authored headings, `whenEmpty`, gating and
+delivery, and the closed list of profile fields a template may read. The template language itself,
+and what each template may read, is [chapter 5](#5-templates-and-macros). Personal macros are
+[#1417](https://github.com/Consultologist/Consultologist-Blazor/issues/1417) (Milestone 40): a clinician's fixed boilerplate is a profile field (§ 6.10), not a
+macro.
+
+### 6.1 Checks: the folder and the root
+
+A check is **verification, not production:** nothing it produces goes into a note. It has its
+own folder, root, record section and History section.
+
+```
+nodes/     production: agents, rendered and computed nodes, loops, branches, calls
+checks/    verification: what gates a deliverable
+  index.json
+  coverage.md
+```
+
+- **The root is `check.<id>`,** singular like `node.`; the folder is plural like `nodes/`.
+- **Separate namespaces:** `node.coverage` and `check.coverage` may both exist. Record keys are
+  rooted at `node.` or `check.`, with the qualified-key rules inside each
+  ([chapter 1](#1-files-and-scopes)).
+- **The folder gives the role, `kind` the mechanism, and `format` is always `check_result`.**
+  In version 31 the mechanism is `kind: computed`, one JSON Logic expression in the member
+  `expression`.
+  A model-judged check (`kind: agent`) is left for later.
+- **`op` and `with` are retired.** The operations are called inside the expression.
+- **The body is empty** ([chapter 1](#1-files-and-scopes)).
+
+#### 6.1.1 The file
+
+`checks/<id>.md` holds the members of a `computed` node ([chapter 3](#3-expressions)), with the following; its header is judged by the schema [`check`](v31/schemas/check.schema.json):
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | no | the display name |
+| `description` | array of strings | yes: none | for people only |
+| `kind` | `"computed"` | no | the mechanism |
+| `format` | `"check_result"` | no | always; any other value is refused (R-C2) |
+| `reproducible` | `true` | no | as on every node header, checked against the derived value ([chapter 1](#1-files-and-scopes)) |
+| `producer` | `"computed"` | no | as on every node header, checked against the kind ([chapter 2 § 1.3](#213-producer)) |
+| `modelDerived` | boolean | no | as on every node header, checked against the derived value: `true` when the check reads model output, directly or through other values ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
+| `runDependent` | boolean | no | as on every node header, checked against the derived value: `true` when the check reads `run.*` or a run-dependent value ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
+| `profileCarrying` | boolean | no | as on every node header, checked against the derived value: `true` when the check reads a profile-carrying value ([chapter 3 § 4.6](#346-profile-carrying-is-contagious)) |
+| `if` | JSON Logic | yes: always | whether the check runs; in a check loop, typically skips unrun items. **A gate check's `if`** (a check a deliverable's `check` names) **may not read a value that can be `null`** (R-C10), so a gate is never skipped by a missing value |
+| `expression` | JSON Logic | no | an expression returning `check_result` (§ 6.2) |
+
+```
+checks/coverage.md
+---
+{ "kind": "computed", "producer": "computed", "label": "Terms covered", "description": null, "format": "check_result",
+  "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null,
+  "expression": { "terms_subset": [ { "var": "node.extract_input_terms.value" },
+                                    { "var": "node.extract_note_terms.value" },
+                                    "The note does not cover every clinical term found in the referral." ] } }
+---
+```
+
+#### 6.1.2 Who reads checks, and what checks read
+
+- **Nodes may read checks:** a prompt, a `rendered` node, a `computed` node or a condition may
+  read `check.x.value`, as a dependency edge like any read.
+- **Deliverables may read checks,** except a check on that deliverable (§ 6.6.3).
+- **Checks may read** nodes, inputs, other checks, and **a deliverable's `.content`** (that's
+  how a document is proofread before release, § 6.7). A deliverable is readable by checks only.
+- **A deliverable's `check` names only a `check.*`,** never a production node.
+- **`check_result` as data:** a `computed` node in `nodes/` (or inside a function) may return a
+  `check_result` as data only. It gates nothing: **only a `check.*` can gate a deliverable**.
+- **Scheduling is unchanged:** a check sits in the dependency graph after what it reads, and is
+  recorded with its hashes. A failing check never stops production; its effect comes only
+  through what reads it.
+
+### 6.2 `check_result` and the three check operations
+
+#### 6.2.1 The format
+
+`check_result` is an object format in the package-format registry's built-ins
+([chapter 2](#2-types-and-inputs), [`v31/formats/check_result.json`](v31/formats/check_result.json)); a check that returns it has `producer: "computed"`. Version 30's `terms_subset`
+output is `{ pass, uncovered, untested }`. Version 31 has two more operations returning it, so
+there's **one shape for all three, every member present**:
+
+```jsonc
+{ "type": "object", "additionalProperties": false,
+  "required": [ "pass", "message", "uncovered", "untested", "passed", "total" ],
+  "properties": {
+    "pass":      { "type": "boolean" },
+    "message":   { "type": [ "string", "null" ] },
+    "uncovered": { "type": [ "array", "null" ], "items": { "type": "string" } },
+    "untested":  { "type": [ "array", "null" ], "items": { "type": "string" } },
+    "passed":    { "type": [ "integer", "null" ] },
+    "total":     { "type": [ "integer", "null" ] } } }
+```
+
+| Member | Meaning |
+|---|---|
+| `pass` | whether the check passed; what a body `if` and a gate test |
+| `message` | the operation's `failWith` sentence when `pass` is `false`; `null` when it passed |
+| `uncovered`, `untested` | `terms_subset`'s lists, as version 30 computes them; `null` from the aggregates |
+| `passed`, `total` | the aggregates' counts; `null` from `terms_subset` |
+
+**Retention goes by where text came from, not what it says**:
+- **`uncovered` and `untested`** come from inputs, so they follow the text retention rule: kept
+  7 days, then deleted, with their hash kept for good This holds for every package,
+  medical or not.
+- **`message`** is package text (the author's `failWith`), so it's kept, as are `pass` and the
+  counts.
+
+#### 6.2.2 Signatures
+
+Fixed arity, versioned like the other built-in operations (in `requires` and `lock.json`):
+
+| Operation | Arguments | Returns | Passes when |
+|---|---|---|---|
+| `terms_subset` | `of` (concept_list), `in` (concept_list), `failWith` (string literal) | `check_result` | every concept of `of` appears in `in`, as at version 30 |
+| `all_pass` | `list` (of `check_result`), `failWith` (string literal) | `check_result` | every judged element passed; a `null` or empty list fails (below) |
+| `count_pass` | `list` (of `check_result`), `min` (non-negative integer literal), `failWith` (string literal) | `check_result` | at least `min` judged elements passed |
+
+- **`failWith` must be a literal string,** checked at publish: a failed check speaks the
+  package's own sentence, never a computed one.
+- **`list` may be a check loop's `.items`,** as in
+  `{ "var": "check.part_coverage.items" }`.
+  **Check operations judge only `completed` items**: an element is *judged*
+  when its `state` is `completed`, and its `value` is the `check_result`; `skipped` and
+  `not_run` elements are left out of `passed` and `total`. A plain `list<check_result>` (a
+  loop's `.value`) judges every element.
+- **`min` is a non-negative integer literal**, since it's the package's own
+  rule, like `failWith`. With a literal, `min` is never null.
+- **Null and empty lists** are [chapter 3](#3-expressions)'s (the operations' null behaviour).
+  **A null or empty list fails `all_pass`**: a gate that judged nothing hasn't
+  passed (JSON Logic's `all` is false on an empty array); a package that accepts nothing judged
+  writes `count_pass(list, 0, …)`. The cases are revisited in [#1461](https://github.com/Consultologist/Consultologist-Blazor/issues/1461) (Milestone 40). `terms_subset` reads a null list as empty.
+- **Whatever the arguments, an operation returns a `check_result`, never `null`,** so a gate
+  always has a result to read.
+
+### 6.3 Check loops
+
+A check that runs per item of a production loop is **a loop inside `checks/`**, never a check
+inside a production loop folder.
+
+#### 6.3.1 Alignment through `.items`
+
+A check loop **iterates the production loop's `.items`** ([chapter 4](#4-loops-and-functions)):
+each element pairs a production item with its outputs **by identity**, so the check for
+section 2 reads section 2's outputs. Positions are never matched up, and nothing reads into
+another loop's body.
+
+- In the check loop, `item` is the `.items` element: `item.value` (the production item's
+  returned value), `item.nodes.<id>.value` (its body nodes' outputs), `item.state` and
+  `item.reason`. **Check items share the production items' ids**:
+  `check.part_coverage.coverage:2` lines up with `node.sections:2`.
+- **Unrun items** keep their `state` (`skipped`, `not_run`). The check's header `if` skips them:
+  `{ "===": [ { "var": "item.state" }, "completed" ] }`.
+- The loop's `index.json` has every member of a `for` ([chapter 4](#4-loops-and-functions)):
+  `parallel`, `maxParallel`, `until` and `max` apply, within `FormatBounds`. **Check items are
+  named with `"itemLabel": "label"`**: the `.items` element's own `label`,
+  which carries the production item's name ([chapter 4](#4-loops-and-functions)).
+- **A check loop returns `list<check_result>`;** its `ret` names the check in its body.
+- A check loop's body holds checks only (`kind: computed`, `format: check_result`).
+  **Branches and nested loops in `checks/` follow `nodes/`'s rules**, and hold
+  checks only, like a check loop's body. A `case` there is exhaustive, as everywhere
+  ([chapter 4](#4-loops-and-functions)).
+
+#### 6.3.2 Scheduling
+
+Each item's check runs **as soon as that item's outputs are ready,** so checking overlaps
+production. Checks are `computed` and make no model calls, so they take **no slot** under the
+per-job ceiling (chapter 9), which counts agent calls only
+([chapter 4 § 8](#48-concurrency-what-counts-toward-the-per-job-ceiling)).
+An agent node inside a check loop's body counts like any other.
+
+#### 6.3.3 No checks inside functions
+
+Checks gate releases, and functions release nothing. A function may return a `check_result` as
+data, and checking each call is a check loop over the calls' `.items`.
+
+#### 6.3.4 Example (a made-up package)
+
+`example-checked-sections`, with fictional inputs only. The production loop drafts each planned
+section and extracts its terms:
+
+```
+nodes/plan.md                    kind agent, format section_plan
+nodes/sections/index.json           for over node.plan.value.sections, itemLabel "title"
+nodes/sections/planned_terms.md     kind agent, format concept_list   (the terms the plan names)
+nodes/sections/draft.md             kind agent, format plaintext
+nodes/sections/section_terms.md     kind agent, format concept_list   (the terms the draft covers)
+nodes/sections/section.md           kind computed, format titled_section (the loop's ret, § 6.5)
+checks/part_coverage/index.json
+checks/part_coverage/coverage.md
+checks/all_sections_covered.md
+deliverables/index.json
+deliverables/note.md
+```
+
+```jsonc
+// checks/part_coverage/index.json
+{ "kind": "for", "producer": "computed", "label": "Section coverage", "description": null,
+  "format": { "type": "array", "items": { "$ref": "check_result" } }, "reproducible": true,
+  "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "node.sections.items", "itemLabel": "label",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "nodes": [ "coverage" ], "ret": "check.part_coverage.coverage" }
+```
+
+```
+checks/part_coverage/coverage.md
+---
+{ "kind": "computed", "producer": "computed", "label": "Section covers its planned terms", "description": null,
+  "format": "check_result", "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "if": { "===": [ { "var": "item.state" }, "completed" ] },
+  "expression": { "terms_subset": [ { "var": "item.nodes.planned_terms.value" },
+                                    { "var": "item.nodes.section_terms.value" },
+                                    "The section does not cover every term its plan names." ] } }
+---
+```
+
+### 6.4 Aggregates and the gate
+
+**The whole document is gated by an explicit aggregate check:** a `computed` check returning one
+`check_result`, which the deliverable's `check` names. The rule is written and typed, never
+implied. There's **no "partly released" state**.
+
+```
+checks/all_sections_covered.md
+---
+{ "kind": "computed", "producer": "computed", "label": "Every section covers its planned terms", "description": null,
+  "format": "check_result", "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null,
+  "expression": { "all_pass": [ { "var": "check.part_coverage.items" },
+                                "Not every section covers its planned terms." ] } }
+---
+```
+
+"At least 8 of 9" is `{ "count_pass": [ { "var": "check.part_coverage.items" }, 8, "Fewer than 8 sections cover their planned terms." ] }`.
+
+**Single sections are handled in the template.** A deliverable may read checks other than its
+own (§ 6.6.3), so its template chooses how a failing section appears, by a body `if` on
+`check.x.value.pass` or on an item's state ([chapter 5 § 2.5](#525-a-body-if-tests-recorded-facts-only)).
+
+### 6.5 Checks in the record and History
+
+**The record** has a checks section apart from nodes. A top-level check's key is `check.<id>`;
+a check loop's items are `check.part_coverage.coverage:2`, with the production item's id and
+named by the loop's `itemLabel`, each linking to its production item (`node.sections:2`). The
+row holds the check's reads and their hashes, its result (the `check_result`, with `uncovered`
+and `untested` retained 7 days, then their hashes and sizes, § 6.2.1), and its effect. The
+shape is chapter 8's.
+
+**History** has four sections in the order the job runs:
+Inputs, Nodes, Checks, Deliverables. Each check row says:
+
+| Line | Shows |
+|---|---|
+| checks | what it ran on (a deliverable or a node), with that output's hash |
+| reads | its other inputs, each linking to its node's row |
+| result | pass or fail with its detail (*"12 of 12 terms present"*, *"7 of 9 sections passed"*) |
+| effect | released, held, blocked, or read by something else |
+
+```
+ ┌ Checks ─────────────────────────────────────────────────────────────────────┐
+ │ ▾ part_coverage     7 of 9 passed   for over node.sections.items            │
+ │     ▸ Oncologic History           passed                                    │
+ │     ▸ Surgery and Pathology       failed   2 planned terms missing          │
+ │ ▾ all_sections_covered   failed   all_pass → check_result     b19e…         │
+ │     reads           check.part_coverage (9 items, 7 passed)                 │
+ │     result          Not every section covers its planned terms.             │
+ │     effect          note blocked                                            │
+ └─────────────────────────────────────────────────────────────────────────────┘
+```
+
+- **No duplication:** a deliverable row shows a one-line `Check: <id>  <passed|failed> →`
+  linking to the check's row. A node a check reads gets no extra row.
+- **A failed check that stops a deliverable is a banner at the top of the job:** *"Consultation
+  note was blocked: check 'coverage' failed (10 of 12 terms present)."* A gate check that
+  errored gives *"Consultation note was blocked: check 'coverage' could not run (\<error\>)."*. A destination the account hasn't set up has its own banner line (§ 6.8).
+- **The diagram** draws a Checks frame, a thick `gates` edge into the deliverable, and a check
+  loop as a frame inside it with a dotted `aligned` edge to its production loop
+  (chapter 9).
+
+### 6.6 Deliverables as files
+
+#### 6.6.1 The file
+
+**Each deliverable is `deliverables/<id>.md`**, its header judged by the schema [`deliverable`](v31/schemas/deliverable.schema.json) (or in a sub-folder, § 6.8): a JSON header, then a
+non-empty body that is its **composition template**. A deliverable is a `kind: rendered` leaf;
+the folder gives its role. There's no implicit template: the Editor and the command-line tool
+generate the file, and the migration writes one per deliverable.
+
+**A deliverable's id is its path, like a node's**: `deliverables/consult.md`
+is `deliverable.consult`, and `deliverables/emr/note.md` is `deliverable.emr.note`. The
+destination folder is part of the id, so the same file name may repeat in different folders
+(`emr/note.md`, `email/note.md`), and moving a deliverable changes its key. The key, with its
+root, is what the record, History and `WorkflowPackages/Current`'s `Results` use
+(chapter 9).
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | no | the display name |
+| `kind` | `"rendered"` | no | the mechanism |
+| `description` | array of strings | yes: none | for people only |
+| `format` | `"markdown_block"`, `"plaintext"`, or an object format | no | the composed output's format (§ 6.6.4) |
+| `if` | JSON Logic | yes: always | whether the deliverable exists (§ 6.6.3) |
+| `check` | string, `check.<id>` | yes: ungated | the check that gates release (§ 6.7) |
+| `whenEmpty` | `"release"`, `"hold"` or `"fail"` | no | what happens when the composed text is empty (§ 6.6.6) |
+
+- **`sources` is removed.** The template's reads are the deliverable's sources: the resolver
+  derives them, records them in `resolve.json` and draws them in the diagram
+  (chapter 7).
+- **`macros` and `signature` are removed:** deliverables don't call macros, and the
+  signature is a profile field (§ 6.10).
+- **`markdown_inline` is refused as a deliverable format**: a document stands
+  on its own lines.
+
+#### 6.6.2 Item states
+
+A template reads each loop item's `state` and `reason` through `.items`:
+
+| `state` | Meaning | `reason` |
+|---|---|---|
+| `completed` | the item ran | `null` |
+| `skipped` | its `if` didn't hold | the condition's printed text |
+| `not_run` | stopped early by `until` | *"stopped early at <position name>"*, for example *"stopped early at Sections 3"*: reasons name items by position, never by a drawn name |
+
+- The set is closed and checked at publish. A failed item fails the job (`onInvalid` is `fail`
+  or `retry`), so it never reaches a template.
+- **`reason` is never patient text:** it's built only from package text and fixed engine
+  sentences, because it can land in the deliverable.
+- A branch on `state` handles every state or ends with an `else`; an unknown state is refused
+  ([chapter 5 § 2.5](#525-a-body-if-tests-recorded-facts-only)).
+
+#### 6.6.3 What a deliverable reads
+
+**The template** reads `node.*`, `input.*`, `snippet.*`, `check.*` (not its own check),
+`profile.*`, the `run.*` set and the `renderer.` pipe
+([chapter 5 § 3.1](#531-the-table)). Each read of `run.*` or of a
+run-dependent value is a run spot ([chapter 5 § 4](#54-run-spots-and-the-two-hashes)).
+
+**Refused:**
+- other deliverables (deliverables are terminal, § 6.6.7);
+- `macro.*` and `part.*`;
+- **its own check:** the check runs on the deliverable, so reading it is a cycle (R-D2).
+
+**The header `if`** decides, before composition, whether the deliverable exists. It may read
+`input.*`, a node's `.value` (data) and `run.*`. It may not read `.content` (text), `check.*`
+(a possible cycle), `profile.*` or deliverables.
+When it doesn't hold, the deliverable is **skipped by condition**, recorded with the
+condition's printed text, never the value it read.
+
+#### 6.6.4 Strict formats
+
+**A deliverable's reads must match its format.** Conversions happen in nodes (a `computed`
+node with `plain`, or a renderer); the only automatic step is escaping.
+
+| Deliverable `format` | May read | Refused |
+|---|---|---|
+| `markdown_block` | `markdown_block`; `markdown_inline` inside a line; plain-text formats (escaped); `string` and `number` data (escaped) | objects (use a renderer or a node) |
+| `plaintext` | plain-text formats; `string` and `number` data | any Markdown (convert in a node) |
+| an object format | exactly that format, as `{{ node.x.value }}` and nothing else | everything else |
+
+- **Escaping:** plain text and data read into Markdown are escaped, protecting only the
+  characters Markdown would misread (`*`, `#`, `_`, `[`, …), so the displayed text is exactly
+  the plain text. The substitution's hash is taken **after** escaping. **The escape set is
+  CommonMark's backslash escapes for ASCII punctuation,** published with test vectors in the
+  conformance suite.
+- **The template's own literal text is typed too:** a `plaintext` deliverable may not write
+  Markdown syntax (a line starting `#`, `-`, `*` or `>`, or a `**` pair). A Markdown
+  deliverable's literal text is the author's Markdown. An object deliverable allows nothing
+  but its single expression.
+- **An object deliverable's output** is canonical JSON (RFC 8785).
+- **`profile.signature` and `profile.closing` are `plaintext`,** so a Markdown deliverable reads
+  them escaped.
+
+#### 6.6.5 Headings are the author's
+
+**The template writes the headings,** there are no invented
+`## Paragraphs 1` headings. [#1382](https://github.com/Consultologist/Consultologist-Blazor/issues/1382) closes once this is running and verified.
+
+**The pattern for a loop's sections: a closing `computed` node builds the pair** and is the
+loop's `ret`. With the format `titled_section`:
+
+```jsonc
+// formats/titled_section.json (declared by the package; not a built-in at 31)
+{ "$schema": "urn:consultologist:spec:31:dialect",
+  "type": "object", "required": [ "title", "content" ], "additionalProperties": false,
+  "properties": { "title": { "type": "string" }, "content": { "$ref": "plaintext" } } }
+```
+
+```
+nodes/standards/section.md
+---
+{ "kind": "computed", "producer": "computed", "label": "Section", "description": null, "format": "titled_section",
+  "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null,
+  "expression": { "object": { "title":   { "var": "item.value.title" },
+                              "content": { "var": "node.section_instructions.content" } } } }
+---
+```
+
+- `titled_section` is **declared by the package, not a built-in at 31**.
+- The loop returns `list<titled_section>`. **Formats are shape only:** `content` is `plaintext`,
+  the same format the agent's text has; the node's producer is `computed`, and `reproducible`
+  stays `true`. Where the text came from is the **model-derived** flag instead:
+  the row is marked model-derived, and History, the diagram and the Editor say *"computed from
+  model text: node.standards.section_instructions"* ([chapter 3](#3-expressions)).
+- The node's row hashes prove which title went with which text.
+- **`.items` is always available too,** for reaching a skipped item's `state` and `reason`.
+  Zipping two lists by position is not offered.
+- **A loop's `.content`** keeps version 30's bytes as a standard rendering
+  ([chapter 5 § 5.3](#553-built-in-renderers)), so a migrated template can
+  reproduce today's note exactly.
+
+**`test/general`'s deliverable, after the author's edit** (the migration first writes a template
+reproducing version 30's bytes, chapter 10):
+
+```
+deliverables/consult.md
+---
+{ "label": "Consultation note", "kind": "rendered", "description": null, "format": "markdown_block",
+  "if": null, "check": null, "whenEmpty": "hold" }
+---
+{{~ for s in node.standards.value ~}}
+## {{ s.title }}
+
+{{ s.content }}
+
+{{~ end ~}}
+{{~ snippet.test.content }}
+```
+
+The last line reads the snippet `snippets/test.md` verbatim at the end of the note; how the
+migration turns version 30's `test` macro into it is chapter 10's.
+
+**`example-nested-note`, with headings the author chose.** The inner paragraphs get no heading.
+Its loop `parts` is renamed `sections`, since `parts` is a reserved id
+([chapter 1](#1-files-and-scopes)). A closing node in `sections/` builds
+`{ title, paragraphs }` (a package format `titled_paragraphs`, `paragraphs` a list of
+`plaintext`, model-derived), and the template reads:
+
+```
+deliverables/note.md
+---
+{ "label": "Nested consultation note", "kind": "rendered", "description": null,
+  "format": "markdown_block", "if": null, "check": null, "whenEmpty": "fail" }
+---
+## Summary
+
+{{ node.refine.content }}
+{{~ for s in node.sections.value ~}}
+
+## {{ s.title }}
+{{~ for p in s.paragraphs ~}}
+
+{{ p }}
+{{~ end ~}}
+{{~ end ~}}
+```
+
+Each paragraph is `plaintext`, so it's escaped into the Markdown note.
+
+**The `whenEmpty` values above are the ones the migration writes** (chapter 10).
+
+#### 6.6.6 When a deliverable comes out empty
+
+**Empty means** the composed text, after trimming whitespace, is empty. The template's own
+fixed text (a heading) counts as content, so an author who wants nothing when there are no
+sections puts the heading inside a loop or a recorded-fact `if`.
+
+| `whenEmpty` | Effect |
+|---|---|
+| `release` | an empty document is released and recorded |
+| `hold` | not released, recorded as *held: empty*; the other deliverables go on |
+| `fail` | the job fails, naming the deliverable |
+
+**An object-format deliverable is never empty**: its canonical JSON is never
+blank, so `whenEmpty` has no effect there, but is still written.
+
+#### 6.6.7 Deliverables are terminal
+
+- **Nodes may not read deliverables,** and other deliverables may not either.
+- **Checks may** read a deliverable's `.content`.
+- Text a later node wants to reuse is made by a `rendered` node, which both read.
+- **The graph:** nodes, then deliverables, then their checks, then release.
+
+### 6.7 Gating and outcomes
+
+**A deliverable's check is its final proofread before sending.** The check named in `check` may
+read the composed deliverable (`deliverable.<id>.content`, for example
+`deliverable.emr.note.content`) or only nodes. It runs after
+everything it reads, and release waits for it.
+
+**The outcomes, in order of evaluation:**
+
+| Outcome | When | Recorded as | The job |
+|---|---|---|---|
+| skipped | the header `if` didn't hold | skipped by condition, with the printed condition | goes on |
+| failed | composed empty with `whenEmpty: fail`, or the render failed | the deliverable's failure | fails, naming the deliverable |
+| held | composed empty with `whenEmpty: hold` | *held: empty* | goes on |
+| blocked | its gate check returned `pass: false`, or **errored** (failed to run) | composed, blocked: fails closed, with the check's result or error recorded, never delivered | goes on |
+| released | composed, and its check passed, its check was skipped by its own `if`, or it has none | composed, released, then a delivery result per destination (§ 6.8) | goes on |
+
+- **`blocked` is an outcome; `not sent` is a delivery result**. A deliverable is
+  released, held, failed, skipped or blocked; each destination of a released deliverable is then
+  sent, not sent or failed (§ 6.8).
+- A deliverable that's blocked or held is **never something to dig for:** History shows the
+  banner (§ 6.5).
+- **A deliverable whose gating check was skipped by its own `if` is released**, recorded and shown in History as *"released: check '<id>' didn't apply (its
+  if was false)"* (H-4). A skipped gate gives no `check_result` to fail on. **An empty
+  `all_pass`, by contrast, fails** (§ 6.2.2): that check ran and judged nothing.
+- The record holds the outcome as the deliverable row's `state` (`released`, `held`, `failed`,
+  `skipped` or `blocked`) with its reason sentence, and each destination's result in
+  `delivery` (chapter 8).
+
+### 6.8 Delivery
+
+**Delivery is declared on folders only**, in each folder's `index.json`, judged by the schema [`deliverables-index`](v31/schemas/deliverables-index.schema.json). The root `deliverables/index.json` is required;
+routing a deliverable differently means putting it in a sub-folder.
+**Delivery folders are one level deep**, and the folder is part of each
+deliverable's id (§ 6.6.1): `deliverables/patient/patient_letter.md` is
+`deliverable.patient.patient_letter`.
+
+```
+deliverables/
+  index.json          { …, "delivery": ["emr"], "bundle": null }
+  consult.md
+  patient/
+    index.json        { …, "delivery": ["email"], "bundle": null }
+    patient_letter.md
+  referral_pack/
+    index.json        { …, "delivery": ["email"], "bundle": "zip" }
+    gp_letter.md
+    summary.md
+```
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `description` | array of strings | yes: none | for people only |
+| `items` | array of ids | no | the deliverables and sub-folders, in order ([chapter 1](#1-files-and-scopes)) |
+| `delivery` | array of `"email"`, `"pdf"`, `"emr"`, `"zip"` | no | the kinds of destination; `[]` means deliberately not delivered (kept in History only) |
+| `bundle` | `"zip"` | yes: none | send the folder's deliverables together, as one archive |
+
+- **No inheritance between folders:** every `index.json` states its own delivery in full.
+- **The package declares kinds, never addresses** (packages are public). **The account maps
+  kinds to endpoints** in a separate account section, beside today's delivery address; templates
+  never read it.
+- **Delivery happens at the end, and only then**: nothing is delivered until every
+  deliverable's outcome is final and the job has succeeded. A job that fails delivers nothing,
+  and its released deliverables stay in History, recorded as *"not sent: the job failed"*.
+- **A job that has succeeded in production enters `delivering`**, shown as
+  *"Delivering…"*, with the document viewable throughout. Each attempt is a row in the one record
+  (chapter 8 § 10), and the record is sealed when delivery ends (chapter 9 § 3.8).
+- **A result per destination**: each kind a released deliverable goes to gets its own
+  result, `sent`, `not sent` with a reason, or `failed`, so an email that went out beside an EMR that
+  isn't set up reads as one of each.
+- **A failed delivery is retried**: 3 times with back-off over about 15 minutes (engine
+  settings, chapter 9 § 3.8), each attempt recorded on the destination's result. If the last also
+  fails, the result is `failed`, the operator is alerted, and History shows *"Couldn't send to
+  <destination>. Copy the note instead."* The job stays completed.
+- **A kind the account hasn't configured:** the job still runs, and the deliverable is produced;
+  that destination is recorded as **not sent**: *"not sent: EMR isn't set up for this account"*.
+  The job doesn't fail, and the document stays in History.
+- **A bundle holds released deliverables only**: a held, skipped, failed or
+  blocked one is left out, and History lists what was left out and why.
+- `description` and `items` follow every folder's `index.json` ([chapter 1](#1-files-and-scopes)).
+
+### 6.9 Deliverables in the record and History
+
+**The row's key** is the deliverable's id with its root (`deliverable.emr.note`), and a renderer
+use under it is `deliverable.emr.note/render:1` (chapter 8).
+
+**Hashes:** the template's hash before substitution, one hash per substitution, and the hash of
+the final text (`composedHash`).
+
+- **Sites:** each expression in the template, numbered in source order, with its text and
+  position (package text, safe to keep).
+- **Substitutions:** each evaluation (once, or once per loop pass), naming its site, its `pass`
+  (a list, one number per enclosing `for`), what it read, and its hash and size. Renderer uses
+  add `renders` ([chapter 5 § 5.5](#555-in-the-record-and-history)). Profile
+  reads are substitutions like any other.
+- **Replay:** substituting the recorded values into the template, in site and pass order,
+  reproduces `composedHash`. Escaped reads are recorded after escaping, so replay holds.
+- **The template is kept by reference:** the record stores `templateHash`, and History shows the
+  text from `resolve.json` of the pinned version. It's never deleted, since it holds nothing
+  personal.
+- **Run spots** add the run-neutral hash beside `composedHash`
+  ([chapter 5 § 4](#54-run-spots-and-the-two-hashes)).
+- **The outcome** (§ 6.7, the row's `state`) and each destination's delivery result (§ 6.8).
+
+The record's shape and field names are chapter 8's. **History** shows the
+template with its reads grouped by site, looped sites collapsed to "× N passes" and expandable
+per pass named by `itemLabel`, values while retained (7 days), then hashes and sizes, and the
+one-line check status.
+
+### 6.10 The profile
+
+`profile.*` is personal data about the clinician: not patient data, but it ends up in
+deliverable text and hashes. The format says exactly what may be read, how it's typed, and how
+it's recorded.
+
+#### 6.10.1 The closed list
+
+The list and the preview values are published as [`v31/profile.json`](v31/profile.json).
+
+| Field | Format | Null | Preview value (fictional) |
+|---|---|---|---|
+| `profile.name` | `string` | never: a missing value refuses the job (§ 6.10.4) | `Dr A. Sample` |
+| `profile.credentials` | `string` | never | `MD, FRCPC` |
+| `profile.organisation` | `string` | never | `Sample Oncology Clinic` |
+| `profile.signature` | `plaintext` | never | the chosen signature block |
+| `profile.closing` | `plaintext` | never | a closing line or contact block |
+
+- **Adding a field later is compatible;** removing or retyping one is a format change.
+- `profile.closing` is the home of a clinician's fixed boilerplate. Personal macros are
+  [#1417](https://github.com/Consultologist/Consultologist-Blazor/issues/1417) (Milestone 40).
+- **Personal snippets are unchanged:** they're inserted into inputs on the Create page and
+  recorded with the input. There are no `profile.snippets` reads.
+- **Delivery endpoints aren't profile fields** (§ 6.8).
+
+#### 6.10.2 Where reads are allowed
+
+| Place | `profile.*` |
+|---|---|
+| deliverable templates | yes |
+| macro bodies (rendered into the reply, never sent to a model) | yes |
+| snippet bodies placed in either of those | yes |
+| prompts, `rendered` nodes, parts, macro instructions, snippets placed in prompts | **no:** the clinician's details aren't sent to a model |
+| conditions and `computed` expressions, the deliverable header `if` included | **no** |
+| a **profile-carrying** value (text a profile-reading macro body was substituted into, and anything made from it; [chapter 3 § 4.6](#346-profile-carrying-is-contagious)) | deliverables only: a prompt, a part or a condition that reads one is refused (R-F5) |
+| inside a function | only as a parameter passed in through the call's `with`, and then only to macro bodies |
+
+**A parameter bound to a `profile.*` value carries the same restriction through the function**: reading it in a prompt, a part or a condition is refused (R-F3), just as reading
+`profile.*` there would be.
+
+#### 6.10.3 The signature
+
+- `profile.signature` is the account's **chosen block** (`ChosenId`; an account holds up to 5
+  named blocks, each up to 4,000 characters).
+- **The Create page shows a signature choice only when the account has more than one block and
+  the package reads `profile.signature`,** defaulting to the chosen block.
+- **The record names the block's id,** never its text: `signatureBlockId`, beside
+  `signatureChosen`, which is `"default"` (the account's chosen block) or `"job"` (picked on the
+  Create page). Packages never name blocks. There's no signature snapshot at
+  31: the signature is a profile read, recorded by hash, and its text lives in the deliverable,
+  under text retention.
+
+#### 6.10.4 A missing field refuses the job
+
+**When the package reads a field the account hasn't set, the job is refused before it starts,**
+on the Create page. There's no empty substitute. The package's needs are known in advance from
+`resolve.json`'s derived `needs.profile` (for example `["name", "signature"]`,
+chapter 7).
+
+**This refusal applies to 31 jobs only**: a job on a package still at 30 keeps 30's
+behaviour until its package moves. The owners' notice before the cutover says so (chapter 10). When
+the email intake refuses a job for this reason, its reply carries the same sentence (J-1, J-2).
+
+**An empty or whitespace-only value counts as not set**, so a job that reads
+it is refused at the start.
+
+#### 6.10.5 Recording and retention
+
+- Each `profile.*` read is a substitution recorded by hash (§ 6.9).
+- The record names the signature block's id.
+- The text follows produced text's retention: deleted after 7 days. A value that is
+  profile-carrying (§ 6.10.2) follows the same retention.
+- **A short value's hash is kept,** as every substitution's is, and the record's documentation
+  says it can be reversed by guessing: a name or credentials line is short enough to test
+  candidates against its hash (option c). Long texts keep their hash for verification as
+  before.
+
+#### 6.10.6 Previews
+
+The Editor, the debugger and preview panes use **fictional sample values from the
+registry** (the table in § 6.10.1), never the author's own profile.
+
+#### 6.10.7 The Profile page and the time zone
+
+- **Profile gains a "Letter details" card** for `credentials`, `organisation` and `closing`,
+  with limits of 120, 200 and 4,000 characters (the last the same as a signature block).
+- **The account time zone** (an IANA name, for `run.date`) is an **account setting, not a profile
+  field:** it's never read as `profile.*`. It's a select list that starts empty, with a "Use this
+  browser's zone" button that fills it only when clicked. The zone is recorded beside
+  `run.date`. **Every job is refused until it's set**, whether or not the package reads
+  `run.date`: *"Set your time zone in your account settings before running a workflow."* Like § 6.10.4's
+refusal, it applies to 31 jobs only, is announced in the owners' notice, and is the email
+intake's reply when it refuses. The pages themselves are chapter 9's.
+
+### 6.11 What changes from version 30
+
+| At 30 | At 31 |
+|---|---|
+| a check is a node in `nodes`, `op: terms_subset` with `with: { of, in, failWith }`, read as `node.coverage` | `checks/<id>.md`, `kind: computed`, `expression` with `terms_subset`, read as `check.coverage` |
+| checks are top-level only | check loops over a production loop's `.items`, gated by `all_pass` or `count_pass` |
+| a deliverable is a manifest entry with `sources`, `macros` and a `check` naming a node | `deliverables/<id>.md` with a composition template, its id its path (`deliverable.emr.note`); sources derived; `check` names a `check.*`; `whenEmpty` |
+| the composer writes `## {item name}` over every loop item, at every depth | the template writes the headings; `.content` keeps the old bytes as a standard rendering |
+| deliverable macros at `before`, `after`, `append` | snippets read in the template |
+| one delivery address per account | delivery kinds per folder, mapped to endpoints by the account |
+| `profile.name`, `profile.signature`; an unset value renders as empty text | five typed fields; an unset field the package reads refuses the job |
+| `profile.*` readable in prompts | deliverables, macro bodies and snippets placed in them only |
+
+### 6.12 Refusals
+
+Every sentence below is used as written; chapter 11 lists every sentence of this format. `<…>`
+marks a placeholder.
+
+**Checks**
+- R-C1: *"Deliverable '\<id\>' is checked by \<reference\>; a deliverable's check names a check.\*."*
+- R-C2: *"Check '\<id\>' has format \<format\>; a check returns check_result."*
+- R-C3: *"Check '\<id\>' has kind \<kind\>; a check is computed."*
+- R-C4: *"\<Path\> in checks/ is \<kind\>; checks/ holds checks and the loops over them."*
+- R-C5: *"Check '\<id\>' passes \<expr\> as failWith; failWith is a literal sentence."*
+- R-C6: *"Check '\<id\>' passes \<expr\> as min; min is a whole number of at least 0."*
+- R-C7: *"Check loop '\<id\>' runs over \<source\>; a check loop runs over a production loop's .items."*
+- R-C8: *"Function '\<id\>' holds check '\<check\>'; functions hold no checks. Return a check_result as data and check the calls' .items."*
+- R-C9: *"Node '\<id\>' reads deliverable.\<deliverable\>; only checks read deliverables."*
+- R-C10: *"Check '\<id\>' gates deliverable '\<deliverable\>', and its if reads \<path\>, which can be null; a gate check's if reads values that are always set."*
+
+**Deliverables**
+- R-D1: *"Node '\<id\>' reads deliverable.\<deliverable\>; deliverables are the job's outputs: read the nodes it is composed from."*
+- R-D2: *"Deliverable '\<id\>' reads check.\<check\>, which checks \<id\>: a deliverable can't read its own check."*
+- R-D3: *"Deliverable '\<id\>' reads deliverable.\<other\>; a deliverable reads nodes, inputs, snippets, checks, the profile and run facts."*
+- R-D4: *"Deliverable '\<id\>' has format \<format\>; a deliverable is markdown_block, plaintext or an object format."*
+- R-D5: *"Deliverable '\<id\>' is \<format\>, and reads \<path\> (\<read format\>) at line \<n\>. \<Convert it in a node | Use a renderer or a node\>."*
+- R-D6: *"Deliverable 'letter' is plaintext, and line 4 writes Markdown ('## Plan')."*, generalised as *"Deliverable '\<id\>' is plaintext, and line \<n\> writes Markdown ('\<text\>')."*
+- R-D7: *"Deliverable '\<id\>' is \<object format\>; its template is {{ node.\<x\>.value }} and nothing else."*
+- R-D8: *"Deliverable '\<id\>' reads \<path\> in its if; a deliverable's if reads inputs, node values and run facts."*
+- R-D9: *"Deliverable '\<id\>' places \<macro.\* or part.\*\>; deliverables place snippets, and macros belong to agent nodes."*
+- R-D10: *"Deliverable '\<id\>' has whenEmpty \<value\>; write release, hold or fail."*
+- R-D11: *"Deliverables folder '\<path\>' has delivery kind \<kind\>; the kinds are email, pdf, emr and zip."*
+- R-D12: *"deliverables/index.json is missing; the deliverables folder states its delivery."*
+- R-D13: *"Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else."*
+
+**Profile**
+- R-F1: *"\<Subject\> reads profile.\<field\>, which isn't a profile field; the fields are name, credentials, organisation, signature and closing."*
+- R-F2: *"\<Condition owner\> reads profile.\<field\> in a condition; the profile is read only in deliverables and macro bodies."*
+- R-F3: *"Function '\<id\>' reads param.\<name\>, which carries profile.\<field\>, in \<a prompt | a part | a condition\>; the profile is read only in deliverables and macro bodies."*
+- R-F5: *"\<Subject\> reads \<path\>, which carries profile text; prompts, parts and conditions don't read profile text. Read it in a deliverable."*
+- R-F4 ([chapter 5 § 11](#511-refusals), R-R2, for prompts): *"Node '\<id\>' reads profile.\<field\>; the clinician's profile is never sent to a model. Read it in a deliverable or a macro body."*
+
+**Refused at job start** (Create page)
+- J-1: *"This workflow needs your signature. Choose one in Profile."*
+- J-2 (the other fields): *"This workflow needs your \<field label\>. Set it in Profile, under Letter details."*
+- J-3: *"Set your time zone in your account settings before running a workflow."*
+
+**Shown in History** (not refusals)
+- H-1: *"\<Deliverable label\> was blocked: check '\<id\>' failed (\<detail\>)."*
+- H-2: *"not sent: \<Kind\> isn't set up for this account"*
+- H-5: *"\<Deliverable label\> was blocked: check '\<id\>' could not run (\<error\>)."*
+- H-7: *"Couldn't send to \<destination\>. Copy the note instead."* (a destination whose retries ran out)
+- H-6: *"not sent: the job failed"* (each destination of a released deliverable in a job that failed)
+- H-3: *"stopped early at \<position name\>"* (an item's `reason` for `not_run`)
+- H-4: *"released: check '\<id\>' didn't apply (its if was false)"*
