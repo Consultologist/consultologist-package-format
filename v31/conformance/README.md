@@ -153,6 +153,19 @@ The `formats` check group does enforce the first of these on the built-in format
   (part 05's dialect sentences, part 06's deliverable sentences); part 06's R-D13 is part 05's R-D8.
   The text writes a label alone inside its own chapter and with the chapter ("chapter 5 § 11, R-D8")
   from the other; the sentence ids in `sentences.json` (`S05-…`, `S06-…`) are unambiguous.
+- **A `description`'s 500-code-point limit is not expressible in the schemas.** Part 01 limits a
+  description (its lines joined) to 500 code points, counted as Unicode code points. JSON Schema's
+  `maxLength` counts the same units for one string, but a description is written as lines (an array
+  of strings) and the limit is on the lines joined, which no keyword can add up. The schemas state
+  the lines' shape only; the checker holds the limit (`descriptionCodePoints` in `constants.json`).
+- **Readings in the compiled-document and registry schemas that the design does not list.**
+  `publish-report.schema.json` gives a test's `durationMs` `"minimum": 0` (a duration is not
+  negative; the member table says only "milliseconds"). `resolve.schema.json` gives `needs.profile`
+  `"uniqueItems": true` (a field is named once, and the table says "sorted"), and
+  `bounds.schema.json` does the same for the id arrays `windowsReservedIds` and `reservedIds`
+  (they are sets). `resolve.schema.json` gives `package.version` the pattern
+  `^v\d{4}\.(0[1-9]|1[0-2])\.[1-9]\d*$`, the shape of the manifest's `vYYYY.MM.N` (the design shows
+  examples and does not print a pattern).
 - **Chapter 7's publish order.** Part 07 § 5 step 4 lists six writes: the source files and
   `dag.mmd`, then `lock.json`, then the publish report, then `resolve.json` last (item 5), and
   then the "published" stamp last (item 6). Both are called "last"; the text keeps both as the
