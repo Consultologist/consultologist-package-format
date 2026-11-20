@@ -117,6 +117,27 @@ and, since the engine was brought into line, what it enforces too: a manifest
 carrying a property the format does not have is refused at load, at publish, and
 by the offline validator, naming the property.
 
+## specVersion 31 (preview)
+
+`v31/` holds the files of specVersion 31 as they are written: today
+`bounds.json` (the source and format bounds), `constants.json` (versions, kinds,
+features, producers, limits and the Markdown extensions) and `profile.json`
+(the closed profile list with its preview values). Later changes add the schemas,
+formats, renderers and conformance material beside them. `spec-versions.json`
+names the folder under `preview`.
+
+31 stays outside `supported` until the engine's bump: it is not a released
+version, and nothing the engine at 30 reads has changed. Run the check from the
+repository root:
+
+```
+python3 scripts/check-v31.py
+```
+
+It prints one line per check group and exits 1, listing every failure, if any
+group fails. `.github/workflows/validate.yml` does not run it yet; the release
+adds it.
+
 ## Reading it from the registry
 
 Every version is published to the public registry and is fetchable with no

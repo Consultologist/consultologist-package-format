@@ -84,5 +84,8 @@
     "29": "schemas/package-format-v29.schema.json",
     "30": "schemas/package-format-v30.schema.json"
   },
-  "conformance": "conformance/index.json"
+  "conformance": "conformance/index.json",
+  "preview": {
+    "31": { "document": "package-format-v31.md", "directory": "v31" }
+  }
 }
