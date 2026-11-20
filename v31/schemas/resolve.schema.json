@@ -1,0 +1,623 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:resolve",
+  "title": "resolve.json",
+  "description": "The package as checked: the only document the engine loads for a version 31 package. Written only by publish, canonical, with no timestamp. Every member is present; null means deliberately none.",
+  "type": "object",
+  "required": [
+    "documentVersion",
+    "specVersion",
+    "package",
+    "title",
+    "description",
+    "tags",
+    "sourceHash",
+    "lock",
+    "requires",
+    "needs",
+    "inputs",
+    "inputOrder",
+    "formats",
+    "formatHashes",
+    "typeHashes",
+    "bindings",
+    "nodes",
+    "checks",
+    "functions",
+    "renderers",
+    "snippets",
+    "macros",
+    "deliverables",
+    "graph",
+    "run",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documentVersion": {
+      "const": 1,
+      "description": "The shape of resolve.json itself; 1 at 31."
+    },
+    "specVersion": {
+      "const": 31,
+      "description": "31. It alone identifies the rules."
+    },
+    "package": {
+      "$ref": "#/$defs/package",
+      "description": "The package name and its version tag."
+    },
+    "title": {
+      "type": "string",
+      "description": "The manifest's title."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The manifest's description; null when it has none."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The manifest's tags; [] for none."
+    },
+    "sourceHash": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+      "description": "The hash of the source as published."
+    },
+    "lock": {
+      "const": "lock.json",
+      "description": "The companion's file name in the same folder."
+    },
+    "requires": {
+      "$ref": "#/$defs/requires",
+      "description": "What the package needs from the engine."
+    },
+    "needs": {
+      "$ref": "#/$defs/needs",
+      "description": "What the account must provide."
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/input"
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The package's inputs keyed by input id; {} for none."
+    },
+    "inputOrder": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The input ids in written order, the Create page's order; [] for none."
+    },
+    "formats": {
+      "type": "object",
+      "required": [
+        "$defs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "$defs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "propertyNames": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "Every format the package uses, keyed by format id, each a JSON Schema keeping its $id, $schema and annotations."
+        }
+      },
+      "description": "The formats bundle: one self-contained JSON Schema."
+    },
+    "formatHashes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "Each bundled format's full hash, keyed by format id."
+    },
+    "typeHashes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "Each bundled format's type hash, keyed by format id."
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/$defs/binding"
+        },
+        "propertyNames": {
+          "enum": [
+            "generated"
+          ]
+        },
+        "description": "Producer to binding."
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "The attested agent serving each format and producer an agent node uses, keyed by format id then producer; {} when the package has no agent node."
+    },
+    "nodes": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "Every production node, flat, keyed by rooted key."
+    },
+    "checks": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^check\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "Every check and check loop, flat, keyed by rooted key; {} for none."
+    },
+    "functions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/function"
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "Each function keyed by function id, with its own flat nodes map; {} for none."
+    },
+    "renderers": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^renderer\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "The package's renderers, keyed by rooted key; {} for none."
+    },
+    "snippets": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^snippet\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "Every snippet and snippet folder, keyed by rooted key; {} for none."
+    },
+    "macros": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^macro\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "Every macro and macro folder, keyed by rooted key; {} for none."
+    },
+    "deliverables": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^deliverable\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/entry"
+      },
+      "description": "Every deliverable, keyed by its path (deliverable.emr.note)."
+    },
+    "graph": {
+      "type": "object",
+      "required": [
+        "edges",
+        "order"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from",
+              "to",
+              "kind"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "from": {
+                "type": "string",
+                "description": "The rooted key read from."
+              },
+              "to": {
+                "type": "string",
+                "description": "The rooted key that reads it."
+              },
+              "kind": {
+                "enum": [
+                  "reads",
+                  "if",
+                  "for",
+                  "ret",
+                  "placed",
+                  "calls",
+                  "aligned",
+                  "gates"
+                ],
+                "description": "The edge's kind."
+              }
+            },
+            "description": "One dependency."
+          },
+          "description": "Every dependency, from a node, check, input, run or profile read to what reads it."
+        },
+        "order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "One topological order of the rooted keys, ties broken by source order."
+        }
+      },
+      "description": "The derived dependency graph."
+    },
+    "run": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The run facts read anywhere, sorted; [] for none."
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/warning"
+      },
+      "description": "Every warning publish gave; [] for none."
+    }
+  },
+  "$defs": {
+    "package": {
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The package name."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^v\\d{4}\\.(0[1-9]|1[0-2])\\.[1-9]\\d*$",
+          "description": "The package version, vYYYY.MM.N."
+        }
+      },
+      "description": "The package name and its version tag."
+    },
+    "warning": {
+      "type": "object",
+      "required": [
+        "sentence",
+        "at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "sentence": {
+          "type": "string",
+          "description": "The sentence word for word as publish gave it."
+        },
+        "at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The file path it concerns, or null for the package as a whole."
+        }
+      },
+      "description": "A warning publish gave."
+    },
+    "binding": {
+      "type": "object",
+      "required": [
+        "agentName",
+        "agentVersion",
+        "via"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agentName": {
+          "type": "string",
+          "description": "The attested agent's name in the agents catalogue."
+        },
+        "agentVersion": {
+          "type": "integer",
+          "description": "Its version."
+        },
+        "via": {
+          "enum": [
+            "format",
+            "custom"
+          ],
+          "description": "The binding route: format for a registry or catalogue format bound in agents/bindings.json, custom for a package's own format bound to the custom-format agent. producer is reserved at 31 and refused."
+        }
+      },
+      "description": "The attested agent serving one format for one producer."
+    },
+    "requires": {
+      "type": "object",
+      "required": [
+        "spec",
+        "evaluator",
+        "scriban",
+        "operations",
+        "kinds",
+        "features",
+        "agents"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "spec": {
+          "const": "31",
+          "description": "The spec version, \"31\"."
+        },
+        "evaluator": {
+          "type": "string",
+          "pattern": "^\\^\\d+\\.\\d+\\.\\d+$",
+          "description": "The JSON Logic evaluator's caret range."
+        },
+        "scriban": {
+          "type": "string",
+          "pattern": "^\\^\\d+\\.\\d+\\.\\d+$",
+          "description": "Scriban's caret range."
+        },
+        "operations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\^\\d+\\.\\d+\\.\\d+$"
+          },
+          "propertyNames": {
+            "enum": [
+              "size",
+              "blank",
+              "words",
+              "lines",
+              "lower",
+              "trim",
+              "starts_with",
+              "ends_with",
+              "plain",
+              "object",
+              "matches",
+              "has_word",
+              "terms_subset",
+              "all_pass",
+              "count_pass",
+              "days_between",
+              "years_between",
+              "add_days"
+            ]
+          },
+          "description": "Each built-in custom operation used, name to caret range; {} for none."
+        },
+        "kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "agent",
+              "rendered",
+              "computed",
+              "for",
+              "while",
+              "if",
+              "case",
+              "call"
+            ]
+          },
+          "description": "The node kinds used."
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "parallel",
+              "macro-markers",
+              "parts",
+              "run-spots",
+              "check-loops"
+            ]
+          },
+          "description": "The behaviours not tied to one kind that are used; [] for none."
+        },
+        "agents": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The attested agents the bindings name, agent name to version; {} for none."
+        }
+      },
+      "description": "What the package needs from the engine: derived, never authored, and minimal."
+    },
+    "needs": {
+      "type": "object",
+      "required": [
+        "profile"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "name",
+              "credentials",
+              "organisation",
+              "signature",
+              "closing"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "The profile fields any template reads, sorted; [] for none."
+        }
+      },
+      "description": "What the account must provide."
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "label",
+        "description",
+        "format",
+        "required",
+        "channel"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+          "description": "The display name of the input."
+        },
+        "description": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+          "description": "The input's help text as written: lines, or null for none."
+        },
+        "format": {
+          "anyOf": [
+            {
+              "type": "object",
+              "required": [
+                "$ref"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "$ref": {
+                  "type": "string",
+                  "pattern": "^#/\\$defs/[a-z][a-z0-9_]*$"
+                }
+              }
+            },
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef"
+            }
+          ],
+          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether the user must supply it."
+        },
+        "channel": {
+          "enum": [
+            "transcript",
+            "image",
+            "ambient-note",
+            "form",
+            null
+          ],
+          "description": "The content channel, or null for any input."
+        }
+      },
+      "description": "An input as written, with bare format ids rewritten to #/$defs/<id>."
+    },
+    "function": {
+      "type": "object",
+      "required": [
+        "nodes"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "nodes": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/entry"
+          },
+          "description": "The function's own flat nodes map, keyed by rooted keys local to the function."
+        }
+      },
+      "description": "A function, with its own flat nodes map; its remaining members are the source schemas' (part 04)."
+    },
+    "entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "parent",
+        "reads",
+        "runDependent",
+        "profileCarrying",
+        "modelDerived"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
+          "description": "The bare id (the file or folder name)."
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/rootedKey"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The enclosing flow node's rooted key; null at the top level."
+        },
+        "reads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Every path the entry reads, canonical and sorted."
+        },
+        "runDependent": {
+          "type": "boolean",
+          "description": "True when anything the entry reads is a run fact or a run-dependent value, transitively."
+        },
+        "profileCarrying": {
+          "type": "boolean",
+          "description": "True when the entry's value carries text a profile-reading macro body was substituted into, transitively."
+        },
+        "modelDerived": {
+          "type": "boolean",
+          "description": "True when the entry's value is computed from a model's output, directly or through other values."
+        }
+      },
+      "description": "A flat-map entry. It holds every header member as written, canonicalised, and the derived members; only the derived members every entry carries are fixed here, the header's shape is the source schemas', applied by the resolver."
+    }
+  }
+}

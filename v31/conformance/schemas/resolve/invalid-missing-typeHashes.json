@@ -1,0 +1,156 @@
+{
+  "about": "The top-level member typeHashes is missing; every member is present.",
+  "instance": {
+    "documentVersion": 1,
+    "specVersion": 31,
+    "package": {
+      "name": "example-minimal",
+      "version": "v2026.12.1"
+    },
+    "title": "Minimal demo",
+    "description": null,
+    "tags": [],
+    "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "lock": "lock.json",
+    "requires": {
+      "spec": "31",
+      "evaluator": "^1.0.0",
+      "scriban": "^7.2.5",
+      "operations": {},
+      "kinds": [
+        "agent",
+        "rendered"
+      ],
+      "features": [],
+      "agents": {
+        "consult-prose": "4"
+      }
+    },
+    "needs": {
+      "profile": []
+    },
+    "inputs": {
+      "consult_draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": {
+          "$ref": "#/$defs/markdown_block"
+        },
+        "required": true,
+        "channel": null
+      }
+    },
+    "inputOrder": [
+      "consult_draft"
+    ],
+    "formats": {
+      "$defs": {
+        "markdown_block": {
+          "$schema": "urn:consultologist:spec:31:dialect",
+          "$id": "urn:consultologist:spec:31:format:markdown_block",
+          "type": "string",
+          "contentMediaType": "text/markdown",
+          "x-markdown": "block"
+        },
+        "plaintext": {
+          "$schema": "urn:consultologist:spec:31:dialect",
+          "$id": "urn:consultologist:spec:31:format:plaintext",
+          "type": "string",
+          "contentMediaType": "text/plain"
+        }
+      }
+    },
+    "formatHashes": {
+      "markdown_block": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "plaintext": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "bindings": {
+      "plaintext": {
+        "generated": {
+          "agentName": "consult-prose",
+          "agentVersion": 4,
+          "via": "format"
+        }
+      }
+    },
+    "nodes": {
+      "node.plan": {
+        "id": "plan",
+        "label": "Planning the note",
+        "kind": "agent",
+        "producer": "generated",
+        "parent": null,
+        "format": {
+          "$ref": "#/$defs/plaintext"
+        },
+        "reproducible": false,
+        "if": null,
+        "onInvalid": "fail",
+        "reads": [
+          "input.consult_draft.content"
+        ],
+        "runDependent": false,
+        "profileCarrying": false,
+        "modelDerived": true,
+        "body": "Summarise the consult draft.\n",
+        "bodyHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "parts": {},
+        "places": [],
+        "renders": [],
+        "runSpots": [],
+        "formatHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "typeHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "checks": {},
+    "functions": {},
+    "renderers": {},
+    "snippets": {},
+    "macros": {},
+    "deliverables": {
+      "deliverable.note": {
+        "id": "note",
+        "parent": null,
+        "label": "Consultation note",
+        "kind": "rendered",
+        "format": {
+          "$ref": "#/$defs/markdown_block"
+        },
+        "if": null,
+        "check": null,
+        "whenEmpty": "fail",
+        "reads": [
+          "node.plan.value"
+        ],
+        "runDependent": false,
+        "profileCarrying": false,
+        "modelDerived": true,
+        "body": "{{ node.plan.value }}\n",
+        "bodyHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "renders": [],
+        "runSpots": []
+      }
+    },
+    "graph": {
+      "edges": [
+        {
+          "from": "input.consult_draft",
+          "to": "node.plan",
+          "kind": "reads"
+        },
+        {
+          "from": "node.plan",
+          "to": "deliverable.note",
+          "kind": "reads"
+        }
+      ],
+      "order": [
+        "input.consult_draft",
+        "node.plan",
+        "deliverable.note"
+      ]
+    },
+    "run": [],
+    "warnings": []
+  }
+}
