@@ -1,0 +1,7 @@
+{
+  "about": "format date sits only beside type string.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "format": "date"
+  }
+}

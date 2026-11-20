@@ -1,0 +1,7 @@
+{
+  "about": "The $schema is the dialect's id, and no other.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:30:dialect",
+    "type": "string"
+  }
+}

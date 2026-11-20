@@ -1,0 +1,14 @@
+{
+  "about": "The null value does not count towards the two values.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": [
+      "string",
+      "null"
+    ],
+    "enum": [
+      "only",
+      null
+    ]
+  }
+}

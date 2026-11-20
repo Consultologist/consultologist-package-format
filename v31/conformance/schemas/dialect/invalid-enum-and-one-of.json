@@ -1,0 +1,21 @@
+{
+  "about": "A field has enum or the labelled oneOf, never both.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "enum": [
+      "a",
+      "b"
+    ],
+    "oneOf": [
+      {
+        "const": "a",
+        "title": "A"
+      },
+      {
+        "const": "b",
+        "title": "B"
+      }
+    ]
+  }
+}

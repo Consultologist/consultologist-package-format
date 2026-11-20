@@ -1,0 +1,6 @@
+{
+  "about": "A format file declares $schema; this one does not.",
+  "instance": {
+    "type": "string"
+  }
+}

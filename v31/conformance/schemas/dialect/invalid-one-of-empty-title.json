@@ -1,0 +1,17 @@
+{
+  "about": "A oneOf title is non-empty.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "oneOf": [
+      {
+        "const": "a",
+        "title": ""
+      },
+      {
+        "const": "b",
+        "title": "B"
+      }
+    ]
+  }
+}

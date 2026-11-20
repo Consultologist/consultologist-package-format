@@ -1,0 +1,8 @@
+{
+  "about": "contentMediaType is text/plain or text/markdown.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "contentMediaType": "text/html"
+  }
+}

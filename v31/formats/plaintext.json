@@ -1,0 +1,7 @@
+{
+  "$schema": "urn:consultologist:spec:31:dialect",
+  "$id": "urn:consultologist:spec:31:format:plaintext",
+  "type": "string",
+  "contentMediaType": "text/plain",
+  "description": "Plain text, with no markup."
+}

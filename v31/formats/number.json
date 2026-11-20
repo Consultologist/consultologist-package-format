@@ -1,0 +1,6 @@
+{
+  "$schema": "urn:consultologist:spec:31:dialect",
+  "$id": "urn:consultologist:spec:31:format:number",
+  "type": "number",
+  "description": "A number."
+}

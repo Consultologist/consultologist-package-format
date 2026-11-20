@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:dialect",
+  "title": "The formats dialect, version 31",
+  "description": "Judges the shape of a format document. It never dereferences a $ref: a $ref is data here.",
+  "$ref": "#/$defs/format",
+  "$defs": {
+    "format": {
+      "description": "A format file's root: the keywords of a schema, plus $schema, $id, $defs and the text annotations.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/schema"
+        }
+      ],
+      "properties": {
+        "$schema": {
+          "const": "urn:consultologist:spec:31:dialect"
+        },
+        "$id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "$defs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/inline"
+          }
+        },
+        "contentMediaType": {
+          "enum": [
+            "text/plain",
+            "text/markdown"
+          ]
+        },
+        "x-markdown": {
+          "enum": [
+            "block",
+            "inline"
+          ]
+        }
+      },
+      "required": [
+        "$schema"
+      ],
+      "unevaluatedProperties": false
+    },
+    "inline": {
+      "description": "An inline schema: no $schema, $id, $defs, contentMediaType or x-markdown.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/schema"
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "schema": {
+      "description": "The keywords any schema may use, and the rules a meta-schema can state.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "enum": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "object",
+                "array",
+                "null"
+              ]
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "enum": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "object",
+                  "array",
+                  "null"
+                ]
+              },
+              "contains": {
+                "const": "null"
+              },
+              "not": {
+                "items": {
+                  "const": "null"
+                }
+              }
+            }
+          ]
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/inline"
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "additionalProperties": {
+          "const": false
+        },
+        "items": {
+          "$ref": "#/$defs/inline"
+        },
+        "anyOf": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/inline"
+          }
+        },
+        "enum": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "contains": {
+            "type": "string"
+          },
+          "minContains": 2
+        },
+        "oneOf": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/labelledBranch"
+              },
+              {
+                "$ref": "#/$defs/nullBranch"
+              }
+            ]
+          },
+          "contains": {
+            "$ref": "#/$defs/labelledBranch"
+          },
+          "minContains": 2
+        },
+        "$ref": {
+          "type": "string",
+          "pattern": "^([a-z][a-z0-9_]*|#/\\$defs/[a-z][a-z0-9_]*)$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "format": {
+          "const": "date"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "type": {
+                    "const": "object"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "properties": {
+                  "type": {
+                    "type": "array",
+                    "contains": {
+                      "const": "object"
+                    }
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "additionalProperties",
+              "required"
+            ]
+          }
+        }
+      ],
+      "dependentSchemas": {
+        "format": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "string"
+            }
+          }
+        },
+        "$ref": {
+          "propertyNames": {
+            "enum": [
+              "$ref",
+              "title",
+              "description"
+            ]
+          }
+        },
+        "enum": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/stringType"
+            }
+          }
+        },
+        "oneOf": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/stringType"
+            }
+          }
+        }
+      },
+      "not": {
+        "required": [
+          "enum",
+          "oneOf"
+        ]
+      }
+    },
+    "stringType": {
+      "description": "string, or a string that may be null.",
+      "anyOf": [
+        {
+          "const": "string"
+        },
+        {
+          "const": [
+            "string",
+            "null"
+          ]
+        },
+        {
+          "const": [
+            "null",
+            "string"
+          ]
+        }
+      ]
+    },
+    "labelledBranch": {
+      "type": "object",
+      "properties": {
+        "const": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "const",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "nullBranch": {
+      "type": "object",
+      "properties": {
+        "const": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "const"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

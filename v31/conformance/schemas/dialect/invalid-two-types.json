@@ -1,0 +1,10 @@
+{
+  "about": "A type array is one type plus null, not two types.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": [
+      "string",
+      "number"
+    ]
+  }
+}

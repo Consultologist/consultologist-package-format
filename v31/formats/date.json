@@ -1,0 +1,7 @@
+{
+  "$schema": "urn:consultologist:spec:31:dialect",
+  "$id": "urn:consultologist:spec:31:format:date",
+  "type": "string",
+  "format": "date",
+  "description": "A calendar date, written YYYY-MM-DD."
+}

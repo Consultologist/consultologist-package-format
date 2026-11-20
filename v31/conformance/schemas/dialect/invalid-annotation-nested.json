@@ -1,0 +1,17 @@
+{
+  "about": "Annotations sit at the root, never on a nested field.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "type": "string",
+        "contentMediaType": "text/plain"
+      }
+    }
+  }
+}

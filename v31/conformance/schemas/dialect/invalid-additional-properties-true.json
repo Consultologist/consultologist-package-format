@@ -1,0 +1,10 @@
+{
+  "about": "An object's additionalProperties must be false.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [],
+    "additionalProperties": true,
+    "properties": {}
+  }
+}

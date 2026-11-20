@@ -1,0 +1,32 @@
+{
+  "about": "A nullable labelled enum gains a { const: null } arm with no title.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "visit_type"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "visit_type": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "oneOf": [
+          {
+            "const": "new_patient",
+            "title": "New patient"
+          },
+          {
+            "const": "follow_up",
+            "title": "Follow-up"
+          },
+          {
+            "const": null
+          }
+        ]
+      }
+    }
+  }
+}

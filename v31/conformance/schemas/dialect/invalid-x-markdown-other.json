@@ -1,0 +1,9 @@
+{
+  "about": "x-markdown is block or inline.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "contentMediaType": "text/markdown",
+    "x-markdown": "line"
+  }
+}

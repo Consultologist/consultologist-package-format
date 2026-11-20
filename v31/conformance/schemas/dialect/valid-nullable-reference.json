@@ -1,0 +1,23 @@
+{
+  "about": "A nullable reference is an anyOf of a $ref and null.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "notes"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "notes": {
+        "anyOf": [
+          {
+            "$ref": "plaintext"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    }
+  }
+}

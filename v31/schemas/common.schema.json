@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:common",
+  "title": "Definitions shared by the file-kind schemas",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "maxLength": 64,
+      "not": {
+        "enum": [
+          "input",
+          "inputs",
+          "node",
+          "nodes",
+          "check",
+          "checks",
+          "function",
+          "functions",
+          "test",
+          "tests",
+          "snippet",
+          "snippets",
+          "macro",
+          "macros",
+          "part",
+          "parts",
+          "renderer",
+          "renderers",
+          "format",
+          "formats",
+          "deliverable",
+          "deliverables",
+          "param",
+          "params",
+          "item",
+          "items",
+          "pass",
+          "passes",
+          "run",
+          "runs",
+          "profile",
+          "profiles",
+          "value",
+          "values",
+          "content",
+          "contents",
+          "con",
+          "prn",
+          "aux",
+          "nul",
+          "com1",
+          "com2",
+          "com3",
+          "com4",
+          "com5",
+          "com6",
+          "com7",
+          "com8",
+          "com9",
+          "lpt1",
+          "lpt2",
+          "lpt3",
+          "lpt4",
+          "lpt5",
+          "lpt6",
+          "lpt7",
+          "lpt8",
+          "lpt9"
+        ]
+      }
+    },
+    "label": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "formatRef": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/id"
+        },
+        {
+          "$ref": "urn:consultologist:spec:31:dialect#/$defs/inline"
+        }
+      ]
+    },
+    "textFormat": {
+      "enum": [
+        "plaintext",
+        "markdown_block",
+        "markdown_inline"
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "rootedKey": {
+      "type": "string",
+      "pattern": "^(node|check|deliverable|input|macro|snippet|renderer)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
+    },
+    "jsonLogic": {
+      "description": "A JSON Logic rule in its written form (part 03 section 2): a literal, an array of rules, or an operation. Structural only; the checker types it.",
+      "anyOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonLogic"
+          }
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/jsonLogic/$defs/operationName"
+          },
+          "properties": {
+            "var": {
+              "type": "string",
+              "minLength": 1
+            },
+            "object": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/jsonLogic"
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/jsonLogic"
+            }
+          }
+        }
+      ],
+      "$defs": {
+        "operationName": {
+          "enum": [
+            "var",
+            "missing",
+            "if",
+            "===",
+            "!==",
+            "<",
+            "<=",
+            ">",
+            ">=",
+            "and",
+            "or",
+            "!",
+            "in",
+            "cat",
+            "+",
+            "-",
+            "*",
+            "/",
+            "%",
+            "min",
+            "max",
+            "size",
+            "blank",
+            "words",
+            "lines",
+            "lower",
+            "trim",
+            "starts_with",
+            "ends_with",
+            "plain",
+            "object",
+            "matches",
+            "has_word",
+            "terms_subset",
+            "all_pass",
+            "count_pass",
+            "days_between",
+            "years_between",
+            "add_days"
+          ]
+        }
+      }
+    },
+    "condition": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/jsonLogic"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "referenceString": {
+      "type": "string",
+      "pattern": "^((input|node|check|snippet|param|run|profile)\\..+|item.*|pass.*)$"
+    }
+  }
+}

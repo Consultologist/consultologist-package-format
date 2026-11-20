@@ -1,0 +1,16 @@
+{
+  "about": "A $ref is a bare format id or #/$defs/<name>.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "$ref": "https://example.com/x"
+      }
+    }
+  }
+}

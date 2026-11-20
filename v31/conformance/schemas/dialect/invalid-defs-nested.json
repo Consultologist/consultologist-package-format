@@ -1,0 +1,17 @@
+{
+  "about": "$defs sit only at a format file's root.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "type": "string",
+        "$defs": {}
+      }
+    }
+  }
+}

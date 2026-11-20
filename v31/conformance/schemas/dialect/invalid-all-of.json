@@ -1,0 +1,11 @@
+{
+  "about": "allOf is outside the dialect.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "allOf": [
+      {
+        "type": "string"
+      }
+    ]
+  }
+}

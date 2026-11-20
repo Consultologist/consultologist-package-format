@@ -1,0 +1,24 @@
+{
+  "about": "An object format with every property required and a $ref to a text format beside a description.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "$id": "urn:consultologist:spec:31:format:judgement",
+    "type": "object",
+    "description": "A yes-or-no answer to the question asked, with the reason for it.",
+    "required": [
+      "answer",
+      "reason"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "answer": {
+        "type": "boolean",
+        "description": "true for yes, false for no."
+      },
+      "reason": {
+        "$ref": "plaintext",
+        "description": "Why, in a sentence or two, from the text given."
+      }
+    }
+  }
+}

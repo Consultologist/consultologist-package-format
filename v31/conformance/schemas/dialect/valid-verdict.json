@@ -1,0 +1,25 @@
+{
+  "about": "The verdict format of part 02 section 5.3: a plain enum and a $ref to a text format.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "description": "A judgement of a draft summary: good, or revise with what to change.",
+    "required": [
+      "verdict",
+      "feedback"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "verdict": {
+        "type": "string",
+        "enum": [
+          "good",
+          "revise"
+        ]
+      },
+      "feedback": {
+        "$ref": "plaintext"
+      }
+    }
+  }
+}

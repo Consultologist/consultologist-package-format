@@ -1,0 +1,24 @@
+{
+  "about": "The null arm is exactly { const: null }.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": [
+      "string",
+      "null"
+    ],
+    "oneOf": [
+      {
+        "const": "a",
+        "title": "A"
+      },
+      {
+        "const": "b",
+        "title": "B"
+      },
+      {
+        "const": null,
+        "title": "None"
+      }
+    ]
+  }
+}

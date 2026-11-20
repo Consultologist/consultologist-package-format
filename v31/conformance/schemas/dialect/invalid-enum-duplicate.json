@@ -1,0 +1,11 @@
+{
+  "about": "enum values are unique.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "enum": [
+      "a",
+      "a"
+    ]
+  }
+}

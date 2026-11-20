@@ -1,0 +1,17 @@
+{
+  "about": "An inline or nested schema carries no $schema.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "$schema": "urn:consultologist:spec:31:dialect",
+        "type": "string"
+      }
+    }
+  }
+}

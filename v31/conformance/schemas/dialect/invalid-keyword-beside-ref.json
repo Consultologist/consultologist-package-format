@@ -1,0 +1,17 @@
+{
+  "about": "Beside $ref only title and description may sit.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "$ref": "plaintext",
+        "type": "string"
+      }
+    }
+  }
+}

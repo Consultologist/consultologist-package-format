@@ -1,0 +1,15 @@
+{
+  "about": "An array of references, with a $defs entry used inside the file.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/line"
+    },
+    "$defs": {
+      "line": {
+        "$ref": "plaintext"
+      }
+    }
+  }
+}

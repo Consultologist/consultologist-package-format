@@ -1,0 +1,18 @@
+{
+  "about": "The rule holds at every depth: a nested object also declares additionalProperties: false.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "a"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "a": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      }
+    }
+  }
+}

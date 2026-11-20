@@ -1,0 +1,11 @@
+{
+  "about": "A text format: a type, a media type and the x-markdown annotation, at the root.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "$id": "urn:consultologist:spec:31:format:markdown_block",
+    "type": "string",
+    "contentMediaType": "text/markdown",
+    "x-markdown": "block",
+    "description": "Markdown text that stands on its own lines (a paragraph, a list or a table)."
+  }
+}

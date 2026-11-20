@@ -1,0 +1,16 @@
+{
+  "description": [
+    "The nine built-in formats of specVersion 31, part 02 section 4."
+  ],
+  "items": [
+    "string",
+    "number",
+    "boolean",
+    "date",
+    "plaintext",
+    "markdown_block",
+    "markdown_inline",
+    "check_result",
+    "judgement"
+  ]
+}

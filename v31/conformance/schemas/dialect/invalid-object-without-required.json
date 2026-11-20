@@ -1,0 +1,9 @@
+{
+  "about": "An object declares required.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

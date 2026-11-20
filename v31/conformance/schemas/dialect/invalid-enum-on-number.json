@@ -1,0 +1,11 @@
+{
+  "about": "enum is on a string.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "number",
+    "enum": [
+      "a",
+      "b"
+    ]
+  }
+}

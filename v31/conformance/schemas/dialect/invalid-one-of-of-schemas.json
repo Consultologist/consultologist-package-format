@@ -1,0 +1,14 @@
+{
+  "about": "oneOf holds only labelled branches.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "oneOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "number"
+      }
+    ]
+  }
+}

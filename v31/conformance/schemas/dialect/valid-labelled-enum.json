@@ -1,0 +1,26 @@
+{
+  "about": "A labelled enum: oneOf of const and title (part 02 section 9).",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "visit_type"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "visit_type": {
+        "type": "string",
+        "oneOf": [
+          {
+            "const": "new_patient",
+            "title": "New patient"
+          },
+          {
+            "const": "follow_up",
+            "title": "Follow-up"
+          }
+        ]
+      }
+    }
+  }
+}

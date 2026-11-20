@@ -1,0 +1,65 @@
+{
+  "about": "check_result, whose nullable members are a type array holding array plus null (the dialect admits array here; see the README).",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "$id": "urn:consultologist:spec:31:format:check_result",
+    "type": "object",
+    "description": "The result of a check: whether it passed, the sentence to show when it did not, and the lists or counts the operation gives.",
+    "required": [
+      "pass",
+      "message",
+      "uncovered",
+      "untested",
+      "passed",
+      "total"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "pass": {
+        "type": "boolean",
+        "description": "Whether the check passed."
+      },
+      "message": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The failWith sentence when the check did not pass; null when it passed."
+      },
+      "uncovered": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "terms_subset only: the terms not found in the text; null from the aggregates."
+      },
+      "untested": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        },
+        "description": "terms_subset only: the terms that could not be tested; null from the aggregates."
+      },
+      "passed": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "The aggregates' count of results that passed; null from terms_subset."
+      },
+      "total": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "The aggregates' count of results judged; null from terms_subset."
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "about": "A nullable plain enum lists null among its values.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "visit_type"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "visit_type": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "new_patient",
+          "follow_up",
+          null
+        ]
+      }
+    }
+  }
+}

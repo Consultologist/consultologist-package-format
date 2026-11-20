@@ -1,0 +1,11 @@
+{
+  "about": "A type array has exactly two members.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": [
+      "string",
+      "number",
+      "null"
+    ]
+  }
+}

@@ -9,6 +9,9 @@ import re
 import sys
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
+
 ROOT = Path(__file__).resolve().parent.parent
 V31 = ROOT / "v31"
 
@@ -214,8 +217,205 @@ def check_sentences():
            parsed, [(e["id"], e["sentence"], e["audience"]) for e in sentences])
     return failures
 
+DIALECT_ID = "urn:consultologist:spec:31:dialect"
+BUILT_IN_FORMATS = ["string", "number", "boolean", "date", "plaintext", "markdown_block",
+                    "markdown_inline", "check_result", "judgement"]
+# Part 02 section 5: the annotations each built-in carries at its root.
+ANNOTATIONS = {"plaintext": ("text/plain", None),
+               "markdown_block": ("text/markdown", "block"),
+               "markdown_inline": ("text/markdown", "inline")}
+SCHEMAS = V31 / "schemas"
+CONFORMANCE = V31 / "conformance" / "schemas"
 
-CHECKS = [("constants", check_constants), ("sentences", check_sentences)]
+
+def schema_files():
+    """The dialect and every file-kind schema. Built-in formats are data, never loaded here."""
+    return [V31 / "dialect.schema.json"] + sorted(SCHEMAS.glob("*.schema.json"))
+
+
+def build_registry():
+    registry, failures = Registry(), []
+    for path in schema_files():
+        document, errors = load(path)
+        failures += errors
+        if document is not None:
+            registry = registry.with_resource(document.get("$id", path.name),
+                                              Resource.from_contents(document))
+    return registry, failures
+
+
+def schema_for(name):
+    return V31 / "dialect.schema.json" if name == "dialect" else SCHEMAS / f"{name}.schema.json"
+
+
+def validator_for(path, registry, failures):
+    schema, errors = load(path)
+    failures += errors
+    if schema is None:
+        return None
+    try:
+        Draft202012Validator.check_schema(schema)
+    except Exception as error:
+        failures.append(f"{path.relative_to(ROOT)}: not a 2020-12 schema ({error.message})")
+        return None
+    return Draft202012Validator(schema, registry=registry)
+
+
+def check_examples():
+    registry, failures = build_registry()
+    folders = sorted(path for path in CONFORMANCE.glob("*") if path.is_dir())
+    if not folders:
+        failures.append("v31/conformance/schemas: no schema directories")
+    for folder in folders:
+        valid = sorted(folder.glob("valid-*.json"))
+        invalid = sorted(folder.glob("invalid-*.json"))
+        if not valid:
+            failures.append(f"{folder.relative_to(ROOT)}: no valid example")
+        if not invalid:
+            failures.append(f"{folder.relative_to(ROOT)}: no invalid example")
+        validator = validator_for(schema_for(folder.name), registry, failures)
+        if validator is None:
+            continue
+        for path, expected in [(p, True) for p in valid] + [(p, False) for p in invalid]:
+            example, errors = load(path)
+            failures += errors
+            if example is None:
+                continue
+            name = path.relative_to(ROOT)
+            if list(example) != ["about", "instance"] or not example["about"]:
+                failures.append(f"{name}: expected {{ about, instance }} with a non-empty about")
+                continue
+            accepted = validator.is_valid(example["instance"])
+            if accepted != expected:
+                failures.append(f"{name}: expected the schema to "
+                                f"{'accept' if expected else 'refuse'} it")
+    return failures
+
+
+def declared_but_not_required(schema, where):
+    """Part 02 section 3.3, which a meta-schema cannot state: required lists every property."""
+    failures = []
+    if isinstance(schema, dict):
+        properties = schema.get("properties")
+        if isinstance(properties, dict) and sorted(schema.get("required", [])) != sorted(properties):
+            failures.append(f"{where}: required must list exactly the declared properties")
+        for key, value in schema.items():
+            if key in ("properties", "$defs") and isinstance(value, dict):
+                for name, child in value.items():
+                    failures += declared_but_not_required(child, f"{where}/{key}/{name}")
+            elif isinstance(value, list):
+                for index, child in enumerate(value):
+                    failures += declared_but_not_required(child, f"{where}/{key}/{index}")
+            elif isinstance(value, dict):
+                failures += declared_but_not_required(value, f"{where}/{key}")
+    return failures
+
+
+def check_common(registry, constants, bounds):
+    failures = []
+    common, errors = load(SCHEMAS / "common.schema.json")
+    failures += errors
+    if common is None:
+        return failures
+    definitions = common.get("$defs", {})
+    expect(failures, "common.schema.json $id", common.get("$id"),
+           "urn:consultologist:spec:31:schema:common")
+    expect(failures, "common.schema.json $defs", list(definitions),
+           ["id", "label", "description", "formatRef", "textFormat", "sha256", "rootedKey",
+            "jsonLogic", "condition", "referenceString"])
+    operation = definitions.get("jsonLogic", {}).get("$defs", {}).get("operationName", {})
+    expect(failures, "common jsonLogic operation names", operation.get("enum"),
+           constants["standardOperations"] + list(constants["operations"]))
+    expect(failures, "common id not-enum", definitions.get("id", {}).get("not", {}).get("enum"),
+           bounds["reservedIds"] + bounds["windowsReservedIds"])
+
+    def accepts(name, value):
+        schema = {"$ref": f"urn:consultologist:spec:31:schema:common#/$defs/{name}"}
+        return Draft202012Validator(schema, registry=registry).is_valid(value)
+
+    cases = [
+        ("id", "hpi_section", True), ("id", "Hpi", False), ("id", "node", False),
+        ("id", "con", False), ("id", "a" * 65, False), ("id", "a" * 64, True),
+        ("label", "Planning", True), ("label", "  ", False),
+        ("description", None, True), ("description", ["a"], True), ("description", [], False),
+        ("description", "a", False),
+        ("formatRef", "plaintext", True), ("formatRef", {"type": "string"}, True),
+        ("formatRef", {"$schema": DIALECT_ID, "type": "string"}, False),
+        ("textFormat", "markdown_inline", True), ("textFormat", "string", False),
+        ("sha256", "sha256:" + "0" * 64, True), ("sha256", "sha256:" + "G" * 64, False),
+        ("rootedKey", "node.draft", True), ("rootedKey", "check.a.b", True),
+        ("rootedKey", "draft", False), ("rootedKey", "run.date", False),
+        ("jsonLogic", {"var": "input.kind.value"}, True), ("jsonLogic", {"var": ["a"]}, False),
+        ("jsonLogic", {"!": [True]}, True), ("jsonLogic", {"!": True}, False),
+        ("jsonLogic", {"object": {"a": 1}}, True), ("jsonLogic", {"object": [1]}, False),
+        ("jsonLogic", {"eval": [1]}, False), ("jsonLogic", {"+": [1], "-": [1]}, False),
+        ("jsonLogic", [1, {"size": [{"var": "node.a.value"}]}], True),
+        ("jsonLogic", {"==": [1, 2]}, False),
+        ("condition", None, True), ("condition", {"in": ["a", {"var": "node.a.value"}]}, True),
+        ("referenceString", "item.value.title", True), ("referenceString", "pass", True),
+        ("referenceString", "param.x", True), ("referenceString", "other.x", False),
+    ]
+    for name, value, expected in cases:
+        if accepts(name, value) != expected:
+            failures.append(f"common {name}: expected {value!r} to be "
+                            f"{'accepted' if expected else 'refused'}")
+    return failures
+
+
+def check_formats():
+    registry, failures = build_registry()
+    constants, errors = load(V31 / "constants.json")
+    failures += errors
+    bounds, errors = load(V31 / "bounds.json")
+    failures += errors
+    if constants is not None and bounds is not None:
+        failures += check_common(registry, constants, bounds)
+
+    folder = V31 / "formats"
+    index, errors = load(folder / "index.json")
+    failures += errors
+    items = []
+    if index is not None:
+        expect(failures, "formats/index.json keys", list(index), ["description", "items"])
+        items = index.get("items", [])
+        expect(failures, "formats/index.json items", items, BUILT_IN_FORMATS)
+        description = index.get("description")
+        if description is not None and not (isinstance(description, list) and description
+                                            and all(isinstance(line, str) for line in description)):
+            failures.append("formats/index.json: description is null or a list of lines")
+    files = sorted(path.stem for path in folder.glob("*.json") if path.name != "index.json")
+    expect(failures, "formats/ files", files, sorted(items))
+
+    validator = validator_for(V31 / "dialect.schema.json", registry, failures)
+    for name in files:
+        path = folder / f"{name}.json"
+        document, errors = load(path)
+        failures += errors
+        if document is None:
+            continue
+        label = f"formats/{name}.json"
+        if validator is not None:
+            for error in validator.iter_errors(document):
+                failures.append(f"{label}: outside the dialect at /{'/'.join(map(str, error.path))}: "
+                                f"{error.message}")
+        expect(failures, f"{label} $id", document.get("$id"),
+               f"urn:consultologist:spec:31:format:{name}")
+        expect(failures, f"{label} $schema", document.get("$schema"), DIALECT_ID)
+        media, markdown = ANNOTATIONS.get(name, (None, None))
+        expect(failures, f"{label} contentMediaType", document.get("contentMediaType"), media)
+        expect(failures, f"{label} x-markdown", document.get("x-markdown"), markdown)
+        if not isinstance(document.get("description"), str) or not document["description"]:
+            failures.append(f"{label}: no description")
+        if document.get("type") == "object":
+            for key, child in document["properties"].items():
+                if not child.get("description"):
+                    failures.append(f"{label}: property {key} has no description")
+        failures += declared_but_not_required(document, label)
+    return failures
+
+
+CHECKS = [("constants", check_constants), ("sentences", check_sentences),
+          ("examples", check_examples), ("formats", check_formats)]
 
 
 def main():

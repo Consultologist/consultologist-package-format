@@ -1,0 +1,6 @@
+{
+  "$schema": "urn:consultologist:spec:31:dialect",
+  "$id": "urn:consultologist:spec:31:format:boolean",
+  "type": "boolean",
+  "description": "true or false."
+}

@@ -1,0 +1,18 @@
+{
+  "about": "A oneOf branch is exactly { const, title }.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string",
+    "oneOf": [
+      {
+        "const": "a",
+        "title": "A",
+        "description": "x"
+      },
+      {
+        "const": "b",
+        "title": "B"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "about": "A type array holds one real type, not null twice.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": [
+      "null",
+      "null"
+    ]
+  }
+}

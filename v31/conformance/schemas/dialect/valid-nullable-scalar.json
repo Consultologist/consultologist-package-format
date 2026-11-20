@@ -1,0 +1,19 @@
+{
+  "about": "A nullable scalar is a type array.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "age"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "age": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "urn:consultologist:spec:31:dialect",
+  "$id": "urn:consultologist:spec:31:format:string",
+  "type": "string",
+  "description": "A short piece of text that is a value, not content: an id, a code or a label."
+}
