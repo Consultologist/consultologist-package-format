@@ -6516,11 +6516,12 @@ key, item path and pass, so the same package and inputs always give the same stu
 Every refusal, warning, job-start, recorded and History sentence of this format, in one table. The
 table is printed by [`scripts/render-sentences.py`](scripts/render-sentences.py) from
 [`v31/sentences.json`](v31/sentences.json), which is normative beside this text; each sentence is
-also given, as written, in the chapter and section named in its row. The sentence cell is the
-sentence between quotation marks and in italics, with `<`, `>`, `|` and `*` written as escapes (a
+also given, as written, in the chapter and under the heading named in its row. The sentence cell is
+the sentence between quotation marks and in italics, with `<`, `>`, `|` and `*` written as escapes (a
 quotation mark is not escaped); `<…>` marks a placeholder. The chapter cell is the number of the
-chapter that gives the sentence and the title of its section. The audience is `author` (a person writing or publishing a package) or `clinician`
-(a person running a workflow).
+chapter that gives the sentence and the title of the heading of that chapter under which it is
+given. The audience is `author` (a person writing or publishing a package) or `clinician` (a person
+running a workflow).
 
 | Id | Chapter | Sentence | Audience |
 |---|---|---|---|
@@ -6570,7 +6571,7 @@ chapter that gives the sentence and the title of its section. The audience is `a
 | S02-002 | 2 · Reading a value | *"Medical oncology"* | author |
 | S02-003 | 2 · What a model receives | *"Not sent to the model: …"* | author |
 | S02-004 | 2 · An example: `example-conditional-sections`' inputs at 31 | *"Narrative"* | author |
-| S02-005 | 2 · `WorkflowPackages/Current`: what satellites see | *"This workflow needs the web app"* | clinician |
+| S02-005 | 2 · Refusals | *"This workflow needs the web app"* | clinician |
 | S02-006 | 2 · Refusals | *"computed from model text: \<key\>"* | author |
 | S02-007 | 2 · Refusals | *"Node '\<id\>' declares unknown kind '\<kind\>' (accepted: agent, rendered, computed, for, while, if, case, call)."* | author |
 | S02-008 | 2 · Refusals | *"Node '\<id\>' declares kind let; a let is now kind computed, with its JSON Logic in expression."* | author |
@@ -6865,40 +6866,40 @@ chapter that gives the sentence and the title of its section. The audience is `a
 | S07-015 | 7 · Refusals | *"\<path\> is evidence written only by publish; it is ignored and shouldn't be committed."* | author |
 | S07-016 | 7 · Refusals | *"This package's resolve.json and lock.json were ignored; publishing writes new ones."* | author |
 | S07-017 | 7 · Refusals | *"Workflow \<package\>@\<version\> can't run: its lock doesn't match the hash published for it, or doesn't belong to its compiled document."* | clinician |
-| S08-001 | 9 · Node rows | *"skipped: …"* | clinician |
-| S08-002 | 9 · Node rows | *"not run: beyond max \<n\>"* | clinician |
-| S08-003 | 9 · Deliverable rows | *"held: empty"* | clinician |
-| S08-004 | 9 · Deliverable rows | *"skipped: \<condition\> is false"* | clinician |
-| S08-005 | 9 · Refusals and recorded sentences | *"skipped: \<printed condition\> is false"* | clinician |
-| S08-006 | 9 · Refusals and recorded sentences | *"not sent: \<kind\> isn't set up for this account"* | clinician |
-| S08-007 | 9 · Refusals and recorded sentences | *"blocked: check '\<id\>' failed (\<detail\>)"* | clinician |
-| S08-008 | 9 · Refusals and recorded sentences | *"blocked: check '\<id\>' could not run (\<error\>)"* | clinician |
-| S08-009 | 9 · Refusals and recorded sentences | *"cancelled: the job didn't finish within \<n\> minutes"* | clinician |
+| S08-001 | 9 · Sentences the record holds | *"skipped: …"* | clinician |
+| S08-002 | 9 · Sentences the record holds | *"not run: beyond max \<n\>"* | clinician |
+| S08-003 | 9 · Sentences the record holds | *"held: empty"* | clinician |
+| S08-004 | 9 · Sentences the record holds | *"skipped: \<condition\> is false"* | clinician |
+| S08-005 | 9 · Sentences the record holds | *"skipped: \<printed condition\> is false"* | clinician |
+| S08-006 | 9 · Sentences the record holds | *"not sent: \<kind\> isn't set up for this account"* | clinician |
+| S08-007 | 9 · Sentences the record holds | *"blocked: check '\<id\>' failed (\<detail\>)"* | clinician |
+| S08-008 | 9 · Sentences the record holds | *"blocked: check '\<id\>' could not run (\<error\>)"* | clinician |
+| S08-009 | 9 · Sentences the record holds | *"cancelled: the job didn't finish within \<n\> minutes"* | clinician |
 | S09-001 | 8 · Which spec versions an engine admits | *"specVersion 31 is not supported: this engine accepts specVersion \<list\> (pre-v5 packages are archived; see registry-operations.md)."* | author |
 | S09-002 | 8 · The publish note | *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the \> rest wait their turn."* | author |
 | S09-003 | 8 · The publish note | *"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and \> reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait \> their turn."* | author |
-| S09-004 | 8 · The job header | *"migrated by the operator from \<old version\>"* | author |
-| S09-005 | 8 · Banners | *"\<deliverable label\> was blocked: check '\<check id\>' failed (\<check detail\>)."* | author |
-| S09-006 | 8 · The sections, in the order the job runs | *"16 November 2026"* | author |
-| S09-007 | 8 · 31 packages are view-only until Milestone 41 | *"This package uses the new format. You can view and download it; editing returns in a later release."* | author |
-| S09-008 | 8 · Refusals and notes | *"This workflow (example-nested-note@v2026.11.2) needs Scriban ^7.2; this engine runs Scriban 8.0.1. Publish a new version of the workflow to run it on this engine."* | clinician |
-| S09-009 | 8 · Refusals and notes | *"The compiled workflow \<package\>@\<version\> doesn't match its published hash, so it can't be run. Tell the operator."* | clinician |
-| S09-010 | 8 · Refusals and notes | *"The model service stayed busy for \<n\> minutes. Run the workflow again later."* | clinician |
-| S09-011 | 8 · Refusals and notes | *"The model service \<timed out \| returned an error \| couldn't be reached\> \<n\> times in a row. Run the workflow again later."* | clinician |
-| S09-012 | 8 · Refusals and notes | *"The job didn't finish within \<n\> minutes. Run the workflow again later."* | clinician |
-| S09-013 | 8 · Refusals and notes | *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the rest wait their turn."* | author |
-| S09-014 | 8 · Refusals and notes | *"The compiled workflow \<package\>@\<version\> doesn't match its lock, so it can't be run. Tell the operator."* | clinician |
-| S09-015 | 8 · Refusals and notes | *"The job reached \<limit\> agent calls, the most this engine runs for one job."* | clinician |
+| S09-004 | 8 · Sentences the pages show | *"migrated by the operator from \<old version\>"* | author |
+| S09-005 | 8 · Sentences the pages show | *"\<deliverable label\> was blocked: check '\<check id\>' failed (\<check detail\>)."* | author |
+| S09-006 | 8 · Sentences the pages show | *"16 November 2026"* | author |
+| S09-007 | 8 · Sentences the pages show | *"This package uses the new format. You can view and download it; editing returns in a later release."* | author |
+| S09-008 | 8 · Sentences the engine shows | *"This workflow (example-nested-note@v2026.11.2) needs Scriban ^7.2; this engine runs Scriban 8.0.1. Publish a new version of the workflow to run it on this engine."* | clinician |
+| S09-009 | 8 · Sentences the engine shows | *"The compiled workflow \<package\>@\<version\> doesn't match its published hash, so it can't be run. Tell the operator."* | clinician |
+| S09-010 | 8 · Sentences the engine shows | *"The model service stayed busy for \<n\> minutes. Run the workflow again later."* | clinician |
+| S09-011 | 8 · Sentences the engine shows | *"The model service \<timed out \| returned an error \| couldn't be reached\> \<n\> times in a row. Run the workflow again later."* | clinician |
+| S09-012 | 8 · Sentences the engine shows | *"The job didn't finish within \<n\> minutes. Run the workflow again later."* | clinician |
+| S09-013 | 8 · Sentences the engine shows | *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the rest wait their turn."* | author |
+| S09-014 | 8 · Sentences the engine shows | *"The compiled workflow \<package\>@\<version\> doesn't match its lock, so it can't be run. Tell the operator."* | clinician |
+| S09-015 | 8 · Sentences the engine shows | *"The job reached \<limit\> agent calls, the most this engine runs for one job."* | clinician |
 | S09-016 | 8 · The publish note | *"\<package\> could run for about \<n\> minutes in the worst case; this engine stops a job after \<limit\> minutes."* | author |
 | S09-017 | 8 · Delivery at the end | *"Couldn't send to \<destination\>. Copy the note instead."* | clinician |
 | S09-018 | 8 · Every deploy is preceded by a drain | *"Waiting for an update to finish"* | clinician |
 | S09-019 | 8 · Delivery at the end | *"Delivering…"* | clinician |
 | S10-001 | 10 · Hand edits, with notices | *"written; hand edits remain"* | author |
 | S10-002 | 10 · Hand edits, with notices | *"Hand edit needed in \<file\>, \<member\>: \<reason\>."* | author |
-| S10-003 | 10 · Refusals | *"The condition '\<expression\>' uses \<construct\>, which has no JSON Logic form at 31: rewrite it by hand."* | author |
-| S10-004 | 10 · Refusals | *"the prompt reads profile.\<field\>, which a 31 prompt doesn't read; move it to a deliverable or a macro body."* | author |
-| S10-005 | 10 · Refusals | *"\<package\> stays at version 30 for now: \<reason\>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives."* | clinician |
-| S10-006 | 10 · Refusals | *"Renamed '\<id\>' to '\<new id\>'; '\<id\>_\<kind\>' was already taken."* | author |
+| S10-003 | 10 · What the converter refuses, and `!x` on text | *"The condition '\<expression\>' uses \<construct\>, which has no JSON Logic form at 31: rewrite it by hand."* | author |
+| S10-004 | 10 · Hand edits, with notices | *"the prompt reads profile.\<field\>, which a 31 prompt doesn't read; move it to a deliverable or a macro body."* | author |
+| S10-005 | 10 · A package that stays at 30, and what its owner is told | *"\<package\> stays at version 30 for now: \<reason\>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives."* | clinician |
+| S10-006 | 10 · Reserved ids are renamed | *"Renamed '\<id\>' to '\<new id\>'; '\<id\>_\<kind\>' was already taken."* | author |
 
 ## 12. Conformance
 

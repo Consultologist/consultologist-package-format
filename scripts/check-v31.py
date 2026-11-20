@@ -540,6 +540,43 @@ def chapter_bodies(text):
     return bodies
 
 
+def heading_sections(text):
+    """Every heading of the document as (chapter number, title without its number, text under it, subsections included)."""
+    lines, found, fenced = text.splitlines(), [], False
+    for number, line in enumerate(lines):
+        if line.startswith("```"):
+            fenced = not fenced
+        heading = None if fenced else re.match(r"(#{2,6}) (.*)", line)
+        if heading:
+            found.append((number, len(heading.group(1)), heading.group(2)))
+    sections, chapter = [], 0
+    for position, (number, level, title) in enumerate(found):
+        end = next((n for n, deeper, _ in found[position + 1:] if deeper <= level), len(lines))
+        if level == 2:
+            chapter = int(title.split(".")[0]) if re.match(r"\d+\. ", title) else 0
+        sections.append((chapter, re.sub(r"^[\d.]+\s+", "", title), "\n".join(lines[number + 1:end])))
+    return sections
+
+
+def check_chapter_cells(text, table):
+    """Each row's Chapter cell names a heading of that chapter, and the row's sentence is given under it."""
+    failures, sections = [], heading_sections(text)
+    for line in table[2:]:
+        id_, cell, sentence = [c.strip() for c in table_cells(line)[:3]]
+        chapter, _, title = cell.partition(" · ")
+        title = re.sub(r"\\(.)", r"\1", title)
+        if not any(number == int(chapter) and name == title and plain(sentence) in plain(body)
+                   for number, name, body in sections):
+            failures.append(f"{id_}: no heading '{title}' in chapter {chapter} gives the sentence")
+    return failures
+
+
+def table_cells(row):
+    """A table row's cells: the id, the Chapter cell, and the sentence without its *\"…\"* frame."""
+    cells = [c.strip() for c in re.split(r"(?<!\\)\|", row)[1:-1]]
+    return [cells[0], cells[1], cells[2][2:-2]]
+
+
 def check_document():
     if not DOCUMENT.exists():
         return [f"{DOCUMENT.name}: missing"]
@@ -598,6 +635,7 @@ def check_document():
         failures.append("scripts/render-sentences.py does not round-trip the sentences")
     if table != renderer.render(document["sentences"]).splitlines():
         failures.append(f"chapter {SENTENCES_CHAPTER}'s table is not what scripts/render-sentences.py prints")
+    failures += check_chapter_cells(text, table)
     return failures + check_dialect_document({e["sentence"] for e in document["sentences"]})
 
 
