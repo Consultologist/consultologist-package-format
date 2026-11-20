@@ -1,0 +1,7 @@
+{
+  "about": "A computed node's expression yields its declared format (chapter 3 § 3.3). The computed node draft_length declares number. Invalid: its expression is blank of the draft, a boolean. Valid: the draft's size, an integer, which is a number.",
+  "valid": false,
+  "sentences": [
+    "Computed node 'draft_length' yields boolean; it declares number."
+  ]
+}

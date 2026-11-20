@@ -1,0 +1,7 @@
+{
+  "about": "A deliverable's existence does not depend on a check (chapter 3 § 3.4.2). The check draft_written passes when the draft is not blank. Invalid: the deliverable note's if reads check.draft_written.value.pass. Valid: it tests the draft itself.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'note' if reads check.draft_written; a deliverable's existence can't depend on a check."
+  ]
+}

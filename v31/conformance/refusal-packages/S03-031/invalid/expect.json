@@ -1,0 +1,7 @@
+{
+  "about": "A pattern is I-Regexp, RFC 9485 (chapter 3 § 3.5.3): it has no \\d. Invalid: the agent node plan's if matches the draft against \"\\d{4}\". Valid: \"[0-9]{4}\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' pattern \"\\d{4}\" is not I-Regexp (RFC 9485): '\\d' at character 1 is not an escape of I-Regexp."
+  ]
+}

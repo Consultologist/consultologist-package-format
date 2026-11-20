@@ -1,0 +1,7 @@
+{
+  "about": "object gives every property of the computed node's format (chapter 3 § 3.5.4). The computed node draft_facts returns the package format draft_facts, of words and empty. Invalid: its object gives words alone. Valid: both.",
+  "valid": false,
+  "sentences": [
+    "Computed node 'draft_facts' builds draft_facts without empty; object must give every property of the format."
+  ]
+}

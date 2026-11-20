@@ -1,0 +1,5 @@
+{
+  "about": "count_pass's min is a whole number, 0 or more (chapter 3 § 3.5.4). The check loop notes_checked checks each prior note, and the check enough_notes counts those that pass. Invalid: its min is -1. Valid: 1.",
+  "valid": true,
+  "sentences": []
+}

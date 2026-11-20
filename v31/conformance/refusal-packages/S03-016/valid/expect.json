@@ -1,0 +1,5 @@
+{
+  "about": ".title is not read on a plain enum (chapter 3 § 3.4.1). The input note_kind is a plain enum of narrative and table. Invalid: the agent node plan's if reads input.note_kind.title. Valid: input.note_kind.value.",
+  "valid": true,
+  "sentences": []
+}

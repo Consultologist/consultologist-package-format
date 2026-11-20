@@ -1,0 +1,7 @@
+{
+  "about": "A pattern is written as a literal, never computed (chapter 3 § 3.5.3). Invalid: the agent node plan's if gives matches the pattern lower(\"LETROZOLE\"). Valid: the literal \"letrozole\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' gives matches a computed pattern; pattern must be written as a literal."
+  ]
+}

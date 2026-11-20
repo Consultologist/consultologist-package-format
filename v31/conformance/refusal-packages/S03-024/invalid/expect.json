@@ -1,0 +1,7 @@
+{
+  "about": "A field read through a union is declared by every member (chapter 3 § 3.7). The input medication_order's choice is a union of { dose, route } and { dose }. Invalid: the agent node plan's if reads choice.route. Valid: choice.dose, which both declare.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads input.medication_order.value.choice.route, which not every member of { dose: number, route: string } | { dose: number } declares."
+  ]
+}

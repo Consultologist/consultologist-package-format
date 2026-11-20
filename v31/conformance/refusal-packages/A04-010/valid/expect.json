@@ -1,0 +1,5 @@
+{
+  "about": "A pattern is written as text (chapter 3 § 3.5.3; this implementation's sentence). Invalid: the agent node plan's if gives matches the number 5 as its pattern. Valid: the text \"5\".",
+  "valid": true,
+  "sentences": []
+}

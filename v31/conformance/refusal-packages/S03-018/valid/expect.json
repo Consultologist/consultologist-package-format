@@ -1,0 +1,5 @@
+{
+  "about": "No condition or computed expression reads the profile (chapter 3 § 3.4.1). Invalid: the agent node plan's if tests blank of profile.signature. Valid: blank of the draft.",
+  "valid": true,
+  "sentences": []
+}

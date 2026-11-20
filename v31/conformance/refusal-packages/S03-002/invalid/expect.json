@@ -1,0 +1,7 @@
+{
+  "about": "Text is not compared with a literal; it is tested by blank, size or in (chapter 3 § 3.7). Invalid: the agent node plan's if compares the draft with \"\" by ===. Valid: it tests blank of the draft.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' compares input.consult_draft.content (markdown_block) with a literal; text is tested by whether it is blank, its size, or in."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A path is a root, then names joined by dots (chapter 3 § 3.2.2; this implementation's sentence). Invalid: the agent node plan's if reads 'input.consult_draft..content', with an empty name. Valid: input.consult_draft.content.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads 'input.consult_draft..content', which is not a path; a path is a root, then names joined by dots."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "The branches of an if have one type (chapter 3 § 3.7; this implementation's sentence). The computed node draft_length declares number. Invalid: its if gives \"none\" for a blank draft and the size otherwise. Valid: 0 and the size.",
+  "valid": false,
+  "sentences": [
+    "Computed node 'draft_length' mixes string and integer in the branches of an if; they have one type."
+  ]
+}

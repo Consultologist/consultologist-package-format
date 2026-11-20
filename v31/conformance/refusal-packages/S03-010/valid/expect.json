@@ -1,0 +1,5 @@
+{
+  "about": "An operation takes its count of operands: a comparison takes two, so the three-operand between is refused (chapter 3 § 3.5.1). Invalid: the agent node plan's if writes { \"<\": [100, size, 5000] }. Valid: { \"<\": [size, 5000] }.",
+  "valid": true,
+  "sentences": []
+}

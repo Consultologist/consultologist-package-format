@@ -1,0 +1,7 @@
+{
+  "about": "Text is not compared with text (chapter 3 § 3.7). The optional input referral_letter is a markdown_block. Invalid: the agent node plan's if compares the draft with the letter by ===. Valid: their counts of words.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' compares input.consult_draft.content (markdown_block) with input.referral_letter.content (markdown_block | null); text is tested by whether it is blank, its size, or in."
+  ]
+}

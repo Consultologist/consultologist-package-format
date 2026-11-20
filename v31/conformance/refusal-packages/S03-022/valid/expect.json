@@ -1,0 +1,5 @@
+{
+  "about": "A macro's if is shared, so it reads no function's parameter (chapter 3 § 3.4.2). The macro footer is placed at the end of the note. Invalid: its if tests blank of param.draft.content. Valid: of the input consult_draft.",
+  "valid": true,
+  "sentences": []
+}

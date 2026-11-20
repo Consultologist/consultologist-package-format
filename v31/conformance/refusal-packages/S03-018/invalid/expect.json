@@ -1,0 +1,7 @@
+{
+  "about": "No condition or computed expression reads the profile (chapter 3 § 3.4.1). Invalid: the agent node plan's if tests blank of profile.signature. Valid: blank of the draft.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads profile.signature; profile fields are read only in deliverable templates and macro bodies, never in conditions or computed expressions."
+  ]
+}

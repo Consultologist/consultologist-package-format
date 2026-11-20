@@ -1,0 +1,5 @@
+{
+  "about": "A literal compared with an enum is one of its values (chapter 3 § 3.7). The input note_kind is a plain enum of narrative and table. Invalid: the agent node plan's if compares it with \"letter\". Valid: with \"table\".",
+  "valid": true,
+  "sentences": []
+}

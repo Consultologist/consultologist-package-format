@@ -1,0 +1,5 @@
+{
+  "about": "Only the operations of chapter 3 § 3.5 are allowed (chapter 3 § 3.5.1): !! is refused. Invalid: the agent node plan's if writes { \"!!\": [{ \"blank\": … }] }. Valid: { \"!\": [{ \"blank\": … }] }.",
+  "valid": true,
+  "sentences": []
+}

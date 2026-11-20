@@ -1,0 +1,7 @@
+{
+  "about": "object takes one object, from field names to rules (chapter 3 § 3.2.2; this implementation's sentence). The computed node draft_facts returns the package format draft_facts. Invalid: its expression writes object with a list of the two field rules. Valid: with an object of them.",
+  "valid": false,
+  "sentences": [
+    "Computed node 'draft_facts' writes object with a list; object takes one object, from field names to rules."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "JSON Logic reads input, node, check, item, pass, param and run, never snippet, part, macro, renderer or deliverable (chapter 3 § 3.4.1). Invalid: the agent node plan's if tests blank of snippet.closing_line.content. Valid: blank of the draft.",
+  "valid": true,
+  "sentences": []
+}

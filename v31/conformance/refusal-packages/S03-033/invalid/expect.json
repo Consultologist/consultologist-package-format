@@ -1,0 +1,7 @@
+{
+  "about": "has_word finds one word or phrase, not a blank one (chapter 3 § 3.5.3). Invalid: the agent node plan's if gives has_word two spaces. Valid: \"chest pain\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' gives has_word a blank word; has_word finds one word or phrase."
+  ]
+}

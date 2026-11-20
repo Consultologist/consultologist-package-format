@@ -1,0 +1,5 @@
+{
+  "about": "Operands written as an array, even one (chapter 3 § 3.2.2). Invalid: the agent node plan's if writes { \"!\": { \"blank\": … } }. Valid: { \"!\": [{ \"blank\": … }] }.",
+  "valid": true,
+  "sentences": []
+}

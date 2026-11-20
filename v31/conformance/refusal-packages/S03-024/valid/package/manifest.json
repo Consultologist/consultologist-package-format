@@ -1,0 +1,13 @@
+{
+  "name": "example-minimal",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Minimal note demo",
+  "description": ["A fictional package for tests.", "Not intended for clinical use."],
+  "tags": ["demo", "fictional"],
+  "inputs": {
+    "consult_draft": { "label": "Consult draft", "description": null, "format": "markdown_block", "required": true, "channel": null },
+    "medication_order": { "label": "Medication order", "description": null, "format": { "type": "object", "required": ["choice"], "additionalProperties": false, "properties": { "choice": { "anyOf": [{ "type": "object", "required": ["dose", "route"], "additionalProperties": false, "properties": { "dose": { "type": "number", "title": "Dose" }, "route": { "type": "string", "title": "Route" } } }, { "type": "object", "required": ["dose"], "additionalProperties": false, "properties": { "dose": { "type": "number", "title": "Dose" } } }], "title": "Choice" } } }, "required": true, "channel": null }
+  }
+}

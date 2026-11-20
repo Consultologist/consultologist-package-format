@@ -1,0 +1,7 @@
+{
+  "about": "A counted repetition is at most 100 (chapter 3 § 3.5.3). Invalid: the agent node plan's if matches the draft against \"[0-9]{101}\". Valid: \"[0-9]{100}\", the limit.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' pattern \"[0-9]{101}\" repeats 101 times; a counted repetition is at most 100."
+  ]
+}

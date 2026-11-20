@@ -1,0 +1,7 @@
+{
+  "about": "A path has no segment of digits: a list is not read by position (chapter 3 § 3.2.2). The input prior_notes is a list of plaintext. Invalid: the agent node plan's if reads input.prior_notes.value.0. Valid: it tests the size of input.prior_notes.value.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads input.prior_notes.value.0, a position in a list; lists are read whole, or by identity through .items."
+  ]
+}

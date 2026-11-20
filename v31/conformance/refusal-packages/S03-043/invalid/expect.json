@@ -1,0 +1,7 @@
+{
+  "about": "A pattern compiles with the engine's options, RegexOptions.NonBacktracking | RegexOptions.CultureInvariant (chapter 3 § 3.5.3). Invalid: the agent node plan's if matches the draft against \"(a{100}){100}\", within the other bounds, which .NET refuses as too large an automaton. Valid: \"(a{10}){10}\". The sentence's reason is this implementation's: it needs too large an automaton, or .NET does not accept it.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' pattern \"(a{100}){100}\" doesn't compile with the engine's options: it needs too large an automaton."
+  ]
+}

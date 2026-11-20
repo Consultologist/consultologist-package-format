@@ -56,12 +56,13 @@ The exporting area fixes the exact files in the release that carries the cases
   invalid package does to break it, and what the valid one does to keep it, in words), `valid` (a
   boolean, `true` in `valid/` and `false` in `invalid/`) and `sentences` (a list of strings: `[]` for
   a valid package; for an invalid one, every sentence the checker gives (the reader, then the type
-  rules), in its order). It is
+  rules, then the expression rules), in its order). It is
   written with 2-space indentation, `\n` line ends and a final newline, and writes `'`, `≠`, `–`
   and `…` as themselves. The index lists a case as `<sentence id>/valid` and
   `<sentence id>/invalid`. **The cases are exported by the library's checker and are never written
   by hand:** the exporter runs each package through the reader and, when the reader accepts it,
-  through the type rules, and writes what they said. An invalid
+  through the type rules and, when they accept it, through the expression rules, and writes what they
+  said. An invalid
   package breaks its rule alone and gives that one sentence; where a rule cannot be broken without
   another sentence also being given, its `about` says so and `sentences` lists them all.
   `python3 scripts/check-v31.py` (group `refusal-packages`) holds the folders to the index, each
@@ -168,6 +169,73 @@ The count `A03-011` makes is this implementation's: each schema object visited w
 are inlined, a referenced format counted at each place it is referenced. Another implementation may
 count otherwise, so only the far side of the limit is meant by its case: its invalid package is past
 10,000 by this count, and its valid package is under the limit, not on it.
+
+## The refusal packages of the expressions (area 04)
+
+From area 04 on, every case, areas 02 and 03's included, is held to the expression rules of
+[chapter 3](../../package-format-v31.md#3-expressions) as well: every JSON Logic rule a package writes (a condition, a
+`while`, an `until`, a computed node's `expression`) is checked against its written form, what its
+site may read and the types of what it reads. Five earlier cases changed, and only in one
+expression: the valid and invalid packages of `A02-008`, `S01-036`, `S02-013`, `S02-016` and
+`S04-041` tested an `if` by comparing the input `consult_draft`'s Markdown with a literal (`!==` or
+`===` with `""`, or `===` with `"full"`), which `S03-002` refuses; they now test it with `blank`.
+Their sentences are unchanged, and every other earlier package is byte for byte as it was.
+
+Area 04 adds 46 cases, 92 packages, built as the earlier areas' are (the smallest package plus only
+what the rule needs, here a second input of the needed format, a package format, a computed node,
+a check or a check loop, or a macro, and an invalid side that is its valid side with one change):
+one for each chapter 3 sentence a package can reach, `S03-002` to `S03-035`, `S03-042` and
+`S03-043`, and one for each of this implementation's `A04-001` to `A04-010`, which, like the
+`A02-…` and `A03-…` ones, are not rows of `sentences.json` and are open points for the text. Each
+invalid package gives its one sentence. Most rules are written as the agent node `plan`'s `if`,
+reading the inputs; `S03-020` and `S03-021` are a deliverable's `if`, `S03-022` a macro's,
+`S03-030` a check's.
+
+- **Reads through `node`, `check`, `item`, `pass` and `param` are not judged yet.** Which nodes,
+  checks, items, passes and parameters a site can see, and their types, are the compiled package's
+  (area 05), so until then such a read is accepted with no type, and only chapter 3's own site rules
+  are said of it (a deliverable's `if` reading a node's `.content` or a check, a macro's `if`
+  reading `param`). So the cases build their rules on inputs and run facts, whose types are known.
+  A few valid packages read through those roots (`S03-020`'s `node.plan.value`, `S03-030`'s check
+  loop over `item.value` and `check.notes_checked.items`); area 05, judging them, corrects any it
+  finds invalid, and the cases are exported again.
+- **These chapter 3 sentences have no package.** `S03-001` (*"skipped: … is false"*) is the reason
+  a decision's record gives, not a refusal. `S03-036` and `S03-044` follow from the three flags of
+  [§ 3.4.4 to § 3.4.6](../../package-format-v31.md#344-run-dependence-is-contagious), which are worked out from the
+  compiled package's edges and from what templates read (areas 05 and 07); no package reaches them
+  yet. `S03-037` and `S03-038` are warnings and `S03-039` a note: a package that gets them is
+  accepted, and `expect.json` lists refusals only. `S03-040` and `S03-041`, and this
+  implementation's `A04-011`, are failures at run time
+  ([§ 3.11.3](../../package-format-v31.md#3113-failures-at-run-time)), said when a rule is evaluated, never at publish.
+- **Words the text leaves to the implementation.** Where a sentence shows `<path> (<format>)` and the
+  operand is not a `var`, this implementation writes the operand's printed text
+  ([§ 3.8](../../package-format-v31.md#38-the-printer)) for `<path>`, as in *"… compares size(input.consult_draft.content)
+  (integer) with "0" (string); …"*. `S03-031`'s `<reason>` is one of this implementation's fixed
+  phrases (*"'\\d' at character 1 is not an escape of I-Regexp"*), and `S03-043`'s is *"it needs too
+  large an automaton"* when .NET refuses the automaton's size, else *".NET does not accept it"*,
+  never .NET's own message, which is localised. `S03-043`'s pattern, `(a{100}){100}`, is within
+  the other bounds and refused by .NET's non-backtracking engine as too large; an implementation on
+  another engine may word the reason otherwise: compare that sentence by its row, as the check
+  script does.
+
+**This implementation's sentences for the expressions.** The text gives no sentence for eleven
+rules the expression checker holds, so it says its own, under `A04-…` ids that are not rows of
+`sentences.json`. Like the `A02-…` and `A03-…` ones, they are this implementation's and each is an
+open point for the text:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A04-001` | *"\<site> gives \<operation> \<operand> (\<format>); \<operation> takes \<expected>."* | each operand is of a type its operation takes ([chapter 3 § 3.5.1](../../package-format-v31.md#351-standard-json-logic-operations), [§ 3.7](../../package-format-v31.md#37-typing)); `<expected>` is one of `numbers`, `booleans`, `a condition`, `text`, `text or a list`, `a list of its type, or text`, `a string to find`, `strings, numbers and plain text`, `dates`, `a date and a number`, `two concept_list values`, `a list of check results` |
+| `A04-002` | *"\<site> compares \<a> (\<format>) with \<b> (\<format>); = and ≠ compare two values of one type."* | `===` and `!==` compare two data values of one type, or either `null` ([chapter 3 § 3.5.1](../../package-format-v31.md#351-standard-json-logic-operations)) |
+| `A04-003` | *"\<site> mixes \<format> and \<format> in \<the branches of an if \| a list>; they have one type."* | an `if`'s branches, and a list's elements, have one type ([chapter 3 § 3.7](../../package-format-v31.md#37-typing)) |
+| `A04-004` | *"\<site> writes an object with \<n> members where a rule is expected; an operation is an object with one member, and object builds an object."* | an operation is an object with exactly one member ([chapter 3 § 3.2.1](../../package-format-v31.md#321-shape)) |
+| `A04-005` | *"\<site> writes var with \<what it is>; var takes one path, written as text."* | `var` takes one string, the path ([chapter 3 § 3.2.2](../../package-format-v31.md#322-the-canonical-form)) |
+| `A04-006` | *"\<site> reads '\<path>', which is not a path; a path is a root, then names joined by dots."* | a path is dot-separated non-empty segments ([chapter 3 § 3.2.2](../../package-format-v31.md#322-the-canonical-form)) |
+| `A04-007` | *"\<site> writes object with \<what it is>; object takes one object, from field names to rules."* | `object` takes one object ([chapter 3 § 3.2.2](../../package-format-v31.md#322-the-canonical-form)) |
+| `A04-008` | *"\<site> builds an object where no format gives its fields; object builds the value of a computed node."* | `object`'s fields are checked against the computed node's format, so it is written where a format is expected: a computed node's value, through an `if`'s branches, a list's elements and its own fields ([chapter 3 § 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations)) |
+| `A04-009` | *"Computed node '\<id>' builds \<format> with \<field> as \<format>; the format declares it \<format>."* | each field of an `object` fits its property, and is `null` only where the property is nullable ([chapter 3 § 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations)) |
+| `A04-010` | *"\<site> gives \<operation> a \<operand> that is \<what it is>; \<operand> is written as text."* | a `pattern`, a `word`, a `failWith` and a `missing` path are literal strings ([chapter 3 § 3.5.3](../../package-format-v31.md#353-matches-and-has_word), [§ 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations), [§ 3.5.1](../../package-format-v31.md#351-standard-json-logic-operations)) |
+| `A04-011` | *"\<site> \<member> could not be evaluated: \<detail>."* | the evaluator declines a rule outside the format and never throws ([chapter 3 § 3.9](../../package-format-v31.md#39-the-evaluator)); said at run time, so it has no case |
 
 ## The schemas' examples
 

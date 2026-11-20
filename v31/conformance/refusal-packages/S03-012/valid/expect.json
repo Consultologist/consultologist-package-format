@@ -1,0 +1,5 @@
+{
+  "about": "var takes one path, with no default (chapter 3 § 3.2.2). Invalid: the agent node plan's if reads { \"var\": [\"input.consult_draft.content\", \"\"] }. Valid: { \"var\": \"input.consult_draft.content\" }.",
+  "valid": true,
+  "sentences": []
+}

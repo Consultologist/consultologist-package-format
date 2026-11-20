@@ -1,0 +1,7 @@
+{
+  "about": "<, >, <= and >= compare numbers or dates (chapter 3 § 3.5.1). Invalid: the agent node plan's if orders the draft's text against 5000. Valid: the draft's size.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' orders input.consult_draft.content (markdown_block); <, >, ≤ and ≥ compare numbers or dates."
+  ]
+}

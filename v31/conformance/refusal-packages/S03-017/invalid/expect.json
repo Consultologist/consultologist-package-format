@@ -1,0 +1,7 @@
+{
+  "about": "A literal compared with a .title is one of the format's titles (chapter 3 § 3.4.1). The input specialty is a labelled enum titled Medical oncology and Radiation oncology. Invalid: the agent node plan's if compares its title with \"Surgery\". Valid: with \"Medical oncology\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' compares input.specialty.title with \"Surgery\", which is not one of its titles (Medical oncology, Radiation oncology)."
+  ]
+}

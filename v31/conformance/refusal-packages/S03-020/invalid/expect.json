@@ -1,0 +1,7 @@
+{
+  "about": "A deliverable's if reads a node's data (.value), not its text (chapter 3 § 3.4.2). Invalid: the deliverable note's if tests blank of node.plan.content. Valid: of node.plan.value.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'note' if reads node.plan.content; a deliverable's if reads data (.value), not text."
+  ]
+}

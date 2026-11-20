@@ -1,0 +1,5 @@
+{
+  "about": "var takes one path, written as text (chapter 3 § 3.2.2; this implementation's sentence). Invalid: the agent node plan's if writes { \"var\": null }. Valid: the path input.consult_draft.content.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "object builds the value of a computed node, where a format gives its fields (chapter 3 § 3.5.4; this implementation's sentence). Invalid: the agent node plan's if tests blank of an object built from the draft. Valid: blank of the draft.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' builds an object where no format gives its fields; object builds the value of a computed node."
+  ]
+}

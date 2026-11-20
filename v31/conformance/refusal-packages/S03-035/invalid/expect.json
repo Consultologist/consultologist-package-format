@@ -1,0 +1,7 @@
+{
+  "about": "cat takes strings, numbers and plain text; Markdown is converted with plain first (chapter 3 § 3.5.1). The computed node draft_line returns plaintext. Invalid: its expression cats the draft's markdown_block. Valid: it cats plain of it.",
+  "valid": false,
+  "sentences": [
+    "Computed node 'draft_line' cats input.consult_draft.content (markdown_block); convert Markdown with plain first."
+  ]
+}

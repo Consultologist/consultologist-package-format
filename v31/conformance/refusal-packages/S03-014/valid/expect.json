@@ -1,0 +1,5 @@
+{
+  "about": "A read names what the site can see (chapter 3 § 3.7). Invalid: the agent node plan's if reads input.consult_drafts.content, an input the manifest does not declare. Valid: input.consult_draft.content.",
+  "valid": true,
+  "sentences": []
+}

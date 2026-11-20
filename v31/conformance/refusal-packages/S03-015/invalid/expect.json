@@ -1,0 +1,7 @@
+{
+  "about": "An input is read as input.<id>.value, .content or .title (chapter 3 § 3.4.1). Invalid: the agent node plan's if reads input.consult_draft bare. Valid: input.consult_draft.content.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads input.consult_draft; an input is read as input.consult_draft.value, .content or .title."
+  ]
+}

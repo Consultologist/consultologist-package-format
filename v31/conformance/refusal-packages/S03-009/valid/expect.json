@@ -1,0 +1,5 @@
+{
+  "about": "! takes a boolean, not text (chapter 3 § 3.5.1). Invalid: the agent node plan's if writes ! of the draft's text. Valid: ! of blank of it.",
+  "valid": true,
+  "sentences": []
+}

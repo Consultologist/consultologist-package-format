@@ -1,0 +1,1 @@
+{ "$schema": "urn:consultologist:spec:31:dialect", "type": "object", "required": ["words", "empty"], "additionalProperties": false, "properties": { "words": { "type": "number" }, "empty": { "type": "boolean" } } }

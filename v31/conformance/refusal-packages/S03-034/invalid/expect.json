@@ -1,0 +1,7 @@
+{
+  "about": "if has an else: its operands are an odd count (chapter 3 § 3.5.1). Invalid: the agent node plan's if is { \"if\": [blank, false] }. Valid: { \"if\": [blank, false, true] }.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' uses if without an else; write the else."
+  ]
+}

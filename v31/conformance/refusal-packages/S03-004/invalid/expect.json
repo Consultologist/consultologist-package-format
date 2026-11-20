@@ -1,0 +1,7 @@
+{
+  "about": "Equality is written === (chapter 3 § 3.5.1). Invalid: the agent node plan's if tests the draft's size with ==. Valid: with ===.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' uses ==; equality is written === (shown as =)."
+  ]
+}

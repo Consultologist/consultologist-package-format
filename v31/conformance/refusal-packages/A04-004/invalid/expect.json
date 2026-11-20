@@ -1,0 +1,7 @@
+{
+  "about": "An operation is an object with one member (chapter 3 § 3.2.1; this implementation's sentence). Invalid: the agent node plan's if is one object of two operations, ! and <. Valid: the and of the two.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' writes an object with 2 members where a rule is expected; an operation is an object with one member, and object builds an object."
+  ]
+}

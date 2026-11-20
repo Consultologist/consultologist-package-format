@@ -1,0 +1,7 @@
+{
+  "about": "Only the operations of chapter 3 § 3.5 are allowed (chapter 3 § 3.5.1): !! is refused. Invalid: the agent node plan's if writes { \"!!\": [{ \"blank\": … }] }. Valid: { \"!\": [{ \"blank\": … }] }.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' uses !!, which is not a JSON Logic operation of this format (var, missing, if, ===, !==, <, <=, >, >=, and, or, !, in, cat, +, -, *, /, %, min, max, size, blank, words, lines, lower, trim, starts_with, ends_with, plain, object, matches, has_word, terms_subset, all_pass, count_pass, days_between, years_between, add_days)."
+  ]
+}

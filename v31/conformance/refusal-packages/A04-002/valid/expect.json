@@ -1,0 +1,5 @@
+{
+  "about": "= and ≠ compare two values of one type (chapter 3 § 3.5.1; this implementation's sentence). Invalid: the agent node plan's if compares the draft's size with the string \"0\". Valid: with the number 0.",
+  "valid": true,
+  "sentences": []
+}
