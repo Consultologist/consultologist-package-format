@@ -1,0 +1,441 @@
+{
+  "about": "terms_subset: passes when every codable concept of the first list has its id in the second (§ 3.5.4); uncovered and untested are null when empty.",
+  "cases": [
+    {
+      "about": "§ 3.5.4 terms_subset: an empty first list passes.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": []
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: every codable concept covered passes.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: a codable concept missing from the second list fails, with failWith, and is uncovered.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":\"The note does not cover every clinical term found in the referral.\",\"pass\":false,\"passed\":null,\"total\":null,\"uncovered\":[\"joint pain\"],\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: an inactive concept, one with no id and one that is not SNOMED CT are untested, not uncovered.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "old term",
+                  "type": "finding",
+                  "id": "1003",
+                  "isSnomedConcept": true,
+                  "isActive": false,
+                  "support": null
+                },
+                {
+                  "term": "fatigue after walking",
+                  "type": "finding",
+                  "id": null,
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "feels unwell",
+                  "type": "finding",
+                  "id": "1004",
+                  "isSnomedConcept": false,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":[\"old term\",\"fatigue after walking\",\"feels unwell\"]}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: untested terms come from both lists, each once.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "fatigue after walking",
+                  "type": "finding",
+                  "id": null,
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "fatigue after walking",
+                  "type": "finding",
+                  "id": null,
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "old term",
+                  "type": "finding",
+                  "id": "1003",
+                  "isSnomedConcept": true,
+                  "isActive": false,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":[\"fatigue after walking\",\"old term\"]}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: a concept repeated in the first list is uncovered once.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":\"The note does not cover every clinical term found in the referral.\",\"pass\":false,\"passed\":null,\"total\":null,\"uncovered\":[\"joint pain\"],\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: concepts are matched by id, not by term.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "arthralgia",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: a value that is not a concept_list reads as an empty list (D21).",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": 5
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":null,\"total\":null,\"uncovered\":null,\"untested\":null}"
+    }
+  ]
+}

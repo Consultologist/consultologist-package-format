@@ -1,0 +1,105 @@
+{
+  "about": "lines: 0 for empty text, else 1 plus the line breaks (\\r\\n, \\n, \\r) not counting one at the very end (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 lines: empty text has 0 lines.",
+      "rule": {
+        "lines": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.2 lines: text with no line break is 1 line.",
+      "rule": {
+        "lines": [
+          "a"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.2 lines: a line break at the very end is not counted.",
+      "rule": {
+        "lines": [
+          "a\n"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.2 lines: one line break between two lines.",
+      "rule": {
+        "lines": [
+          "a\nb"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.2 lines: \\r\\n is one line break, and a lone \\r is one.",
+      "rule": {
+        "lines": [
+          "a\r\nb\rc"
+        ]
+      },
+      "data": {},
+      "output": "3"
+    },
+    {
+      "about": "§ 3.5.2 lines: \\r\\n at the very end is not counted.",
+      "rule": {
+        "lines": [
+          "a\r\n"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.2 lines: a lone line break is 1 line.",
+      "rule": {
+        "lines": [
+          "\n"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.2 lines: two line breaks are 2 lines, the last not counted.",
+      "rule": {
+        "lines": [
+          "\n\n"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.2 lines: U+2028 LINE SEPARATOR is not one of the three line breaks.",
+      "rule": {
+        "lines": [
+          "a b"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.6.2 lines: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "lines": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "about": "lower: lower-cased by the invariant culture's simple case mapping (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 lower: ASCII letters are lowered, digits and punctuation unchanged.",
+      "rule": {
+        "lower": [
+          "LETROZOLE 2.5 MG"
+        ]
+      },
+      "data": {},
+      "output": "\"letrozole 2.5 mg\""
+    },
+    {
+      "about": "§ 3.5.2 lower: text already in lower case is unchanged.",
+      "rule": {
+        "lower": [
+          "letrozole"
+        ]
+      },
+      "data": {},
+      "output": "\"letrozole\""
+    },
+    {
+      "about": "§ 3.5.2 lower: Greek capital omega lowers to omega.",
+      "rule": {
+        "lower": [
+          "Ω"
+        ]
+      },
+      "data": {},
+      "output": "\"ω\""
+    },
+    {
+      "about": "§ 3.5.2 lower: a precomposed É lowers to é.",
+      "rule": {
+        "lower": [
+          "É"
+        ]
+      },
+      "data": {},
+      "output": "\"é\""
+    },
+    {
+      "about": "§ 3.5.2 lower: the simple mapping of final sigma ignores its place in the word.",
+      "rule": {
+        "lower": [
+          "ΟΔΟΣ"
+        ]
+      },
+      "data": {},
+      "output": "\"οδοσ\""
+    },
+    {
+      "about": "§ 3.5.2 lower: lowering Markdown lowers its source.",
+      "rule": {
+        "lower": [
+          "**PLAN**"
+        ]
+      },
+      "data": {},
+      "output": "\"**plan**\""
+    },
+    {
+      "about": "§ 3.6.2 lower: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "lower": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

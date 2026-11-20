@@ -1,0 +1,154 @@
+{
+  "about": "integer is a kind of number: a whole result is written without a fraction, and 1.0 is 1 (§ 3.7).",
+  "cases": [
+    {
+      "about": "§ 3.7 1.0 === 1 is true.",
+      "rule": {
+        "===": [
+          1.0,
+          1
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.7 1.0 !== 1 is false.",
+      "rule": {
+        "!==": [
+          1.0,
+          1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.7 a whole sum of fractions is written without a fraction.",
+      "rule": {
+        "+": [
+          0.5,
+          0.5
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.7 a whole product is written without a fraction.",
+      "rule": {
+        "*": [
+          2.5,
+          2
+        ]
+      },
+      "data": {},
+      "result": 5
+    },
+    {
+      "about": "§ 3.7 a whole quotient is written without a fraction.",
+      "rule": {
+        "/": [
+          6,
+          3
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.7 a number written with a fraction of zero is written whole.",
+      "rule": {
+        "+": [
+          2.0,
+          0
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.7 2 is in a list holding 2.0.",
+      "rule": {
+        "in": [
+          2,
+          [
+            1,
+            2.0
+          ]
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.7 a large whole number is written without an exponent below 1e21.",
+      "rule": {
+        "*": [
+          1e20,
+          1
+        ]
+      },
+      "data": {},
+      "result": 100000000000000000000
+    },
+    {
+      "about": "§ 3.7 a whole number of 1e21 or more is written with an exponent.",
+      "rule": {
+        "*": [
+          1e21,
+          1
+        ]
+      },
+      "data": {},
+      "result": 1e+21
+    },
+    {
+      "about": "§ 3.7 2^53 + 1 is 2^53 in a double.",
+      "rule": {
+        "+": [
+          9007199254740992,
+          1
+        ]
+      },
+      "data": {},
+      "result": 9007199254740992
+    },
+    {
+      "about": "§ 3.7 size gives a whole number.",
+      "rule": {
+        "size": [
+          "abc"
+        ]
+      },
+      "data": {},
+      "result": 3
+    },
+    {
+      "about": "§ 3.7 days_between gives a whole number.",
+      "rule": {
+        "days_between": [
+          "2026-01-01",
+          "2026-03-01"
+        ]
+      },
+      "data": {},
+      "result": 59
+    },
+    {
+      "about": "§ 3.7 a whole number compares equal to a computed whole number.",
+      "rule": {
+        "===": [
+          {
+            "size": [
+              "abc"
+            ]
+          },
+          3.0
+        ]
+      },
+      "data": {},
+      "result": true
+    }
+  ]
+}

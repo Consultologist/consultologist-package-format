@@ -1,0 +1,93 @@
+{
+  "about": "starts_with: an ordinal, case-sensitive prefix test; on Markdown, of the source (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 starts_with: true for a prefix.",
+      "rule": {
+        "starts_with": [
+          "Dear Dr Sample",
+          "Dear"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: case-sensitive, so false for another case.",
+      "rule": {
+        "starts_with": [
+          "dear Dr Sample",
+          "Dear"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: false when the prefix is elsewhere in the text.",
+      "rule": {
+        "starts_with": [
+          "Dr Sample, dear",
+          "dear"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: the empty prefix starts every text.",
+      "rule": {
+        "starts_with": [
+          "Dear Dr Sample",
+          ""
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: false when the prefix is longer than the text.",
+      "rule": {
+        "starts_with": [
+          "Dear",
+          "Dear Dr"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: on Markdown it tests the source.",
+      "rule": {
+        "starts_with": [
+          "**Plan**: continue",
+          "**Plan**"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 starts_with: ordinal, so a precomposed é does not start with e.",
+      "rule": {
+        "starts_with": [
+          "épaule",
+          "e"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.6.2 starts_with: a number, data that escaped validation, reads as null, so false.",
+      "rule": {
+        "starts_with": [
+          5,
+          "5"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    }
+  ]
+}

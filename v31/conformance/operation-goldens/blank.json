@@ -1,0 +1,85 @@
+{
+  "about": "blank: true for empty text or text of whitespace only (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 blank: empty text is blank.",
+      "rule": {
+        "blank": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 blank: spaces and a tab are blank.",
+      "rule": {
+        "blank": [
+          "  \t  "
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 blank: line breaks are blank.",
+      "rule": {
+        "blank": [
+          "\r\n\n"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 blank: U+00A0 and U+2003 are White_Space, so blank.",
+      "rule": {
+        "blank": [
+          "  "
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 blank: U+200B ZERO WIDTH SPACE is not White_Space, so not blank.",
+      "rule": {
+        "blank": [
+          "​"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 blank: a letter is not blank.",
+      "rule": {
+        "blank": [
+          "a"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 blank: a letter between spaces is not blank.",
+      "rule": {
+        "blank": [
+          " a "
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.6.2 blank: a number, data that escaped validation, reads as null, which is blank.",
+      "rule": {
+        "blank": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "true"
+    }
+  ]
+}

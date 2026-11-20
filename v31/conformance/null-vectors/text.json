@@ -1,0 +1,202 @@
+{
+  "about": "A null operand in each position of every custom text operation (§ 3.5.2, § 3.5.3, § 3.6.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 size: null gives null.",
+      "rule": {
+        "size": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 size: an unsupplied input gives null.",
+      "rule": {
+        "size": [
+          {
+            "var": "input.prior_notes.value"
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "prior_notes": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 blank: null is blank.",
+      "rule": {
+        "blank": [
+          null
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.2 blank: an unsupplied text input is blank.",
+      "rule": {
+        "blank": [
+          {
+            "var": "input.consult_draft.content"
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "consult_draft": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": true
+    },
+    {
+      "about": "§ 3.5.2 words: null gives null.",
+      "rule": {
+        "words": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 lines: null gives null.",
+      "rule": {
+        "lines": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 lower: null gives null.",
+      "rule": {
+        "lower": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 trim: null gives null.",
+      "rule": {
+        "trim": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 plain: null gives null.",
+      "rule": {
+        "plain": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.2 starts_with: a null text is false.",
+      "rule": {
+        "starts_with": [
+          null,
+          "Dear"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.2 starts_with: a null prefix is false.",
+      "rule": {
+        "starts_with": [
+          "Dear Dr Sample",
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.2 ends_with: a null text is false.",
+      "rule": {
+        "ends_with": [
+          null,
+          "."
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.2 ends_with: a null suffix is false.",
+      "rule": {
+        "ends_with": [
+          "Continue letrozole.",
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 matches: a null text is false.",
+      "rule": {
+        "matches": [
+          null,
+          "letrozole|femara"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 matches: a node that did not complete is false.",
+      "rule": {
+        "matches": [
+          {
+            "var": "node.draft.content"
+          },
+          "letrozole"
+        ]
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: a null text is false.",
+      "rule": {
+        "has_word": [
+          null,
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    }
+  ]
+}

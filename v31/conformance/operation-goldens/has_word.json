@@ -1,0 +1,137 @@
+{
+  "about": "has_word: word occurs in x, ordinal and case-sensitive, with no word character on either side (§ 3.5.3).",
+  "cases": [
+    {
+      "about": "§ 3.5.3 has_word: a letter after the word is a word character, so painful is not pain.",
+      "rule": {
+        "has_word": [
+          "painful",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: a letter before the word is a word character, so Spain is not pain.",
+      "rule": {
+        "has_word": [
+          "Spain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: punctuation is not a word character.",
+      "rule": {
+        "has_word": [
+          "pain.",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 has_word: the word may contain a space.",
+      "rule": {
+        "has_word": [
+          "chest pain today",
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 has_word: _ is connector punctuation, a word character.",
+      "rule": {
+        "has_word": [
+          "pain_scale",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: a decimal digit is a word character.",
+      "rule": {
+        "has_word": [
+          "pain2",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: a later occurrence with boundaries is found.",
+      "rule": {
+        "has_word": [
+          "painpain pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 has_word: case-sensitive.",
+      "rule": {
+        "has_word": [
+          "Pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: an accented letter is a word character, but the second occurrence stands alone.",
+      "rule": {
+        "has_word": [
+          "paín pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 has_word: the letter U+1D4B3 outside the Basic Multilingual Plane is a word character.",
+      "rule": {
+        "has_word": [
+          "𝒳pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: an emoji is not a word character.",
+      "rule": {
+        "has_word": [
+          "😀pain😀",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.6.2 has_word: a number, data that escaped validation, reads as null, so false.",
+      "rule": {
+        "has_word": [
+          5,
+          "5"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    }
+  ]
+}

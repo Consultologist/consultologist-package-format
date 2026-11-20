@@ -1,0 +1,155 @@
+{
+  "about": "lower: the invariant culture's simple case mapping, outside ASCII (§ 3.5.2), as the runtime lock.json records gives it.",
+  "cases": [
+    {
+      "about": "§ 3.5.2 lower: U+03A9 GREEK CAPITAL LETTER OMEGA lowers to U+03C9.",
+      "rule": {
+        "lower": [
+          "Ω"
+        ]
+      },
+      "data": {},
+      "result": "ω"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+2126 OHM SIGN lowers to U+03C9 GREEK SMALL LETTER OMEGA.",
+      "rule": {
+        "lower": [
+          "Ω"
+        ]
+      },
+      "data": {},
+      "result": "ω"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+0130 LATIN CAPITAL LETTER I WITH DOT ABOVE is unchanged: the invariant culture does not map it (Unicode's simple mapping would give i).",
+      "rule": {
+        "lower": [
+          "İ"
+        ]
+      },
+      "data": {},
+      "result": "İ"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+0049 LATIN CAPITAL LETTER I lowers to i in the invariant culture, not to dotless ı.",
+      "rule": {
+        "lower": [
+          "I"
+        ]
+      },
+      "data": {},
+      "result": "i"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+1E9E LATIN CAPITAL LETTER SHARP S lowers to U+00DF.",
+      "rule": {
+        "lower": [
+          "ẞ"
+        ]
+      },
+      "data": {},
+      "result": "ß"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+00DF LATIN SMALL LETTER SHARP S is already lower case.",
+      "rule": {
+        "lower": [
+          "ß"
+        ]
+      },
+      "data": {},
+      "result": "ß"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+01C4 LATIN CAPITAL LETTER DZ WITH CARON lowers to U+01C6.",
+      "rule": {
+        "lower": [
+          "Ǆ"
+        ]
+      },
+      "data": {},
+      "result": "ǆ"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+01C5, its titlecase form, lowers to U+01C6.",
+      "rule": {
+        "lower": [
+          "ǅ"
+        ]
+      },
+      "data": {},
+      "result": "ǆ"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+13A0 CHEROKEE LETTER A lowers to U+AB70.",
+      "rule": {
+        "lower": [
+          "Ꭰ"
+        ]
+      },
+      "data": {},
+      "result": "ꭰ"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+13F0 CHEROKEE LETTER YE lowers to U+13F8.",
+      "rule": {
+        "lower": [
+          "Ᏸ"
+        ]
+      },
+      "data": {},
+      "result": "ᏸ"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+10400 DESERET CAPITAL LETTER LONG I, outside the Basic Multilingual Plane, lowers to U+10428.",
+      "rule": {
+        "lower": [
+          "𐐀"
+        ]
+      },
+      "data": {},
+      "result": "𐐨"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+212A KELVIN SIGN lowers to k.",
+      "rule": {
+        "lower": [
+          "K"
+        ]
+      },
+      "data": {},
+      "result": "k"
+    },
+    {
+      "about": "§ 3.5.2 lower: U+FF21 FULLWIDTH LATIN CAPITAL LETTER A lowers to U+FF41.",
+      "rule": {
+        "lower": [
+          "Ａ"
+        ]
+      },
+      "data": {},
+      "result": "ａ"
+    },
+    {
+      "about": "§ 3.5.2 lower: E and U+0301 COMBINING ACUTE ACCENT lower to e and the same mark.",
+      "rule": {
+        "lower": [
+          "É"
+        ]
+      },
+      "data": {},
+      "result": "é"
+    },
+    {
+      "about": "§ 3.5.2 lower: a mixed sentence outside ASCII.",
+      "rule": {
+        "lower": [
+          "ÉLAN ΟΔΟΣ Ꭰ 𐐀"
+        ]
+      },
+      "data": {},
+      "result": "élan οδοσ ꭰ 𐐨"
+    }
+  ]
+}

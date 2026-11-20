@@ -1,0 +1,93 @@
+{
+  "about": "object: builds an object from its fields (§ 3.5.4); the output, canonical JSON, sorts the members.",
+  "cases": [
+    {
+      "about": "§ 3.5.4 object: each field is its rule's value.",
+      "rule": {
+        "object": {
+          "title": {
+            "var": "item.id"
+          },
+          "n": {
+            "+": [
+              1,
+              2
+            ]
+          }
+        }
+      },
+      "data": {
+        "item": {
+          "id": "hpi"
+        }
+      },
+      "output": "{\"n\":3,\"title\":\"hpi\"}"
+    },
+    {
+      "about": "§ 3.5.4 object: a field may be a nested object.",
+      "rule": {
+        "object": {
+          "inner": {
+            "object": {
+              "ok": true
+            }
+          }
+        }
+      },
+      "data": {},
+      "output": "{\"inner\":{\"ok\":true}}"
+    },
+    {
+      "about": "§ 3.5.4 object: no field builds the empty object.",
+      "rule": {
+        "object": {}
+      },
+      "data": {},
+      "output": "{}"
+    },
+    {
+      "about": "§ 3.5.4 object: a field may hold a list.",
+      "rule": {
+        "object": {
+          "doses": [
+            2.5,
+            5
+          ]
+        }
+      },
+      "data": {},
+      "output": "{\"doses\":[2.5,5]}"
+    },
+    {
+      "about": "§ 3.5.4 object: a field may yield null.",
+      "rule": {
+        "object": {
+          "feedback": {
+            "var": "node.review.value"
+          }
+        }
+      },
+      "data": {
+        "node": {
+          "review": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "output": "{\"feedback\":null}"
+    },
+    {
+      "about": "§ 3.5.4 object: a field name that is not an identifier is kept as written.",
+      "rule": {
+        "object": {
+          "my field": "x",
+          "b": 1
+        }
+      },
+      "data": {},
+      "output": "{\"b\":1,\"my field\":\"x\"}"
+    }
+  ]
+}

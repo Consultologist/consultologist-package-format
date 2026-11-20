@@ -1,0 +1,192 @@
+{
+  "about": "days_between: whole days in the proleptic Gregorian calendar, the bounds of years 0001 and 9999, and malformed dates giving null (§ 3.5.5; D18).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 days_between: across 29 February of a leap year.",
+      "rule": {
+        "days_between": [
+          "2024-02-28",
+          "2024-03-01"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.5 days_between: 28 February to 1 March in a year with no 29 February.",
+      "rule": {
+        "days_between": [
+          "2026-02-28",
+          "2026-03-01"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.5 days_between: 2000 is a leap year (divisible by 400).",
+      "rule": {
+        "days_between": [
+          "2000-02-28",
+          "2000-03-01"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.5 days_between: 1900 is not a leap year (divisible by 100).",
+      "rule": {
+        "days_between": [
+          "1900-02-28",
+          "1900-03-01"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.5 days_between: a leap year has 366 days.",
+      "rule": {
+        "days_between": [
+          "2024-01-01",
+          "2025-01-01"
+        ]
+      },
+      "data": {},
+      "result": 366
+    },
+    {
+      "about": "§ 3.5.5 days_between: from 0001-01-01 to 9999-12-31.",
+      "rule": {
+        "days_between": [
+          "0001-01-01",
+          "9999-12-31"
+        ]
+      },
+      "data": {},
+      "result": 3652058
+    },
+    {
+      "about": "§ 3.5.5 days_between: from 9999-12-31 back to 0001-01-01.",
+      "rule": {
+        "days_between": [
+          "9999-12-31",
+          "0001-01-01"
+        ]
+      },
+      "data": {},
+      "result": -3652058
+    },
+    {
+      "about": "D18 days_between: a month of one digit is malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026-2-3",
+          "2026-02-04"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: 30 February is malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026-02-01",
+          "2026-02-30"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: 29 February of a year with no 29 February is malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026-02-01",
+          "2026-02-29"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: month 13 is malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026-13-01",
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: year 0000 is outside 0001 to 9999, so null.",
+      "rule": {
+        "days_between": [
+          "0000-12-31",
+          "0001-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: a time of day is malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026-01-01T00:00:00",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: a space before the date is malformed, so null.",
+      "rule": {
+        "days_between": [
+          " 2026-01-01",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: slashes are malformed, so null.",
+      "rule": {
+        "days_between": [
+          "2026/01/01",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: digits other than 0 to 9 are malformed, so null.",
+      "rule": {
+        "days_between": [
+          "２０２６-01-01",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 days_between: a number is not a date, so null.",
+      "rule": {
+        "days_between": [
+          20260101,
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": null
+    }
+  ]
+}

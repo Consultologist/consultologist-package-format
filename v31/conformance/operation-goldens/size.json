@@ -1,0 +1,142 @@
+{
+  "about": "size: the code points of text-like operands, the elements of a list (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 size: text counts its code points.",
+      "rule": {
+        "size": [
+          "héllo"
+        ]
+      },
+      "data": {},
+      "output": "5"
+    },
+    {
+      "about": "§ 3.5.2 size: a character outside the Basic Multilingual Plane is one code point.",
+      "rule": {
+        "size": [
+          "a😀b"
+        ]
+      },
+      "data": {},
+      "output": "3"
+    },
+    {
+      "about": "§ 3.5.2 size: an emoji, a zero-width joiner and a symbol are three code points.",
+      "rule": {
+        "size": [
+          "👩‍⚕"
+        ]
+      },
+      "data": {},
+      "output": "3"
+    },
+    {
+      "about": "§ 3.5.2 size: with a variation selector after them, four.",
+      "rule": {
+        "size": [
+          "👩‍⚕️"
+        ]
+      },
+      "data": {},
+      "output": "4"
+    },
+    {
+      "about": "§ 3.5.2 size: a letter and a combining mark are two code points.",
+      "rule": {
+        "size": [
+          "é"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.2 size: empty text is 0.",
+      "rule": {
+        "size": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.2 size: a list counts its elements.",
+      "rule": {
+        "size": [
+          [
+            1,
+            2,
+            3
+          ]
+        ]
+      },
+      "data": {},
+      "output": "3"
+    },
+    {
+      "about": "§ 3.5.2 size: an empty list is 0.",
+      "rule": {
+        "size": [
+          []
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.2 size: a list read from the data counts its elements.",
+      "rule": {
+        "size": [
+          {
+            "var": "pass.history"
+          }
+        ]
+      },
+      "data": {
+        "pass": {
+          "history": [
+            {
+              "number": 1
+            },
+            {
+              "number": 2
+            }
+          ]
+        }
+      },
+      "output": "2"
+    },
+    {
+      "about": "§ 3.6.2 size: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "size": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    },
+    {
+      "about": "§ 3.6.2 size: an object, data that escaped validation, reads as null.",
+      "rule": {
+        "size": [
+          {
+            "var": "node.plan.value"
+          }
+        ]
+      },
+      "data": {
+        "node": {
+          "plan": {
+            "value": {
+              "title": "Plan"
+            }
+          }
+        }
+      },
+      "output": "null"
+    }
+  ]
+}

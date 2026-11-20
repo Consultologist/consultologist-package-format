@@ -1,0 +1,230 @@
+{
+  "about": "all_pass: passes when every judged element passes; elements that did not complete are ignored; nothing judged fails (§ 3.5.4).",
+  "cases": [
+    {
+      "about": "§ 3.5.4 all_pass: every element of a .value passing passes.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": [
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              },
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":2,\"total\":2,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: one element failing fails, with failWith.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": [
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              },
+              {
+                "pass": false,
+                "message": "The plan is missing.",
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":\"A section failed its check.\",\"pass\":false,\"passed\":1,\"total\":2,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: an empty list judges nothing, and fails.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": []
+          }
+        }
+      },
+      "output": "{\"message\":\"A section failed its check.\",\"pass\":false,\"passed\":0,\"total\":0,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: in .items, an element that is skipped or not_run is ignored.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "completed",
+                "value": {
+                  "pass": true,
+                  "message": null,
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              },
+              {
+                "state": "skipped",
+                "value": null
+              },
+              {
+                "state": "not_run",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":1,\"total\":1,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: in .items, a completed element that failed fails.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "completed",
+                "value": {
+                  "pass": false,
+                  "message": "The plan is missing.",
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              },
+              {
+                "state": "skipped",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":\"A section failed its check.\",\"pass\":false,\"passed\":0,\"total\":1,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: in .items, no completed element judges nothing, and fails.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "skipped",
+                "value": null
+              },
+              {
+                "state": "not_run",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":\"A section failed its check.\",\"pass\":false,\"passed\":0,\"total\":0,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 all_pass: an element that is not an object, or has no boolean pass, is not judged (D21).",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": [
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              },
+              5,
+              {
+                "pass": "yes"
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":1,\"total\":1,\"uncovered\":null,\"untested\":null}"
+    }
+  ]
+}

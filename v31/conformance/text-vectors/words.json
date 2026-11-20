@@ -1,0 +1,305 @@
+{
+  "about": "words: every White_Space character separates words, and look-alikes do not (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 words: U+0009 CHARACTER TABULATION is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest\tpain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+000A LINE FEED is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest\npain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+000B LINE TABULATION is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest\u000Bpain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+000C FORM FEED is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest\fpain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+000D CARRIAGE RETURN is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest\rpain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+0020 SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+0085 NEXT LINE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chestpain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+00A0 NO-BREAK SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+1680 OGHAM SPACE MARK is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2000 EN QUAD is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2001 EM QUAD is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2002 EN SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2003 EM SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2004 THREE-PER-EM SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2005 FOUR-PER-EM SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2006 SIX-PER-EM SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2007 FIGURE SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2008 PUNCTUATION SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2009 THIN SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+200A HAIR SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2028 LINE SEPARATOR is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+2029 PARAGRAPH SEPARATOR is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+202F NARROW NO-BREAK SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+205F MEDIUM MATHEMATICAL SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+3000 IDEOGRAPHIC SPACE is White_Space, so it separates two words.",
+      "rule": {
+        "words": [
+          "chest　pain"
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.5.2 words: U+200B ZERO WIDTH SPACE is not White_Space, so the text is one word.",
+      "rule": {
+        "words": [
+          "chest​pain"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.2 words: U+180E MONGOLIAN VOWEL SEPARATOR is not White_Space, so the text is one word.",
+      "rule": {
+        "words": [
+          "chest᠎pain"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.2 words: U+FEFF ZERO WIDTH NO-BREAK SPACE is not White_Space, so the text is one word.",
+      "rule": {
+        "words": [
+          "chest﻿pain"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.2 words: U+2060 WORD JOINER is not White_Space, so the text is one word.",
+      "rule": {
+        "words": [
+          "chest⁠pain"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.2 words: every White_Space character at once is no word.",
+      "rule": {
+        "words": [
+          "\t\n\u000B\f\r                  　"
+        ]
+      },
+      "data": {},
+      "result": 0
+    }
+  ]
+}

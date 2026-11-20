@@ -1,0 +1,170 @@
+{
+  "about": "years_between: completed years, every 29 February case, the bounds of years 0001 and 9999, malformed dates (§ 3.5.5; D18).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, 0 on 28 February of a year with no 29 February.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2009-02-28"
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, 1 on 1 March of a year with no 29 February.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2009-03-01"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, 3 on 28 February of the next leap year.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2012-02-28"
+        ]
+      },
+      "data": {},
+      "result": 3
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, 4 on 29 February of the next leap year.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2012-02-29"
+        ]
+      },
+      "data": {},
+      "result": 4
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, the anniversary in 1900 (no 29 February) is 1 March.",
+      "rule": {
+        "years_between": [
+          "1896-02-29",
+          "1900-02-28"
+        ]
+      },
+      "data": {},
+      "result": 3
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 29 February, 4 on 1 March 1900.",
+      "rule": {
+        "years_between": [
+          "1896-02-29",
+          "1900-03-01"
+        ]
+      },
+      "data": {},
+      "result": 4
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 28 February, 1 on 28 February of a leap year.",
+      "rule": {
+        "years_between": [
+          "2007-02-28",
+          "2008-02-28"
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.5.5 years_between: born 1 March, 0 on 29 February of a leap year.",
+      "rule": {
+        "years_between": [
+          "2007-03-01",
+          "2008-02-29"
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.5.5 years_between: mirrored, 29 February to 28 February of a year with no 29 February is 0.",
+      "rule": {
+        "years_between": [
+          "2009-02-28",
+          "2008-02-29"
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.5.5 years_between: mirrored, 1 March back to 29 February is -1.",
+      "rule": {
+        "years_between": [
+          "2009-03-01",
+          "2008-02-29"
+        ]
+      },
+      "data": {},
+      "result": -1
+    },
+    {
+      "about": "§ 3.5.5 years_between: 0 for the same date.",
+      "rule": {
+        "years_between": [
+          "2026-11-20",
+          "2026-11-20"
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.5.5 years_between: from 0001-01-01 to 9999-12-31.",
+      "rule": {
+        "years_between": [
+          "0001-01-01",
+          "9999-12-31"
+        ]
+      },
+      "data": {},
+      "result": 9998
+    },
+    {
+      "about": "§ 3.5.5 years_between: from 9999-12-31 back to 0001-01-01.",
+      "rule": {
+        "years_between": [
+          "9999-12-31",
+          "0001-01-01"
+        ]
+      },
+      "data": {},
+      "result": -9998
+    },
+    {
+      "about": "D18 years_between: 30 February is malformed, so null.",
+      "rule": {
+        "years_between": [
+          "2026-02-30",
+          "2027-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 years_between: year 10000 is malformed, so null.",
+      "rule": {
+        "years_between": [
+          "2026-01-01",
+          "10000-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    }
+  ]
+}

@@ -1,0 +1,739 @@
+{
+  "about": "A null operand in each position of every standard operation (§ 3.5.1, § 3.6.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.1 var: a path whose value is null reads as null.",
+      "rule": {
+        "var": "input.age.value"
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 var: an absent path reads as null.",
+      "rule": {
+        "var": "input.age.value"
+      },
+      "data": {
+        "input": {}
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 var: a path through a value that is null reads as null.",
+      "rule": {
+        "var": "node.plan.value.title"
+      },
+      "data": {
+        "node": {
+          "plan": {
+            "value": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 missing: a path whose value is null is missing.",
+      "rule": {
+        "missing": [
+          "input.age.value"
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null
+          }
+        }
+      },
+      "result": [
+        "input.age.value"
+      ]
+    },
+    {
+      "about": "§ 3.5.1 missing: an absent path is missing.",
+      "rule": {
+        "missing": [
+          "input.age.value"
+        ]
+      },
+      "data": {
+        "input": {}
+      },
+      "result": [
+        "input.age.value"
+      ]
+    },
+    {
+      "about": "§ 3.5.1 missing: a path whose value is \"\" is missing.",
+      "rule": {
+        "missing": [
+          "input.name.value"
+        ]
+      },
+      "data": {
+        "input": {
+          "name": {
+            "value": ""
+          }
+        }
+      },
+      "result": [
+        "input.name.value"
+      ]
+    },
+    {
+      "about": "§ 3.5.1 missing: a path with a value is not missing, and the missing ones keep their written order.",
+      "rule": {
+        "missing": [
+          "input.name.value",
+          "input.kind.value",
+          "input.age.value"
+        ]
+      },
+      "data": {
+        "input": {
+          "name": {
+            "value": null
+          },
+          "kind": {
+            "value": "table"
+          }
+        }
+      },
+      "result": [
+        "input.name.value",
+        "input.age.value"
+      ]
+    },
+    {
+      "about": "§ 3.5.1 if: a null condition is false.",
+      "rule": {
+        "if": [
+          null,
+          "then",
+          "else"
+        ]
+      },
+      "data": {},
+      "result": "else"
+    },
+    {
+      "about": "§ 3.5.1 if: a null second condition is false.",
+      "rule": {
+        "if": [
+          false,
+          "first",
+          null,
+          "second",
+          "else"
+        ]
+      },
+      "data": {},
+      "result": "else"
+    },
+    {
+      "about": "§ 3.5.1 if: a null branch taken gives null.",
+      "rule": {
+        "if": [
+          true,
+          null,
+          "else"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 and: null first is false.",
+      "rule": {
+        "and": [
+          null,
+          true
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 and: null second is false.",
+      "rule": {
+        "and": [
+          true,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 or: null first is false.",
+      "rule": {
+        "or": [
+          null,
+          false
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 or: null second is false.",
+      "rule": {
+        "or": [
+          false,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 or: null beside true is true.",
+      "rule": {
+        "or": [
+          null,
+          true
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 !: !null is true.",
+      "rule": {
+        "!": [
+          null
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 ===: null === null is true.",
+      "rule": {
+        "===": [
+          null,
+          null
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 ===: null first, a value second, is false.",
+      "rule": {
+        "===": [
+          null,
+          0
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 ===: a value first, null second, is false.",
+      "rule": {
+        "===": [
+          "",
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 ===: null is not false.",
+      "rule": {
+        "===": [
+          null,
+          false
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 !==: null !== null is false.",
+      "rule": {
+        "!==": [
+          null,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 !==: null first, a value second, is true.",
+      "rule": {
+        "!==": [
+          null,
+          0
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 !==: a value first, null second, is true.",
+      "rule": {
+        "!==": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 <: false when the first operand is null.",
+      "rule": {
+        "<": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 <: false when the second operand is null.",
+      "rule": {
+        "<": [
+          -1,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 <=: false when the first operand is null.",
+      "rule": {
+        "<=": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 <=: false when the second operand is null.",
+      "rule": {
+        "<=": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 <=: false when both are null.",
+      "rule": {
+        "<=": [
+          null,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 >: false when the first operand is null.",
+      "rule": {
+        ">": [
+          null,
+          -1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 >: false when the second operand is null (null is not 0).",
+      "rule": {
+        ">": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 >=: false when the first operand is null.",
+      "rule": {
+        ">=": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 >=: false when the second operand is null.",
+      "rule": {
+        ">=": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 >=: false when both are null.",
+      "rule": {
+        ">=": [
+          null,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 +: null first gives null.",
+      "rule": {
+        "+": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 +: null second gives null.",
+      "rule": {
+        "+": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 +: null last of three gives null.",
+      "rule": {
+        "+": [
+          1,
+          2,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 *: null first gives null.",
+      "rule": {
+        "*": [
+          null,
+          2
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 *: null second gives null.",
+      "rule": {
+        "*": [
+          2,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 -: the negation of null is null.",
+      "rule": {
+        "-": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 -: null first gives null.",
+      "rule": {
+        "-": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 -: null second gives null.",
+      "rule": {
+        "-": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 /: null first gives null.",
+      "rule": {
+        "/": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 /: null second gives null.",
+      "rule": {
+        "/": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 %: null first gives null.",
+      "rule": {
+        "%": [
+          null,
+          2
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 %: null second gives null.",
+      "rule": {
+        "%": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 min: null alone gives null.",
+      "rule": {
+        "min": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 min: null first gives null.",
+      "rule": {
+        "min": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 min: null second gives null.",
+      "rule": {
+        "min": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 max: null alone gives null.",
+      "rule": {
+        "max": [
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 max: null first gives null.",
+      "rule": {
+        "max": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 max: null second gives null.",
+      "rule": {
+        "max": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 in (list): a null needle is true when the list holds null.",
+      "rule": {
+        "in": [
+          null,
+          [
+            1,
+            null
+          ]
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.1 in (list): a null needle is false when the list does not hold null.",
+      "rule": {
+        "in": [
+          null,
+          [
+            1
+          ]
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 in (list): a null list is false.",
+      "rule": {
+        "in": [
+          1,
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 in (list): a null list read from the data is false.",
+      "rule": {
+        "in": [
+          "consult",
+          {
+            "var": "input.note_types.value"
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "note_types": {
+            "value": null
+          }
+        }
+      },
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 in (text): a null needle is false.",
+      "rule": {
+        "in": [
+          null,
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 in (text): a null haystack is false.",
+      "rule": {
+        "in": [
+          "pain",
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 cat: a null first operand contributes \"\".",
+      "rule": {
+        "cat": [
+          null,
+          "b"
+        ]
+      },
+      "data": {},
+      "result": "b"
+    },
+    {
+      "about": "§ 3.5.1 cat: a null middle operand contributes \"\".",
+      "rule": {
+        "cat": [
+          "a",
+          null,
+          "b"
+        ]
+      },
+      "data": {},
+      "result": "ab"
+    },
+    {
+      "about": "§ 3.5.1 cat: a null last operand contributes \"\".",
+      "rule": {
+        "cat": [
+          "a",
+          null
+        ]
+      },
+      "data": {},
+      "result": "a"
+    },
+    {
+      "about": "§ 3.5.1 cat: null operands only give \"\".",
+      "rule": {
+        "cat": [
+          null,
+          null
+        ]
+      },
+      "data": {},
+      "result": ""
+    },
+    {
+      "about": "§ 3.5.1 cat: true, data that escaped validation, reads as null, so contributes \"\".",
+      "rule": {
+        "cat": [
+          "a",
+          true,
+          "b"
+        ]
+      },
+      "data": {},
+      "result": "ab"
+    }
+  ]
+}

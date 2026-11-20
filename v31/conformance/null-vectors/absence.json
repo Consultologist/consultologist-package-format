@@ -1,0 +1,482 @@
+{
+  "about": "What a read gives (§ 3.6.1), the pitfall of § 3.6.2, and truthiness (§ 3.6.4). The data's members are the roots as an engine builds them.",
+  "cases": [
+    {
+      "about": "§ 3.6.1 a supplied input's .value is its raw value.",
+      "rule": {
+        "var": "input.age.value"
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": 70,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": 70
+    },
+    {
+      "about": "§ 3.6.1 a supplied text input's .content is its text.",
+      "rule": {
+        "var": "input.consult_draft.content"
+      },
+      "data": {
+        "input": {
+          "consult_draft": {
+            "value": "Margaret Okafor continues letrozole.",
+            "content": "Margaret Okafor continues letrozole.",
+            "title": null
+          }
+        }
+      },
+      "result": "Margaret Okafor continues letrozole."
+    },
+    {
+      "about": "§ 3.6.1 a supplied input's .title is the chosen arm's title.",
+      "rule": {
+        "var": "input.specialty.title"
+      },
+      "data": {
+        "input": {
+          "specialty": {
+            "value": "medical_oncology",
+            "content": null,
+            "title": "Medical oncology"
+          }
+        }
+      },
+      "result": "Medical oncology"
+    },
+    {
+      "about": "§ 3.6.1 an unsupplied input's .value is null.",
+      "rule": {
+        "var": "input.age.value"
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 an unsupplied input's .content is null.",
+      "rule": {
+        "var": "input.consult_draft.content"
+      },
+      "data": {
+        "input": {
+          "consult_draft": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 an unsupplied input's .title is null.",
+      "rule": {
+        "var": "input.specialty.title"
+      },
+      "data": {
+        "input": {
+          "specialty": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 an unsupplied input's .value equals null.",
+      "rule": {
+        "===": [
+          {
+            "var": "input.age.value"
+          },
+          null
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": true
+    },
+    {
+      "about": "§ 3.6.1 an unsupplied input is missing.",
+      "rule": {
+        "missing": [
+          "input.age.value"
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": [
+        "input.age.value"
+      ]
+    },
+    {
+      "about": "§ 3.6.1 a blank optional text input is missing (\"\" counts as missing).",
+      "rule": {
+        "missing": [
+          "input.consult_draft.content"
+        ]
+      },
+      "data": {
+        "input": {
+          "consult_draft": {
+            "value": "",
+            "content": "",
+            "title": null
+          }
+        }
+      },
+      "result": [
+        "input.consult_draft.content"
+      ]
+    },
+    {
+      "about": "§ 3.6.1 a node that completed: its .value is its value.",
+      "rule": {
+        "var": "node.draft.value"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": "Plan: continue letrozole.",
+            "content": "Plan: continue letrozole.",
+            "state": "completed"
+          }
+        }
+      },
+      "result": "Plan: continue letrozole."
+    },
+    {
+      "about": "§ 3.6.1 a node that completed: its .state is completed.",
+      "rule": {
+        "var": "node.draft.state"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": "Plan: continue letrozole.",
+            "content": "Plan: continue letrozole.",
+            "state": "completed"
+          }
+        }
+      },
+      "result": "completed"
+    },
+    {
+      "about": "§ 3.6.1 a node that was skipped: its .value is null.",
+      "rule": {
+        "var": "node.draft.value"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 a node that was skipped: its .content is null.",
+      "rule": {
+        "var": "node.draft.content"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 a node that was skipped: its .state says skipped.",
+      "rule": {
+        "var": "node.draft.state"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "result": "skipped"
+    },
+    {
+      "about": "§ 3.6.1 a node that was not run: its .value is null.",
+      "rule": {
+        "var": "node.draft.value"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "not_run"
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 a node that was not run: its .state says not_run.",
+      "rule": {
+        "var": "node.draft.state"
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "not_run"
+          }
+        }
+      },
+      "result": "not_run"
+    },
+    {
+      "about": "§ 3.6.1 a node that did not complete is tested by its .state.",
+      "rule": {
+        "===": [
+          {
+            "var": "node.draft.state"
+          },
+          "completed"
+        ]
+      },
+      "data": {
+        "node": {
+          "draft": {
+            "value": null,
+            "content": null,
+            "state": "skipped"
+          }
+        }
+      },
+      "result": false
+    },
+    {
+      "about": "§ 3.6.1 a nullable field holding null reads as null.",
+      "rule": {
+        "var": "node.review.value.feedback"
+      },
+      "data": {
+        "node": {
+          "review": {
+            "value": {
+              "verdict": "accept",
+              "feedback": null
+            },
+            "content": null,
+            "state": "completed"
+          }
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 pass.previous on the first pass is null.",
+      "rule": {
+        "var": "pass.previous"
+      },
+      "data": {
+        "pass": {
+          "number": 1,
+          "previous": null
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.1 a read through pass.previous on the first pass is null.",
+      "rule": {
+        "var": "pass.previous.node.judge.value"
+      },
+      "data": {
+        "pass": {
+          "number": 1,
+          "previous": null
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.6.2 the pitfall: not over 65 is true when the age is unsupplied.",
+      "rule": {
+        "!": [
+          {
+            ">": [
+              {
+                "var": "input.age.value"
+              },
+              65
+            ]
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": true
+    },
+    {
+      "about": "§ 3.6.2 the pitfall's null test: known and not over 65 is false when the age is unsupplied.",
+      "rule": {
+        "and": [
+          {
+            "!==": [
+              {
+                "var": "input.age.value"
+              },
+              null
+            ]
+          },
+          {
+            "<=": [
+              {
+                "var": "input.age.value"
+              },
+              65
+            ]
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": false
+    },
+    {
+      "about": "§ 3.6.4 truthiness: true decides true.",
+      "rule": {
+        "if": [
+          true,
+          "true",
+          "false"
+        ]
+      },
+      "data": {},
+      "result": "true"
+    },
+    {
+      "about": "§ 3.6.4 truthiness: false decides false.",
+      "rule": {
+        "if": [
+          false,
+          "true",
+          "false"
+        ]
+      },
+      "data": {},
+      "result": "false"
+    },
+    {
+      "about": "§ 3.6.4 truthiness: null decides false.",
+      "rule": {
+        "if": [
+          null,
+          "true",
+          "false"
+        ]
+      },
+      "data": {},
+      "result": "false"
+    },
+    {
+      "about": "§ 3.6.4 truthiness: missing's empty list decides false.",
+      "rule": {
+        "if": [
+          {
+            "missing": [
+              "input.age.value"
+            ]
+          },
+          "true",
+          "false"
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": 70,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": "false"
+    },
+    {
+      "about": "§ 3.6.4 truthiness: missing's non-empty list decides true.",
+      "rule": {
+        "if": [
+          {
+            "missing": [
+              "input.age.value"
+            ]
+          },
+          "true",
+          "false"
+        ]
+      },
+      "data": {
+        "input": {
+          "age": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        }
+      },
+      "result": "true"
+    }
+  ]
+}

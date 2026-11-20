@@ -1,0 +1,182 @@
+{
+  "about": "Every literal form, and the forms that keep the tree (§ 3.8; D23).",
+  "cases": [
+    {
+      "about": "§ 3.8 a whole number in its RFC 8785 form.",
+      "rule": 65,
+      "text": "65"
+    },
+    {
+      "about": "§ 3.8 a fraction in its RFC 8785 form.",
+      "rule": 0.5,
+      "text": "0.5"
+    },
+    {
+      "about": "§ 3.8 a large number in its RFC 8785 form.",
+      "rule": 1e21,
+      "text": "1e+21"
+    },
+    {
+      "about": "§ 3.8 a small number in its RFC 8785 form.",
+      "rule": 0.000001,
+      "text": "0.000001"
+    },
+    {
+      "about": "§ 3.8 a smaller number in its RFC 8785 form.",
+      "rule": 1e-7,
+      "text": "1e-7"
+    },
+    {
+      "about": "§ 3.8 a number written with a fraction of zero prints whole.",
+      "rule": 1.0,
+      "text": "1"
+    },
+    {
+      "about": "§ 3.8 a negative literal prints -1.",
+      "rule": -1,
+      "text": "-1"
+    },
+    {
+      "about": "§ 3.8 zero.",
+      "rule": 0,
+      "text": "0"
+    },
+    {
+      "about": "§ 3.8 true.",
+      "rule": true,
+      "text": "true"
+    },
+    {
+      "about": "§ 3.8 false.",
+      "rule": false,
+      "text": "false"
+    },
+    {
+      "about": "§ 3.8 null.",
+      "rule": null,
+      "text": "null"
+    },
+    {
+      "about": "§ 3.8 a string literal is JSON text.",
+      "rule": "table",
+      "text": "\"table\""
+    },
+    {
+      "about": "§ 3.8 the empty string.",
+      "rule": "",
+      "text": "\"\""
+    },
+    {
+      "about": "§ 3.8 a string with a quote and a line break is written with JSON escapes; ≠ as itself.",
+      "rule": "a\"b\n≠",
+      "text": "\"a\\\"b\\n≠\""
+    },
+    {
+      "about": "§ 3.8 a string holding the word and stays one literal.",
+      "rule": " and ",
+      "text": "\" and \""
+    },
+    {
+      "about": "§ 3.8 a string holding a backslash and a tab.",
+      "rule": "C:\\notes\t1",
+      "text": "\"C:\\\\notes\\t1\""
+    },
+    {
+      "about": "§ 3.8 a string with a character outside the Basic Multilingual Plane.",
+      "rule": "😀",
+      "text": "\"😀\""
+    },
+    {
+      "about": "§ 3.8 an array.",
+      "rule": [
+        1,
+        {
+          "var": "a.b"
+        },
+        "c"
+      ],
+      "text": "[1, a.b, \"c\"]"
+    },
+    {
+      "about": "§ 3.8 the empty array.",
+      "rule": [],
+      "text": "[]"
+    },
+    {
+      "about": "§ 3.8 an array in an array.",
+      "rule": [
+        [
+          1,
+          2
+        ],
+        []
+      ],
+      "text": "[[1, 2], []]"
+    },
+    {
+      "about": "D23: one-operand - over a number literal prints -(1), not -1.",
+      "rule": {
+        "-": [
+          1
+        ]
+      },
+      "text": "-(1)"
+    },
+    {
+      "about": "D23: a path whose first segment is a printer word prints var(\"…\").",
+      "rule": {
+        "var": "true"
+      },
+      "text": "var(\"true\")"
+    },
+    {
+      "about": "D23: in is a printer word too.",
+      "rule": {
+        "var": "in.x"
+      },
+      "text": "var(\"in.x\")"
+    },
+    {
+      "about": "D23: a path that is not dot-joined identifiers prints var(\"…\").",
+      "rule": {
+        "var": "a b"
+      },
+      "text": "var(\"a b\")"
+    },
+    {
+      "about": "D23: a path with a word that is not first prints as written.",
+      "rule": {
+        "var": "x.not"
+      },
+      "text": "x.not"
+    },
+    {
+      "about": "D23: an object field that is not an identifier prints as a JSON string.",
+      "rule": {
+        "object": {
+          "my field": 1
+        }
+      },
+      "text": "{ \"my field\": 1 }"
+    },
+    {
+      "about": "D23: the empty object prints {}.",
+      "rule": {
+        "object": {}
+      },
+      "text": "{}"
+    },
+    {
+      "about": "§ 3.8 a .title read prints as written.",
+      "rule": {
+        "===": [
+          {
+            "var": "input.specialty.title"
+          },
+          "Medical oncology"
+        ]
+      },
+      "text": "input.specialty.title = \"Medical oncology\""
+    }
+  ]
+}

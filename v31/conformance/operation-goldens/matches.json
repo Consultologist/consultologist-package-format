@@ -1,0 +1,214 @@
+{
+  "about": "matches: I-Regexp (RFC 9485) with search semantics, translated to .NET and counted in code points (§ 3.5.3).",
+  "cases": [
+    {
+      "about": "§ 3.5.3 matches: true when the pattern occurs anywhere in the text.",
+      "rule": {
+        "matches": [
+          "started femara today",
+          "letrozole|femara"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: always case-sensitive.",
+      "rule": {
+        "matches": [
+          "started Femara",
+          "letrozole|femara"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: false when the pattern does not occur.",
+      "rule": {
+        "matches": [
+          "started tamoxifen",
+          "letrozole|femara"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: . matches a character.",
+      "rule": {
+        "matches": [
+          "abc",
+          "a.c"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: . does not match \\n.",
+      "rule": {
+        "matches": [
+          "a\nc",
+          "a.c"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: . does not match \\r.",
+      "rule": {
+        "matches": [
+          "a\rc",
+          "a.c"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: . matches a character outside the Basic Multilingual Plane as one.",
+      "rule": {
+        "matches": [
+          "a😀c",
+          "a.c"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: a character outside the Basic Multilingual Plane is one, so not two.",
+      "rule": {
+        "matches": [
+          "a😀c",
+          "a.{2}c"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: a negated class matches a character outside the Basic Multilingual Plane as one.",
+      "rule": {
+        "matches": [
+          "a😀c",
+          "a[^x]c"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: a quantifier counts a character outside the Basic Multilingual Plane as one.",
+      "rule": {
+        "matches": [
+          "😀😀",
+          "😀{2}"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: a class range of characters outside the Basic Multilingual Plane.",
+      "rule": {
+        "matches": [
+          "x😃x",
+          "[😀-😏]"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: ^ is a literal character in I-Regexp, not an anchor.",
+      "rule": {
+        "matches": [
+          "x^a",
+          "^a"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: ^ is a literal, so it does not match at the start of the text.",
+      "rule": {
+        "matches": [
+          "abc",
+          "^a"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: $ is a literal character in I-Regexp, not an anchor.",
+      "rule": {
+        "matches": [
+          "cost a$",
+          "a$"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: a Unicode category matches a letter of the Basic Multilingual Plane.",
+      "rule": {
+        "matches": [
+          "Élan",
+          "\\p{Lu}"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: categories are judged on Basic Multilingual Plane code points only, so the Deseret letter U+10400 is in no \\p{L}.",
+      "rule": {
+        "matches": [
+          "𐐀",
+          "\\p{L}"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 matches: and in every \\P{L}.",
+      "rule": {
+        "matches": [
+          "𐐀",
+          "\\P{L}"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.3 matches: on Markdown it searches the source.",
+      "rule": {
+        "matches": [
+          "**letrozole**",
+          "\\*\\*letrozole"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.6.2 matches: a number, data that escaped validation, reads as null, so false.",
+      "rule": {
+        "matches": [
+          5,
+          "5"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    }
+  ]
+}

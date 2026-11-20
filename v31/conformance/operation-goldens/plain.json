@@ -1,0 +1,95 @@
+{
+  "about": "plain: Markdown converted to plain text by plain_conversion 1.0.0 (§ 3.5.2), every plain here converting (its operand is Markdown).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 plain: emphasis is removed.",
+      "rule": {
+        "plain": [
+          "**Letrozole** 2.5 mg daily"
+        ]
+      },
+      "data": {},
+      "output": "\"Letrozole 2.5 mg daily\""
+    },
+    {
+      "about": "§ 3.5.2 plain: a heading and a paragraph are two lines, a link is its text.",
+      "rule": {
+        "plain": [
+          "# Plan\n\nContinue [letrozole](https://example.org)."
+        ]
+      },
+      "data": {},
+      "output": "\"Plan\\nContinue letrozole.\""
+    },
+    {
+      "about": "§ 3.5.2 plain: a list's items are lines, without their markers.",
+      "rule": {
+        "plain": [
+          "- hot flushes\n- joint pain"
+        ]
+      },
+      "data": {},
+      "output": "\"hot flushes\\njoint pain\""
+    },
+    {
+      "about": "§ 3.5.2 plain: a table's cells run together, separated by spaces.",
+      "rule": {
+        "plain": [
+          "| Drug | Dose |\n|---|---|\n| Letrozole | 2.5 mg |"
+        ]
+      },
+      "data": {},
+      "output": "\"Drug Dose Letrozole 2.5 mg\""
+    },
+    {
+      "about": "§ 3.5.2 plain: empty text stays empty.",
+      "rule": {
+        "plain": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "\"\""
+    },
+    {
+      "about": "§ 3.5.2 plain: text with no Markdown marks is unchanged.",
+      "rule": {
+        "plain": [
+          "plain text, no marks"
+        ]
+      },
+      "data": {},
+      "output": "\"plain text, no marks\""
+    },
+    {
+      "about": "§ 3.5.2 plain: \\r\\n becomes \\n, and line breaks and spaces at the very end are removed.",
+      "rule": {
+        "plain": [
+          "Seen today.\r\n\r\nReview in 6 weeks.  \r\n"
+        ]
+      },
+      "data": {},
+      "output": "\"Seen today.\\nReview in 6 weeks.\""
+    },
+    {
+      "about": "§ 3.5.2 plain: inline code keeps its text without the backticks.",
+      "rule": {
+        "plain": [
+          "Take `letrozole` daily"
+        ]
+      },
+      "data": {},
+      "output": "\"Take letrozole daily\""
+    },
+    {
+      "about": "§ 3.6.2 plain: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "plain": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

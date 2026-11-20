@@ -1,0 +1,75 @@
+{
+  "about": "words: the count of maximal runs of non-whitespace characters (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 words: runs of spaces and a line break separate three words.",
+      "rule": {
+        "words": [
+          "  chest   pain\nworse "
+        ]
+      },
+      "data": {},
+      "output": "3"
+    },
+    {
+      "about": "§ 3.5.2 words: empty text has none.",
+      "rule": {
+        "words": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.2 words: whitespace only has none.",
+      "rule": {
+        "words": [
+          " \t\n "
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.2 words: punctuation is not whitespace, so chest-pain, and worse. are two words.",
+      "rule": {
+        "words": [
+          "chest-pain, worse."
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.2 words: U+00A0 is White_Space and separates words.",
+      "rule": {
+        "words": [
+          "2.5 mg"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.2 words: a character outside the Basic Multilingual Plane is a word.",
+      "rule": {
+        "words": [
+          "😀 😀"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.6.2 words: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "words": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

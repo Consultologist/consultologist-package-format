@@ -1,0 +1,305 @@
+{
+  "about": "trim: every White_Space character removed at either end, and look-alikes kept (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 trim: U+0009 CHARACTER TABULATION is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "\tpain\t"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+000A LINE FEED is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "\npain\n"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+000B LINE TABULATION is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "\u000Bpain\u000B"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+000C FORM FEED is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "\fpain\f"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+000D CARRIAGE RETURN is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "\rpain\r"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+0020 SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+0085 NEXT LINE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+00A0 NO-BREAK SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+1680 OGHAM SPACE MARK is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2000 EN QUAD is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2001 EM QUAD is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2002 EN SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2003 EM SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2004 THREE-PER-EM SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2005 FOUR-PER-EM SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2006 SIX-PER-EM SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2007 FIGURE SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2008 PUNCTUATION SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2009 THIN SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+200A HAIR SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2028 LINE SEPARATOR is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2029 PARAGRAPH SEPARATOR is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+202F NARROW NO-BREAK SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+205F MEDIUM MATHEMATICAL SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          " pain "
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+3000 IDEOGRAPHIC SPACE is White_Space, removed at either end.",
+      "rule": {
+        "trim": [
+          "　pain　"
+        ]
+      },
+      "data": {},
+      "result": "pain"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+200B ZERO WIDTH SPACE is not White_Space, so kept.",
+      "rule": {
+        "trim": [
+          "​pain​"
+        ]
+      },
+      "data": {},
+      "result": "​pain​"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+180E MONGOLIAN VOWEL SEPARATOR is not White_Space, so kept.",
+      "rule": {
+        "trim": [
+          "᠎pain᠎"
+        ]
+      },
+      "data": {},
+      "result": "᠎pain᠎"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+FEFF ZERO WIDTH NO-BREAK SPACE is not White_Space, so kept.",
+      "rule": {
+        "trim": [
+          "﻿pain﻿"
+        ]
+      },
+      "data": {},
+      "result": "﻿pain﻿"
+    },
+    {
+      "about": "§ 3.5.2 trim: U+2060 WORD JOINER is not White_Space, so kept.",
+      "rule": {
+        "trim": [
+          "⁠pain⁠"
+        ]
+      },
+      "data": {},
+      "result": "⁠pain⁠"
+    },
+    {
+      "about": "§ 3.5.2 trim: every White_Space character at once trims to empty text.",
+      "rule": {
+        "trim": [
+          "\t\n\u000B\f\r                  　"
+        ]
+      },
+      "data": {},
+      "result": ""
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "about": "trim: leading and trailing whitespace removed (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 trim: spaces and a final line break are removed.",
+      "rule": {
+        "trim": [
+          "  pain  \n"
+        ]
+      },
+      "data": {},
+      "output": "\"pain\""
+    },
+    {
+      "about": "§ 3.5.2 trim: whitespace inside the text is kept.",
+      "rule": {
+        "trim": [
+          "  chest  pain "
+        ]
+      },
+      "data": {},
+      "output": "\"chest  pain\""
+    },
+    {
+      "about": "§ 3.5.2 trim: whitespace only trims to empty text.",
+      "rule": {
+        "trim": [
+          " \t\r\n "
+        ]
+      },
+      "data": {},
+      "output": "\"\""
+    },
+    {
+      "about": "§ 3.5.2 trim: empty text stays empty.",
+      "rule": {
+        "trim": [
+          ""
+        ]
+      },
+      "data": {},
+      "output": "\"\""
+    },
+    {
+      "about": "§ 3.5.2 trim: a character outside the Basic Multilingual Plane is kept whole.",
+      "rule": {
+        "trim": [
+          " 😀 "
+        ]
+      },
+      "data": {},
+      "output": "\"😀\""
+    },
+    {
+      "about": "§ 3.5.2 trim: U+200B ZERO WIDTH SPACE is not White_Space, so kept.",
+      "rule": {
+        "trim": [
+          "​pain​"
+        ]
+      },
+      "data": {},
+      "output": "\"​pain​\""
+    },
+    {
+      "about": "§ 3.6.2 trim: a number, data that escaped validation, reads as null.",
+      "rule": {
+        "trim": [
+          5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

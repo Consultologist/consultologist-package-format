@@ -1,0 +1,170 @@
+{
+  "about": "Comparing dates with <, >, <=, >= and === (§ 3.5.5, § 3.5.1; D18).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 < on two dates compares them chronologically.",
+      "rule": {
+        "<": [
+          "2026-01-02",
+          "2026-01-10"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 > across a year.",
+      "rule": {
+        ">": [
+          "2027-01-01",
+          "2026-12-31"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 >= on the same date is true.",
+      "rule": {
+        ">=": [
+          "2026-01-02",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 <= on the same date is true.",
+      "rule": {
+        "<=": [
+          "2026-01-02",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 < on the same date is false.",
+      "rule": {
+        "<": [
+          "2026-01-02",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.5 the bounds: 0001-01-01 < 9999-12-31.",
+      "rule": {
+        "<": [
+          "0001-01-01",
+          "9999-12-31"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 === on two equal dates is true.",
+      "rule": {
+        "===": [
+          "2026-01-02",
+          "2026-01-02"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 === on two different dates is false.",
+      "rule": {
+        "===": [
+          "2026-01-02",
+          "2026-01-03"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.5 a computed date compared with a date.",
+      "rule": {
+        "<": [
+          {
+            "add_days": [
+              "2026-01-31",
+              1
+            ]
+          },
+          "2026-02-02"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.5 a date read from run.date compared with a date.",
+      "rule": {
+        ">=": [
+          {
+            "var": "run.date"
+          },
+          "2026-11-20"
+        ]
+      },
+      "data": {
+        "run": {
+          "date": "2026-11-20"
+        }
+      },
+      "result": true
+    },
+    {
+      "about": "D18 < with a malformed date is false.",
+      "rule": {
+        "<": [
+          "2026-02-30",
+          "2026-03-01"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "D18 > with a malformed date is false.",
+      "rule": {
+        ">": [
+          "2026-03-01",
+          "2026-2-3"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "D18 < on two strings that are not dates is false.",
+      "rule": {
+        "<": [
+          "a",
+          "b"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "D18 < on a date and a number is false.",
+      "rule": {
+        "<": [
+          "2026-01-01",
+          20270101
+        ]
+      },
+      "data": {},
+      "result": false
+    }
+  ]
+}

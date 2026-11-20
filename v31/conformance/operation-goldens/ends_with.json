@@ -1,0 +1,82 @@
+{
+  "about": "ends_with: an ordinal, case-sensitive suffix test (§ 3.5.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.2 ends_with: true for a suffix.",
+      "rule": {
+        "ends_with": [
+          "Continue letrozole.",
+          "."
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 ends_with: case-sensitive, so false for another case.",
+      "rule": {
+        "ends_with": [
+          "Continue Letrozole",
+          "letrozole"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 ends_with: false when the suffix is elsewhere in the text.",
+      "rule": {
+        "ends_with": [
+          "letrozole daily",
+          "letrozole"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 ends_with: the empty suffix ends every text.",
+      "rule": {
+        "ends_with": [
+          "letrozole",
+          ""
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.5.2 ends_with: false when the suffix is longer than the text.",
+      "rule": {
+        "ends_with": [
+          "mg",
+          "2.5 mg"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.2 ends_with: a character outside the Basic Multilingual Plane is matched whole.",
+      "rule": {
+        "ends_with": [
+          "done 😀",
+          "😀"
+        ]
+      },
+      "data": {},
+      "output": "true"
+    },
+    {
+      "about": "§ 3.6.2 ends_with: a number, data that escaped validation, reads as null, so false.",
+      "rule": {
+        "ends_with": [
+          5,
+          "5"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    }
+  ]
+}

@@ -1,0 +1,496 @@
+{
+  "about": "Precedence and parentheses: a child is parenthesised when its precedence is lower than or equal to its parent's, so the text parses back to exactly the tree (§ 3.8).",
+  "cases": [
+    {
+      "about": "§ 3.8 and in and: the inner and is parenthesised, a flat and of three being a different tree.",
+      "rule": {
+        "and": [
+          {
+            "and": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          },
+          {
+            "var": "x.c"
+          }
+        ]
+      },
+      "text": "(x.a and x.b) and x.c"
+    },
+    {
+      "about": "§ 3.8 a flat and of three prints with no parentheses.",
+      "rule": {
+        "and": [
+          {
+            "var": "x.a"
+          },
+          {
+            "var": "x.b"
+          },
+          {
+            "var": "x.c"
+          }
+        ]
+      },
+      "text": "x.a and x.b and x.c"
+    },
+    {
+      "about": "§ 3.8 and binds tighter than or: no parentheses.",
+      "rule": {
+        "or": [
+          {
+            "and": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          },
+          {
+            "var": "x.c"
+          }
+        ]
+      },
+      "text": "x.a and x.b or x.c"
+    },
+    {
+      "about": "§ 3.8 or inside and is parenthesised.",
+      "rule": {
+        "and": [
+          {
+            "or": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          },
+          {
+            "var": "x.c"
+          }
+        ]
+      },
+      "text": "(x.a or x.b) and x.c"
+    },
+    {
+      "about": "§ 3.8 not over and is parenthesised.",
+      "rule": {
+        "!": [
+          {
+            "and": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          }
+        ]
+      },
+      "text": "not (x.a and x.b)"
+    },
+    {
+      "about": "§ 3.8 not over not is parenthesised.",
+      "rule": {
+        "!": [
+          {
+            "!": [
+              {
+                "var": "x.a"
+              }
+            ]
+          }
+        ]
+      },
+      "text": "not (not x.a)"
+    },
+    {
+      "about": "§ 3.8 not over a comparison is parenthesised.",
+      "rule": {
+        "!": [
+          {
+            ">": [
+              {
+                "var": "input.age.value"
+              },
+              65
+            ]
+          }
+        ]
+      },
+      "text": "not (input.age.value > 65)"
+    },
+    {
+      "about": "§ 3.8 a comparison inside and needs no parentheses.",
+      "rule": {
+        "and": [
+          {
+            "!==": [
+              {
+                "var": "input.age.value"
+              },
+              null
+            ]
+          },
+          {
+            "<=": [
+              {
+                "var": "input.age.value"
+              },
+              65
+            ]
+          }
+        ]
+      },
+      "text": "input.age.value ≠ null and input.age.value ≤ 65"
+    },
+    {
+      "about": "§ 3.8 arithmetic inside a comparison needs no parentheses.",
+      "rule": {
+        "<": [
+          {
+            "+": [
+              {
+                "var": "x.a"
+              },
+              1
+            ]
+          },
+          {
+            "*": [
+              {
+                "var": "x.b"
+              },
+              2
+            ]
+          }
+        ]
+      },
+      "text": "x.a + 1 < x.b * 2"
+    },
+    {
+      "about": "§ 3.8 a flat + of three prints with no parentheses.",
+      "rule": {
+        "+": [
+          1,
+          2,
+          3
+        ]
+      },
+      "text": "1 + 2 + 3"
+    },
+    {
+      "about": "§ 3.8 + inside * is parenthesised.",
+      "rule": {
+        "*": [
+          {
+            "+": [
+              1,
+              2
+            ]
+          },
+          3
+        ]
+      },
+      "text": "(1 + 2) * 3"
+    },
+    {
+      "about": "§ 3.8 * inside + needs no parentheses.",
+      "rule": {
+        "+": [
+          {
+            "*": [
+              {
+                "var": "x.a"
+              },
+              2
+            ]
+          },
+          1
+        ]
+      },
+      "text": "x.a * 2 + 1"
+    },
+    {
+      "about": "§ 3.8 - on the right of - is parenthesised.",
+      "rule": {
+        "-": [
+          {
+            "var": "x.a"
+          },
+          {
+            "-": [
+              {
+                "var": "x.b"
+              },
+              {
+                "var": "x.c"
+              }
+            ]
+          }
+        ]
+      },
+      "text": "x.a - (x.b - x.c)"
+    },
+    {
+      "about": "§ 3.8 - on the left of - is parenthesised too (equal precedence).",
+      "rule": {
+        "-": [
+          {
+            "-": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          },
+          {
+            "var": "x.c"
+          }
+        ]
+      },
+      "text": "(x.a - x.b) - x.c"
+    },
+    {
+      "about": "§ 3.8 / inside / is parenthesised.",
+      "rule": {
+        "/": [
+          {
+            "/": [
+              {
+                "var": "x.a"
+              },
+              2
+            ]
+          },
+          3
+        ]
+      },
+      "text": "(x.a / 2) / 3"
+    },
+    {
+      "about": "§ 3.8 one-operand - over a read prints -a.",
+      "rule": {
+        "-": [
+          {
+            "var": "x.a"
+          }
+        ]
+      },
+      "text": "-x.a"
+    },
+    {
+      "about": "§ 3.8 one-operand - over + is parenthesised.",
+      "rule": {
+        "-": [
+          {
+            "+": [
+              {
+                "var": "x.a"
+              },
+              1
+            ]
+          }
+        ]
+      },
+      "text": "-(x.a + 1)"
+    },
+    {
+      "about": "§ 3.8 a negative literal on the right of -.",
+      "rule": {
+        "-": [
+          {
+            "var": "x.a"
+          },
+          -1
+        ]
+      },
+      "text": "x.a - -1"
+    },
+    {
+      "about": "§ 3.8 more pairs of if print as else if.",
+      "rule": {
+        "if": [
+          {
+            "var": "x.a"
+          },
+          1,
+          {
+            "var": "x.b"
+          },
+          2,
+          3
+        ]
+      },
+      "text": "if x.a then 1 else if x.b then 2 else 3"
+    },
+    {
+      "about": "§ 3.8 an if written in an else is parenthesised, a different tree from more pairs.",
+      "rule": {
+        "if": [
+          {
+            "var": "x.a"
+          },
+          1,
+          {
+            "if": [
+              {
+                "var": "x.b"
+              },
+              2,
+              3
+            ]
+          }
+        ]
+      },
+      "text": "if x.a then 1 else (if x.b then 2 else 3)"
+    },
+    {
+      "about": "§ 3.8 an if inside + is parenthesised.",
+      "rule": {
+        "+": [
+          1,
+          {
+            "if": [
+              {
+                "var": "x.a"
+              },
+              1,
+              2
+            ]
+          }
+        ]
+      },
+      "text": "1 + (if x.a then 1 else 2)"
+    },
+    {
+      "about": "§ 3.8 an if in a condition is parenthesised.",
+      "rule": {
+        "if": [
+          {
+            "if": [
+              {
+                "var": "x.a"
+              },
+              true,
+              false
+            ]
+          },
+          1,
+          2
+        ]
+      },
+      "text": "if (if x.a then true else false) then 1 else 2"
+    },
+    {
+      "about": "§ 3.8 a child of a function form is never parenthesised.",
+      "rule": {
+        "min": [
+          1,
+          {
+            "if": [
+              {
+                "var": "x.a"
+              },
+              1,
+              2
+            ]
+          }
+        ]
+      },
+      "text": "min(1, if x.a then 1 else 2)"
+    },
+    {
+      "about": "§ 3.8 a child in an array is never parenthesised.",
+      "rule": {
+        "in": [
+          {
+            "var": "x.a"
+          },
+          [
+            {
+              "+": [
+                1,
+                2
+              ]
+            },
+            {
+              "or": [
+                true,
+                false
+              ]
+            }
+          ]
+        ]
+      },
+      "text": "x.a in [1 + 2, true or false]"
+    },
+    {
+      "about": "§ 3.8 a field of object is never parenthesised.",
+      "rule": {
+        "object": {
+          "total": {
+            "+": [
+              {
+                "var": "x.a"
+              },
+              {
+                "var": "x.b"
+              }
+            ]
+          },
+          "ok": {
+            "and": [
+              {
+                "var": "x.c"
+              },
+              true
+            ]
+          }
+        }
+      },
+      "text": "{ total: x.a + x.b, ok: x.c and true }"
+    },
+    {
+      "about": "§ 3.8 in inside and needs no parentheses; in inside a comparison is parenthesised.",
+      "rule": {
+        "and": [
+          {
+            "in": [
+              "a",
+              {
+                "var": "x.a"
+              }
+            ]
+          },
+          {
+            "===": [
+              {
+                "in": [
+                  "b",
+                  {
+                    "var": "x.b"
+                  }
+                ]
+              },
+              true
+            ]
+          }
+        ]
+      },
+      "text": "\"a\" in x.a and (\"b\" in x.b) = true"
+    }
+  ]
+}

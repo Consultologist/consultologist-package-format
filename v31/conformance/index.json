@@ -1052,14 +1052,37 @@
       "path": "v31/conformance/operation-goldens",
       "about": "Every built-in operation's output, as bytes.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "add_days.json",
+        "all_pass.json",
+        "blank.json",
+        "count_pass.json",
+        "days_between.json",
+        "ends_with.json",
+        "has_word.json",
+        "lines.json",
+        "lower.json",
+        "matches.json",
+        "object.json",
+        "plain.json",
+        "size.json",
+        "starts_with.json",
+        "terms_subset.json",
+        "trim.json",
+        "words.json",
+        "years_between.json"
+      ]
     },
     {
       "id": "printer-goldens",
       "path": "v31/conformance/printer-goldens",
       "about": "The printer's text for every operation, with = and ≠.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "literals.json",
+        "operations.json",
+        "precedence.json"
+      ]
     },
     {
       "id": "renderer-goldens",
@@ -1080,28 +1103,48 @@
       "path": "v31/conformance/null-vectors",
       "about": "Null and absence vectors for every JSON Logic operation, one per rule in chapter 3's table.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "absence.json",
+        "dates.json",
+        "standard.json",
+        "structural.json",
+        "text.json"
+      ]
     },
     {
       "id": "text-vectors",
       "path": "v31/conformance/text-vectors",
       "about": "Vectors for lower, trim, words and has_word, pinned to the .NET runtime and Unicode version lock.json records.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "has_word.json",
+        "lower.json",
+        "trim.json",
+        "words.json"
+      ]
     },
     {
       "id": "number-vectors",
       "path": "v31/conformance/number-vectors",
       "about": "IEEE doubles, non-finite results giving null, and integer as a kind of number.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "arithmetic.json",
+        "integers.json",
+        "non-finite.json"
+      ]
     },
     {
       "id": "date-vectors",
       "path": "v31/conformance/date-vectors",
       "about": "Vectors for the date operations.",
       "exportedBy": "area 04, JSON Logic",
-      "cases": []
+      "cases": [
+        "add_days.json",
+        "comparisons.json",
+        "days_between.json",
+        "years_between.json"
+      ]
     },
     {
       "id": "markdown-escape-vectors",

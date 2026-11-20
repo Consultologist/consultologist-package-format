@@ -1,0 +1,168 @@
+{
+  "about": "An operation whose result is not finite (an overflow, NaN), or a division or remainder by zero, gives null (§ 3.7, § 3.5.1).",
+  "cases": [
+    {
+      "about": "§ 3.7 an overflow of * gives null.",
+      "rule": {
+        "*": [
+          1e308,
+          10
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 a negative overflow of * gives null.",
+      "rule": {
+        "*": [
+          -1e308,
+          10
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow of + gives null.",
+      "rule": {
+        "+": [
+          1e308,
+          1e308
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow of - gives null.",
+      "rule": {
+        "-": [
+          -1e308,
+          1e308
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow of / gives null.",
+      "rule": {
+        "/": [
+          1e308,
+          0.1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 division by zero gives null.",
+      "rule": {
+        "/": [
+          1,
+          0
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 0 / 0 gives null.",
+      "rule": {
+        "/": [
+          0,
+          0
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 remainder by zero gives null.",
+      "rule": {
+        "%": [
+          1,
+          0
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow inside a sum makes the sum null.",
+      "rule": {
+        "+": [
+          {
+            "*": [
+              1e308,
+              10
+            ]
+          },
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow inside min makes min null.",
+      "rule": {
+        "min": [
+          {
+            "*": [
+              1e308,
+              10
+            ]
+          },
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.7 an overflow compared is false.",
+      "rule": {
+        "<": [
+          {
+            "*": [
+              1e308,
+              10
+            ]
+          },
+          1
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.7 an overflow equals null.",
+      "rule": {
+        "===": [
+          {
+            "*": [
+              1e308,
+              10
+            ]
+          },
+          null
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.7 the largest double is finite.",
+      "rule": {
+        "*": [
+          1.7976931348623157e308,
+          1
+        ]
+      },
+      "data": {},
+      "result": 1.7976931348623157e+308
+    }
+  ]
+}

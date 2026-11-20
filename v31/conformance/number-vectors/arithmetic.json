@@ -1,0 +1,290 @@
+{
+  "about": "Numbers are IEEE doubles; results are written in their RFC 8785 form (§ 3.7; D19).",
+  "cases": [
+    {
+      "about": "§ 3.7 IEEE: 0.1 + 0.2 is 0.30000000000000004.",
+      "rule": {
+        "+": [
+          0.1,
+          0.2
+        ]
+      },
+      "data": {},
+      "result": 0.30000000000000004
+    },
+    {
+      "about": "§ 3.7 IEEE: 0.1 + 0.2 is not 0.3.",
+      "rule": {
+        "===": [
+          {
+            "+": [
+              0.1,
+              0.2
+            ]
+          },
+          0.3
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.7 IEEE: 1 / 3.",
+      "rule": {
+        "/": [
+          1,
+          3
+        ]
+      },
+      "data": {},
+      "result": 0.3333333333333333
+    },
+    {
+      "about": "§ 3.7 IEEE: 0.1 * 3.",
+      "rule": {
+        "*": [
+          0.1,
+          3
+        ]
+      },
+      "data": {},
+      "result": 0.30000000000000004
+    },
+    {
+      "about": "§ 3.7 + of three.",
+      "rule": {
+        "+": [
+          1,
+          2,
+          3
+        ]
+      },
+      "data": {},
+      "result": 6
+    },
+    {
+      "about": "§ 3.7 - of two.",
+      "rule": {
+        "-": [
+          5,
+          3
+        ]
+      },
+      "data": {},
+      "result": 2
+    },
+    {
+      "about": "§ 3.7 one-operand - negates.",
+      "rule": {
+        "-": [
+          5
+        ]
+      },
+      "data": {},
+      "result": -5
+    },
+    {
+      "about": "§ 3.7 the negation of 0 is 0.",
+      "rule": {
+        "-": [
+          0
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.7 a product that is negative zero is written 0.",
+      "rule": {
+        "*": [
+          -1,
+          0
+        ]
+      },
+      "data": {},
+      "result": 0
+    },
+    {
+      "about": "§ 3.7 /: a fraction.",
+      "rule": {
+        "/": [
+          1,
+          4
+        ]
+      },
+      "data": {},
+      "result": 0.25
+    },
+    {
+      "about": "D19 %: the remainder has the sign of the dividend.",
+      "rule": {
+        "%": [
+          -7,
+          3
+        ]
+      },
+      "data": {},
+      "result": -1
+    },
+    {
+      "about": "D19 %: a negative divisor.",
+      "rule": {
+        "%": [
+          7,
+          -3
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "D19 %: of fractions.",
+      "rule": {
+        "%": [
+          5.5,
+          2
+        ]
+      },
+      "data": {},
+      "result": 1.5
+    },
+    {
+      "about": "§ 3.7 min of three.",
+      "rule": {
+        "min": [
+          3,
+          1,
+          2
+        ]
+      },
+      "data": {},
+      "result": 1
+    },
+    {
+      "about": "§ 3.7 max of one.",
+      "rule": {
+        "max": [
+          3
+        ]
+      },
+      "data": {},
+      "result": 3
+    },
+    {
+      "about": "§ 3.7 max with a negative.",
+      "rule": {
+        "max": [
+          -1,
+          -2.5
+        ]
+      },
+      "data": {},
+      "result": -1
+    },
+    {
+      "about": "§ 3.5.1 cat: a number in its RFC 8785 form.",
+      "rule": {
+        "cat": [
+          "a",
+          1.50,
+          "b"
+        ]
+      },
+      "data": {},
+      "result": "a1.5b"
+    },
+    {
+      "about": "§ 3.5.1 cat: a large number in its RFC 8785 form.",
+      "rule": {
+        "cat": [
+          "n=",
+          1e21
+        ]
+      },
+      "data": {},
+      "result": "n=1e+21"
+    },
+    {
+      "about": "§ 3.5.1 cat: a small number in its RFC 8785 form.",
+      "rule": {
+        "cat": [
+          "n=",
+          1e-7
+        ]
+      },
+      "data": {},
+      "result": "n=1e-7"
+    },
+    {
+      "about": "§ 3.5.1 cat: a whole number written with a fraction is written whole.",
+      "rule": {
+        "cat": [
+          "n=",
+          2.0
+        ]
+      },
+      "data": {},
+      "result": "n=2"
+    },
+    {
+      "about": "§ 3.5.1 cat: a computed number.",
+      "rule": {
+        "cat": [
+          {
+            "+": [
+              0.1,
+              0.2
+            ]
+          },
+          " mg"
+        ]
+      },
+      "data": {},
+      "result": "0.30000000000000004 mg"
+    },
+    {
+      "about": "§ 3.5.1 strings are never coerced: \"3\" + 1 is null.",
+      "rule": {
+        "+": [
+          "3",
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.1 strings are never coerced: 5 < \"a\" is false.",
+      "rule": {
+        "<": [
+          5,
+          "a"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 strings are never coerced: 1 === \"1\" is false.",
+      "rule": {
+        "===": [
+          1,
+          "1"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.1 true is not a number: true + 1 is null.",
+      "rule": {
+        "+": [
+          true,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    }
+  ]
+}

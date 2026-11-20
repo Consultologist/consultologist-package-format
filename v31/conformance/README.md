@@ -73,6 +73,9 @@ The exporting area fixes the exact files in the release that carries the cases
 - **Goldens and vectors** (`operation-goldens`, `printer-goldens`, `renderer-goldens`,
   `dialect-goldens`, `null-vectors`, `text-vectors`, `number-vectors`, `date-vectors`,
   `markdown-escape-vectors`): a case holds an input and the bytes a generator produced for it.
+  Chapter 3's six families (`operation-goldens`, `printer-goldens`, `null-vectors`,
+  `text-vectors`, `number-vectors`, `date-vectors`) are described in
+  [The goldens and vectors of JSON Logic (area 04)](#the-goldens-and-vectors-of-json-logic-area-04).
 - **`compiled-documents`:** a fixture package with its expected `resolve.json` and `lock.json`
   bytes and hashes, its `requires` and `needs`, and its publish report.
 - **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices.
@@ -236,6 +239,70 @@ open point for the text:
 | `A04-009` | *"Computed node '\<id>' builds \<format> with \<field> as \<format>; the format declares it \<format>."* | each field of an `object` fits its property, and is `null` only where the property is nullable ([chapter 3 § 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations)) |
 | `A04-010` | *"\<site> gives \<operation> a \<operand> that is \<what it is>; \<operand> is written as text."* | a `pattern`, a `word`, a `failWith` and a `missing` path are literal strings ([chapter 3 § 3.5.3](../../package-format-v31.md#353-matches-and-has_word), [§ 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations), [§ 3.5.1](../../package-format-v31.md#351-standard-json-logic-operations)) |
 | `A04-011` | *"\<site> \<member> could not be evaluated: \<detail>."* | the evaluator declines a rule outside the format and never throws ([chapter 3 § 3.9](../../package-format-v31.md#39-the-evaluator)); said at run time, so it has no case |
+
+## The goldens and vectors of JSON Logic (area 04)
+
+Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):
+21 files of goldens and 16 of vectors, 597 cases. Each holds a rule written as a package writes it
+and what this implementation's evaluator or printer gave for it.
+
+| Family | Files (cases) | Holds |
+|---|---|---|
+| `operation-goldens` | one per custom operation of [§ 3.5.2 to § 3.5.5](../../package-format-v31.md#352-custom-text-operations), `<name>.json` (18 files, 153 cases) | every branch of each operation's meaning, and a value of the wrong kind; `plain.json` holds the Markdown conversion's cases |
+| `printer-goldens` | `operations.json` (39), `precedence.json` (26), `literals.json` (28) | every operation printed once; precedence and parentheses; every literal form, and the forms that keep the tree ([§ 3.8](../../package-format-v31.md#38-the-printer)) |
+| `null-vectors` | `standard.json` (62), `text.json` (16), `structural.json` (8), `dates.json` (10), `absence.json` (27) | a `null` operand in each position of every row of [§ 3.5.1 to § 3.5.5](../../package-format-v31.md#35-the-operations); `absence.json` holds every row of [§ 3.6.1](../../package-format-v31.md#361-what-a-read-gives), the pitfall of [§ 3.6.2](../../package-format-v31.md#362-the-null-rules) and the truthiness of [§ 3.6.4](../../package-format-v31.md#364-truthiness) |
+| `text-vectors` | `lower.json` (15), `trim.json` (30), `words.json` (30), `has_word.json` (40) | case pairs outside ASCII (`Ω`, `İ`, `ẞ`, `Ǆ`, Cherokee, the Deseret letter U+10400) for `lower`; every `White_Space` character, and four look-alikes that are not, for `trim` and `words`; each category of word character beside the word, and ten that are not, for `has_word` |
+| `number-vectors` | `arithmetic.json` (25), `non-finite.json` (13), `integers.json` (13) | IEEE results (`0.1 + 0.2`), overflow and division by zero giving `null`, a whole result written without a fraction, `1.0 === 1` ([§ 3.7](../../package-format-v31.md#37-typing)) |
+| `date-vectors` | `days_between.json` (17), `years_between.json` (15), `add_days.json` (16), `comparisons.json` (14) | every 29 February case of [§ 3.5.5](../../package-format-v31.md#355-date-operations), the bounds of years 0001 and 9999, malformed dates |
+
+**A file** is `{ "about", "cases" }`: what the group pins, and its cases. **A case** is, by family:
+
+- a vector (`null-vectors`, `text-vectors`, `number-vectors`, `date-vectors`):
+  `{ "about", "rule", "data", "result" }`. Evaluate `rule` on `data` and compare the value with
+  `result` as JSON (a number by its value: `1` and `1.0` are one number).
+- an operation golden: `{ "about", "rule", "data", "output" }`. `output` is a string, the result's
+  canonical JSON ([RFC 8785](https://www.rfc-editor.org/rfc/rfc8785): members sorted, numbers in
+  their shortest form): write the value canonically and compare the bytes.
+- a printer golden: `{ "about", "rule", "text" }`. Print `rule` and compare the text exactly; the
+  text parses back to exactly `rule` ([§ 3.8](../../package-format-v31.md#38-the-printer)), which the
+  library's tests check for every case.
+
+`data` is one object whose members are the roots a rule reads (`input`, `node`, `check`, `pass`,
+`run`, …), as an engine builds them: an unsupplied input is
+`{ "value": null, "content": null, "title": null }`, a node that did not complete
+`{ "value": null, "content": null, "state": "skipped" }`; `{}` when the rule reads nothing. Every
+`plain` in a case converts, as for an operand that is Markdown: whether an operand is plain text,
+returned unchanged, is known from its format at publish, not from the rule and its data, so that
+branch has no vector. A case's `about` names the row it pins (*"§ 3.5.1 `<`: false when the first
+operand is null."*), by this document's sections; a `D<n>` is one of this implementation's
+decisions, below. Each file is written with 2-space indentation, `\n` line ends and a final newline,
+and writes every character outside ASCII as itself, one outside the Basic Multilingual Plane too
+(`😀`, `𐐀`); ASCII control characters are JSON escapes (`\t`, `\u000B`). The index lists a
+family's cases as its file names. **The cases are exported by the library's evaluator and printer
+and are never written by hand:** the exporter runs each rule and writes what it gave.
+`python3 scripts/check-v31.py` (group `vectors`) holds each family's files to the index (and the
+operation goldens to the custom operations, one file each), each file to `{ about, cases }` and each
+case to its family's members, in that order.
+
+**What an outside implementation must match.** The text leaves these to the implementation; the
+vectors pin this implementation's choices, and an implementation that chooses otherwise fails them:
+
+| Decision | What the vectors pin |
+|---|---|
+| D11, `matches` | the pattern is translated to .NET's non-backtracking engine so that it counts code points (`.`, a class, a quantifier, `{n}` each take one character outside the Basic Multilingual Plane); `^` and `$` are literals; a Unicode category is judged on Basic Multilingual Plane code points only, so `𐐀` (U+10400) is in no `\p{L}` and in every `\P{L}` |
+| D13, `plain` | `plain_conversion` 1.0.0 is Markdig's `Markdown.ToPlainText` with the `UseAdvancedExtensions` pipeline, then `\r\n` and `\r` turned to `\n`, and spaces, tabs and line breaks at the very end removed. Everything else is Markdig's: a table's cells run together, separated by spaces |
+| D18, run data that escaped validation | an operand of a kind its operation does not take is read as `null` by that operation (`"3" + 1` is `null`, `lower(5)` is `null`, `blank(5)` is `true`, `5 < "a"` is `false`); nothing is coerced; `<`, `>`, `<=`, `>=` compare two numbers, or two strings that are both dates, and are `false` otherwise; a date that is not `YYYY-MM-DD` in years 0001 to 9999 is `null` |
+| D19, numbers | `cat` writes a number in its RFC 8785 form (`1e+21`, `1e-7`, `2.0` as `2`); a result that is not finite is `null`; `%` has the sign of the dividend |
+| D20, Unicode | whitespace is Unicode `White_Space`; `lower` is .NET's `ToLowerInvariant`, the invariant culture's simple mapping, which leaves `İ` (U+0130) as it is and lowers `Σ` to `σ` wherever it stands; `size` counts code points; a word character is a letter, a mark, a decimal digit or connector punctuation, judged per code point (so `𐐀` beside a word is a word character for `has_word`). The vectors carry no runtime or Unicode version of their own: `lock.json` records them |
+| D21, check operations | `terms_subset`'s operands are `concept_list` values; `null`, or anything else, is an empty list; `uncovered` and `untested` are `null` when empty. For `all_pass` and `count_pass`, an element with a `state` is judged when its `state` is `completed`, on its `value`; an element without one is judged as it is; an element that is not an object, or whose judged value has no boolean `pass`, is not judged |
+| D23, the printer | one-operand `-` on a number literal prints `-(1)` (a negative literal prints `-1`); a child of a function form, an array or an `object` is never parenthesised; a `var` path that is not dot-joined identifiers, or whose first segment is a printer word (`true`, `false`, `null`, `not`, `and`, `or`, `in`, `if`, `then`, `else`), prints as `var("<path>")`; an `object` field that is not an identifier prints as a JSON string; an empty `object` prints `{}` |
+
+**What has no vector.** `matches` over text of more than 1 MiB fails the node that owns the
+condition (`S03-040`), and a condition that yields no boolean fails it too (`S03-041`): both are
+run-time failures, said as sentences ([§ 3.11.3](../../package-format-v31.md#3113-failures-at-run-time)), and a vector
+holds a value, so neither has one; nor has this implementation's `A04-011` (a rule the evaluator
+declines). The typing of [§ 3.7](../../package-format-v31.md#37-typing) is judged at publish, and its refusals are
+`refusal-packages` cases, above.
 
 ## The schemas' examples
 

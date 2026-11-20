@@ -1,0 +1,71 @@
+{
+  "about": "days_between: whole days from a to b, negative when b is earlier (§ 3.5.5).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 days_between: whole days to a later date.",
+      "rule": {
+        "days_between": [
+          "2026-01-01",
+          "2026-01-31"
+        ]
+      },
+      "data": {},
+      "output": "30"
+    },
+    {
+      "about": "§ 3.5.5 days_between: negative when b is earlier.",
+      "rule": {
+        "days_between": [
+          "2026-01-31",
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "output": "-30"
+    },
+    {
+      "about": "§ 3.5.5 days_between: 0 for the same date.",
+      "rule": {
+        "days_between": [
+          "2026-03-14",
+          "2026-03-14"
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.5 days_between: across 29 February of a leap year.",
+      "rule": {
+        "days_between": [
+          "2024-02-28",
+          "2024-03-01"
+        ]
+      },
+      "data": {},
+      "output": "2"
+    },
+    {
+      "about": "§ 3.5.5 days_between: across a year's end.",
+      "rule": {
+        "days_between": [
+          "2025-12-31",
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.5 days_between: a malformed date gives null.",
+      "rule": {
+        "days_between": [
+          "2026-2-3",
+          "2026-02-04"
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

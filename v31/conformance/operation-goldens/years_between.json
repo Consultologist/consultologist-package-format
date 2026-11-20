@@ -1,0 +1,82 @@
+{
+  "about": "years_between: completed years from a to b, a year counting once its anniversary is reached; negative when b is earlier (§ 3.5.5).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 years_between: the day before the anniversary, the year is not completed.",
+      "rule": {
+        "years_between": [
+          "1960-06-15",
+          "2026-06-14"
+        ]
+      },
+      "data": {},
+      "output": "65"
+    },
+    {
+      "about": "§ 3.5.5 years_between: on the anniversary, the year is completed.",
+      "rule": {
+        "years_between": [
+          "1960-06-15",
+          "2026-06-15"
+        ]
+      },
+      "data": {},
+      "output": "66"
+    },
+    {
+      "about": "§ 3.5.5 years_between: negative when b is earlier, the same rule mirrored.",
+      "rule": {
+        "years_between": [
+          "2026-06-15",
+          "1960-06-15"
+        ]
+      },
+      "data": {},
+      "output": "-66"
+    },
+    {
+      "about": "§ 3.5.5 years_between: mirrored, a year short of the anniversary.",
+      "rule": {
+        "years_between": [
+          "2026-06-14",
+          "1960-06-15"
+        ]
+      },
+      "data": {},
+      "output": "-65"
+    },
+    {
+      "about": "§ 3.5.5 years_between: born on 29 February, 0 on 28 February of a year with no 29 February.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2009-02-28"
+        ]
+      },
+      "data": {},
+      "output": "0"
+    },
+    {
+      "about": "§ 3.5.5 years_between: born on 29 February, 1 on 1 March of a year with no 29 February.",
+      "rule": {
+        "years_between": [
+          "2008-02-29",
+          "2009-03-01"
+        ]
+      },
+      "data": {},
+      "output": "1"
+    },
+    {
+      "about": "§ 3.5.5 years_between: a malformed date gives null.",
+      "rule": {
+        "years_between": [
+          "2026-02-30",
+          "2027-01-01"
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

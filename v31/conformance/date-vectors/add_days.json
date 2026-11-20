@@ -1,0 +1,181 @@
+{
+  "about": "add_days: through 29 February, at the bounds of years 0001 and 9999, a non-integer n, malformed dates (§ 3.5.5; D18).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 add_days: 28 February plus 1 in a leap year is 29 February.",
+      "rule": {
+        "add_days": [
+          "2024-02-28",
+          1
+        ]
+      },
+      "data": {},
+      "result": "2024-02-29"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 28 February plus 1 in a year with no 29 February is 1 March.",
+      "rule": {
+        "add_days": [
+          "2026-02-28",
+          1
+        ]
+      },
+      "data": {},
+      "result": "2026-03-01"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 29 February plus 365 days.",
+      "rule": {
+        "add_days": [
+          "2024-02-29",
+          365
+        ]
+      },
+      "data": {},
+      "result": "2025-02-28"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 1 March minus 1 in 2000, a leap year.",
+      "rule": {
+        "add_days": [
+          "2000-03-01",
+          -1
+        ]
+      },
+      "data": {},
+      "result": "2000-02-29"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 1 March minus 1 in 1900, not a leap year.",
+      "rule": {
+        "add_days": [
+          "1900-03-01",
+          -1
+        ]
+      },
+      "data": {},
+      "result": "1900-02-28"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 0001-01-01 plus 3652058 is 9999-12-31.",
+      "rule": {
+        "add_days": [
+          "0001-01-01",
+          3652058
+        ]
+      },
+      "data": {},
+      "result": "9999-12-31"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 0001-01-01 plus 3652059 is past 9999, so null.",
+      "rule": {
+        "add_days": [
+          "0001-01-01",
+          3652059
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: 9999-12-31 minus 3652058 is 0001-01-01.",
+      "rule": {
+        "add_days": [
+          "9999-12-31",
+          -3652058
+        ]
+      },
+      "data": {},
+      "result": "0001-01-01"
+    },
+    {
+      "about": "§ 3.5.5 add_days: 9999-12-31 plus 1 is past 9999, so null.",
+      "rule": {
+        "add_days": [
+          "9999-12-31",
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: 0001-01-01 minus 1 is before 0001, so null.",
+      "rule": {
+        "add_days": [
+          "0001-01-01",
+          -1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: 0001-01-01 plus 0 is itself.",
+      "rule": {
+        "add_days": [
+          "0001-01-01",
+          0
+        ]
+      },
+      "data": {},
+      "result": "0001-01-01"
+    },
+    {
+      "about": "§ 3.5.5 add_days: a non-integer n gives null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          0.5
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: n written 2.0 is an integer.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          2.0
+        ]
+      },
+      "data": {},
+      "result": "2026-01-03"
+    },
+    {
+      "about": "§ 3.5.5 add_days: a huge n gives null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          1e300
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 add_days: a malformed date gives null.",
+      "rule": {
+        "add_days": [
+          "2026-02-30",
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "D18 add_days: a date with a time of day gives null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01T09:00:00Z",
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    }
+  ]
+}

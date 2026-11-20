@@ -1,0 +1,150 @@
+{
+  "about": "A null operand in each position of every date operation (§ 3.5.5, § 3.6.2).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 days_between: a null first date gives null.",
+      "rule": {
+        "days_between": [
+          null,
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 days_between: a null second date gives null.",
+      "rule": {
+        "days_between": [
+          "2026-01-01",
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 years_between: a null first date gives null.",
+      "rule": {
+        "years_between": [
+          null,
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 years_between: a null second date gives null.",
+      "rule": {
+        "years_between": [
+          "2026-01-01",
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 years_between: an unsupplied date of birth gives null.",
+      "rule": {
+        "years_between": [
+          {
+            "var": "input.date_of_birth.value"
+          },
+          {
+            "var": "run.date"
+          }
+        ]
+      },
+      "data": {
+        "input": {
+          "date_of_birth": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        },
+        "run": {
+          "date": "2026-11-20"
+        }
+      },
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: a null date gives null.",
+      "rule": {
+        "add_days": [
+          null,
+          1
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 add_days: a null n gives null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          null
+        ]
+      },
+      "data": {},
+      "result": null
+    },
+    {
+      "about": "§ 3.5.5 comparing dates: < is false when a date is null.",
+      "rule": {
+        "<": [
+          null,
+          "2026-01-01"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.5 comparing dates: >= is false when a date is null.",
+      "rule": {
+        ">=": [
+          "2026-01-01",
+          null
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.5 the screening example is false when the date of birth is unsupplied.",
+      "rule": {
+        ">=": [
+          {
+            "years_between": [
+              {
+                "var": "input.date_of_birth.value"
+              },
+              {
+                "var": "run.date"
+              }
+            ]
+          },
+          65
+        ]
+      },
+      "data": {
+        "input": {
+          "date_of_birth": {
+            "value": null,
+            "content": null,
+            "title": null
+          }
+        },
+        "run": {
+          "date": "2026-11-20"
+        }
+      },
+      "result": false
+    }
+  ]
+}

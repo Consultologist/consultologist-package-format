@@ -1,0 +1,93 @@
+{
+  "about": "add_days: date plus n days; a non-integer n, or a result outside years 0001 to 9999, gives null (§ 3.5.5).",
+  "cases": [
+    {
+      "about": "§ 3.5.5 add_days: one day past a year's end.",
+      "rule": {
+        "add_days": [
+          "2026-12-31",
+          1
+        ]
+      },
+      "data": {},
+      "output": "\"2027-01-01\""
+    },
+    {
+      "about": "§ 3.5.5 add_days: a negative n goes back.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          -1
+        ]
+      },
+      "data": {},
+      "output": "\"2025-12-31\""
+    },
+    {
+      "about": "§ 3.5.5 add_days: through 29 February of a leap year.",
+      "rule": {
+        "add_days": [
+          "2024-02-28",
+          2
+        ]
+      },
+      "data": {},
+      "output": "\"2024-03-01\""
+    },
+    {
+      "about": "§ 3.5.5 add_days: n of 0 gives the same date.",
+      "rule": {
+        "add_days": [
+          "2026-03-14",
+          0
+        ]
+      },
+      "data": {},
+      "output": "\"2026-03-14\""
+    },
+    {
+      "about": "§ 3.5.5 add_days: a non-integer n gives null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          1.5
+        ]
+      },
+      "data": {},
+      "output": "null"
+    },
+    {
+      "about": "§ 3.5.5 add_days: a result after 9999-12-31 gives null.",
+      "rule": {
+        "add_days": [
+          "9999-12-31",
+          1
+        ]
+      },
+      "data": {},
+      "output": "null"
+    },
+    {
+      "about": "§ 3.5.5 add_days: a result before 0001-01-01 gives null.",
+      "rule": {
+        "add_days": [
+          "0001-01-01",
+          -1
+        ]
+      },
+      "data": {},
+      "output": "null"
+    },
+    {
+      "about": "§ 3.6.2 add_days: an n that is text, data that escaped validation, reads as null.",
+      "rule": {
+        "add_days": [
+          "2026-01-01",
+          "1"
+        ]
+      },
+      "data": {},
+      "output": "null"
+    }
+  ]
+}

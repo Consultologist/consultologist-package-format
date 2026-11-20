@@ -1,0 +1,280 @@
+{
+  "about": "A null operand in each position of object and the check operations (§ 3.5.4, § 3.6.2); a check operation always gives a check_result.",
+  "cases": [
+    {
+      "about": "§ 3.5.4 object: a field whose rule gives null holds null.",
+      "rule": {
+        "object": {
+          "feedback": null,
+          "verdict": "ok"
+        }
+      },
+      "data": {},
+      "result": {
+        "feedback": null,
+        "verdict": "ok"
+      }
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: a null first list reads as empty, and passes.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": null
+          },
+          "extract_note_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "result": {
+        "message": null,
+        "pass": true,
+        "passed": null,
+        "total": null,
+        "uncovered": null,
+        "untested": null
+      }
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: a null second list reads as empty, so every codable concept is uncovered.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": {
+              "concepts": [
+                {
+                  "term": "hot flushes",
+                  "type": "finding",
+                  "id": "1001",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "joint pain",
+                  "type": "finding",
+                  "id": "1002",
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                },
+                {
+                  "term": "fatigue after walking",
+                  "type": "finding",
+                  "id": null,
+                  "isSnomedConcept": true,
+                  "isActive": true,
+                  "support": null
+                }
+              ]
+            }
+          },
+          "extract_note_terms": {
+            "value": null
+          }
+        }
+      },
+      "result": {
+        "message": "The note does not cover every clinical term found in the referral.",
+        "pass": false,
+        "passed": null,
+        "total": null,
+        "uncovered": [
+          "hot flushes",
+          "joint pain"
+        ],
+        "untested": [
+          "fatigue after walking"
+        ]
+      }
+    },
+    {
+      "about": "§ 3.5.4 terms_subset: both lists null pass.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "data": {
+        "node": {
+          "extract_input_terms": {
+            "value": null
+          },
+          "extract_note_terms": {
+            "value": null
+          }
+        }
+      },
+      "result": {
+        "message": null,
+        "pass": true,
+        "passed": null,
+        "total": null,
+        "uncovered": null,
+        "untested": null
+      }
+    },
+    {
+      "about": "§ 3.5.4 all_pass: a null list judges nothing, and fails with failWith.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": null
+          }
+        }
+      },
+      "result": {
+        "message": "A section failed its check.",
+        "pass": false,
+        "passed": 0,
+        "total": 0,
+        "uncovered": null,
+        "untested": null
+      }
+    },
+    {
+      "about": "§ 3.5.4 all_pass: an element whose value is null is not judged.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          "A section failed its check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "completed",
+                "value": {
+                  "pass": true,
+                  "message": null,
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              },
+              {
+                "state": "completed",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "result": {
+        "message": null,
+        "pass": true,
+        "passed": 1,
+        "total": 1,
+        "uncovered": null,
+        "untested": null
+      }
+    },
+    {
+      "about": "§ 3.5.4 count_pass: a null list with a min of 0 passes.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          0,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": null
+          }
+        }
+      },
+      "result": {
+        "message": null,
+        "pass": true,
+        "passed": 0,
+        "total": 0,
+        "uncovered": null,
+        "untested": null
+      }
+    },
+    {
+      "about": "§ 3.5.4 count_pass: a null list with a min of 1 fails.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          1,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": null
+          }
+        }
+      },
+      "result": {
+        "message": "Too few sections passed their check.",
+        "pass": false,
+        "passed": 0,
+        "total": 0,
+        "uncovered": null,
+        "untested": null
+      }
+    }
+  ]
+}

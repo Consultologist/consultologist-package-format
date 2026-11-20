@@ -1,0 +1,202 @@
+{
+  "about": "count_pass: passes when at least min of the judged elements pass; elements that did not complete are ignored (§ 3.5.4).",
+  "cases": [
+    {
+      "about": "§ 3.5.4 count_pass: reaching min passes.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          1,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": [
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              },
+              {
+                "pass": false,
+                "message": "The plan is missing.",
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":1,\"total\":2,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 count_pass: below min fails, with failWith.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          2,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": [
+              {
+                "pass": true,
+                "message": null,
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              },
+              {
+                "pass": false,
+                "message": "The plan is missing.",
+                "uncovered": null,
+                "untested": null,
+                "passed": null,
+                "total": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":\"Too few sections passed their check.\",\"pass\":false,\"passed\":1,\"total\":2,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 count_pass: a min of 0 passes an empty list.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          0,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": []
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":0,\"total\":0,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 count_pass: a min of 1 fails an empty list.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          1,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "value": []
+          }
+        }
+      },
+      "output": "{\"message\":\"Too few sections passed their check.\",\"pass\":false,\"passed\":0,\"total\":0,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 count_pass: in .items, only completed elements are counted.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          2,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "completed",
+                "value": {
+                  "pass": true,
+                  "message": null,
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              },
+              {
+                "state": "skipped",
+                "value": null
+              },
+              {
+                "state": "completed",
+                "value": {
+                  "pass": true,
+                  "message": null,
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":null,\"pass\":true,\"passed\":2,\"total\":2,\"uncovered\":null,\"untested\":null}"
+    },
+    {
+      "about": "§ 3.5.4 count_pass: in .items, a skipped element does not count towards min.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          2,
+          "Too few sections passed their check."
+        ]
+      },
+      "data": {
+        "check": {
+          "sections_checked": {
+            "items": [
+              {
+                "state": "completed",
+                "value": {
+                  "pass": true,
+                  "message": null,
+                  "uncovered": null,
+                  "untested": null,
+                  "passed": null,
+                  "total": null
+                }
+              },
+              {
+                "state": "skipped",
+                "value": null
+              }
+            ]
+          }
+        }
+      },
+      "output": "{\"message\":\"Too few sections passed their check.\",\"pass\":false,\"passed\":1,\"total\":1,\"uncovered\":null,\"untested\":null}"
+    }
+  ]
+}

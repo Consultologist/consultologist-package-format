@@ -1,0 +1,445 @@
+{
+  "about": "has_word: each category of word character beside the word, and other categories that are not (§ 3.5.3).",
+  "cases": [
+    {
+      "about": "§ 3.5.3 has_word: Lu (uppercase letter) A before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "Apain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lu (uppercase letter) A after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "painA",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Ll (lowercase letter) a before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "apain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Ll (lowercase letter) a after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "paina",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lt (titlecase letter) U+01C5 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "ǅpain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lt (titlecase letter) U+01C5 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "painǅ",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lm (modifier letter) U+02B0 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "ʰpain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lm (modifier letter) U+02B0 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "painʰ",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lo (other letter) U+05D0 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "אpain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lo (other letter) U+05D0 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "painא",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Mn (non-spacing mark) U+0301 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "́pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Mn (non-spacing mark) U+0301 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "paiń",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Mc (spacing mark) U+0903 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "ःpain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Mc (spacing mark) U+0903 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "painः",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Me (enclosing mark) U+20DD before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "⃝pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Me (enclosing mark) U+20DD after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain⃝",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Nd (decimal digit) 7 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "7pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Nd (decimal digit) 7 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain7",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Nd (decimal digit) U+0663 before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "٣pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Nd (decimal digit) U+0663 after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain٣",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Pc (connector punctuation) _ before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "_pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Pc (connector punctuation) _ after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain_",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Pc (connector punctuation) U+203F before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "‿pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Pc (connector punctuation) U+203F after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain‿",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lu (uppercase letter) U+10400 (outside the Basic Multilingual Plane) before the word is a word character.",
+      "rule": {
+        "has_word": [
+          "𐐀pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: Lu (uppercase letter) U+10400 (outside the Basic Multilingual Plane) after the word is a word character.",
+      "rule": {
+        "has_word": [
+          "pain𐐀",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: No (other number) U+00B2 on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "²pain²",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Nl (letter number) U+216B on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "ⅫpainⅫ",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Pd (dash punctuation) - on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "-pain-",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Ps (open punctuation) ( on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "(pain(",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Po (other punctuation) . on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          ".pain.",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Sm (math symbol) + on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "+pain+",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: So (other symbol) U+00B0 on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "°pain°",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: So (other symbol) U+1F600 (outside the Basic Multilingual Plane) on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "😀pain😀",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Cf (format) U+200B on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          "​pain​",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: Zs (space separator) U+00A0 on either side is not a word character.",
+      "rule": {
+        "has_word": [
+          " pain ",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: the whole text is the word.",
+      "rule": {
+        "has_word": [
+          "pain",
+          "pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: a word that ends in a word character still needs a boundary after it.",
+      "rule": {
+        "has_word": [
+          "chest pains",
+          "chest pain"
+        ]
+      },
+      "data": {},
+      "result": false
+    },
+    {
+      "about": "§ 3.5.3 has_word: a word outside ASCII.",
+      "rule": {
+        "has_word": [
+          "la douleur thoracique",
+          "douleur"
+        ]
+      },
+      "data": {},
+      "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: a word that begins with a non-word character is bounded by what is before it.",
+      "rule": {
+        "has_word": [
+          "see (pain)",
+          "(pain"
+        ]
+      },
+      "data": {},
+      "result": true
+    }
+  ]
+}

@@ -1,0 +1,500 @@
+{
+  "about": "The printer's text for every operation of § 3.5, once each (§ 3.8).",
+  "cases": [
+    {
+      "about": "§ 3.8 var: a path prints as written.",
+      "rule": {
+        "var": "input.age.value"
+      },
+      "text": "input.age.value"
+    },
+    {
+      "about": "§ 3.8 missing: a function form over the list of paths.",
+      "rule": {
+        "missing": [
+          "input.age.value"
+        ]
+      },
+      "text": "missing([\"input.age.value\"])"
+    },
+    {
+      "about": "§ 3.8 if: if c then a else b.",
+      "rule": {
+        "if": [
+          {
+            "var": "input.urgent.value"
+          },
+          "today",
+          "this week"
+        ]
+      },
+      "text": "if input.urgent.value then \"today\" else \"this week\""
+    },
+    {
+      "about": "§ 3.8 ===: strict equality prints as =.",
+      "rule": {
+        "===": [
+          {
+            "var": "input.kind.value"
+          },
+          "table"
+        ]
+      },
+      "text": "input.kind.value = \"table\""
+    },
+    {
+      "about": "§ 3.8 !==: strict inequality prints as ≠.",
+      "rule": {
+        "!==": [
+          {
+            "var": "item.id"
+          },
+          "billing"
+        ]
+      },
+      "text": "item.id ≠ \"billing\""
+    },
+    {
+      "about": "§ 3.8 <: a < b.",
+      "rule": {
+        "<": [
+          {
+            "var": "input.age.value"
+          },
+          18
+        ]
+      },
+      "text": "input.age.value < 18"
+    },
+    {
+      "about": "§ 3.8 <=: prints as ≤.",
+      "rule": {
+        "<=": [
+          {
+            "var": "input.age.value"
+          },
+          65
+        ]
+      },
+      "text": "input.age.value ≤ 65"
+    },
+    {
+      "about": "§ 3.8 >: a > b.",
+      "rule": {
+        ">": [
+          {
+            "var": "input.age.value"
+          },
+          65
+        ]
+      },
+      "text": "input.age.value > 65"
+    },
+    {
+      "about": "§ 3.8 >=: prints as ≥.",
+      "rule": {
+        ">=": [
+          {
+            "years_between": [
+              {
+                "var": "input.date_of_birth.value"
+              },
+              {
+                "var": "run.date"
+              }
+            ]
+          },
+          65
+        ]
+      },
+      "text": "years_between(input.date_of_birth.value, run.date) ≥ 65"
+    },
+    {
+      "about": "§ 3.8 and: as a word.",
+      "rule": {
+        "and": [
+          {
+            "var": "input.a.value"
+          },
+          {
+            "var": "input.b.value"
+          },
+          {
+            "var": "input.c.value"
+          }
+        ]
+      },
+      "text": "input.a.value and input.b.value and input.c.value"
+    },
+    {
+      "about": "§ 3.8 or: as a word.",
+      "rule": {
+        "or": [
+          {
+            "!==": [
+              {
+                "var": "item.id"
+              },
+              "billing"
+            ]
+          },
+          {
+            "===": [
+              {
+                "var": "input.include_billing.value"
+              },
+              true
+            ]
+          }
+        ]
+      },
+      "text": "item.id ≠ \"billing\" or input.include_billing.value = true"
+    },
+    {
+      "about": "§ 3.8 !: prints as not.",
+      "rule": {
+        "!": [
+          {
+            "var": "input.urgent.value"
+          }
+        ]
+      },
+      "text": "not input.urgent.value"
+    },
+    {
+      "about": "§ 3.8 in: a in b.",
+      "rule": {
+        "in": [
+          "letrozole",
+          {
+            "lower": [
+              {
+                "var": "node.draft.content"
+              }
+            ]
+          }
+        ]
+      },
+      "text": "\"letrozole\" in lower(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 cat: a function form.",
+      "rule": {
+        "cat": [
+          "Dr ",
+          {
+            "var": "input.name.value"
+          }
+        ]
+      },
+      "text": "cat(\"Dr \", input.name.value)"
+    },
+    {
+      "about": "§ 3.8 +: infix.",
+      "rule": {
+        "+": [
+          {
+            "var": "input.a.value"
+          },
+          1
+        ]
+      },
+      "text": "input.a.value + 1"
+    },
+    {
+      "about": "§ 3.8 -: infix with two operands.",
+      "rule": {
+        "-": [
+          {
+            "var": "input.a.value"
+          },
+          1
+        ]
+      },
+      "text": "input.a.value - 1"
+    },
+    {
+      "about": "§ 3.8 *: infix.",
+      "rule": {
+        "*": [
+          {
+            "var": "input.a.value"
+          },
+          2
+        ]
+      },
+      "text": "input.a.value * 2"
+    },
+    {
+      "about": "§ 3.8 /: infix.",
+      "rule": {
+        "/": [
+          {
+            "var": "input.a.value"
+          },
+          2
+        ]
+      },
+      "text": "input.a.value / 2"
+    },
+    {
+      "about": "§ 3.8 %: infix.",
+      "rule": {
+        "%": [
+          {
+            "var": "input.a.value"
+          },
+          2
+        ]
+      },
+      "text": "input.a.value % 2"
+    },
+    {
+      "about": "§ 3.8 min: a function form.",
+      "rule": {
+        "min": [
+          {
+            "var": "input.a.value"
+          },
+          10
+        ]
+      },
+      "text": "min(input.a.value, 10)"
+    },
+    {
+      "about": "§ 3.8 max: a function form.",
+      "rule": {
+        "max": [
+          {
+            "var": "input.a.value"
+          },
+          0
+        ]
+      },
+      "text": "max(input.a.value, 0)"
+    },
+    {
+      "about": "§ 3.8 size: a function form.",
+      "rule": {
+        "size": [
+          {
+            "var": "input.prior_notes.value"
+          }
+        ]
+      },
+      "text": "size(input.prior_notes.value)"
+    },
+    {
+      "about": "§ 3.8 blank: a function form.",
+      "rule": {
+        "blank": [
+          {
+            "var": "node.draft.content"
+          }
+        ]
+      },
+      "text": "blank(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 words: a function form.",
+      "rule": {
+        "words": [
+          {
+            "var": "node.draft.content"
+          }
+        ]
+      },
+      "text": "words(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 lines: a function form.",
+      "rule": {
+        "lines": [
+          {
+            "var": "node.draft.content"
+          }
+        ]
+      },
+      "text": "lines(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 lower: a function form.",
+      "rule": {
+        "lower": [
+          {
+            "var": "node.draft.content"
+          }
+        ]
+      },
+      "text": "lower(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 trim: a function form.",
+      "rule": {
+        "trim": [
+          {
+            "var": "node.draft.content"
+          }
+        ]
+      },
+      "text": "trim(node.draft.content)"
+    },
+    {
+      "about": "§ 3.8 starts_with: a function form.",
+      "rule": {
+        "starts_with": [
+          {
+            "var": "node.draft.content"
+          },
+          "Dear"
+        ]
+      },
+      "text": "starts_with(node.draft.content, \"Dear\")"
+    },
+    {
+      "about": "§ 3.8 ends_with: a function form.",
+      "rule": {
+        "ends_with": [
+          {
+            "var": "node.draft.content"
+          },
+          "."
+        ]
+      },
+      "text": "ends_with(node.draft.content, \".\")"
+    },
+    {
+      "about": "§ 3.8 plain: a function form.",
+      "rule": {
+        "plain": [
+          {
+            "var": "input.consult_draft.content"
+          }
+        ]
+      },
+      "text": "plain(input.consult_draft.content)"
+    },
+    {
+      "about": "§ 3.8 object: { field: rule, … }, fields in written order.",
+      "rule": {
+        "object": {
+          "title": {
+            "var": "item.id"
+          },
+          "content": {
+            "var": "node.draft.content"
+          }
+        }
+      },
+      "text": "{ title: item.id, content: node.draft.content }"
+    },
+    {
+      "about": "§ 3.8 matches: a function form, the pattern as a string literal.",
+      "rule": {
+        "matches": [
+          {
+            "lower": [
+              {
+                "var": "node.draft.content"
+              }
+            ]
+          },
+          "letrozole|femara"
+        ]
+      },
+      "text": "matches(lower(node.draft.content), \"letrozole|femara\")"
+    },
+    {
+      "about": "§ 3.8 has_word: a function form.",
+      "rule": {
+        "has_word": [
+          {
+            "var": "node.draft.content"
+          },
+          "chest pain"
+        ]
+      },
+      "text": "has_word(node.draft.content, \"chest pain\")"
+    },
+    {
+      "about": "§ 3.8 terms_subset: a function form.",
+      "rule": {
+        "terms_subset": [
+          {
+            "var": "node.extract_input_terms.value"
+          },
+          {
+            "var": "node.extract_note_terms.value"
+          },
+          "The note does not cover every clinical term found in the referral."
+        ]
+      },
+      "text": "terms_subset(node.extract_input_terms.value, node.extract_note_terms.value, \"The note does not cover every clinical term found in the referral.\")"
+    },
+    {
+      "about": "§ 3.8 all_pass: a function form.",
+      "rule": {
+        "all_pass": [
+          {
+            "var": "check.sections_checked.items"
+          },
+          "A section failed its check."
+        ]
+      },
+      "text": "all_pass(check.sections_checked.items, \"A section failed its check.\")"
+    },
+    {
+      "about": "§ 3.8 count_pass: a function form, min as a number.",
+      "rule": {
+        "count_pass": [
+          {
+            "var": "check.sections_checked.value"
+          },
+          2,
+          "Too few sections passed their check."
+        ]
+      },
+      "text": "count_pass(check.sections_checked.value, 2, \"Too few sections passed their check.\")"
+    },
+    {
+      "about": "§ 3.8 days_between: a function form.",
+      "rule": {
+        "days_between": [
+          {
+            "var": "input.referral_date.value"
+          },
+          {
+            "var": "run.date"
+          }
+        ]
+      },
+      "text": "days_between(input.referral_date.value, run.date)"
+    },
+    {
+      "about": "§ 3.8 years_between: a function form.",
+      "rule": {
+        "years_between": [
+          {
+            "var": "input.date_of_birth.value"
+          },
+          {
+            "var": "run.date"
+          }
+        ]
+      },
+      "text": "years_between(input.date_of_birth.value, run.date)"
+    },
+    {
+      "about": "§ 3.8 add_days: a function form.",
+      "rule": {
+        "add_days": [
+          {
+            "var": "run.date"
+          },
+          28
+        ]
+      },
+      "text": "add_days(run.date, 28)"
+    }
+  ]
+}

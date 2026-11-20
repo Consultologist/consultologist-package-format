@@ -809,6 +809,80 @@ def check_refusal_packages():
     return failures
 
 
+# Chapter 3's goldens and vectors (area 04): each family's case members, in order.
+VECTOR_FAMILIES = {
+    "operation-goldens": ["about", "rule", "data", "output"],
+    "printer-goldens": ["about", "rule", "text"],
+    "null-vectors": ["about", "rule", "data", "result"],
+    "text-vectors": ["about", "rule", "data", "result"],
+    "number-vectors": ["about", "rule", "data", "result"],
+    "date-vectors": ["about", "rule", "data", "result"],
+}
+VECTOR_FILE_KEYS = ["about", "cases"]
+
+
+def check_vectors():
+    """Chapter 3's goldens and vectors: each family lists exactly the JSON files in its folder, and
+    operation-goldens has one file per custom operation; each file is { about, cases }, a non-empty list;
+    each case has its family's members, in order: a non-empty about, a rule, an object of data, and an
+    output (a string of JSON), a text (a string) or a result."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    families = {family.get("id"): family for family in index.get("families", [])}
+    for id_, members in VECTOR_FAMILIES.items():
+        family = families.get(id_)
+        if family is None:
+            failures.append(f"the index has no {id_} family")
+            continue
+        folder = ROOT / family.get("path", "")
+        on_disk = sorted(path.name for path in folder.glob("*")) if folder.is_dir() else []
+        expect(failures, f"the {id_} family's cases (the files on disk)", sorted(family.get("cases", [])), on_disk)
+        if id_ == "operation-goldens":
+            expect(failures, "the operation goldens (one file per custom operation)",
+                   on_disk, sorted(f"{name}.json" for name in OPERATIONS))
+        for name in on_disk:
+            where = f"{id_}/{name}"
+            document, errors = load(folder / name)
+            failures += errors
+            if document is None:
+                continue
+            if not isinstance(document, dict) or list(document) != VECTOR_FILE_KEYS:
+                failures.append(f"{where}: expected exactly {VECTOR_FILE_KEYS}")
+                continue
+            if not isinstance(document["about"], str) or not document["about"].strip():
+                failures.append(f"{where}: about is not a non-empty string")
+            cases = document["cases"]
+            if not isinstance(cases, list) or not cases:
+                failures.append(f"{where}: cases is not a non-empty list")
+                continue
+            for number, case in enumerate(cases, 1):
+                at = f"{where} case {number}"
+                if not isinstance(case, dict) or list(case) != members:
+                    failures.append(f"{at}: expected exactly {members}")
+                    continue
+                if not isinstance(case["about"], str) or not case["about"].strip():
+                    failures.append(f"{at}: about is not a non-empty string")
+                if "data" in case and not isinstance(case["data"], dict):
+                    failures.append(f"{at}: data is not an object")
+                if "text" in case and not isinstance(case["text"], str):
+                    failures.append(f"{at}: text is not a string")
+                if "output" in case:
+                    if not isinstance(case["output"], str):
+                        failures.append(f"{at}: output is not a string")
+                    elif not parses_as_json(case["output"]):
+                        failures.append(f"{at}: output is not JSON text")
+    return failures
+
+
+def parses_as_json(text):
+    try:
+        json.loads(text)
+        return True
+    except json.JSONDecodeError:
+        return False
+
+
 PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 
 
@@ -830,7 +904,7 @@ CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
           ("renderers", check_renderers), ("self", check_self),
           ("conformance", check_conformance_index), ("refusal-packages", check_refusal_packages),
-          ("document", check_document), ("citations", check_citations)]
+          ("vectors", check_vectors), ("document", check_document), ("citations", check_citations)]
 
 
 def main():
