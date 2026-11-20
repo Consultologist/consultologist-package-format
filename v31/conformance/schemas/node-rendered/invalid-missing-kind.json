@@ -1,0 +1,14 @@
+{
+  "about": "Every member is written: 'kind' is missing.",
+  "instance": {
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

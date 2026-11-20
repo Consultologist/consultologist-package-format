@@ -1,0 +1,20 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": [
+        "param.letrozole.value"
+      ]
+    }
+  }
+}

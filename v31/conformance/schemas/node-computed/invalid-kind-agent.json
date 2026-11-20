@@ -1,0 +1,18 @@
+{
+  "about": "kind is computed.",
+  "instance": {
+    "kind": "agent",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

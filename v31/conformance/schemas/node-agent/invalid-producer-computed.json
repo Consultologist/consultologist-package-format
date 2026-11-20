@@ -1,0 +1,33 @@
+{
+  "about": "An agent node's producer is generated.",
+  "instance": {
+    "kind": "agent",
+    "producer": "computed",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {
+      "no_standard": {
+        "if": {
+          "blank": [
+            {
+              "var": "item.content"
+            }
+          ]
+        },
+        "text": [
+          "No changes. Preserve the patient-updated draft's clinical content and",
+          "produce polished final prose for this section."
+        ]
+      }
+    },
+    "ordered": false
+  }
+}

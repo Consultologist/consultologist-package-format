@@ -1,0 +1,25 @@
+{
+  "about": "A computed node's format may be an inline schema.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": {
+      "type": "boolean"
+    },
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "===": [
+        {
+          "var": "item.state"
+        },
+        "completed"
+      ]
+    }
+  }
+}

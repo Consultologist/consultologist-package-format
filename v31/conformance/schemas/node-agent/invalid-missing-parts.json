@@ -1,0 +1,18 @@
+{
+  "about": "Every member is written: 'parts' is missing.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "ordered": false
+  }
+}

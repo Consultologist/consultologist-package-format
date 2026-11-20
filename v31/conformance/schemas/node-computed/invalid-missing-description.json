@@ -1,0 +1,17 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

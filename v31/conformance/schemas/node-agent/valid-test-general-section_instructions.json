@@ -1,0 +1,33 @@
+{
+  "about": "nodes/standards/section_instructions.md of test/general (part 05 section 7.2), with the printed elision written out (if null).",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {
+      "no_standard": {
+        "if": {
+          "blank": [
+            {
+              "var": "item.content"
+            }
+          ]
+        },
+        "text": [
+          "No changes. Preserve the patient-updated draft's clinical content and",
+          "produce polished final prose for this section."
+        ]
+      }
+    },
+    "ordered": false
+  }
+}

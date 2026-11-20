@@ -1,0 +1,21 @@
+{
+  "about": "An argument is a reference string, never a JSON Logic expression.",
+  "instance": {
+    "kind": "call",
+    "producer": "computed",
+    "label": "Drafting the section",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "function": "draft_section",
+    "with": {
+      "standard": {
+        "var": "item"
+      }
+    }
+  }
+}

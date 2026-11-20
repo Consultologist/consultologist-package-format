@@ -1,0 +1,19 @@
+{
+  "about": "parts {} also means none.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {},
+    "ordered": false
+  }
+}

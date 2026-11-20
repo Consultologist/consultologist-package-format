@@ -1,0 +1,32 @@
+{
+  "about": "A made-up computed node returning a number, with a condition.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Section count",
+    "description": null,
+    "format": "number",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "!": [
+        {
+          "blank": [
+            {
+              "var": "node.plan.value.sections"
+            }
+          ]
+        }
+      ]
+    },
+    "expression": {
+      "size": [
+        {
+          "var": "node.plan.value.sections"
+        }
+      ]
+    }
+  }
+}

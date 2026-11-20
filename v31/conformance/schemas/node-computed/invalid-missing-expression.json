@@ -1,0 +1,15 @@
+{
+  "about": "Every member is written: 'expression' is missing.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

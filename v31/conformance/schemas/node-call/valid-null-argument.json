@@ -1,0 +1,22 @@
+{
+  "about": "An optional argument is passed as the literal null (part 04 section 7.2.1).",
+  "instance": {
+    "kind": "call",
+    "producer": "computed",
+    "label": "Drafting the section",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": true,
+    "profileCarrying": true,
+    "if": null,
+    "function": "draft_section",
+    "with": {
+      "prior_letter": null,
+      "today": "run.date",
+      "signature": "profile.signature",
+      "standard": "snippet.standards.hpi"
+    }
+  }
+}

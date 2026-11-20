@@ -1,0 +1,15 @@
+{
+  "about": "A rendered node is reproducible by construction.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

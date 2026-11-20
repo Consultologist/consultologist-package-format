@@ -1,0 +1,15 @@
+{
+  "about": "A description is null for none; [] is refused.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": [],
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

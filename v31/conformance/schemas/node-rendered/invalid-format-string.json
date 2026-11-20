@@ -1,0 +1,15 @@
+{
+  "about": "string is not a text format.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "string",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

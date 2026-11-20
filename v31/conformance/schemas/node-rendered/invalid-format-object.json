@@ -1,0 +1,15 @@
+{
+  "about": "A rendered node's format is a text format: a package format name is refused.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "standard_section",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

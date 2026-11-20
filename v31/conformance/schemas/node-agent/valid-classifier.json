@@ -1,0 +1,21 @@
+{
+  "about": "A made-up classifier: an agent node returning judgement, one failIfEmpty sentence, a condition and an ordered reply.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Prescribes letrozole",
+    "description": null,
+    "format": "judgement",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": true,
+    "profileCarrying": false,
+    "if": {
+      "var": "input.consult_draft.value"
+    },
+    "onInvalid": "retry",
+    "failIfEmpty": "The classifier gave no answer.",
+    "parts": null,
+    "ordered": true
+  }
+}

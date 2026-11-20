@@ -1,0 +1,17 @@
+{
+  "about": "Every member is written: 'profileCarrying' is missing.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

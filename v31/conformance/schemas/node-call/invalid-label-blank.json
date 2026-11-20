@@ -1,0 +1,20 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "kind": "call",
+    "producer": "computed",
+    "label": "",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "function": "draft_section",
+    "with": {
+      "standard": "item",
+      "draft": "input.consult_draft.content"
+    }
+  }
+}

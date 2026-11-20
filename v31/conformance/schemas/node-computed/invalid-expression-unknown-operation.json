@@ -1,0 +1,20 @@
+{
+  "about": "An expression uses the dialect's operations only.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "eval": [
+        "1"
+      ]
+    }
+  }
+}

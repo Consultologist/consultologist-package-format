@@ -1,0 +1,19 @@
+{
+  "about": "function belongs to a call node.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    },
+    "function": "draft_section"
+  }
+}

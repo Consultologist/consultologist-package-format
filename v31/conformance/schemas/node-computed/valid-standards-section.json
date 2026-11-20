@@ -1,0 +1,25 @@
+{
+  "about": "nodes/standards/section.md (part 06 section 6.5), the node that builds the pair for a loop.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Section",
+    "description": null,
+    "format": "titled_section",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "object": {
+        "title": {
+          "var": "item.value.title"
+        },
+        "content": {
+          "var": "node.section_instructions.content"
+        }
+      }
+    }
+  }
+}

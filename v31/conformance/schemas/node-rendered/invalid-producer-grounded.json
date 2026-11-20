@@ -1,0 +1,15 @@
+{
+  "about": "producer is computed; grounded is reserved for Milestone 40.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "grounded",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

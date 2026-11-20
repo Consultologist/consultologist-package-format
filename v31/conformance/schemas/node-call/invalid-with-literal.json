@@ -1,0 +1,19 @@
+{
+  "about": "null is the one literal an argument may be: a number is refused.",
+  "instance": {
+    "kind": "call",
+    "producer": "computed",
+    "label": "Drafting the section",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "function": "draft_section",
+    "with": {
+      "draft": 3
+    }
+  }
+}

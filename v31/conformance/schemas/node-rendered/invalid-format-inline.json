@@ -1,0 +1,17 @@
+{
+  "about": "A rendered node's format is a text format, not an inline schema.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": {
+      "type": "string"
+    },
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

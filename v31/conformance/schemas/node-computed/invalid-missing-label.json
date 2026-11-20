@@ -1,0 +1,17 @@
+{
+  "about": "Every member is written: 'label' is missing.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "about": "A made-up rendered node: a text format, reproducible, model-derived because it reads an agent's text.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

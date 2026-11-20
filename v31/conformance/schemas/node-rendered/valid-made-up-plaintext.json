@@ -1,0 +1,22 @@
+{
+  "about": "A rendered node may declare plaintext and a condition.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": true,
+    "modelDerived": false,
+    "runDependent": true,
+    "profileCarrying": false,
+    "if": {
+      "===": [
+        {
+          "var": "item.value.kind"
+        },
+        "narrative"
+      ]
+    }
+  }
+}

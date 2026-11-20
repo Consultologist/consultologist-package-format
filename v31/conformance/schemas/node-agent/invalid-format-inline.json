@@ -1,0 +1,35 @@
+{
+  "about": "An agent's format is a name only; an inline schema is refused.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": {
+      "type": "string"
+    },
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {
+      "no_standard": {
+        "if": {
+          "blank": [
+            {
+              "var": "item.content"
+            }
+          ]
+        },
+        "text": [
+          "No changes. Preserve the patient-updated draft's clinical content and",
+          "produce polished final prose for this section."
+        ]
+      }
+    },
+    "ordered": false
+  }
+}

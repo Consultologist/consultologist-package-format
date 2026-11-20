@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:node-call",
+  "title": "nodes/<id>.md header, kind call",
+  "description": "A call node's header. The JSON object between the --- lines only; the body is outside this schema. The body must be empty: the arguments are header members.",
+  "type": "object",
+  "required": [
+    "kind",
+    "producer",
+    "label",
+    "description",
+    "format",
+    "reproducible",
+    "modelDerived",
+    "runDependent",
+    "profileCarrying",
+    "if",
+    "function",
+    "with"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "call",
+      "description": "The node's kind: call."
+    },
+    "producer": {
+      "const": "computed",
+      "description": "Written, and checked against the kind: computed."
+    },
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the node; never empty or whitespace."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the node)."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+      "description": "The node's format: a format name or an inline schema."
+    },
+    "reproducible": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value of the node."
+    },
+    "modelDerived": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when the node reads model output, directly or through other values."
+    },
+    "runDependent": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when the node reads run.* or a run-dependent value."
+    },
+    "profileCarrying": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when the node reads a profile-carrying value."
+    },
+    "if": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+      "description": "A JSON Logic condition for whether the node runs, or null for always."
+    },
+    "function": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
+      "description": "The id of the function to run."
+    },
+    "with": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/referenceString"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "description": "The arguments keyed by parameter id, one for every parameter: a reference string, or the literal null; {} for a function with no parameters."
+    }
+  }
+}

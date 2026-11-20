@@ -1,0 +1,18 @@
+{
+  "about": "functions/draft_section/prescribes_letrozole.md, pattern B (part 04 section 7.10), with the printed omissions written out (description null, if null).",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Prescribes letrozole (passed in)",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

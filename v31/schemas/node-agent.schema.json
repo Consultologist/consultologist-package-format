@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:node-agent",
+  "title": "nodes/<id>.md header, kind agent",
+  "description": "An agent node's header. The JSON object between the --- lines only; the body is outside this schema. The body is its prompt.",
+  "type": "object",
+  "required": [
+    "kind",
+    "producer",
+    "label",
+    "description",
+    "format",
+    "reproducible",
+    "modelDerived",
+    "runDependent",
+    "profileCarrying",
+    "if",
+    "onInvalid",
+    "failIfEmpty",
+    "parts",
+    "ordered"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "agent",
+      "description": "The node's kind: agent."
+    },
+    "producer": {
+      "const": "generated",
+      "description": "Written, and checked against the kind: generated."
+    },
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the node; never empty or whitespace."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the node)."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
+      "description": "The reply's format, by name only."
+    },
+    "reproducible": {
+      "const": false,
+      "description": "Written, and checked against the derived value: an agent node is never reproducible."
+    },
+    "modelDerived": {
+      "const": true,
+      "description": "An agent node is always model-derived."
+    },
+    "runDependent": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when the node reads run.* or a run-dependent value."
+    },
+    "profileCarrying": {
+      "type": "boolean",
+      "description": "Written, and checked against the derived value: true when the node reads a profile-carrying value."
+    },
+    "if": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+      "description": "A JSON Logic condition for whether the node runs, or null for always."
+    },
+    "onInvalid": {
+      "enum": [
+        "retry",
+        "fail"
+      ],
+      "description": "What an invalid reply does: retry asks once more; fail fails the job."
+    },
+    "failIfEmpty": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The sentence the job fails with when the reply's value is empty, or null when an empty value does not fail."
+    },
+    "parts": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "if",
+              "text"
+            ],
+            "properties": {
+              "if": {
+                "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+                "description": "A JSON Logic condition for whether the part's text is placed, or null for always."
+              },
+              "text": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "The part's lines, joined with a newline; a blank line is \"\"."
+              }
+            }
+          }
+        }
+      ],
+      "description": "The node's conditional prompt text keyed by part id; null or {} for none."
+    },
+    "ordered": {
+      "type": "boolean",
+      "description": "Whether triggered macro markers must come back in order."
+    }
+  }
+}

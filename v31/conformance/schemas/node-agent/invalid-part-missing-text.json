@@ -1,0 +1,29 @@
+{
+  "about": "Every member of a part is written: text is missing.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {
+      "no_standard": {
+        "if": {
+          "blank": [
+            {
+              "var": "item.content"
+            }
+          ]
+        }
+      }
+    },
+    "ordered": false
+  }
+}

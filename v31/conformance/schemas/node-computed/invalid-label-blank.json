@@ -1,0 +1,18 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": " ",
+    "description": null,
+    "format": "judgement",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": "param.letrozole.value"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "about": "Every member is written: 'modelDerived' is missing.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "computed",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

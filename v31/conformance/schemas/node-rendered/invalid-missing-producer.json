@@ -1,0 +1,14 @@
+{
+  "about": "Every member is written: 'producer' is missing.",
+  "instance": {
+    "kind": "rendered",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "kind": "call",
+    "producer": "computed",
+    "label": "Drafting the section",
+    "description": null,
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "function": "draft_section",
+    "with": {
+      "standard": "item",
+      "draft": "input.consult_draft.content"
+    }
+  }
+}

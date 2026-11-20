@@ -1,0 +1,19 @@
+{
+  "about": "nodes/plan.md of example-nested-note, the header printed in part 01 section 4 completed: reproducible false, if null, onInvalid retry (made up), parts null, ordered false.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Planning the sections",
+    "description": null,
+    "format": "section_plan",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "onInvalid": "retry",
+    "failIfEmpty": null,
+    "parts": null,
+    "ordered": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "about": "A rendered node's producer is computed.",
+  "instance": {
+    "kind": "rendered",
+    "producer": "generated",
+    "label": "Summary for the patient",
+    "description": null,
+    "format": "markdown_block",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

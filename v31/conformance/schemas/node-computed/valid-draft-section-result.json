@@ -1,0 +1,28 @@
+{
+  "about": "The closing node of part 04 section 7.6 that builds an object, with the elided leaf members written out (description null, reproducible true, if null).",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Result",
+    "description": null,
+    "format": "drafted_section",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "object": {
+        "title": {
+          "var": "param.standard.value.title"
+        },
+        "text": {
+          "var": "node.apply_instructions.content"
+        },
+        "concepts": {
+          "var": "node.extract.value"
+        }
+      }
+    }
+  }
+}

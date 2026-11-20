@@ -1,0 +1,37 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "kind": "agent",
+    "producer": "generated",
+    "label": "Applying section instructions",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": false,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": {
+      "var": [
+        "item.content"
+      ]
+    },
+    "onInvalid": "fail",
+    "failIfEmpty": null,
+    "parts": {
+      "no_standard": {
+        "if": {
+          "blank": [
+            {
+              "var": "item.content"
+            }
+          ]
+        },
+        "text": [
+          "No changes. Preserve the patient-updated draft's clinical content and",
+          "produce polished final prose for this section."
+        ]
+      }
+    },
+    "ordered": false
+  }
+}
