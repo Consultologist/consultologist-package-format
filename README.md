@@ -119,12 +119,32 @@ by the offline validator, naming the property.
 
 ## specVersion 31 (preview)
 
-`v31/` holds the files of specVersion 31 as they are written: today
-`bounds.json` (the source and format bounds), `constants.json` (versions, kinds,
-features, producers, limits and the Markdown extensions) and `profile.json`
-(the closed profile list with its preview values). Later changes add the schemas,
-formats, renderers and conformance material beside them. `spec-versions.json`
-names the folder under `preview`.
+specVersion 31 is written in full, as a preview:
+
+- [`package-format-v31.md`](package-format-v31.md), the normative text, chapters 1
+  to 12;
+- [`v31/bounds.json`](v31/bounds.json), the source and format bounds;
+- [`v31/constants.json`](v31/constants.json), the versions, kinds, features,
+  producers, limits, media types and Markdown extensions;
+- [`v31/profile.json`](v31/profile.json), the closed profile list with its
+  preview values;
+- [`v31/sentences.json`](v31/sentences.json), every refusal, warning and recorded
+  sentence, which chapter 11 prints;
+- [`v31/dialect.schema.json`](v31/dialect.schema.json), the meta-schema of the
+  formats dialect;
+- [`v31/scriban-dialect.md`](v31/scriban-dialect.md), the template dialect,
+  `scriban-dialect@1.0.0`;
+- [`v31/schemas/`](v31/schemas), one schema per file kind and compiled document;
+- [`v31/formats/`](v31/formats), the nine built-in formats;
+- [`v31/renderers/`](v31/renderers), the built-in renderers `concept_bullets` and
+  `concept_context`;
+- [`v31/conformance/`](v31/conformance), the conformance suite's index and the
+  schemas' examples, with its [README](v31/conformance/README.md) and open points;
+- [`scripts/check-v31.py`](scripts/check-v31.py), the check, and
+  [`scripts/render-sentences.py`](scripts/render-sentences.py), which prints
+  chapter 11's table from `v31/sentences.json`.
+
+`spec-versions.json` names the document and the folder under `preview`.
 
 31 stays outside `supported` until the engine's bump: it is not a released
 version, and nothing the engine at 30 reads has changed. Run the check from the
