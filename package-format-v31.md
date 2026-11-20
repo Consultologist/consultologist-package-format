@@ -6063,3 +6063,161 @@ The sentences below belong to the app's pages. Each is used as written.
   reads `run.date` with the zone `America/Toronto`: *"16 November 2026"*.
 - The Editor shows, in a bar above the panes on each 31 package:
   *"This package uses the new format. You can view and download it; editing returns in a later release."*
+
+## 9. The record
+
+A job at 31 writes **record storage 12**. This chapter is one page: what the job's record pins of the
+package that ran, how every row is keyed, and which sentences the record holds. **The record's full
+contract is `consultologist-provenance`'s:** its `provenance-record.md`, section "Storage 12", holds
+every member of the job header and of every row, with its type and its null rule, the retention
+rules and the hash definitions (`hash-definitions.md`). This document does not repeat it; where the
+two meet, the keys, the pins and the sentences below are the format's. Names are written in the
+record's JSON form (camelCase).
+
+### 9.1 What a 31 job's record pins
+
+- **A 31 job is stamped `schemaVersion` 12 from its creation,** on every path, as 30 jobs are
+  stamped 11. **History keeps reading storage 2–11 records exactly as today:** nothing is
+  converted, and jobs that ran before 31 carry no `resolveHash` or `lockHash`.
+- **The job header pins the documents the job ran,** each written once, at job start, beside the
+  package name and version, before any node runs ([chapter 8 § 8.2](#82-the-load-step-by-step-31)):
+
+  | Member | Type | Null | Meaning |
+  |---|---|---|---|
+  | `resolveHash` | string (`sha256:…`) | null below 31 | the SHA-256 of the canonical `resolve.json` bytes the job ran |
+  | `lockHash` | string (`sha256:…`) | null below 31 | the SHA-256 of the canonical `lock.json` bytes |
+  | `versionsRan` | object | null below 31 | **the exact versions that actually ran,** which can differ from the lock within its range. It takes **exactly `lock.json`'s shape,** so the two compare member by member: `packageFormat`, `dialect`, `libraries` (`Scriban`, `Markdig`, `Corvus.Text.Json.JsonLogic`, `Corvus.JsonSchema`), `evaluator`, `operations` (those the package uses), `builtins`, `culture` (`"invariant"`), `runtime` (the .NET runtime) and `unicode` (its Unicode version) ([chapter 7 § 7.4.1](#741-members)) |
+  | `recordHash` | string (`sha256:…`) | allowed | the hash of the canonical record document, sealed when delivery ends ([chapter 8 § 8.10](#810-where-the-record-is-written)); `null` until then, and below 31 |
+  | `limits` | object `{ maxAgentCalls, capacityWaitMinutes, serviceAttempts, jobMinutes, deliveryMinutes, deliveryAttempts, loopItems, jobAgentCalls, renderSteps }`, each an integer | null below 31 | every engine limit in force at job start, recorded once ([chapter 8 § 8.7](#87-retries-and-limits)) |
+
+- **The same header** holds `startedAtUtc` (when the job's orchestration started; the job limit is
+  timed from it), `runFacts` (the raw value of each run fact the package reads, once per run;
+  `{}` when it reads none), `signatureBlockId` and `signatureChosen` (the profile signature block
+  by **id**, never its text, and whether it was the account's default or this job's pick; both
+  `null` when the package doesn't read `profile.signature`), and `decisions` (every condition
+  decision of the job, `[]` for none). Its unchanged members are `packageSpecVersion` (31),
+  `workflowPackage`, `packageFormatRef`, `provenanceRef`, `formatsRef`, `catalogRef`,
+  `engineCommit`, `engineRelease`, `apiHost` and the terminology snapshot.
+- **A row's `producer`, `modelDerived`, `runDependent` and `profileCarrying`** are the node's own,
+  as written and checked ([chapter 2 § 2.1.3](#213-producer), [chapter 3](#3-expressions)); every row
+  records its `producer`.
+- **The record holds hashes, ids, counts, reasons and names, never element values,** with the
+  exceptions the provenance contract lists: an item name drawn from a field, run facts and run spot
+  outputs, and printed conditions, which are package text.
+- **Rows don't record a build:** every deploy is preceded by a drain ([chapter 8 § 8.9](#89-every-deploy-is-preceded-by-a-drain)),
+  so the header's `engineCommit` and `engineRelease` hold for every row.
+
+### 9.2 Keys, with their roots
+
+Wherever a record names a node, it names it by its **rooted key:** the root (`node`, `check`,
+`deliverable`), then the ids of its enclosing flow folders and its own, joined by `.`
+([chapter 1 § 1.9.3](#193-keys)). The same keys are used in `resolve.json`, test files and
+History's links.
+
+```
+node.plan                                     a top-level node
+node.sections.paragraphs.draft_paragraph      a node two loops down
+node.hpi_section.standard_draft               a node inside a function, through its call node
+node.standards.section.standard_draft         a call node inside a loop, then the function's node
+check.part_coverage.coverage                  a check inside a check loop
+deliverable.emr.note                          deliverables/emr/note.md
+```
+
+- **A row key** is the rooted key, then `:` and the item path for an instance inside a loop or a
+  `while`: `node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge:3`,
+  `node.standards.section.standard_draft:3`, `check.part_coverage.coverage:2`. `.` separates
+  scopes, `/` separates path segments and `:` separates the key from the path; no id or item id
+  contains any of the three, and item paths never contain `:`.
+- **Function calls:** inner rows are keyed through the call node's rooted key, never the function's
+  name. The function's name is on the call's row. Two calls to the same function get different keys
+  from their call nodes.
+- **A delivery row** is keyed `delivery:<deliverable>/<destination>`, one per destination of a
+  released deliverable ([chapter 8 § 8.11](#811-delivery-at-the-end)).
+- **Every key carries its root,** so a node, a check and a deliverable may share an id and their
+  keys never collide. Checks are kept in their own section of the record and deliverables in their
+  own list.
+- **What is keyed this way:** each row's `nodeId` and the keys of `nodeOutputs`; block ids,
+  `skippedBlocks` and `blocks`; item-step and block events, `itemProgress` and `collections`; the
+  concept source, the `nodes` descriptor rows, `loopInstances` and `unresolvedLoops`; deliverable
+  ids, which are paths like node ids (`deliverables/emr/note.md` is `deliverable.emr.note`, so
+  moving a deliverable changes its key); and the run diagram's Mermaid ids (with `.` replaced by
+  `__`, [chapter 8 § 8.14](#814-what-belongs-to-the-app)), the rail, and History and Editor links.
+
+### 9.3 Sub-row ids
+
+Some rows have sub-rows that live **inside** their row, not in `nodeOutputs`. Each has an id for
+History's links and test expectations, formed as `<row key>/<sub kind>:<n or id>`. A sub-row id is
+never parsed as a row key; a segment holding `:` is always a sub-row, since item paths never
+contain `:`.
+
+| Sub-row | Id |
+|---|---|
+| a renderer use | `<row key>/render:<n>`, `n` its 1-based position in the body: `node.identify_problem/render:1`, `node.sections.paragraphs.draft_paragraph:2/1/render:1` |
+| a macro row | `<row key>/macro:<macro id>`: `node.assessment/macro:letrozole_prescription_text` |
+| a run spot | `<row key>/spot:<n>` |
+| a decision | `<owner key>/if:<site>`: `node.standards.assessment:7/if:macro.letrozole_prescription_text` |
+
+A chain of renderers gives one sub-row per step (`…/render:1`, `…/render:2`). A decision's `site`
+is one of `self`, `case`, `pass.<n>`, `until.<i>`, `macro.<id>`, `macro-folder.<folder id>`,
+`part.<id>` and `snippet.<id>`, and its owner is the row key, check row key or deliverable key the
+decision concerns.
+
+### 9.4 What the record never holds
+
+- **In-package test results.** Tests run at publish, not in jobs; their results are in the publish
+  report ([chapter 7 § 7.9](#79-the-publish-report)).
+- **`resolve.json` or `lock.json` themselves.** The record pins their hashes; History fetches the
+  documents from the registry by version and checks them against the hashes.
+- **Element values,** apart from the exceptions in § 9.1.
+- **The peak concurrency a job reached,** which goes to telemetry only ([chapter 8 § 8.5](#85-the-per-job-ceiling)).
+
+### 9.5 The provenance contract
+
+The record's contract is published by `consultologist-provenance`, in `provenance-record.md`,
+storage 12, with the hash definitions (`hash-definitions.md`) and the registry layout
+(`registry-layout.md`) it adds. The engine stamps the provenance contract's version as
+`provenanceRef` on every 31 job, and a provenance version lists storage 12 among its
+`recordStorageVersions`.
+
+### 9.6 Sentences the record holds
+
+The record refuses nothing itself; the refusals at start and load are in
+[chapter 7 § 7.10](#710-refusals) and [chapter 8 § 8.13](#813-sentences-the-engine-shows). Every
+sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this
+format with its audience. `<…>` marks a placeholder. A row that didn't complete reads its
+sentence in `stateReason`, and a deliverable's row does the same; the sentences the record holds:
+
+- *skipped: …* is the form of a skip, built from the printed condition:
+  *"skipped: \<printed condition\> is false"* (a decision's reason; a row skipped by a decision has
+  this sentence as its `stateReason`, and the decision's id links the two). On a deliverable's row
+  the same form reads *"skipped: \<condition\> is false"* (its header `if`).
+- *"not run: beyond max \<n\>"* (an item past a loop's `max`; the loop's `.stopped` is `"bound"`).
+- *"case '\<id\>': arm for \<value\> does nothing"* (a `case` whose subject took an explicitly empty
+  branch, [chapter 4 § 4.5](#45-branches-if-and-case)).
+- *"held: empty"* (a deliverable with `whenEmpty: hold`).
+- *"released: check '\<id\>' didn't apply (its if was false)"* (a deliverable whose gating check was
+  skipped).
+- *"not sent: \<kind\> isn't set up for this account"* (an unconfigured delivery kind), for example
+  *not sent: EMR isn't set up for this account*.
+- *"not sent: the job failed"* (each destination of a released deliverable in a job that failed;
+  nothing is delivered until the job has succeeded).
+- *"failed: \<kind\>"* (a destination whose delivery was retried and still didn't go, with each
+  attempt on the result; the job stays completed).
+- *"blocked: check '\<id\>' failed (\<detail\>)"* and *"blocked: check '\<id\>' could not run (\<error\>)"*
+  (a deliverable whose gate check failed or errored).
+- *"cancelled: the job didn't finish within \<n\> minutes"* (a row still running at the job limit;
+  the row state is `cancelled`).
+- History's banner, built from the record:
+  *"\<deliverable label\> was blocked: check '\<check id\>' failed (\<detail\>)."*, for example
+  *Consultation note was blocked: check 'coverage' failed (10 of 12 terms present).*
+- History, for a sent format with keywords removed: *"Not sent to the model: \<pointers\>"*.
+- A node's `invalid.reason` for the macro check: *"macro \<id\>: missing"*, *"macro \<id\>: repeated"*,
+  *"macro \<id\>: altered"*; and the failure when `onInvalid` is `fail`:
+  *"Node '\<row key\>' failed: macro '\<id\>' was \<missing | repeated | altered\> in the reply."*
+- A deliverable failed by `whenEmpty: fail`:
+  *"Deliverable '\<id\>' was empty, and the workflow fails an empty \<label\>."*
+- A node failed by the model service's limits ([chapter 8 § 8.7](#87-retries-and-limits)):
+  *"The model service stayed busy for \<n\> minutes."*, or
+  *"The model service \<timed out | returned an error | couldn't be reached\> \<n\> times in a row."*;
+  and a job past its time limit: *"The job didn't finish within \<n\> minutes."* History adds
+  *"Run the workflow again later."* ([chapter 8 § 8.13](#813-sentences-the-engine-shows)).
