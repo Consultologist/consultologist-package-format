@@ -1,0 +1,5 @@
+{
+  "about": "formats/index.json lists an id with no file (chapter 2 § 2.6.1). Invalid: it lists verdict, and formats/ has no verdict.json. Valid: the file is there.",
+  "valid": true,
+  "sentences": []
+}

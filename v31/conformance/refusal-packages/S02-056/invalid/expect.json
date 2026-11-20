@@ -1,0 +1,7 @@
+{
+  "about": "A format sent to a model nested more than 5 levels deep (chapter 2 § 2.3.1), the root object being level 1. The agent node plan returns the package format nested_sections. Invalid: its deepest object is at level 6. Valid: at level 5, the limit.",
+  "valid": false,
+  "sentences": [
+    "Format 'nested_sections' nests 6 levels deep at /properties/a/properties/a/properties/a/properties/a/properties/a; a format sent to a model nests at most 5."
+  ]
+}

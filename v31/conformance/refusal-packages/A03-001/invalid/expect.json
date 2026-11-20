@@ -1,0 +1,7 @@
+{
+  "about": "A package format that is neither an object, a list nor a scalar (chapter 2 § 2.4; this implementation's sentence). Invalid: the package format points is an anyOf of plaintext and number. Valid: a list of plaintext.",
+  "valid": false,
+  "sentences": [
+    "Package format 'points' is neither an object nor a list; a package defines object and array formats, and refers to built-in and catalogue formats by name."
+  ]
+}

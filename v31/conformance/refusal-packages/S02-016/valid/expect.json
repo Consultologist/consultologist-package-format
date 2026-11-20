@@ -1,0 +1,5 @@
+{
+  "about": "A branch that returns a format outside the if's declared union (chapter 2 § 2.2.2). The if billing_gate's then returns plaintext and its else markdown_inline. Invalid: it declares the union plaintext | markdown_block. Valid: plaintext | markdown_inline.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A format sent to a model with more than 100 properties (chapter 2 § 2.3.1), each key of each properties object counted, a definition at each place it is referred to. The agent node plan returns the package format findings: 99 properties, and $defs/finding of one more. Invalid: second refers to #/$defs/finding as first does, 101. Valid: second is plaintext, 100, the limit.",
+  "valid": false,
+  "sentences": [
+    "Format 'findings' declares 101 properties; a format sent to a model declares at most 100."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A required name that is no property (chapter 2 § 2.3.3). Invalid: the package format review lists 'notes' in required and declares no such property. Valid: required lists its two properties.",
+  "valid": true,
+  "sentences": []
+}

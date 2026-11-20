@@ -1,0 +1,7 @@
+{
+  "about": "A flow node whose declared format is not what its ret gives (chapter 2 § 2.2.2): a while is its ret's format. Invalid: the while refine declares markdown_block, and its ret, draft_summary, returns plaintext. Valid: it declares plaintext.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares format markdown_block, but its ret gives plaintext."
+  ]
+}

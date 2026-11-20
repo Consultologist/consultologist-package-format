@@ -1,0 +1,5 @@
+{
+  "about": "A format file that names another dialect (chapter 2 § 2.3.1). Invalid: formats/review.json declares the dialect of specVersion 30. Valid: urn:consultologist:spec:31:dialect.",
+  "valid": true,
+  "sentences": []
+}

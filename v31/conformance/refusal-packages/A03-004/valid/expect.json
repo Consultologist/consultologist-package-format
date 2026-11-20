@@ -1,0 +1,5 @@
+{
+  "about": "A keyword on a schema of another type (chapter 2 § 2.3.1; this implementation's sentence): enum belongs on a string. Invalid: the package format review's verdict is a number with an enum. Valid: a string.",
+  "valid": true,
+  "sentences": []
+}

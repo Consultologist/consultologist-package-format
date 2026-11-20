@@ -1,0 +1,7 @@
+{
+  "about": "The form channel on an input that is not an object with a property (chapter 2 § 2.8.3). Invalid: the input referral_letter takes markdown_block with \"channel\": \"form\". Valid: it takes an object of one titled property.",
+  "valid": false,
+  "sentences": [
+    "Input 'referral_letter' declares channel 'form', which needs an object with at least one property."
+  ]
+}

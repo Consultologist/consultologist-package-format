@@ -1,0 +1,7 @@
+{
+  "about": "A format that refers to itself (chapter 2 § 2.3.1). Invalid: the package format review's earlier is a nullable review. Valid: a nullable plaintext.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/earlier/anyOf/0 refers to itself; recursive formats aren't supported."
+  ]
+}

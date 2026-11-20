@@ -1,0 +1,5 @@
+{
+  "about": "A rendered node that does not return text (chapter 2 § 2.2.2). Invalid: the rendered node billing_text, in the if billing_gate, returns number. Valid: plaintext.",
+  "valid": true,
+  "sentences": []
+}

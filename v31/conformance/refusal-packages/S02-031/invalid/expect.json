@@ -1,0 +1,7 @@
+{
+  "about": "A keyword beside $ref other than title and description (chapter 2 § 2.3.1). Invalid: the package format review's reason writes \"type\": \"string\" beside its $ref. Valid: only a title beside it.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/reason has 'type' beside $ref; only title and description may sit beside a $ref."
+  ]
+}

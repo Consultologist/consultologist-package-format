@@ -1,0 +1,5 @@
+{
+  "about": "A format file that does not name the dialect (chapter 2 § 2.3.1). Invalid: formats/review.json has no $schema. Valid: \"$schema\": \"urn:consultologist:spec:31:dialect\".",
+  "valid": true,
+  "sentences": []
+}

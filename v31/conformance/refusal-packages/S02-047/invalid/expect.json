@@ -1,0 +1,7 @@
+{
+  "about": "An enum with one value (chapter 2 § 2.9): a constant, not a choice. Invalid: the package format review's verdict lists good alone. Valid: good and revise.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict declares one value; an enum with one value is a constant, not a choice."
+  ]
+}

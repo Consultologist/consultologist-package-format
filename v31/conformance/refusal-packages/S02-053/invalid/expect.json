@@ -1,0 +1,7 @@
+{
+  "about": "A nullable plain enum that does not list null (chapter 2 § 2.3.2). Invalid: the package format review's verdict is [\"string\", \"null\"] and lists good and revise. Valid: it lists null as well.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict is nullable but its enum doesn't list null; a nullable enum lists null among its values."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "An input that declares default (chapter 2 § 2.8): inputs have none at 31. Invalid: the input referral_letter declares \"default\": \"Routine referral.\". Valid: without it.",
+  "valid": true,
+  "sentences": []
+}

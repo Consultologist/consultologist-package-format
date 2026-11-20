@@ -1,0 +1,5 @@
+{
+  "about": "A text annotation where it does not apply (chapter 2 § 2.5.1): a package format refers to a text format. Invalid: the package format review's reason declares \"contentMediaType\": \"text/plain\". Valid: without it.",
+  "valid": true,
+  "sentences": []
+}

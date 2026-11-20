@@ -1,0 +1,7 @@
+{
+  "about": "A keyword of the wrong JSON type (chapter 2 § 2.3.1; this implementation's sentence). Invalid: the package format review's reason writes \"title\": 1. Valid: \"title\": \"Reason\".",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/reason writes 'title' as a number; it is text."
+  ]
+}

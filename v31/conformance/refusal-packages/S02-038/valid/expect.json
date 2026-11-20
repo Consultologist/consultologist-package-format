@@ -1,0 +1,5 @@
+{
+  "about": "A text annotation in an inline format (chapter 2 § 2.5.3): text inside an inline format is a $ref to a text format. Invalid: the input referral_letter's inline format declares \"contentMediaType\": \"text/plain\". Valid: { \"type\": \"string\" }.",
+  "valid": true,
+  "sentences": []
+}

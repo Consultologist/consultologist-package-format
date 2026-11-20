@@ -1,0 +1,5 @@
+{
+  "about": "An enum value that is not snake_case (chapter 2 § 2.9). Invalid: the package format review's verdict lists Revise. Valid: revise.",
+  "valid": true,
+  "sentences": []
+}

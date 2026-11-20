@@ -1,0 +1,7 @@
+{
+  "about": "A nullable scalar written with anyOf (chapter 2 § 2.3.2). Invalid: the package format review's reason is { \"anyOf\": [{ \"type\": \"string\" }, { \"type\": \"null\" }] }. Valid: { \"type\": [\"string\", \"null\"] }.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/reason writes a nullable string with anyOf; write it as \"type\": [\"string\", \"null\"]."
+  ]
+}

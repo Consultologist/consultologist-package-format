@@ -1,0 +1,7 @@
+{
+  "about": "A string with both enum and oneOf (chapter 2 § 2.9). Invalid: the package format review's labelled verdict also declares an enum of its values. Valid: the oneOf alone.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict declares both enum and oneOf; write one."
+  ]
+}

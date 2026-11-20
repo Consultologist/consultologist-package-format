@@ -1,0 +1,7 @@
+{
+  "about": "An enum value written twice (chapter 2 § 2.9). Invalid: the package format review's verdict lists good, revise, good. Valid: good, revise.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict declares value 'good' twice."
+  ]
+}

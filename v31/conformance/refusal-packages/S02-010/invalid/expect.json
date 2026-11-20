@@ -1,0 +1,7 @@
+{
+  "about": "A producer reserved for a later version (chapter 2 § 2.1.3). Invalid: the agent node plan declares \"producer\": \"grounded\". Valid: \"generated\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' declares producer 'grounded', which is reserved for a later version (accepted at 31: generated, computed)."
+  ]
+}

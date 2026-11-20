@@ -1,0 +1,5 @@
+{
+  "about": "A package format that writes its own $id (chapter 2 § 2.6.2): it is written at publish. Invalid: formats/review.json declares a $id. Valid: none.",
+  "valid": true,
+  "sentences": []
+}

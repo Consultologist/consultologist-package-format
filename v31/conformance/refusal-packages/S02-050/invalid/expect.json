@@ -1,0 +1,7 @@
+{
+  "about": "Two values of a labelled enum with one title (chapter 2 § 2.9). Invalid: the package format review's verdict titles both good and revise 'Good'. Valid: 'Good' and 'Revise'.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict gives two values the title 'Good'."
+  ]
+}

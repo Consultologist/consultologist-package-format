@@ -1,0 +1,5 @@
+{
+  "about": "A #/$defs reference to a definition the file does not have (chapter 2 § 2.6.3; this implementation's sentence). Invalid: the package format review's reason refers to #/$defs/reasons. Valid: #/$defs/reason, which its $defs holds.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A nullable scalar written with anyOf (chapter 2 § 2.3.2). Invalid: the package format review's reason is { \"anyOf\": [{ \"type\": \"string\" }, { \"type\": \"null\" }] }. Valid: { \"type\": [\"string\", \"null\"] }.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "An input that takes markdown_inline (chapter 2 § 2.8.1). Invalid: the input referral_letter takes markdown_inline. Valid: markdown_block.",
+  "valid": false,
+  "sentences": [
+    "Input 'referral_letter' takes markdown_inline; use plaintext or markdown_block."
+  ]
+}

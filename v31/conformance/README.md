@@ -124,6 +124,26 @@ open point for the text, which should give the rule a sentence:
 | `A02-007` | *"Node '\<id>' is kind \<kind> in a folder; a \<kind> node is a file, \<id>.md."* | a leaf node is a file ([chapter 1 § 1.2.1](../../package-format-v31.md#121-which-file-holds-what)) |
 | `A02-008` | *"\<subject> has no body; name the nodes that run in nodes."* | a `then`, an `else`, a non-empty branch or a function lists at least one node; `S04-018` and `S04-034` name loops and whiles only ([chapter 4 § 4.5](../../package-format-v31.md#45-branches-if-and-case)) |
 
+## The refusal packages of the types (area 03)
+
+From area 03 on, every case, area 02's included, is held to the reader and the type rules of
+[chapter 2](../../package-format-v31.md#2-types-and-inputs) together: the exporter runs each package
+through the reader and, when the reader accepts it, through the type rules, and writes what they
+said. Area 02's 65 cases came out unchanged, their valid packages passing the type rules as well.
+Area 03 adds 52 cases, 104 packages, built as area 02's are (the smallest package plus one
+construct, here a format file, a second input, a while or an if, and an invalid side that is its
+valid side with one change): one for each chapter 2 sentence a package can reach, `S01-027` (a
+leaf's `reproducible`, which needs the node's kind) among them, and for ten sentences of this
+implementation, `A03-001` to `A03-008`, `A03-010` and `A03-011`, which, like the `A02-…` ones, are
+not rows of `sentences.json` and are open points for the text. These chapter 2 sentences have no
+package: `S02-018`, `S02-019` and `S02-020`, because finding the reads they judge (a JSON Logic
+`var`, a template, a reference string) belongs to the areas that follow; `S02-027`, `S02-035` and
+`S02-036`, and this implementation's `A03-009` (an annotation's value), because only a registry or
+catalogue format can reach them (a package format whose root is an `anyOf` is refused before any
+agent returns it, and the annotations in a package's own or an inline format are `S02-037` and
+`S02-038`); `S02-009`, whose words are `S01-028`'s, which has its case; and `S02-011`, because the
+three flags follow from what a node reads.
+
 ## The schemas' examples
 
 `schemas/<name>/` holds hand-written instance files for the schema `<name>` (`dialect` is

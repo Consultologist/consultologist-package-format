@@ -1,0 +1,5 @@
+{
+  "about": "A list without items (chapter 2 § 2.3.1; this implementation's sentence). Invalid: the package format points is { \"type\": \"array\" }. Valid: its items refer to plaintext.",
+  "valid": true,
+  "sentences": []
+}

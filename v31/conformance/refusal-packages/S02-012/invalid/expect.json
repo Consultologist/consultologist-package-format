@@ -1,0 +1,7 @@
+{
+  "about": "An agent node whose format has no binding for its producer (chapter 2 § 2.7). Invalid: the agent node plan returns check_result, which no agent serves for generated. Valid: it returns plaintext.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' is kind agent and returns check_result, which has no binding for producer generated in agents/bindings.json."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A format other than date (chapter 2 § 2.3.1). Invalid: the package format review's seen_on declares \"format\": \"date-time\". Valid: \"format\": \"date\", on a string.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/seen_on uses format 'date-time'; the only format is date, on a string."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A package format that is a scalar (chapter 2 § 2.4): a package defines object and array formats. Invalid: the package format points is { \"type\": \"string\" }. Valid: a list of plaintext.",
+  "valid": false,
+  "sentences": [
+    "Package format 'points' is a string; a package defines object and array formats, and refers to built-in and catalogue formats by name."
+  ]
+}

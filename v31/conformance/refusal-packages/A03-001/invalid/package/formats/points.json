@@ -1,0 +1,1 @@
+{ "$schema": "urn:consultologist:spec:31:dialect", "anyOf": [{ "$ref": "plaintext" }, { "$ref": "number" }] }

@@ -1,0 +1,7 @@
+{
+  "about": "An enum value that is not snake_case (chapter 2 § 2.9). Invalid: the package format review's verdict lists Revise. Valid: revise.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict value 'Revise' must be snake_case (a lowercase letter, then lowercase letters, digits, or underscores)."
+  ]
+}

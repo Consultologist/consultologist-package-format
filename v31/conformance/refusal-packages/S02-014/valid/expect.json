@@ -1,0 +1,5 @@
+{
+  "about": "An agent node whose format is written inline (chapter 2 § 2.2): an agent's format is named, so that it has a binding. Invalid: the agent node plan declares \"format\": { \"$ref\": \"plaintext\" }. Valid: \"plaintext\".",
+  "valid": true,
+  "sentences": []
+}

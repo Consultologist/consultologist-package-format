@@ -1,0 +1,7 @@
+{
+  "about": "kind let, which is now kind computed (chapter 2 § 2.1). Invalid: nodes/plan.md declares \"kind\": \"let\". Valid: \"agent\".",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' declares kind let; a let is now kind computed, with its JSON Logic in expression."
+  ]
+}

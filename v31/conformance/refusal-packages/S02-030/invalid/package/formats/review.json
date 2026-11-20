@@ -1,0 +1,1 @@
+{ "$schema": "urn:consultologist:spec:31:dialect", "type": "object", "required": ["verdict", "seen_on"], "additionalProperties": false, "properties": { "verdict": { "type": "string", "enum": ["good", "revise"] }, "seen_on": { "type": "string", "format": "date-time" } } }

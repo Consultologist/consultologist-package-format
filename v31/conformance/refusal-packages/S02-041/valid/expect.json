@@ -1,0 +1,5 @@
+{
+  "about": "An input that takes a choice of shapes (chapter 2 § 2.8.1). Invalid: the input referral_letter takes an anyOf of markdown_block and null. Valid: markdown_block.",
+  "valid": true,
+  "sentences": []
+}

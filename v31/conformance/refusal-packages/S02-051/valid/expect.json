@@ -1,0 +1,5 @@
+{
+  "about": "A labelled enum's branch of another shape (chapter 2 § 2.9): each is exactly { \"const\", \"title\" }. Invalid: the package format review's verdict writes its second branch without a title. Valid: with one.",
+  "valid": true,
+  "sentences": []
+}

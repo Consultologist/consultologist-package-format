@@ -1,0 +1,5 @@
+{
+  "about": "A format other than date (chapter 2 § 2.3.1). Invalid: the package format review's seen_on declares \"format\": \"date-time\". Valid: \"format\": \"date\", on a string.",
+  "valid": true,
+  "sentences": []
+}

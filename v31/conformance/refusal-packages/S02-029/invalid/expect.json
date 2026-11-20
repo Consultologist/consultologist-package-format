@@ -1,0 +1,7 @@
+{
+  "about": "A type array that is not one type plus \"null\" (chapter 2 § 2.3.2). Invalid: the package format review's reason declares \"type\": [\"string\", \"number\"]. Valid: [\"string\", \"null\"].",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/reason declares type [\"string\",\"number\"]; a type array is one type plus \"null\"."
+  ]
+}

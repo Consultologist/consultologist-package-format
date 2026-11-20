@@ -1,0 +1,13 @@
+{
+  "name": "example-minimal",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Minimal note demo",
+  "description": ["A fictional package for tests.", "Not intended for clinical use."],
+  "tags": ["demo", "fictional"],
+  "inputs": {
+    "consult_draft": { "label": "Consult draft", "description": null, "format": "markdown_block", "required": true, "channel": null },
+    "referral_letter": { "label": "Referral letter", "description": null, "format": { "type": "object", "required": ["reason"], "additionalProperties": false, "properties": { "reason": { "$ref": "plaintext" } } }, "required": false, "channel": null }
+  }
+}

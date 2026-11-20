@@ -1,0 +1,7 @@
+{
+  "about": "A property of an object input with no title (chapter 2 § 2.8.1): the Create page labels each field by it. Invalid: the input referral_letter's property reason has none. Valid: it is titled 'Reason for referral'.",
+  "valid": false,
+  "sentences": [
+    "Input 'referral_letter' field 'reason' has no title; the Create page labels each field by its title."
+  ]
+}

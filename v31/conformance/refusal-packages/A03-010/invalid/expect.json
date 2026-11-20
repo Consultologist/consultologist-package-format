@@ -1,0 +1,7 @@
+{
+  "about": "An enum that lists null on a type that is not nullable (chapter 2 § 2.3.2; this implementation's sentence). Invalid: the package format review's verdict is \"type\": \"string\" and lists null. Valid: [\"string\", \"null\"].",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/verdict lists null but is not nullable; write \"type\": [\"string\", \"null\"], or remove null."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "An object whose additionalProperties is not false (chapter 2 § 2.3.3). Invalid: the package format review declares \"additionalProperties\": true. Valid: false.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at the root declares additionalProperties true; every object declares additionalProperties: false."
+  ]
+}

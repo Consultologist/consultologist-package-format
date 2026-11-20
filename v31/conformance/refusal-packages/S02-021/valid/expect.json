@@ -1,0 +1,5 @@
+{
+  "about": "A keyword outside the formats dialect (chapter 2 § 2.3.1). Invalid: the package format review's reason declares \"maxLength\": 500. Valid: the reason is { \"type\": \"string\" }.",
+  "valid": true,
+  "sentences": []
+}

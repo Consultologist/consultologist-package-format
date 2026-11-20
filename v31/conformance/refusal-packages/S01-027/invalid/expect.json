@@ -1,0 +1,7 @@
+{
+  "about": "A leaf whose reproducible is not its kind's (chapter 2 § 2.1.1): an agent node is not reproducible. Invalid: the agent node plan declares \"reproducible\": true. Valid: false.",
+  "valid": false,
+  "sentences": [
+    "Node 'node.plan' declares reproducible true, but its kind makes it false."
+  ]
+}

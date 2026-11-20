@@ -1,0 +1,7 @@
+{
+  "about": "An object without one of properties, required and additionalProperties (chapter 2 § 2.3.3; this implementation's sentence). Invalid: the package format review does not write additionalProperties. Valid: \"additionalProperties\": false.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at the root is an object without 'additionalProperties'; every object writes properties, required and additionalProperties: false."
+  ]
+}

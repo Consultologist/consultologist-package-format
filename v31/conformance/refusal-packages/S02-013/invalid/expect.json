@@ -1,0 +1,7 @@
+{
+  "about": "A rendered node that does not return text (chapter 2 § 2.2.2). Invalid: the rendered node billing_text, in the if billing_gate, returns number. Valid: plaintext.",
+  "valid": false,
+  "sentences": [
+    "Node 'billing_text' is kind rendered and returns number; a rendered node returns plaintext, markdown_block or markdown_inline."
+  ]
+}

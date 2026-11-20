@@ -1,0 +1,7 @@
+{
+  "about": "An anyOf of fewer than two members (chapter 2 § 2.3.1; this implementation's sentence). Invalid: the package format review's earlier is an anyOf of plaintext alone. Valid: of plaintext and null.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/earlier writes anyOf with 1 member; a union has two or more."
+  ]
+}

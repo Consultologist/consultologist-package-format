@@ -1,0 +1,7 @@
+{
+  "about": "A schema that declares no type (chapter 2 § 2.3.1; this implementation's sentence). Invalid: the package format review's reason is { \"title\": \"Reason\" }. Valid: it refers to plaintext.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at /properties/reason declares no type; write type, $ref or anyOf."
+  ]
+}

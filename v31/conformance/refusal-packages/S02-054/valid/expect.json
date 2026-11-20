@@ -1,0 +1,5 @@
+{
+  "about": "A nullable labelled enum without a { \"const\": null } arm (chapter 2 § 2.3.2). Invalid: the package format review's verdict is [\"string\", \"null\"] and its oneOf has no such arm. Valid: with the arm.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A text channel on an input that is not text (chapter 2 § 2.8.3). Invalid: the input referral_letter takes boolean with \"channel\": \"transcript\". Valid: it takes markdown_block.",
+  "valid": true,
+  "sentences": []
+}

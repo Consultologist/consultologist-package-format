@@ -1,0 +1,7 @@
+{
+  "about": "A format name that is no built-in, catalogue or package format (chapter 2 § 2.6.3). Invalid: the agent node plan returns plain_text, a misspelt name. Valid: plaintext.",
+  "valid": false,
+  "sentences": [
+    "Format 'plain_text' is not a built-in, catalogue or package format."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A type array that is not one type plus \"null\" (chapter 2 § 2.3.2). Invalid: the package format review's reason declares \"type\": [\"string\", \"number\"]. Valid: [\"string\", \"null\"].",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A property left out of required (chapter 2 § 2.3.3): an optional property is written as nullable. Invalid: the package format review's required lists only verdict. Valid: verdict and reason.",
+  "valid": false,
+  "sentences": [
+    "Format 'review' at the root leaves 'reason' out of required; every property is listed in required, and an optional one is written as nullable."
+  ]
+}
