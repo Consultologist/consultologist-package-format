@@ -5683,3 +5683,383 @@ points (§ 7.4.4):
 - *"Test '\<test id\>' stubs \<row key\>, which doesn't run."*
 - CI, in the examples repository: *"\<path\> is evidence written only by publish; it is ignored and shouldn't be committed."*
 - The Editor, on import: *"This package's resolve.json and lock.json were ignored; publishing writes new ones."*
+
+## 8. What an engine does with a package
+
+This chapter says what an engine does with a package at 31: which load path it takes, how it checks
+what it loads, which versions it admits, how it schedules a job, what it limits, where it writes the
+record and how it delivers. What the engine reads is only [`resolve.json`](#72-resolvejson) and the
+checked [`lock.json`](#74-lockjson) beside it ([chapter 7](#7-the-compiled-documents)); the record
+it writes is [chapter 9](#9-the-record). The sentences the engine shows are in § 8.13. The pages,
+`WorkflowPackages/Current` and the diagram are the app's (§ 8.14), and the sentences the pages show
+close the chapter (§ 8.15).
+
+### 8.1 Two load paths, chosen by `specVersion`
+
+| Spec version | What the engine reads | Until |
+|---|---|---|
+| 5–30 | today's path: `manifest.json` and the source files, materialised and validated per load (`WorkflowPackageStore`) | retirement, [#1450](https://github.com/Consultologist/Consultologist-Blazor/issues/1450) (Milestone 40) |
+| 31 | **only `resolve.json`** from the published version's folder in the registry | — |
+
+- **No backfill.** Versions published before 31 never get a `resolve.json`; they keep today's path
+  until they are retired. Packages that must keep running are migrated, which gives them a real
+  `resolve.json` and `lock.json` ([chapter 10](#10-migration-30--31)).
+- **The engine never reads a 31 package's source tree** at job time. Bodies are inline in
+  `resolve.json`, so one document and one hash cover everything.
+- **`lock.json` is not needed to run,** but it is checked at load: its hash, and its link to
+  `resolve.json` (§ 8.2, step 3). The exact versions it holds are for the record, for the break
+  points of step 4, and for the library-upgrade rule
+  ([chapter 7 § 7.4.4](#744-upgrading-a-locked-library-the-corpus-re-render)).
+
+### 8.2 The load, step by step (31)
+
+1. **Resolve the pin** to a `name@version`, as today (`WorkflowPackagePinResolver`).
+2. **Read `resolve.json`** and **`lock.json`** from the version's folder.
+3. **Check integrity.** The SHA-256 of `resolve.json`'s bytes (canonical, RFC 8785) must equal the
+   hash published for that version; `lock.json`'s hash must equal its published hash; and the link
+   between them must hold (`resolve.json`'s pointer to its lock names that `lockHash`,
+   [chapter 7](#7-the-compiled-documents)). A mismatch of any of the three refuses the load. The
+   published hashes are in the version's stamp ([chapter 7 § 7.5](#75-the-publish-pipeline)), and
+   **a version without the "published" stamp doesn't exist** for the engine: publish writes the
+   stamp last, so a publish that died partway is never loaded, and stamped folders are never
+   changed.
+4. **Check `requires`** against this engine: `spec`, `evaluator`, `scriban`, each operation's range,
+   `kinds`, `features` and `agents`. Ranges are caret ranges set by the registry
+   ([chapter 7 § 7.3.1](#731-requires-what-the-package-needs-from-the-engine)); the engine refuses
+   only outside a range. An unknown kind or feature is outside every range. Then **compare
+   `lock.json`'s exact versions with the engine's break points:** the engine keeps, per locked
+   component, the versions at which output changed (*"Scriban output changed at 7.3.0"*), as
+   configuration changed only by an upgrade that went through the corpus re-render, and refuses a
+   package locked before a break point with the sentence of
+   [chapter 7 § 7.10](#710-refusals) ([§ 7.4.4](#744-upgrading-a-locked-library-the-corpus-re-render)).
+5. **Build the in-memory plan:** the parsed graph, the compiled JSON Logic, the parsed Scriban
+   templates and the resolved formats. **The plan is never stored;** it is derived
+   deterministically from `resolve.json` and cached in memory per `name@version`, keyed also by
+   the `resolveHash`.
+6. **At job start,** check `needs.profile` and the account's time zone, which every 31 job needs
+   ([chapter 6 § 6.10.4](#6104-a-missing-field-refuses-the-job) and
+   [§ 6.10.7](#6107-the-profile-page-and-the-time-zone)). Then record `resolveHash` and `lockHash`
+   beside the package name and version, before any node runs.
+
+A refusal at steps 3 or 4 is a start failure: no node runs, and the job's record holds the
+sentence. The app's Create page checks steps 4 and 6 before submission (§ 8.14), so in practice the
+clinician sees the sentence there first.
+
+### 8.3 Which spec versions an engine admits
+
+#### 8.3.1 The compiled-in lists
+
+- **The compiled-in list** stays `WorkflowPackageValidator.AcceptedSpecVersions` (publish) and
+  `WorkflowPackageStore.SupportedSpecVersions` (load), 5–30 today. **31 joins both lists only at
+  the bump,** the release that makes 31 accepted, made after a drain (§ 8.9).
+- **Before the bump, the preview setting admits 31 on dev alone** (§ 8.3.2).
+- **Production without the setting** answers a 31 publish or load with today's sentence:
+  *"specVersion 31 is not supported: this engine accepts specVersion \<list\> (pre-v5 packages are archived; see registry-operations.md)."*
+
+#### 8.3.2 `WorkflowPackages__PreviewSpecVersions`
+
+Version 31 is proven on `canada-east-ai-function-dev` first, with dev's own package registry, and
+production's registry never sees a 31 package until the bump.
+
+| | |
+|---|---|
+| **Type** | a comma-separated list of integers, for example `31` |
+| **Unset or empty** | no preview versions: only the compiled-in list is admitted. This is production's value, always |
+| **Effect** | each listed version is admitted **beside** the compiled-in list, everywhere a version is checked: publish, import, load, job start, `WorkflowPackages/Current` |
+| **Allowed values** | only versions this build implements but has not yet released. In Milestone 39 that is `31` alone |
+| **Set on** | `canada-east-ai-function-dev` only |
+| **Removed** | at the bump, when 31 joins the compiled-in list |
+
+- **A listed version this build doesn't implement** stops the host at startup, naming the setting
+  and the value: a typo must not silently admit nothing, and an unimplemented version must never
+  be admitted.
+- **The engine attestation** (`EngineAttestation`) lists preview versions separately, as
+  `PreviewSpecVersions`, beside `AcceptedSpecVersions` and `SupportedSpecVersions`, so an
+  attestation never presents a preview version as released.
+
+### 8.4 Scheduling
+
+#### 8.4.1 What runs when
+
+The orchestrator runs the plan's graph as today: a node is ready when everything it reads has
+settled, loops fan out per item, `while` runs pass by pass, branches decide before their bodies.
+What changes at 31:
+
+- **The order comes from `resolve.json`** (`graph.order` and the edges), not from walking the
+  manifest.
+- **`computed` nodes, conditions and checks** run in the orchestrator through the JSON Logic
+  evaluator ([chapter 3](#3-expressions)), with no activity and no model call. They are evaluated
+  inline in the orchestrator, as a deterministic function of recorded values, so replay reproduces
+  them; `rendered` nodes and deliverables render in an activity, as templates do today.
+- **A `call`'s function body runs inline** in the job's orchestration, never as a Durable
+  sub-orchestration: its nodes are scheduled by the same loop as every other node, so the per-job
+  ceiling, the total-work limits and the dispatch order of § 8.5 hold inside functions. Its rows
+  are keyed under the call ([chapter 9 § 9.2](#92-keys-with-their-roots)). Sub-orchestrations with
+  a shared ceiling are [#1493](https://github.com/Consultologist/Consultologist-Blazor/issues/1493)
+  (Milestone 40).
+- **`matches` reads no clock:** there is no wall-clock time-out; the bounds that keep it linear
+  are [chapter 3 § 3.5.3](#353-matches-and-has_word)'s. Every time the orchestrator records (a
+  decision's `decidedAtUtc`) comes from the orchestration's replay-safe clock.
+- **Check loops** are scheduled per item, as soon as their production item settles, not after the
+  whole production loop.
+
+### 8.5 The per-job ceiling
+
+- **An engine setting, not part of the format.** At most *N* agent calls are in flight for one
+  job at any moment. The default is **16**.
+- **Setting name: `ConsultGeneration__MaxAgentCallsPerJob`**, an integer from 1 upward; unset means
+  16.
+- **What counts:** only agent calls: every node of kind `agent`, including a classifier that
+  decides a macro's `if`. Calls inside nested loops, inside function calls
+  ([chapter 4 § 4.8](#48-concurrency-what-counts-toward-the-per-job-ceiling)) and inside check
+  loops all count the same way. A repair retry (`onInvalid: retry`) and a 429 retry occupy the same
+  slot as the call they repeat. `computed`, `rendered`, conditions and deliverables take no slot:
+  they call no model.
+- **With `maxParallel`:** each loop's `maxParallel` still limits its own items, **per loop
+  instance**, so nested caps multiply. The effective limit on any one call is the smaller of the
+  caps along its nesting path and the per-job ceiling. `maxParallel` is 2–15, or `null` for no cap
+  of its own (`FormatBounds.parallel`, [chapter 1 § 1.8](#18-formatbounds)), in which case only the
+  ceiling applies.
+- **Which call waits when the ceiling is reached.** Ready calls are dispatched in a fixed order: by
+  the node's position in `graph.order`, then by item path (outer items first, then list order),
+  then by pass. A freed slot goes to the first waiting call in that order. This keeps dispatch
+  deterministic, so Durable replay and the record agree. The order of completion still depends on
+  the model.
+- **Implementation:** a counter of in-flight agent calls kept in the orchestrator's state, checked
+  before each dispatch. Durable fan-out today dispatches every ready activity at once
+  (`ConsultGenerationEngine`'s pending-task loop); at 31 it dispatches only up to the free slots
+  and waits on `Task.WhenAny` for the next free one.
+- **The record** holds the ceiling in force at job start, once, in the job header's `limits`
+  beside the other limits of § 8.7 ([chapter 9 § 9.1](#91-what-a-31-jobs-record-pins)); the peak
+  concurrency actually reached is kept in telemetry only.
+- **Applies to 31 only.** Packages at 5–30 keep today's scheduling, so the old path is unchanged
+  until it retires.
+
+### 8.6 Deployment-wide limits
+
+There is **no shared counter** across jobs. Deployment-wide limits come from host configuration,
+sized to the model deployment's quota:
+
+- `host.json` gains `extensions.durableTask.maxConcurrentActivityFunctions` (today unset, so the
+  default applies per instance);
+- the Flex Consumption app's maximum instance count is set so that instances × activities stays
+  within the quota.
+
+The values are deployment configuration, recorded beside the deployment notes, not in this
+document. A per-deployment Durable entity counting calls across jobs is kept for later, if
+fairness across accounts needs exact control.
+
+### 8.7 Retries and limits
+
+A job at 31 is never kept waiting without end: a throttled job is slower, but it fails when its
+limits pass.
+
+- **A 429 from the model deployment is retried** after the response's `retry-after` (or
+  `retry-after-ms`) when present; otherwise with back-off from 5 seconds, doubling, capped at
+  60 seconds, with jitter. **The node fails after 10 minutes** of waiting on 429s in total.
+- **Other service failures** (a 5xx response, a timeout, no connection) are retried with the same
+  back-off, **5 attempts** in all; then the node fails. The record keeps the last error's kind,
+  never its content. This replaces the activity's three attempts today
+  (`AgentActivityRetryOptions`) for agent calls at 31.
+- **A job fails if it hasn't finished 30 minutes after its orchestration started**
+  (`startedAtUtc`), not after its creation or scheduling, so time spent queued or waiting behind a
+  drain doesn't count. Real jobs took about 2 minutes at the median and 12 at the longest (22 jobs
+  over 30 days). **Activities still running at the limit** are recorded with the row state
+  `cancelled`, and their late results are ignored.
+- **Total-work limits,** starting at: **200 items per loop instance**, **500 agent calls per job**
+  (a retry is part of its call), and **100,000 steps per render**. Each is checked at run time and
+  fails the node or the job with a sentence (§ 8.13), and is noted at publish when the package's
+  worst case can exceed it (§ 8.8).
+- **Delivering has its own window:** **`deliveryMinutes` (15)**, outside the 30-minute production
+  limit. Production's 30 minutes ends when the last node finishes; the job then enters
+  `delivering` (§ 8.11), so slow deliveries never fail the job for time.
+- **All of these are engine settings,** not part of the format, recorded in the job header's
+  `limits` at job start ([chapter 9](#91-what-a-31-jobs-record-pins)):
+
+  | `limits` member | Starting value | What it limits |
+  |---|---|---|
+  | `maxAgentCalls` | 16 | agent calls in flight for one job (§ 8.5) |
+  | `capacityWaitMinutes` | 10 | the minutes a node may wait on 429s in all |
+  | `serviceAttempts` | 5 | the attempts for another service failure |
+  | `jobMinutes` | 30 | the minutes a job may run, from `startedAtUtc` |
+  | `deliveryMinutes` | 15 | the minutes delivery may take |
+  | `deliveryAttempts` | 3 | the attempts each destination gets |
+  | `loopItems` | 200 | items per loop instance |
+  | `jobAgentCalls` | 500 | agent calls per job |
+  | `renderSteps` | 100,000 | steps per render |
+
+- **Every retry is recorded on the node's row** ([chapter 9](#9-the-record)): its time, the wait
+  applied, whether it was for capacity or a service failure, and the error's kind. No model text is
+  involved.
+- **A failed node fails its job;** nothing is half-delivered. The sentences are in § 8.13.
+
+### 8.8 The publish note
+
+At publish, when a package's nested caps multiply past the engine's per-job ceiling, the publish
+report ([chapter 7 § 7.9](#79-the-publish-report)) carries a **note**, never a refusal. The worst
+case is computed from `resolve.json`: the product of `maxParallel` along each nesting path, summed
+over branches that can run at the same time. **A `maxParallel: null` loop counts its list's length
+when publish knows it** (a snippet folder), **and otherwise counts as unbounded,** which the note
+says. Requiring a non-null `maxParallel` is
+[#1474](https://github.com/Consultologist/Consultologist-Blazor/issues/1474) (Milestone 40).
+
+*"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the \> rest wait their turn."*
+
+For an unbounded worst case:
+
+*"An unbounded number of agent calls could run at once, since \<loop key\> has no maxParallel and \> reads a list of unknown length; this engine runs at most \<ceiling\> per job, so the rest wait \> their turn."*
+
+The ceiling quoted is the publishing engine's setting. A package valid on one deployment is valid
+on every deployment; only the note's numbers differ.
+
+**The total-work limits and the job limit are noted the same way:** when a loop's list could be
+longer than the items limit, when the package's worst case could make more agent calls than the job
+allows, and when its estimated worst case passes the job limit. Each is a note, never a refusal
+([chapter 4 § 4.10](#410-refusals)). The note for the job limit reads:
+
+*"\<package\> could run for about \<n\> minutes in the worst case; this engine stops a job after \<limit\> minutes."*
+
+### 8.9 Every deploy is preceded by a drain
+
+**No job spans two builds.** The drain is defined as follows:
+
+- **The release workflow calls `POST Admin/Drain` before deploying and `POST Admin/Resume` after.**
+- **New jobs are accepted and queued.** The HTTP starter answers `202` with a job id and holds the
+  job, shown as *"Waiting for an update to finish"*; it starts after resume. **Scheduled and email
+  jobs wait the same way.**
+- **Running jobs finish.** The deploy proceeds once no orchestration is producing or delivering,
+  so a job in `delivering` (§ 8.11) is waited for too.
+- **The hard cap is 60 minutes:** a job can legitimately take 45 (the 30-minute production limit,
+  then the 15-minute delivery window), and the rest is margin. After it the deploy fails and stays
+  undeployed; the operator investigates.
+
+So rows don't record a build: the job header's `engineCommit` and `engineRelease` hold for every
+row, and `versionsRan` takes exactly `lock.json`'s shape
+([chapter 9 § 9.1](#91-what-a-31-jobs-record-pins)). Time a job spends waiting behind a drain
+doesn't count towards its job limit (§ 8.7).
+
+### 8.10 Where the record is written
+
+The record moves out of the Durable entity:
+
+- **Each record row is written once, to a table, when it finishes,** keyed by the job id and the
+  escaped rooted key, and never rewritten. **The write is insert-if-absent:** an identical second
+  write (a Durable replay) is a no-op; a differing one is refused and recorded as an engine fault.
+- **The entity keeps only the job header and progress.** Events carry keys, not row contents; the
+  browser fetches a finished row by its key.
+- **A job that finishes producing and has deliveries to make is `delivering`** (§ 8.11); its
+  delivery attempts are rows too ([chapter 9 § 9.2](#92-keys-with-their-roots)).
+- **The record is sealed when delivery ends.** On every terminal state (completed, failed,
+  cancelled or timed out) the engine assembles the canonical record document from the rows into a
+  blob, noting the end state, and writes its hash, `recordHash`, on the header. History's download
+  and the export serve that blob.
+
+### 8.11 Delivery at the end
+
+**Nothing is delivered until every deliverable's outcome is final and the job has succeeded**
+([chapter 6 § 6.8](#68-delivery)). The job then enters **`delivering`**, shown as
+*"Delivering…"*, with the document viewable throughout. Delivery runs once per destination of each
+released deliverable, and each attempt is written to **a delivery row in the one record**,
+`delivery:<deliverable>/<destination>` ([chapter 9 § 9.2](#92-keys-with-their-roots)). **The
+record, its blob and `recordHash`, is sealed when delivery ends,** not before. A job that fails
+delivers nothing and goes straight to its terminal state.
+
+**Delivering has its own 15-minute window** (`deliveryMinutes`, § 8.7), outside the 30-minute
+production limit; a destination still unsent when it closes is `failed`.
+
+**A failed delivery is retried:** **3 times** (`deliveryAttempts`), **with back-off inside the
+15-minute window** (engine settings, § 8.7), each attempt recorded on the destination's result.
+After the last, the result is marked `failed`, the operator is alerted (§ 8.12), and History shows
+*"Couldn't send to \<destination\>. Copy the note instead."* The job stays completed.
+
+### 8.12 Monitoring and alerts
+
+Minimal, on Application Insights, **lengths and hashes only, never text.** Alerts are emailed to
+the operator:
+
+- **Any failed job.**
+- **429 waiting** passing 5 minutes in one job (§ 8.7).
+- **A job reaching 80% of the 30-minute limit** (24 minutes).
+- **A failed publish or an exporter warning.**
+- **A delivery marked `failed`** (§ 8.11).
+
+**A weekly summary** is emailed too: jobs, failures, p50 and p90 duration, the largest record, and
+outstanding migration hand edits.
+
+### 8.13 Sentences the engine shows
+
+Sentences the engine shows, and the pages show for it. The grammar's refusals at publish are in
+chapters 1 to 7. Every sentence below is used as written; [chapter 11](#11-every-sentence) lists
+every sentence of this format with its audience. `<…>` marks a placeholder.
+
+- Requires, and a package locked before a break point, at load and on the Create page, written
+  with placeholders:
+  *"This workflow (\<package\>@\<version\>) needs \<component\> \<range\>; this engine runs \<component\> \<engine version\>. Publish a new version of the workflow to run it on this engine."*
+  Example: *"This workflow (example-nested-note@v2026.11.2) needs Scriban ^7.2; this engine runs Scriban 8.0.1. Publish a new version of the workflow to run it on this engine."*
+- A `lock.json` whose hash, or whose link to `resolve.json`, doesn't match:
+  *"The compiled workflow \<package\>@\<version\> doesn't match its lock, so it can't be run. Tell the operator."*
+- A compiled package whose hash doesn't match the version's published hash:
+  *"The compiled workflow \<package\>@\<version\> doesn't match its published hash, so it can't be run. Tell the operator."*
+- 31 not admitted (production before the bump), today's sentence:
+  *"specVersion 31 is not supported: this engine accepts specVersion \<list\> (pre-v5 packages are archived; see registry-operations.md)."*
+- A node that waited on 429s for `capacityWaitMinutes` (10) in all fails, and its job with it
+  (§ 8.7), recorded on the node's row and shown in History:
+  *"The model service stayed busy for \<n\> minutes. Run the workflow again later."*
+- A node whose call failed `serviceAttempts` (5) times for another reason (§ 8.7), recorded on the
+  node's row with the error's kind and shown in History:
+  *"The model service \<timed out | returned an error | couldn't be reached\> \<n\> times in a row. Run the workflow again later."*
+- A job not finished `jobMinutes` (30) after its orchestration started (§ 8.7), shown in History:
+  *"The job didn't finish within \<n\> minutes. Run the workflow again later."* Each row still
+  running is recorded *"cancelled: the job didn't finish within \<n\> minutes"*.
+- The total-work limits (§ 8.7), recorded and shown in History:
+  *"Loop '\<id\>' was given \<n\> items; this engine runs at most \<limit\> per loop."*,
+  *"The job reached \<limit\> agent calls, the most this engine runs for one job."* and
+  *"\<Subject\> stopped rendering: it took more than \<limit\> steps."*
+- A destination whose delivery failed after its retries (§ 8.11), shown in History; the job stays
+  completed:
+  *"Couldn't send to \<destination\>. Copy the note instead."*
+- The publish note, never a refusal (§ 8.8):
+  *"Up to \<n\> agent calls could run at once; this engine runs at most \<ceiling\> per job, so the rest wait their turn."*
+- A job held behind a drain (§ 8.9): *"Waiting for an update to finish"*; a job delivering
+  (§ 8.11): *"Delivering…"*.
+
+### 8.14 What belongs to the app
+
+The Create page, History, the Profile page, the Editor (which shows 31 packages read-only until
+Milestone 41), the `WorkflowPackages/Current` contract the satellites read (which changes by
+addition only, and always sends `Macros` as `[]` for a 31 package) and the diagram are the app's, not the
+format's, and are specified in [part 09 of the design](https://github.com/Consultologist/Consultologist-Blazor/blob/def6f6cf/docs/customizable-workflow/package-format-v31/09-engine-and-pages.md).
+They read what this document defines (`resolve.json`, the record, the profile) and show it; the
+engine repeats the checks the Create page makes before submission (§ 8.2, step 6), so a job sent
+another way is refused with the same sentences. One of the diagram's files is part of a package
+folder: **`dag.mmd` is a view,** drawn from the same graph model as the Editor's Graph pane and the
+run diagram, regenerated rather than authored, and never pinned by a record
+([chapter 7 § 7.7](#77-evidence-and-views)). Its ids follow one rule: **a box's id is its key with
+root, with every `.` replaced by `__`** (`node.sections.paragraphs.draft_paragraph` becomes
+`node__sections__paragraphs__draft_paragraph`, `input.consult_draft` becomes
+`input__consult_draft`, `deliverable.consult_note` becomes `deliverable__consult_note`;
+[chapter 1 § 1.9.3](#193-keys)).
+
+### 8.15 Sentences the pages show
+
+The sentences below belong to the app's pages. Each is used as written.
+
+- The Create page checks `requires` and `needs.profile` before the clinician can start a job, and
+  shows each failing sentence above the Start button, which stays disabled until all pass. The
+  engine's sentences of § 8.13 are shown there too, with these:
+  *"This workflow needs your signature. Choose one in Profile."*; for any other profile field,
+  *"This workflow needs your \<field label\>. Set it in Profile, under Letter details."*, with
+  `<field label>` one of `name`, `credentials`, `organisation`, `closing line`; and, for every 31
+  job until the account's time zone is set (31 only; the email intake's reply is the same):
+  *"Set your time zone in your account settings before running a workflow."*
+- A satellite that meets an input it can't render doesn't start a job. It shows, with a link to the
+  Create page for that package: *"This workflow needs the web app"*.
+- History's job header, for a migrated version, carries the publish record's line:
+  *"migrated by the operator from \<old version\>"*.
+- History shows one banner per deliverable that was held, failed or blocked:
+  *"\<deliverable label\> was blocked: check '\<check id\>' failed (\<check detail\>)."* A gate
+  check that errored gives *"\<deliverable label\> was blocked: check '\<check id\>' could not run (\<error\>)."*
+- History's Run facts section shows each run spot's formatted output, for example, for a spot that
+  reads `run.date` with the zone `America/Toronto`: *"16 November 2026"*.
+- The Editor shows, in a bar above the panes on each 31 package:
+  *"This package uses the new format. You can view and download it; editing returns in a later release."*

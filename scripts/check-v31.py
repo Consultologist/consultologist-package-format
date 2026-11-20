@@ -479,7 +479,9 @@ def check_renderers():
 DOCUMENT = ROOT / "package-format-v31.md"
 DIALECT_DOCUMENT = V31 / "scriban-dialect.md"
 DIALECT_VERSION = "scriban-dialect@1.0.0"
-CHAPTERS_WRITTEN = 7
+CHAPTERS_WRITTEN = 12
+SENTENCES_CHAPTER = 11
+CONFORMANCE_CHAPTER = 12
 LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)\)")
 
 
@@ -521,6 +523,21 @@ def unescaped_tags(text, name):
         if re.search(r"(?<!\\)<[A-Za-z]", re.sub(r"`[^`]*`", "", line)):
             failures.append(f"{name} line {number}: unescaped < before a letter: {line.strip()[:60]}")
     return failures
+
+
+def chapter_bodies(text):
+    """Each chapter's text, by number: the lines under its `## N.` heading, fenced code included."""
+    bodies, current, fenced = {}, None, False
+    for line in text.splitlines():
+        if line.startswith("```"):
+            fenced = not fenced
+        heading = None if fenced else re.match(r"## (\d+)\. ", line)
+        if heading:
+            current = int(heading.group(1))
+            bodies[current] = ""
+        elif current is not None:
+            bodies[current] += line + "\n"
+    return bodies
 
 
 def check_document():
@@ -568,11 +585,16 @@ def check_document():
     document, load_failures = load(V31 / "sentences.json")
     if document is None:
         return failures + load_failures
-    body = plain(text)
+    bodies = chapter_bodies(text)
+    renderer = load_renderer()
     for entry in document["sentences"]:
-        if int(entry["part"]) <= len(chapters) and plain(entry["sentence"]) not in body:
-            failures.append(f"{entry['id']} (part {entry['part']}, {entry['section']}) "
-                            f"is not in the document: {entry['sentence'][:70]}")
+        chapter = renderer.CHAPTER_OF_PART[entry["part"]]
+        if plain(entry["sentence"]) not in plain(bodies.get(chapter, "")):
+            failures.append(f"{entry['id']} (part {entry['part']}, {entry['section']}) is not in "
+                            f"chapter {chapter}: {entry['sentence'][:70]}")
+    table = [line for line in bodies.get(SENTENCES_CHAPTER, "").splitlines() if line.startswith("|")]
+    if table != renderer.render(document["sentences"]).splitlines():
+        failures.append(f"chapter {SENTENCES_CHAPTER}'s table is not what scripts/render-sentences.py prints")
     return failures + check_dialect_document({e["sentence"] for e in document["sentences"]})
 
 
