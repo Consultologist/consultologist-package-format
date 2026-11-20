@@ -477,6 +477,9 @@ def check_renderers():
 
 
 DOCUMENT = ROOT / "package-format-v31.md"
+DIALECT_DOCUMENT = V31 / "scriban-dialect.md"
+DIALECT_VERSION = "scriban-dialect@1.0.0"
+CHAPTERS_WRITTEN = 6
 LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)\)")
 
 
@@ -518,10 +521,10 @@ def check_document():
     failures = []
     if "specVersion 31" not in text:
         failures.append("the document never says 'specVersion 31'")
-    chapters = [int(m.group(1)) for line in text.splitlines()
+    chapters = [int(m.group(1)) for _, line in prose_lines(text)
                 if (m := re.match(r"## (\d+)\. ", line))]
-    if chapters != list(range(1, len(chapters) + 1)):
-        failures.append(f"chapter headings are {chapters}, expected 1 to {len(chapters)} in order")
+    if chapters != list(range(1, CHAPTERS_WRITTEN + 1)):
+        failures.append(f"chapter headings are {chapters}, expected 1 to {CHAPTERS_WRITTEN} in order")
     slugs, seen = set(), {}
     for _, line in prose_lines(text):
         heading = re.match(r"#{1,6} (.*)", line)
@@ -554,6 +557,35 @@ def check_document():
         if int(entry["part"]) <= len(chapters) and plain(entry["sentence"]) not in body:
             failures.append(f"{entry['id']} (part {entry['part']}, {entry['section']}) "
                             f"is not in the document: {entry['sentence'][:70]}")
+    return failures + check_dialect_document({e["sentence"] for e in document["sentences"]})
+
+
+def check_dialect_document(known_sentences):
+    """The versioned dialect: it names its version, its links resolve, every sentence it quotes is the design's."""
+    if not DIALECT_DOCUMENT.exists():
+        return [f"{DIALECT_DOCUMENT.relative_to(ROOT)}: missing"]
+    text = DIALECT_DOCUMENT.read_text(encoding="utf-8")
+    where = DIALECT_DOCUMENT.relative_to(ROOT)
+    failures = []
+    if DIALECT_VERSION not in text:
+        failures.append(f"{where}: never names {DIALECT_VERSION}")
+    for number, line in prose_lines(text):
+        for target in LINK.findall(re.sub(r"`[^`]*`", "", line)):
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+            path, _, fragment = target.partition("#")
+            if path and not (DIALECT_DOCUMENT.parent / path).resolve().exists():
+                failures.append(f"{where} line {number}: link to {path}, which does not exist")
+    for marker in ("/blob/main/", "/tree/main/"):
+        if marker in text:
+            failures.append(f"{where}: a link contains {marker}")
+    known = {plain(sentence) for sentence in known_sentences}
+    quoted = re.findall(r'\*"(.*?)"\*', text)
+    if not quoted:
+        failures.append(f"{where}: quotes no sentence")
+    for sentence in quoted:
+        if plain(sentence) not in known:
+            failures.append(f"{where}: quotes a sentence that is not in sentences.json: {sentence[:70]}")
     return failures
 
 
