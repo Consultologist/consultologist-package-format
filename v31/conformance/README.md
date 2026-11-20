@@ -145,3 +145,11 @@ The `formats` check group does enforce the first of these on the built-in format
 - **A call's `producer`.** Part 04 § 7.7's member table for a `call` lists no `producer`, while its
   own example writes `"producer": "computed"` and part 01 § 5.2 lists it for a `call`. The text
   follows part 01 (every node writes it).
+- **Refusals the dialect names without a sentence.** Part 05 § 2.1 refuses the `for` options
+  `limit:`, `offset:` and `reversed`, and `for.rindex`, `for.length` and `for.changed`, but its
+  refusals list gives them no sentence (R-D1 names the statements it refuses, R-D6 a `for` over a
+  non-list). Chapter 5 and `scriban-dialect.md` state the refusal and mark the sentence as missing.
+- **Refusal labels repeat across parts.** Parts 05 and 06 both label sentences `R-D1` and onward
+  (part 05's dialect sentences, part 06's deliverable sentences); part 06's R-D13 is part 05's R-D8.
+  The text writes a label alone inside its own chapter and with the chapter ("chapter 5 § 11, R-D8")
+  from the other; the sentence ids in `sentences.json` (`S05-…`, `S06-…`) are unambiguous.
