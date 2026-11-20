@@ -1,0 +1,2630 @@
+{
+  "specVersion": 31,
+  "sentences": [
+    {
+      "id": "S01-001",
+      "part": "01",
+      "section": "5. Members: every one written",
+      "sentence": "Did you mean 'label'?",
+      "audience": "author"
+    },
+    {
+      "id": "S01-002",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Node '<id>' in <path> reuses the id of node '<id>' <at the top level | in <other path>>, which <path> can read: rename one. Ids may repeat only where neither can see the other (for example in two sibling loops).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-003",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "While '<id>' declares max <n>; a while runs at most FormatBounds.passes (15) passes.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-004",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Call '<id>' reaches depth <n>; calls nest at most FormatBounds.depth (15) deep.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-005",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Loop '<id>' declares maxParallel <n>; the most is FormatBounds.parallel (15).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-006",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' is not listed: every file in <folder> is named once in its index.json, or is index.json or README.md.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-007",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<folder> has no index.json; every folder lists its members, even when it has none (\"items\": []).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-008",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "The package has no <folder>/ folder; all nine top-level folders are always present.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-009",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<list> lists '<id>', but <folder> has no <id>.md or <id>/.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-010",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<list> lists '<id>' twice.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-011",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<list> lists '<id>/'; list a folder by its bare id.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-012",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<folder> holds both <id>.md and <id>/: an id names one file or one folder.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-013",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Delivery folder '<path>' is inside another delivery folder; delivery folders are one level deep.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-014",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' starts with a byte-order mark; save it as UTF-8 without one.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-015",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' contains a carriage return on line <n> that doesn't end the line; lines end with \\n.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-016",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' must start with a line of exactly ---, then one JSON object, then a line of exactly ---.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-017",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "The header of '<path>' is not valid JSON: <parser message>.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-018",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "The header of '<path>' declares '<member>' twice.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-019",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Kind> '<id>' has an empty body; its <prompt | template | text> is the body.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-020",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Kind> '<id>' has a body; a <computed node | call | check> keeps everything in its header.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-021",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration> is missing '<member>'; every member is written, and null means none.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-022",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration> sets '<member>' to null, which it can never be.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-023",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration> in '<path>' declares unknown member '<member>'. Did you mean '<closest>'?",
+      "audience": "author"
+    },
+    {
+      "id": "S01-024",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration> has an empty description; write null for none.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-025",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration>'s description is <n> characters; the most is 500.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-026",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Declaration> has an empty label.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-027",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Node> '<key>' declares reproducible <value>, but its <kind | body | function> makes it <derived>.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-028",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Node> '<key>' is kind <kind> and declares producer '<value>'; a <kind> node's producer is <generated | computed>.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-029",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Node> '<key>' declares <modelDerived | runDependent | profileCarrying> <value>, but its reads make it <derived>: <the read that does, or none>.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-030",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "'<id>' is not a valid id: a lowercase letter, then lowercase letters, digits or underscores.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-031",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Id '<id>' is <n> characters; the most is SourceBounds.idLength (64).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-032",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Id '<id>' is reserved on Windows (con, prn, aux, nul, com1–com9, lpt1–lpt9) and can't name a file: rename it.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-033",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Id '<id>' is reserved: <root | member> '<word>' is read in references, so nothing may be called '<id>'.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-034",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Format '<id>' reuses the name of a <built-in | catalogue> format: rename it.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-035",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Renderer '<id>' reuses the name of a built-in renderer: rename it.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-036",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Node '<id>' appears twice inside while '<while>' (<path> and <path>): pass.….node.<id> must name one node.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-037",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "The package has <n> files; the most is SourceBounds.files (512).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-038",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' is <n> KiB; the most is SourceBounds.fileBytes (256 KiB).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-039",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "The package is <n> MiB; the most is SourceBounds.totalBytes (2 MiB).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-040",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "Path '<path>' is <n> characters; the most is SourceBounds.pathLength (200), counted from the package root.",
+      "audience": "author"
+    },
+    {
+      "id": "S01-041",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "File '<path>' nests JSON more than 32 levels deep at <JSON pointer>; the most is SourceBounds.jsonDepth (32).",
+      "audience": "author"
+    },
+    {
+      "id": "S01-042",
+      "part": "01",
+      "section": "Refusals",
+      "sentence": "<Site> in '<path>' has <n> expression nodes; the most is SourceBounds.expressionNodes (1,000).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-001",
+      "part": "02",
+      "section": "1.2 The contagious flags: run-dependent and model-derived",
+      "sentence": "computed from model text: node.draft",
+      "audience": "author"
+    },
+    {
+      "id": "S02-002",
+      "part": "02",
+      "section": "2.1 Reading a value",
+      "sentence": "Medical oncology",
+      "audience": "author"
+    },
+    {
+      "id": "S02-003",
+      "part": "02",
+      "section": "3.5 What a model receives",
+      "sentence": "Not sent to the model: …",
+      "audience": "author"
+    },
+    {
+      "id": "S02-004",
+      "part": "02",
+      "section": "8.4 An example: `example-conditional-sections`' inputs at 31",
+      "sentence": "Narrative",
+      "audience": "author"
+    },
+    {
+      "id": "S02-005",
+      "part": "02",
+      "section": "12. `WorkflowPackages/Current`: what satellites see",
+      "sentence": "This workflow needs the web app",
+      "audience": "clinician"
+    },
+    {
+      "id": "S02-006",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "computed from model text: <key>",
+      "audience": "author"
+    },
+    {
+      "id": "S02-007",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares unknown kind '<kind>' (accepted: agent, rendered, computed, for, while, if, case, call).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-008",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares kind let; a let is now kind computed, with its JSON Logic in expression.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-009",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' is kind <kind> and declares producer '<value>'; a <kind> node's producer is <generated | computed>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-010",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares producer '<value>', which is reserved for a later version (accepted at 31: generated, computed).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-011",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares <modelDerived | runDependent | profileCarrying> <value>, but its reads make it <derived>: <the read that does, or none>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-012",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' is kind agent and returns <format>, which has no binding for producer <producer> in agents/bindings.json.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-013",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' is kind rendered and returns <format>; a rendered node returns plaintext, markdown_block or markdown_inline.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-014",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' is kind agent and declares an inline format; an agent's format is named, in formats/.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-015",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Flow> '<id>' declares format <declared>, but its ret gives <derived>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-016",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Branch <n> of <if | case> '<id>' returns <format>, which is not in the declared union <union>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-017",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' is not a built-in, catalogue or package format.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-018",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "'input.<id>' is read bare; read input.<id>.value, or input.<id>.content for text.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-019",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "'<path>.title' reads the title of a plain enum, which has none; use a labelled oneOf, or read .value.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-020",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Condition> compares <path>.title with '<literal>', which is not one of its titles (<titles>).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-021",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format | Input '<id>'> uses keyword '<keyword>' at <path>, which is outside the formats dialect.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-022",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' declares no $schema; every format file names the dialect (urn:consultologist:spec:31:dialect).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-023",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' declares $schema '<value>', but the package is specVersion <n>, whose dialect is <id>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-024",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> declares additionalProperties <value>; every object declares additionalProperties: false.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-025",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> lists '<property>' in required but declares no such property.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-026",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> leaves '<property>' out of required; every property is listed in required, and an optional one is written as nullable.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-027",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Node '<id>' returns <format>, an anyOf at its root, which strict mode can't send to a model; wrap it in an object.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-028",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> writes a nullable <type> with anyOf; write it as \"type\": [\"<type>\", \"null\"].",
+      "audience": "author"
+    },
+    {
+      "id": "S02-029",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> declares type <list>; a type array is one type plus \"null\".",
+      "audience": "author"
+    },
+    {
+      "id": "S02-030",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> uses format '<value>'; the only format is date, on a string.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-031",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> has '<keyword>' beside $ref; only title and description may sit beside a $ref.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-032",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> at <path> refers to itself; recursive formats aren't supported.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-033",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Package format '<id>' declares $id; a package format's $id is written at publish.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-034",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Package format '<id>' is a <string | number | boolean>; a package defines object and array formats, and refers to built-in and catalogue formats by name.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-035",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' is a text format and declares no contentMediaType.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-036",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' is Markdown and declares no x-markdown (block or inline).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-037",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Format> declares <contentMediaType | x-markdown> at <path>, where it doesn't apply.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-038",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Input '<id>' | Node '<id>'>'s inline format declares <contentMediaType | x-markdown>; text inside an inline format is a $ref to a text format.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-039",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "formats/index.json lists '<id>', but formats/ has no <id>.json.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-040",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' takes markdown_inline; use plaintext or markdown_block.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-041",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' takes a choice of shapes (anyOf); an input has one shape.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-042",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' declares channel '<channel>' (accepted: transcript, image, ambient-note, form).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-043",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' declares channel '<channel>', which is only for a text input or an array of text.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-044",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' declares channel 'form', which needs an object with at least one property.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-045",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' field '<property>' has no title; the Create page labels each field by its title.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-046",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Input '<id>' declares default; inputs have no default at 31.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-047",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> declares one value; an enum with one value is a constant, not a choice.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-048",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> declares value '<value>' twice.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-049",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> value '<value>' must be snake_case (a lowercase letter, then lowercase letters, digits, or underscores).",
+      "audience": "author"
+    },
+    {
+      "id": "S02-050",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> gives two values the title '<title>'.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-051",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> writes oneOf branch <n> as <shape>; each branch is exactly { \"const\": <value>, \"title\": <label> }.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-052",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> declares both enum and oneOf; write one.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-053",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> is nullable but its enum doesn't list null; a nullable enum lists null among its values.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-054",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "<Subject> is nullable but its oneOf has no { \"const\": null } arm; a nullable labelled enum adds one.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-055",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' declares <n> properties; a format sent to a model declares at most <limit>.",
+      "audience": "author"
+    },
+    {
+      "id": "S02-056",
+      "part": "02",
+      "section": "Refusals",
+      "sentence": "Format '<name>' nests <n> levels deep at <path>; a format sent to a model nests at most <limit>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-001",
+      "part": "03",
+      "section": "8. The printer",
+      "sentence": "skipped: input.kind.value = \"table\" is false",
+      "audience": "clinician"
+    },
+    {
+      "id": "S03-002",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> compares <path> (<format>) with a literal; text is tested by whether it is blank, its size, or in.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-003",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> compares <path> (<format>) with <path> (<format>); text is tested by whether it is blank, its size, or in.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-004",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> uses ==; equality is written === (shown as =).",
+      "audience": "author"
+    },
+    {
+      "id": "S03-005",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> uses !=; inequality is written !== (shown as ≠).",
+      "audience": "author"
+    },
+    {
+      "id": "S03-006",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> uses <operation>, which is not a JSON Logic operation of this format (<the allowed list>).",
+      "audience": "author"
+    },
+    {
+      "id": "S03-007",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> uses substr; text is cut with trim or plain, and measured with size.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-008",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> orders <path> (<format>); <, >, ≤ and ≥ compare numbers or dates.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-009",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> tests <path> (<format>) with not; not takes a boolean — test text with blank.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-010",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> gives <operation> <n> operands; it takes <m>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-011",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> writes <operation> with a bare operand; operands are written as an array.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-012",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads var with a default; every read is one path.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-013",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <path>, a position in a list; lists are read whole, or by identity through .items.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-014",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <path>, which doesn't exist here.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-015",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads input.<id>; an input is read as input.<id>.value, .content or .title.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-016",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <path>.title, but <format> is a plain enum with no titles; read .value, or give the format oneOf with const and title.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-017",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> compares <path>.title with \"<text>\", which is not one of its titles (<titles>).",
+      "audience": "author"
+    },
+    {
+      "id": "S03-018",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads profile.<field>; profile fields are read only in deliverable templates and macro bodies, never in conditions or computed expressions.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-019",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <root>.<rest>; JSON Logic reads input, node, check, item, pass, param and run.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-020",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Deliverable '<id>' if reads node.<id>.content; a deliverable's if reads data (.value), not text.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-021",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Deliverable '<id>' if reads check.<id>; a deliverable's existence can't depend on a check.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-022",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Macro '<id>' if reads param.<name>; a macro's if is shared, so it can't depend on one function's parameter.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-023",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> compares <path> with \"<value>\", which is not one of its values (<values>).",
+      "audience": "author"
+    },
+    {
+      "id": "S03-024",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <path>.value.<field>, which not every member of <format> declares.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-025",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> <member> yields <format>; a condition yields a boolean.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-026",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Computed node '<id>' yields <format>; it declares <format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-027",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Computed node '<id>' builds <format> without <field>; object must give every property of the format.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-028",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Computed node '<id>' builds <format> with <field>, which the format doesn't declare.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-029",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> gives <operation> a computed <operand>; <operand> must be written as a literal.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-030",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> gives count_pass a min of <n>; min is a whole number, 0 or more.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-031",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> pattern \"<pattern>\" is not I-Regexp (RFC 9485): <reason>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-032",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> pattern \"<pattern>\" is <n> characters long; the most is 200.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-033",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> gives has_word a blank word; has_word finds one word or phrase.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-034",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> uses if without an else; write the else.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-035",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> cats <path> (<format>); convert Markdown with plain first.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-036",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "Node '<id>' declares <modelDerived | runDependent | profileCarrying> <value>, but its reads make it <derived>: <the read that does, or none>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-037",
+      "part": "03",
+      "section": "11.2 Warnings at publish and in the Editor",
+      "sentence": "<site> <member> reads run.<fact>; its decision can differ between runs with the same inputs.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-038",
+      "part": "03",
+      "section": "11.2 Warnings at publish and in the Editor",
+      "sentence": "Computed node '<id>' reads <run.fact or path>, which is run-dependent; its value can differ between runs with the same inputs.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-039",
+      "part": "03",
+      "section": "11.2 Warnings at publish and in the Editor",
+      "sentence": "computed from model text: node.<id>",
+      "audience": "author"
+    },
+    {
+      "id": "S03-040",
+      "part": "03",
+      "section": "11.3 Failures at run time",
+      "sentence": "<site> <member> could not be decided: matches was given <n> MiB of text; the most is 1 MiB.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-041",
+      "part": "03",
+      "section": "11.3 Failures at run time",
+      "sentence": "<site> <member> yields <a value kind>; a condition yields a boolean.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-042",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> pattern \"<pattern>\" repeats <n> times; a counted repetition is at most 100.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-043",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> pattern \"<pattern>\" doesn't compile with the engine's options: <reason>.",
+      "audience": "author"
+    },
+    {
+      "id": "S03-044",
+      "part": "03",
+      "section": "11.1 Refusals at publish",
+      "sentence": "<site> reads <path>, which carries profile text; prompts, parts and conditions don't read profile text.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-001",
+      "part": "04",
+      "section": "2.4 `until`, `max` and `.stopped`",
+      "sentence": "stopped early at <position name>",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-002",
+      "part": "04",
+      "section": "2.4 `until`, `max` and `.stopped`",
+      "sentence": "not run: beyond max <n>",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-003",
+      "part": "04",
+      "section": "2.6 `item` and the `.items` element",
+      "sentence": "skipped: item.value.kind = \"narrative\" is false",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-004",
+      "part": "04",
+      "section": "2.7 `itemLabel`: naming items",
+      "sentence": "Sections 2",
+      "audience": "author"
+    },
+    {
+      "id": "S04-005",
+      "part": "04",
+      "section": "3.2 How it runs",
+      "sentence": "stopped at its bound of 3; the check never stopped holding",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-006",
+      "part": "04",
+      "section": "5.2 `case`",
+      "sentence": "case '<id>': arm for <value> does nothing",
+      "audience": "author"
+    },
+    {
+      "id": "S04-007",
+      "part": "04",
+      "section": "5.4 Examples (migrated)",
+      "sentence": "case 'route': arm for omit does nothing",
+      "audience": "author"
+    },
+    {
+      "id": "S04-008",
+      "part": "04",
+      "section": "5.4 Examples (migrated)",
+      "sentence": "skipped: item.id ≠ \"billing\" or input.include_billing.value = true is false",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-009",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares label null; a loop's or branch's label is what the rail, History and the diagram show: write one.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-010",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<Kind> '<id>' declares <member>, which belongs to <a for | a while | an if | a case>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-011",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<subject> returns nothing; name the body node the outside reads with ret.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-012",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<subject> returns <ret>, which is not one of its own children (<full names>): write the child's full name, for example node.sections.paragraphs.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-013",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<subject> lists node '<id>' twice; a body is a set.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-014",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<Kind> '<id>' declares format <format>; its ret makes it <format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-015",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<Kind> '<id>' declares reproducible <true | false>; its body makes it <false | true>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-016",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<Kind> '<id>' declares <modelDerived | runDependent | profileCarrying> <true | false>; its body makes it <false | true>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-017",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<Kind> '<id>' <in | case | with <param>> is an expression; it names one readable thing: compute the value in a computed node and name that.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-018",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' has no body; name the nodes that run per item in nodes.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-019",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares parallel true with maxParallel 1, which runs one item at a time; declare \"parallel\": false and \"maxParallel\": null instead.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-020",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares maxParallel <n>; the most is FormatBounds.parallel (15).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-021",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares maxParallel <n>; the least is 2, or null for no cap of its own.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-022",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares maxParallel <n> with parallel false; a sequential loop runs one item at a time: write \"maxParallel\": null.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-023",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares until with parallel true; until stops after the item where it holds, which needs items in order: declare \"parallel\": false and \"maxParallel\": null.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-024",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' declares max 0; the least is 1.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-025",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' iterates <reference>, which is <format>; only a list can be iterated.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-026",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' iterates item.value.<field>, but it runs inside no loop; item.value names the enclosing loop's item.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-027",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' iterates node.<y>.value.<z>; <y> runs inside loop '<l>' — a loop iterates a node outside it, or in an enclosing loop's body.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-028",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' itemLabel '<field>' is not a field of the elements of <reference> (fields: <fields>).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-029",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' itemLabel '<field>' may be missing or null; itemLabel names a field every element has as a string.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-030",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Loop '<id>' itemLabel '<field>' is <format>; itemLabel names a string field.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-031",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "While '<id>' declares max null; a while must declare its bound (1 to 15).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-032",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "While '<id>' declares max <n>; a while runs at most FormatBounds.passes (15) passes.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-033",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "While '<id>' declares max <n>; the least is 1.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-034",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "While '<id>' has no body; name the nodes that run per pass in nodes.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-035",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Node '<id>' in while '<w>' is neither returned nor read; name it with ret, read it from a body node or from the check.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-036",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<site> reads pass.number, but it runs inside no while; pass is a while's pass.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-037",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<site> reads pass.parent, but its while runs inside no while; pass.parent is the enclosing while's pass.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-038",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<site> reads pass.previous.node.<id>, which is not in while '<w>'; a pass reads the while's own nodes.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-039",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<site> reads node '<id>', which runs inside loop '<l>'; read node.<l>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-040",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "<site> reads item.parent, but its loop runs inside no loop; item.parent is the enclosing loop's item.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-041",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "If '<id>' declares then null; an if runs a then body.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-042",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' has no branches; a case runs one branch per set of values.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-043",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' branch <n> lists no value; a branch's when names one or more values.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-044",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' switches on <reference>, which is <format>; a case switches on an enumerated string.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-045",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' branch <n> lists \"<value>\", which is not one of <reference>'s values (<values>).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-046",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' lists \"<value>\" in branches <n> and <m>; a value belongs to one branch.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-047",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' doesn't list <values> and has no else; a case has a branch for every value: add a branch, an empty branch, or an else.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-048",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' branch <n> writes nodes <[] | ids> with ret <ret>; an empty branch writes nodes [] and ret null together.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-049",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "case '<id>': arm for <value> does nothing",
+      "audience": "author"
+    },
+    {
+      "id": "S04-050",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Node '<id>' in function '<f>' reads input.<name>; a function reads only its parameters: add a parameter and pass it in with.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-051",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Node '<id>' in function '<f>' reads <reference>; a function reads only its parameters: add a parameter and pass it in with.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-052",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' uses <snippet | macro | format | renderer> '<id>' but doesn't list it in uses.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-053",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' has its own <snippet | macro | format | renderer> '<id>' and also uses the package's: rename one.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-054",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<a>' calls '<b>', which calls '<a>': functions may not call themselves.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-055",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<a>' calls '<a>': functions may not call themselves.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-056",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' reaches depth <n>; calls nest at most FormatBounds.depth (15) deep.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-057",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' returns node.<id>, an if with no else: add an else, or return a node that always runs.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-058",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' returns node.<id>, which runs inside if '<b>' and may be skipped: return a node that always runs.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-059",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' returns node.<id>, a case with an empty branch for <values>: return a node that always runs.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-060",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' returns node.<id>, whose branches return <format> and <format>: a function returns one format. Wrap them in an object format.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-061",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' declares format <format>; its ret '<id>' returns <format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-062",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' holds a <checks | deliverables> folder; checks and deliverables live only at the package's top level: return a check_result or a value instead.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-063",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Macro '<m>' is placed in function '<f>', where its if reads node.<id>, which doesn't exist there: add a classifier with that id (pattern A), or pass the decision in and hold it in a computed node (pattern B).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-064",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' names function '<f>', which the package doesn't define.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-065",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' passes no <param>; function '<f>' takes <params>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-066",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' passes <param>, which function '<f>' doesn't take (<params>).",
+      "audience": "author"
+    },
+    {
+      "id": "S04-067",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<f>' parameter '<param>' declares <required | channel>; a parameter has label, description and format, and every one is passed.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-068",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' passes <reference> (<format>) as <param>; function '<f>' takes <format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-069",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Function '<id>' reads param.<name>, which carries profile.<field>, in <a prompt | a part | a condition>; the profile is read only in deliverables and macro bodies.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-070",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' declares format <format>; function '<f>' returns <format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-071",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Call '<id>' has a body; a call is a header only.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-072",
+      "part": "04",
+      "section": "10.2 Notes and warnings at publish",
+      "sentence": "Up to <n> agent calls could run at once; this engine runs at most <N> per job, so the rest wait their turn.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-073",
+      "part": "04",
+      "section": "10.2 Notes and warnings at publish",
+      "sentence": "An unbounded number of agent calls could run at once (loop '<id>' has no cap over a list known only at run time); this engine runs at most <N> per job, so the rest wait their turn.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-074",
+      "part": "04",
+      "section": "10.2 Notes and warnings at publish",
+      "sentence": "Function '<f>' lists <snippet | macro | format | renderer> '<id>' in uses but never uses it.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-075",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' switches on <reference>, which can be null, and has no else; a null subject goes to the else: add one.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-076",
+      "part": "04",
+      "section": "10.1 Refusals at publish",
+      "sentence": "Case '<id>' branch <n> lists null; a null subject goes to the else.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-077",
+      "part": "04",
+      "section": "2.4 `until`, `max` and `.stopped`",
+      "sentence": "0 items: <reference> is null",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-078",
+      "part": "04",
+      "section": "2.4 `until`, `max` and `.stopped`",
+      "sentence": "Loop '<id>' was given <n> items; this engine runs at most <limit> per loop.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S04-079",
+      "part": "04",
+      "section": "10.2 Notes and warnings at publish",
+      "sentence": "Loop '<id>' iterates <reference>, which could hold more than <limit> items; this engine runs at most <limit> per loop, and fails the loop beyond that.",
+      "audience": "author"
+    },
+    {
+      "id": "S04-080",
+      "part": "04",
+      "section": "10.2 Notes and warnings at publish",
+      "sentence": "Up to <n> agent calls could run in one job; this engine runs at most <limit> per job, and fails the job beyond that.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-001",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> uses <construct> at line <n>; templates present text and may not use assignment, capture, func, include, import, with, wrap, while, break, continue, case, tablerow or arithmetic.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-002",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> calls <built-in> at line <n>; the allowed built-ins are string.upcase, string.downcase, string.capitalize, string.strip, array.join, array.size and date.to_string.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-003",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> calls truncate at line <n>; truncate cuts clinical text.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-004",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> calls object.default at line <n>; choosing text is a decision: put it in a header condition.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-005",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> calls date.to_string at line <n> without a pattern; write the pattern, for example \"%d %B %Y\".",
+      "audience": "author"
+    },
+    {
+      "id": "S05-006",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> runs a for over <expr> at line <n>; a for runs over a list.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-007",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> tests <expr> in a body if at line <n>; a body if tests only loop position, state and whether a check passed. Decide it in a header: a part, a snippet's if or a macro's if.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-008",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-009",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> branches on <expr> and handles <states>, but not <missing>: add it or an else.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-010",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> compares <expr> with \"<value>\" at line <n>; a state is completed, skipped or not_run.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-011",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <path> at line <n>, which <format or root> doesn't have.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-012",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> stopped rendering: the for at line <n> reached 1,000 iterations.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-013",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> nests if and for <n> deep at line <m>; the limit is 15.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-014",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> stopped rendering: its output passed 1 MiB.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-015",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places <unit> with ~}} at line <n>; it removes the line's newline, joining two lines. Use {{~ <unit> }} alone on a line.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-016",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places <unit> with - at line <n>; it removes blank lines between paragraphs.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-017",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places {{~ <unit> }} inside a line at line <n>; it removes the space before it. Use {{ <unit> }}.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-018",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> has text after {{~ <unit> }} at line <n>; a block placement stands alone on its line.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-019",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> uses - at line <n>; it removes blank lines between paragraphs. Use ~.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-020",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <root> at line <n>; <site> reads <allowed roots>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-021",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' reads profile.<field>; the clinician's profile is never sent to a model. Read it in a deliverable or a macro body.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-022",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Snippet '<id>' reads <path>, which isn't available where <subject> places it at line <n>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-023",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Kind> '<id>' reaches itself: <chain>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-024",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <path> and run.<fact> in one output at line <n>; an output that reads a run fact reads nothing else.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-025",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "… reads <path> and the run-dependent <value> in one output …",
+      "audience": "author"
+    },
+    {
+      "id": "S05-026",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> pipes <source> (<format>) into renderer.<id>, which renders <input format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-027",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node 'identify_problem' pipes node.plan.value (section_plan) into renderer.concept_bullets, which renders concept_list.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-028",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Renderer '<id>' declares format <format>; a renderer returns plaintext, markdown_block or markdown_inline.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-029",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Renderer '<id>' reads <root>; a renderer reads only the value piped into it.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-030",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> calls renderer.<id> at line <n>; pipe into it: <value> | renderer.<id>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-031",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> pipes into renderer.<id>, which this package doesn't define.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-032",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Renderer '<id>' takes the id of a built-in renderer.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-033",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Renderer '<id>' pipes into renderer.<other> at line <n>; chain renderers where they're used, not inside a renderer.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-034",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> pipes renderer.<id> (<format>) into renderer.<next>, which renders <input format>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-035",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places snippet.<id>, which this package doesn't define.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-036",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Snippet '<folder>/<id>' has a header that doesn't match format <format>: <schema error>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-037",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads snippet.<id> at line <n>; read its text as snippet.<id>.content.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-038",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' places part.<name>, which its header doesn't declare.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-039",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares part '<name>' but never places it.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-040",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' places part.<name> <n> times; place a part once.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-041",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' declares parts, and only agent nodes have parts.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-042",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' places macro.<other> in its body; a macro body is output text, written after the model replies. Put shared text in a snippet and place it in both.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-043",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' places part.<name> in its body; …",
+      "audience": "author"
+    },
+    {
+      "id": "S05-044",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' has <n> markers in its instruction; it must hold {{~ macro.<id>.content }} or {{ macro.<id>.content }} exactly once.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-045",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' has the marker of macro '<other>' in its instruction.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-046",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' places macro.<macro>, whose format is <format>; an <node format> node takes <allowed>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-047",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places macro.<id>; only agent nodes place macros, in their prompt or a part's text.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-048",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> places macro.<id> twice, counting its parts' text; place a macro once in a template.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-049",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Node '<id>' places macro.<macro>, and returns <format>; macros are placed only in agent nodes returning a text format.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-050",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' has format <format>, and its body <reason, e.g. writes Markdown at line 2>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-051",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' has a marker in its body; a body is the text that replaces the marker.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-052",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "Macro '<id>' reads param.<name> in its if; decide outside the function and pass the answer in, or classify inside it.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-053",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has no marker for macro '<id>'.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-054",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has the marker for macro '<id>' <n> times.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-055",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has a marker for macro '<id>', which wasn't offered.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-056",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has a marker for '<id>', which isn't a macro.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-057",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply writes the marker for macro '<id>' <inside a sentence | alone on a line>, but it was asked for <alone on a line | inside a sentence>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-058",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has text after the marker for macro '<id>' on its line.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-059",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "The reply has the markers out of order: '<id>' before '<other>'.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-060",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <run.fact or run-dependent value> at line <n>. Its main hash differs between runs; runs are compared on the run-neutral hash.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-061",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> pipes renderer.<id>, a markdown_block, inside a line at line <n>.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-062",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> stopped rendering: it took more than <limit> steps.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-063",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <path>[<n>] at line <n>, a position in a list; lists are read whole, with a for, or by identity through .items.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-064",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <path> at line <n>, which carries profile text through macro '<id>'; a prompt or a part doesn't read profile text. Read it in a deliverable.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-001",
+      "part": "06",
+      "section": "5. Checks in the record and History",
+      "sentence": "12 of 12 terms present",
+      "audience": "author"
+    },
+    {
+      "id": "S06-002",
+      "part": "06",
+      "section": "5. Checks in the record and History",
+      "sentence": "7 of 9 sections passed",
+      "audience": "author"
+    },
+    {
+      "id": "S06-003",
+      "part": "06",
+      "section": "5. Checks in the record and History",
+      "sentence": "Consultation note was blocked: check 'coverage' failed (10 of 12 terms present).",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-004",
+      "part": "06",
+      "section": "6.2 Item states",
+      "sentence": "stopped early at <position name>",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-005",
+      "part": "06",
+      "section": "6.5 Headings are the author's",
+      "sentence": "computed from model text: node.standards.section_instructions",
+      "audience": "author"
+    },
+    {
+      "id": "S06-006",
+      "part": "06",
+      "section": "7. Gating and outcomes",
+      "sentence": "released: check '<id>' didn't apply (its if was false)",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-007",
+      "part": "06",
+      "section": "8. Delivery",
+      "sentence": "not sent: EMR isn't set up for this account",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-008",
+      "part": "06",
+      "section": "10.7 The Profile page and the time zone",
+      "sentence": "Set your time zone in your account settings before running a workflow.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-009",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check '<id>' has format <format>; a check returns check_result.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-010",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check '<id>' has kind <kind>; a check is computed.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-011",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Path> in checks/ is <kind>; checks/ holds checks and the loops over them.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-012",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check '<id>' passes <expr> as failWith; failWith is a literal sentence.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-013",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check '<id>' passes <expr> as min; min is a whole number of at least 0.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-014",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check loop '<id>' runs over <source>; a check loop runs over a production loop's .items.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-015",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Function '<id>' holds check '<check>'; functions hold no checks. Return a check_result as data and check the calls' .items.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-016",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Node '<id>' reads deliverable.<deliverable>; only checks read deliverables.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-017",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Node '<id>' reads deliverable.<deliverable>; deliverables are the job's outputs: read the nodes it is composed from.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-018",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' reads check.<check>, which checks <id>: a deliverable can't read its own check.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-019",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' reads deliverable.<other>; a deliverable reads nodes, inputs, snippets, checks, the profile and run facts.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-020",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' has format <format>; a deliverable is markdown_block, plaintext or an object format.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-021",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' is <format>, and reads <path> (<read format>) at line <n>. <Convert it in a node | Use a renderer or a node>.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-022",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' is plaintext, and line <n> writes Markdown ('<text>').",
+      "audience": "author"
+    },
+    {
+      "id": "S06-023",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' is <object format>; its template is {{ node.<x>.value }} and nothing else.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-024",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' reads <path> in its if; a deliverable's if reads inputs, node values and run facts.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-025",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverable '<id>' has whenEmpty <value>; write release, hold or fail.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-026",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Deliverables folder '<path>' has delivery kind <kind>; the kinds are email, pdf, emr and zip.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-027",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "deliverables/index.json is missing; the deliverables folder states its delivery.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-028",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Subject> reads profile.<field>, which isn't a profile field; the fields are name, credentials, organisation, signature and closing.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-029",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Condition owner> reads profile.<field> in a condition; the profile is read only in deliverables and macro bodies.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-030",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Function '<id>' reads param.<name>, which carries profile.<field>, in <a prompt | a part | a condition>; the profile is read only in deliverables and macro bodies.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-031",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "This workflow needs your signature. Choose one in Profile.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-032",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "This workflow needs your <field label>. Set it in Profile, under Letter details.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-033",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Deliverable label> was blocked: check '<id>' failed (<detail>).",
+      "audience": "author"
+    },
+    {
+      "id": "S06-034",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "not sent: <Kind> isn't set up for this account",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-035",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "Check '<id>' gates deliverable '<deliverable>', and its if reads <path>, which can be null; a gate check's if reads values that are always set.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-036",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Subject> reads <path>, which carries profile text; prompts, parts and conditions don't read profile text. Read it in a deliverable.",
+      "audience": "author"
+    },
+    {
+      "id": "S06-037",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "<Deliverable label> was blocked: check '<id>' could not run (<error>).",
+      "audience": "clinician"
+    },
+    {
+      "id": "S06-038",
+      "part": "06",
+      "section": "Refusals",
+      "sentence": "not sent: the job failed",
+      "audience": "clinician"
+    },
+    {
+      "id": "S07-001",
+      "part": "07",
+      "section": "4.4 Upgrading a locked library: the corpus re-render",
+      "sentence": "Scriban output changed at 7.3.0",
+      "audience": "author"
+    },
+    {
+      "id": "S07-002",
+      "part": "07",
+      "section": "6. Where the files live",
+      "sentence": "Download package",
+      "audience": "author"
+    },
+    {
+      "id": "S07-003",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "This workflow (<package>@<version>) needs <component> <range>; this engine runs <component> <engine version>. Publish a new version of the workflow to run it on this engine.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S07-004",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "This workflow (<package>@<version>) needs <kind or feature> '<name>', which this engine doesn't support. Publish a new version of the workflow to run it on this engine.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S07-005",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "This workflow (<package>@<version>) needs agent <agent name> version <version>, which this engine doesn't have. Publish a new version of the workflow to run it on this engine.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S07-006",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Workflow <package>@<version> can't run: its compiled document doesn't match the hash published for it.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-007",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' failed: <expectation> for <key> expected <expected>, got <actual>. Publish stopped.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-008",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' has no stub for <row key>, which runs. Add it to outputs.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-009",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' stubs <row key> with a value that isn't <format>: <first validation error>.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-010",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' gives no value for input '<input id>'. List every input; use null for an optional input left unset.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-011",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' must give exactly the profile fields the workflow reads: <fields>.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-012",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' must give exactly the run facts the workflow reads: <facts>.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-013",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Tests took longer than 60 seconds in all. Publish stopped.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-014",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Test '<test id>' stubs <row key>, which doesn't run.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-015",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "<path> is evidence written only by publish; it is ignored and shouldn't be committed.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-016",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "This package's resolve.json and lock.json were ignored; publishing writes new ones.",
+      "audience": "author"
+    },
+    {
+      "id": "S07-017",
+      "part": "07",
+      "section": "10. Refusals",
+      "sentence": "Workflow <package>@<version> can't run: its lock doesn't match the hash published for it, or doesn't belong to its compiled document.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-001",
+      "part": "08",
+      "section": "4. Node rows",
+      "sentence": "skipped: …",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-002",
+      "part": "08",
+      "section": "4. Node rows",
+      "sentence": "not run: beyond max <n>",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-003",
+      "part": "08",
+      "section": "10. Deliverable rows",
+      "sentence": "held: empty",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-004",
+      "part": "08",
+      "section": "10. Deliverable rows",
+      "sentence": "skipped: <condition> is false",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-005",
+      "part": "08",
+      "section": "Refusals and recorded sentences",
+      "sentence": "skipped: <printed condition> is false",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-006",
+      "part": "08",
+      "section": "Refusals and recorded sentences",
+      "sentence": "not sent: <kind> isn't set up for this account",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-007",
+      "part": "08",
+      "section": "Refusals and recorded sentences",
+      "sentence": "blocked: check '<id>' failed (<detail>)",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-008",
+      "part": "08",
+      "section": "Refusals and recorded sentences",
+      "sentence": "blocked: check '<id>' could not run (<error>)",
+      "audience": "clinician"
+    },
+    {
+      "id": "S08-009",
+      "part": "08",
+      "section": "Refusals and recorded sentences",
+      "sentence": "cancelled: the job didn't finish within <n> minutes",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-001",
+      "part": "09",
+      "section": "1.3 Which spec versions an engine admits",
+      "sentence": "specVersion 31 is not supported: this engine accepts specVersion <list> (pre-v5 packages are archived; see registry-operations.md).",
+      "audience": "author"
+    },
+    {
+      "id": "S09-002",
+      "part": "09",
+      "section": "3.5 The publish note",
+      "sentence": "Up to <n> agent calls could run at once; this engine runs at most <ceiling> per job, so the > rest wait their turn.",
+      "audience": "author"
+    },
+    {
+      "id": "S09-003",
+      "part": "09",
+      "section": "3.5 The publish note",
+      "sentence": "An unbounded number of agent calls could run at once, since <loop key> has no maxParallel and > reads a list of unknown length; this engine runs at most <ceiling> per job, so the rest wait > their turn.",
+      "audience": "author"
+    },
+    {
+      "id": "S09-004",
+      "part": "09",
+      "section": "6.2 The job header",
+      "sentence": "migrated by the operator from <old version>",
+      "audience": "author"
+    },
+    {
+      "id": "S09-005",
+      "part": "09",
+      "section": "6.3 Banners",
+      "sentence": "<deliverable label> was blocked: check '<check id>' failed (<check detail>).",
+      "audience": "author"
+    },
+    {
+      "id": "S09-006",
+      "part": "09",
+      "section": "6.4 The sections, in the order the job runs",
+      "sentence": "16 November 2026",
+      "audience": "author"
+    },
+    {
+      "id": "S09-007",
+      "part": "09",
+      "section": "8.1 31 packages are view-only until Milestone 41",
+      "sentence": "This package uses the new format. You can view and download it; editing returns in a later release.",
+      "audience": "author"
+    },
+    {
+      "id": "S09-008",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "This workflow (example-nested-note@v2026.11.2) needs Scriban ^7.2; this engine runs Scriban 8.0.1. Publish a new version of the workflow to run it on this engine.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-009",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The compiled workflow <package>@<version> doesn't match its published hash, so it can't be run. Tell the operator.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-010",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The model service stayed busy for <n> minutes. Run the workflow again later.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-011",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The model service <timed out | returned an error | couldn't be reached> <n> times in a row. Run the workflow again later.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-012",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The job didn't finish within <n> minutes. Run the workflow again later.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-013",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "Up to <n> agent calls could run at once; this engine runs at most <ceiling> per job, so the rest wait their turn.",
+      "audience": "author"
+    },
+    {
+      "id": "S09-014",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The compiled workflow <package>@<version> doesn't match its lock, so it can't be run. Tell the operator.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-015",
+      "part": "09",
+      "section": "9. Refusals and notes",
+      "sentence": "The job reached <limit> agent calls, the most this engine runs for one job.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-016",
+      "part": "09",
+      "section": "3.5 The publish note",
+      "sentence": "<package> could run for about <n> minutes in the worst case; this engine stops a job after <limit> minutes.",
+      "audience": "author"
+    },
+    {
+      "id": "S09-017",
+      "part": "09",
+      "section": "3.8 Delivery at the end",
+      "sentence": "Couldn't send to <destination>. Copy the note instead.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-018",
+      "part": "09",
+      "section": "3.6 Every deploy is preceded by a drain",
+      "sentence": "Waiting for an update to finish",
+      "audience": "clinician"
+    },
+    {
+      "id": "S09-019",
+      "part": "09",
+      "section": "3.8 Delivery at the end",
+      "sentence": "Delivering…",
+      "audience": "clinician"
+    },
+    {
+      "id": "S10-001",
+      "part": "10",
+      "section": "1.4 Hand edits, with notices",
+      "sentence": "written; hand edits remain",
+      "audience": "author"
+    },
+    {
+      "id": "S10-002",
+      "part": "10",
+      "section": "1.4 Hand edits, with notices",
+      "sentence": "Hand edit needed in <file>, <member>: <reason>.",
+      "audience": "author"
+    },
+    {
+      "id": "S10-003",
+      "part": "10",
+      "section": "Refusals",
+      "sentence": "The condition '<expression>' uses <construct>, which has no JSON Logic form at 31: rewrite it by hand.",
+      "audience": "author"
+    },
+    {
+      "id": "S10-004",
+      "part": "10",
+      "section": "Refusals",
+      "sentence": "the prompt reads profile.<field>, which a 31 prompt doesn't read; move it to a deliverable or a macro body.",
+      "audience": "author"
+    },
+    {
+      "id": "S10-005",
+      "part": "10",
+      "section": "Refusals",
+      "sentence": "<package> stays at version 30 for now: <reason>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives.",
+      "audience": "clinician"
+    },
+    {
+      "id": "S10-006",
+      "part": "10",
+      "section": "Refusals",
+      "sentence": "Renamed '<id>' to '<new id>'; '<id>_<kind>' was already taken.",
+      "audience": "author"
+    }
+  ]
+}

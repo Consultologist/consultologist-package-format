@@ -3,6 +3,7 @@
 
 Each group is a function check_<group>() -> list[str] of failures, registered in CHECKS.
 """
+import importlib.util
 import json
 import re
 import sys
@@ -155,7 +156,66 @@ def check_constants():
     return failures
 
 
-CHECKS = [("constants", check_constants)]
+# Rows of each part of the design's refusal-sentences.md (the table, not its totals).
+SENTENCE_COUNTS = {"01": 42, "02": 56, "03": 44, "04": 80, "05": 64,
+                   "06": 38, "07": 17, "08": 9, "09": 19, "10": 6}
+SENTENCE_ID = re.compile(r"^S(0[1-9]|10)-\d{3}$")
+
+
+def load_renderer():
+    spec = importlib.util.spec_from_file_location("render_sentences",
+                                                  ROOT / "scripts" / "render-sentences.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def check_sentences():
+    document, failures = load(V31 / "sentences.json")
+    if document is None:
+        return failures
+    expect(failures, "sentences.json keys", list(document), ["specVersion", "sentences"])
+    expect(failures, "sentences.specVersion", document.get("specVersion"), 31)
+    sentences = document.get("sentences", [])
+    seen = set()
+    last_in_part = {}
+    counts = {}
+    for entry in sentences:
+        id_ = entry.get("id", "")
+        expect(failures, f"{id_} keys", list(entry),
+               ["id", "part", "section", "sentence", "audience"])
+        if not SENTENCE_ID.match(id_):
+            failures.append(f"{id_!r}: not an id of the form S<part>-<number>")
+            continue
+        if id_ in seen:
+            failures.append(f"{id_}: duplicate id")
+        seen.add(id_)
+        part = id_[1:3]
+        expect(failures, f"{id_}.part", entry.get("part"), part)
+        if id_ <= last_in_part.get(part, ""):
+            failures.append(f"{id_}: not ascending within part {part}")
+        last_in_part[part] = id_
+        counts[part] = counts.get(part, 0) + 1
+        if entry.get("audience") not in ("author", "clinician"):
+            failures.append(f"{id_}.audience: {entry.get('audience')!r}")
+        text = entry.get("sentence")
+        if not isinstance(text, str) or not text:
+            failures.append(f"{id_}.sentence: expected a non-empty string")
+            continue
+        if re.search(r"\\[<>|]", text):
+            failures.append(f"{id_}.sentence: a backslash before <, > or |")
+        if not entry.get("section"):
+            failures.append(f"{id_}.section: empty")
+    expect(failures, "sentences per part", dict(sorted(counts.items())), SENTENCE_COUNTS)
+
+    renderer = load_renderer()
+    parsed = renderer.parse(renderer.render(sentences))
+    expect(failures, "sentences rendered and parsed back",
+           parsed, [(e["id"], e["sentence"], e["audience"]) for e in sentences])
+    return failures
+
+
+CHECKS = [("constants", check_constants), ("sentences", check_sentences)]
 
 
 def main():
