@@ -1,0 +1,7 @@
+{
+  "about": "A file no index lists (chapter 1 § 1.2.2). Invalid: nodes/notes.txt sits in nodes/ and nodes/index.json does not list it. Valid: the package without it.",
+  "valid": false,
+  "sentences": [
+    "File 'nodes/notes.txt' is not listed: every file in nodes is named once in its index.json, or is index.json or README.md."
+  ]
+}

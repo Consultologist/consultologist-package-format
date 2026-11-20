@@ -1,0 +1,5 @@
+{
+  "about": "A manifest whose specVersion is not 31 (chapter 1 § 1.3; this implementation's sentence). Invalid: the manifest declares \"specVersion\": 30. Valid: 31.",
+  "valid": true,
+  "sentences": []
+}

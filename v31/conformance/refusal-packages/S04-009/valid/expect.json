@@ -1,0 +1,5 @@
+{
+  "about": "A flow node's label is null (chapter 4 § 4.10.1, in place of chapter 1's sentence for null). Invalid: the while refine declares \"label\": null. Valid: it names its label.",
+  "valid": true,
+  "sentences": []
+}

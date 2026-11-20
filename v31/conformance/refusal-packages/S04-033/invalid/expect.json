@@ -1,0 +1,7 @@
+{
+  "about": "A while's max below 1 (chapter 4 § 4.3.1). Invalid: the while refine declares \"max\": 0. Valid: 1, the least.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares max 0; the least is 1."
+  ]
+}

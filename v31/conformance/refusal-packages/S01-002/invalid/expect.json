@@ -1,0 +1,7 @@
+{
+  "about": "A node whose id is the id of a node it can see (chapter 1 § 1.9.2). Invalid: the for sections holds a node plan, and the top level has one. Valid: the inner node is outline.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' in sections reuses the id of node 'plan' at the top level, which sections can read: rename one. Ids may repeat only where neither can see the other (for example in two sibling loops)."
+  ]
+}

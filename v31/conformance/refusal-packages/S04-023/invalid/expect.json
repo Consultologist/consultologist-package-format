@@ -1,0 +1,7 @@
+{
+  "about": "An until on a parallel for (chapter 4 § 4.2.4). Invalid: the for sections declares an until with \"parallel\": true. Valid: the same until with \"parallel\": false and \"maxParallel\": null.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' declares until with parallel true; until stops after the item where it holds, which needs items in order: declare \"parallel\": false and \"maxParallel\": null."
+  ]
+}

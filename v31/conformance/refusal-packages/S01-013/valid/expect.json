@@ -1,0 +1,5 @@
+{
+  "about": "A delivery folder inside a delivery folder (chapter 1 § 1.2). Invalid: deliverables/emr/archive/ is a folder with its own index.json and deliverable. Valid: the delivery folder deliverables/emr/ alone.",
+  "valid": true,
+  "sentences": []
+}

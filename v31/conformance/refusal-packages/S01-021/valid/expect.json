@@ -1,0 +1,5 @@
+{
+  "about": "A member left out (chapter 1 § 1.5). Invalid: nodes/plan.md's header does not write 'description'. Valid: it writes \"description\": null.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A file starts with a byte-order mark (chapter 1 § 1.2.4). Invalid: manifest.json begins with the bytes EF BB BF. Valid: the same file without them.",
+  "valid": true,
+  "sentences": []
+}

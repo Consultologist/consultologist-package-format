@@ -1,0 +1,5 @@
+{
+  "about": "null in a member that can never be null (chapter 1 § 1.5). Invalid: the agent node plan declares \"label\": null. Valid: it names its label.",
+  "valid": true,
+  "sentences": []
+}

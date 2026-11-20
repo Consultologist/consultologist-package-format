@@ -1,0 +1,7 @@
+{
+  "about": "A member that belongs to another flow kind (chapter 4 § 4.10.1). Invalid: the while refine declares \"parallel\": false, a for's member. Valid: without it.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares parallel, which belongs to a for."
+  ]
+}

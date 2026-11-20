@@ -1,0 +1,7 @@
+{
+  "about": "An id that is a word references read (chapter 1 § 1.6). Invalid: the manifest declares the input 'content', a member read in references. Valid: 'content_note'.",
+  "valid": false,
+  "sentences": [
+    "Id 'content' is reserved: member 'content' is read in references, so nothing may be called 'content'."
+  ]
+}

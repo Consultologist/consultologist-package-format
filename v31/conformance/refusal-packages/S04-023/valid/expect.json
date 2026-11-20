@@ -1,0 +1,5 @@
+{
+  "about": "An until on a parallel for (chapter 4 § 4.2.4). Invalid: the for sections declares an until with \"parallel\": true. Valid: the same until with \"parallel\": false and \"maxParallel\": null.",
+  "valid": true,
+  "sentences": []
+}

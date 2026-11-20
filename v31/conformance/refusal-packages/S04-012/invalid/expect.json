@@ -1,0 +1,7 @@
+{
+  "about": "A ret that is not one of the body's own children by its full name (chapter 4 § 4.7.6). Invalid: the while refine returns node.draft_summary. Valid: node.refine.draft_summary.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' returns node.draft_summary, which is not one of its own children (node.refine.draft_summary, node.refine.judge): write the child's full name, for example node.sections.paragraphs."
+  ]
+}

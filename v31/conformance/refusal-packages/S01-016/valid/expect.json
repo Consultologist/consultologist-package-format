@@ -1,0 +1,5 @@
+{
+  "about": "A .md file that is not a line of ---, one JSON object, a line of --- (chapter 1 § 1.4). Invalid: nodes/plan.md holds its prompt and no header. Valid: the header between its fences.",
+  "valid": true,
+  "sentences": []
+}

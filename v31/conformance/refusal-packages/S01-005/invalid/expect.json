@@ -1,0 +1,7 @@
+{
+  "about": "A maxParallel above FormatBounds.parallel, 15 (chapter 1 § 1.8, chapter 4 § 4.2.3). Invalid: the for standards declares \"maxParallel\": 16. Valid: 15, the limit.",
+  "valid": false,
+  "sentences": [
+    "Loop 'standards' declares maxParallel 16; the most is FormatBounds.parallel (15)."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A file no index lists (chapter 1 § 1.2.2). Invalid: nodes/notes.txt sits in nodes/ and nodes/index.json does not list it. Valid: the package without it.",
+  "valid": true,
+  "sentences": []
+}

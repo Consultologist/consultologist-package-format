@@ -1,0 +1,7 @@
+{
+  "about": "An empty description (chapter 1 § 1.5.1). Invalid: the agent node plan declares \"description\": []. Valid: \"description\": null, which is how none is written.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' has an empty description; write null for none."
+  ]
+}

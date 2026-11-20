@@ -1,0 +1,5 @@
+{
+  "about": "A producer the node's kind does not have (chapter 1 § 1.5.2). Invalid: the agent node plan declares \"producer\": \"computed\". Valid: \"generated\", an agent node's producer.",
+  "valid": true,
+  "sentences": []
+}

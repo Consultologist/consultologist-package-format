@@ -1,0 +1,5 @@
+{
+  "about": "An id that is not a lowercase letter, then lowercase letters, digits or underscores (chapter 1 § 1.6). Invalid: the manifest declares the input 'Referral_letter'. Valid: 'referral_letter'.",
+  "valid": true,
+  "sentences": []
+}

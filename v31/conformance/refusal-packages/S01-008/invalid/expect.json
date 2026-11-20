@@ -1,0 +1,7 @@
+{
+  "about": "A top-level folder that is not there (chapter 1 § 1.2). Invalid: the package has no macros/ folder. Valid: macros/ holds an index.json listing nothing.",
+  "valid": false,
+  "sentences": [
+    "The package has no macros/ folder; all nine top-level folders are always present."
+  ]
+}

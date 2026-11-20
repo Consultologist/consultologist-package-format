@@ -1,0 +1,7 @@
+{
+  "about": "An index lists an id with nothing on disk (chapter 1 § 1.2.2). Invalid: nodes/index.json lists 'summary', and nodes/ has no summary.md or summary/. Valid: the list names only 'plan'.",
+  "valid": false,
+  "sentences": [
+    "nodes/index.json lists 'summary', but nodes has no summary.md or summary/."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A body that is required and empty: an agent node's prompt (chapter 1 § 1.4). Invalid: nodes/plan.md ends at its closing fence. Valid: the prompt follows the fence.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' has an empty body; its prompt is the body."
+  ]
+}

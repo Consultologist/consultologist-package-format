@@ -1,0 +1,7 @@
+{
+  "about": "Bytes that are not UTF-8 (chapter 1 § 1.2.4; this implementation's sentence). Invalid: nodes/plan.md writes the é of Montréal as the single Latin-1 byte E9. Valid: the same prompt in UTF-8.",
+  "valid": false,
+  "sentences": [
+    "File 'nodes/plan.md' is not valid UTF-8; save it as UTF-8."
+  ]
+}

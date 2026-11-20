@@ -1,0 +1,7 @@
+{
+  "about": "A body where none may be: a computed node keeps everything in its header (chapter 1 § 1.4). Invalid: nodes/section_count.md has a line after its closing fence. Valid: nothing after the fence.",
+  "valid": false,
+  "sentences": [
+    "Node 'section_count' has a body; a computed node keeps everything in its header."
+  ]
+}

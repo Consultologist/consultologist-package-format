@@ -1,0 +1,1 @@
+{ "kind": "if", "producer": "computed", "label": "Wording the summary briefly", "description": null, "format": "plaintext", "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": { "===": [{ "var": "input.include_billing.value" }, false] }, "then": { "nodes": ["wording"], "ret": "node.refine.brief.wording" }, "else": null }

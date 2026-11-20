@@ -1,0 +1,5 @@
+{
+  "about": "A node whose id is the id of a node it can see (chapter 1 § 1.9.2). Invalid: the for sections holds a node plan, and the top level has one. Valid: the inner node is outline.",
+  "valid": true,
+  "sentences": []
+}

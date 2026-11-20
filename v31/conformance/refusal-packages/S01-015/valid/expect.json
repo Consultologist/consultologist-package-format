@@ -1,0 +1,5 @@
+{
+  "about": "A carriage return that does not end a line (chapter 1 § 1.2.4). Invalid: nodes/plan.md has a lone \\r inside its prompt. Valid: every line of nodes/plan.md ends with \\r\\n, which the reader reads as \\n.",
+  "valid": true,
+  "sentences": []
+}

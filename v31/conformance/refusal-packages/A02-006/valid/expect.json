@@ -1,0 +1,5 @@
+{
+  "about": "A flow kind declared by a .md file, where a flow node is a folder with an index.json (chapter 4 § 4.1; this implementation's sentence). Invalid: nodes/plan.md declares \"kind\": \"for\". Valid: \"agent\".",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A leaf kind declared by a folder's index.json, where a leaf node is a file (chapter 4 § 4.1; this implementation's sentence). Invalid: nodes/refine/index.json declares \"kind\": \"agent\". Valid: \"while\".",
+  "valid": false,
+  "sentences": [
+    "Node 'refine' is kind agent in a folder; a agent node is a file, refine.md."
+  ]
+}

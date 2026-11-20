@@ -1,0 +1,7 @@
+{
+  "about": "A package without manifest.json (chapter 1 § 1.3; this implementation's sentence). Invalid: the package has every folder and no manifest.json. Valid: the manifest at the root.",
+  "valid": false,
+  "sentences": [
+    "The package has no manifest.json; it holds the package's name, version and inputs."
+  ]
+}

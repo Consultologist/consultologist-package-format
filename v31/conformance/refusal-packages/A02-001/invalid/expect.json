@@ -1,0 +1,7 @@
+{
+  "about": "A member of the wrong JSON type (chapter 1 § 1.5; this implementation's sentence). Invalid: the agent node plan declares \"ordered\": \"no\". Valid: \"ordered\": false.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' declares 'ordered' as text; it is true or false."
+  ]
+}

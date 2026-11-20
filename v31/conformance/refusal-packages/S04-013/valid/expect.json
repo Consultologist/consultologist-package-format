@@ -1,0 +1,5 @@
+{
+  "about": "A body that lists one node twice (chapter 4 § 4.10.1, in place of chapter 1's sentence for a list). Invalid: the while refine's nodes lists draft_summary twice. Valid: once.",
+  "valid": true,
+  "sentences": []
+}

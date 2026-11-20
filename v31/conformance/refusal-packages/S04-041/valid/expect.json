@@ -1,0 +1,5 @@
+{
+  "about": "An if whose then is null (chapter 4 § 4.5.1). Invalid: the if billing_gate declares \"then\": null. Valid: its then body runs billing_text.",
+  "valid": true,
+  "sentences": []
+}

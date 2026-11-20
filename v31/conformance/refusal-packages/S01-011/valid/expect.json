@@ -1,0 +1,5 @@
+{
+  "about": "An index lists a folder with a trailing / (chapter 1 § 1.2.2). Invalid: nodes/index.json lists 'sections/'. Valid: it lists the folder by its bare id, 'sections'.",
+  "valid": true,
+  "sentences": []
+}

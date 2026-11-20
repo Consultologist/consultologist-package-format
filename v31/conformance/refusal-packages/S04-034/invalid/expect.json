@@ -1,0 +1,7 @@
+{
+  "about": "A while with no body (chapter 4 § 4.3.1). Invalid: the while refine declares \"nodes\": [] and its folder holds no children. Valid: its two children, listed.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' has no body; name the nodes that run per pass in nodes."
+  ]
+}

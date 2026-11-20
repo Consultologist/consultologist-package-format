@@ -1,0 +1,5 @@
+{
+  "about": "A case with no branches (chapter 4 § 4.5.2). Invalid: the case route declares \"branches\": [] and its folder holds no children. Valid: its three branches.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "An if's then with no body (chapter 4 § 4.5.1; this implementation's sentence, since chapter 4's names loops and whiles only). Invalid: the if billing_gate's then declares \"nodes\": [] and its folder holds no children. Valid: then runs billing_text.",
+  "valid": false,
+  "sentences": [
+    "If 'billing_gate' then has no body; name the nodes that run in nodes."
+  ]
+}

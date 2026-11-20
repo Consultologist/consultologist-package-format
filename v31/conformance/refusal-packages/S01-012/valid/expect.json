@@ -1,0 +1,5 @@
+{
+  "about": "One id names both a file and a folder (chapter 1 § 1.2.2). Invalid: nodes/ holds refine.md beside the folder refine/. Valid: only the folder.",
+  "valid": true,
+  "sentences": []
+}

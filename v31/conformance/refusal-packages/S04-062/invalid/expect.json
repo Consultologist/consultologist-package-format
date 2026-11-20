@@ -1,0 +1,7 @@
+{
+  "about": "A function folder that holds a checks/ folder (chapter 4 § 4.7.5). Invalid: functions/draft_section/checks/ holds an index.json. Valid: the function without it.",
+  "valid": false,
+  "sentences": [
+    "Function 'draft_section' holds a checks folder; checks and deliverables live only at the package's top level: return a check_result or a value instead."
+  ]
+}

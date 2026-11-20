@@ -1,0 +1,5 @@
+{
+  "about": "An id longer than SourceBounds.idLength, 64 characters (chapter 1 § 1.6). Invalid: the manifest declares an input whose id is 65 characters. Valid: 64, the limit.",
+  "valid": true,
+  "sentences": []
+}

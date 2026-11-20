@@ -1,0 +1,5 @@
+{
+  "about": "An index lists an id twice (chapter 1 § 1.2.2). Invalid: nodes/index.json lists 'plan' twice. Valid: once.",
+  "valid": true,
+  "sentences": []
+}

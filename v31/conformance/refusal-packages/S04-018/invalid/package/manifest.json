@@ -1,0 +1,13 @@
+{
+  "name": "example-full",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Full consult note demo",
+  "description": ["A fictional package for tests.", "Not intended for clinical use."],
+  "tags": ["demo", "fictional"],
+  "inputs": {
+    "consult_draft": { "label": "Consult draft", "description": null, "format": "markdown_block", "required": true, "channel": null },
+    "include_billing": { "label": "Include the billing section", "description": null, "format": "boolean", "required": false, "channel": null }
+  }
+}

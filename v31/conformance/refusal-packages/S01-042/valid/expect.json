@@ -1,0 +1,5 @@
+{
+  "about": "An expression of more than SourceBounds.expressionNodes, 1,000 nodes (chapter 1 § 1.7): one for each operation and each literal, a var with its argument counting one. Invalid: the deliverable note's if has 1,001. Valid: 1,000, the limit.",
+  "valid": true,
+  "sentences": []
+}

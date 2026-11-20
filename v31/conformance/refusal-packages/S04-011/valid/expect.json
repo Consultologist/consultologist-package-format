@@ -1,0 +1,5 @@
+{
+  "about": "A body whose ret is null (chapter 4 § 4.7.6). Invalid: the while refine declares \"ret\": null. Valid: it returns its child node.refine.draft_summary.",
+  "valid": true,
+  "sentences": []
+}

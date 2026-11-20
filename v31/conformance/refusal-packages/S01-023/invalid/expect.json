@@ -1,0 +1,7 @@
+{
+  "about": "A member the declaration does not have (chapter 1 § 1.5). Invalid: nodes/plan.md's header also writes 'lable', a misspelt label. Valid: without it.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' in 'nodes/plan.md' declares unknown member 'lable'. Did you mean 'label'?"
+  ]
+}

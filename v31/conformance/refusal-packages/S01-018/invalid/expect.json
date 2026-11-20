@@ -1,0 +1,7 @@
+{
+  "about": "A member written twice in one header (chapter 1 § 1.4). Invalid: nodes/plan.md's header writes 'label' twice. Valid: once.",
+  "valid": false,
+  "sentences": [
+    "The header of 'nodes/plan.md' declares 'label' twice."
+  ]
+}

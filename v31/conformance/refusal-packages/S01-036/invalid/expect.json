@@ -1,0 +1,7 @@
+{
+  "about": "Two nodes of one id inside one while, where neither sees the other (chapter 1 § 1.9.2): pass.….node.<id> must name one node. Invalid: the while refine holds two ifs, brief and detailed, each with a node wording. Valid: the second is detailed_wording.",
+  "valid": false,
+  "sentences": [
+    "Node 'wording' appears twice inside while 'refine' (refine.brief.wording and refine.detailed.wording): pass.….node.wording must name one node."
+  ]
+}

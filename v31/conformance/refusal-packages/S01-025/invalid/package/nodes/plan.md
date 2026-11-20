@@ -1,0 +1,6 @@
+---
+{ "kind": "agent", "producer": "generated", "label": "Planning the sections", "description": ["Plans the sections of Margaret Okafor's consultation note for Dr A. Sample, one for each heading. Plans the sections of Margaret Okafor's consultation note for Dr A. Sample, one for each heading. Plans the sections of Margaret Okafor's consultation note for Dr A. Sample, one for each heading. Plans the sections of Margaret Okafor's consultation note for Dr A. Sample, one for each heading. Plans the sections of Margaret Okafor's consultation note for Dr A. Sample, one for each heading. Plans the s"], "format": "plaintext", "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null, "onInvalid": "retry", "failIfEmpty": null, "parts": null, "ordered": false }
+---
+Plan the sections of a consultation note for the draft below.
+
+{{ input.consult_draft.content }}

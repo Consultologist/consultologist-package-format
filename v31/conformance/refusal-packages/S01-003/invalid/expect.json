@@ -1,0 +1,7 @@
+{
+  "about": "A while's max above FormatBounds.passes, 15 (chapter 1 § 1.8, chapter 4 § 4.3.1). Invalid: the while refine declares \"max\": 16. Valid: 15, the limit.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares max 16; a while runs at most FormatBounds.passes (15) passes."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A while's max is null (chapter 4 § 4.3.1, in place of chapter 1's sentence for null). Invalid: the while refine declares \"max\": null. Valid: \"max\": 3.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares max null; a while must declare its bound (1 to 15)."
+  ]
+}

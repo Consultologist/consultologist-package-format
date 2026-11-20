@@ -1,0 +1,5 @@
+{
+  "about": "A kind that is none of the eight (chapter 2). Invalid: nodes/plan.md declares \"kind\": \"chat\". Valid: \"agent\".",
+  "valid": true,
+  "sentences": []
+}

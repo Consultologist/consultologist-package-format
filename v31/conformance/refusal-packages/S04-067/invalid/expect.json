@@ -1,0 +1,7 @@
+{
+  "about": "A function parameter that declares a package input's member (chapter 4 § 4.7.2.1). Invalid: the parameter standard of draft_section declares \"required\": true. Valid: label, description and format only.",
+  "valid": false,
+  "sentences": [
+    "Function 'draft_section' parameter 'standard' declares required; a parameter has label, description and format, and every one is passed."
+  ]
+}

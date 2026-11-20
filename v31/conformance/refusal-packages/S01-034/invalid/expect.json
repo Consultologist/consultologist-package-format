@@ -1,0 +1,7 @@
+{
+  "about": "A package format named like a built-in format (chapter 2). Invalid: the package's own format of verdicts is named judgement, a built-in's name. Valid: it is named verdict.",
+  "valid": false,
+  "sentences": [
+    "Format 'judgement' reuses the name of a built-in format: rename it."
+  ]
+}

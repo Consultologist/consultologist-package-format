@@ -1,0 +1,5 @@
+{
+  "about": "A path longer than SourceBounds.pathLength, 200 characters from the package root (chapter 1 § 1.7). Two loops with 64-character ids nest an agent node. Invalid: the node's path is 201 characters. Valid: it is 200.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A case branch whose when names no value (chapter 4 § 4.5.2). Invalid: the case route's third branch declares \"when\": []. Valid: \"when\": [\"omit\"].",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A function folder that holds a checks/ folder (chapter 4 § 4.7.5). Invalid: functions/draft_section/checks/ holds an index.json. Valid: the function without it.",
+  "valid": true,
+  "sentences": []
+}

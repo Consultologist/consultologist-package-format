@@ -1,0 +1,7 @@
+{
+  "about": "A package renderer named like a built-in renderer (chapter 1 § 1.2). Invalid: the package's renderer of terms as bullets is named concept_bullets, a built-in's name. Valid: it is named term_bullets.",
+  "valid": false,
+  "sentences": [
+    "Renderer 'concept_bullets' reuses the name of a built-in renderer: rename it."
+  ]
+}

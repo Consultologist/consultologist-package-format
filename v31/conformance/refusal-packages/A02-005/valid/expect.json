@@ -1,0 +1,5 @@
+{
+  "about": "A plain JSON file whose root is not an object (chapter 1 § 1.4; this implementation's sentence). Invalid: formats/verdict.json holds a JSON list. Valid: the format's object.",
+  "valid": true,
+  "sentences": []
+}

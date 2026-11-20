@@ -1,0 +1,7 @@
+{
+  "about": "JSON nested deeper than SourceBounds.jsonDepth, 32 levels, the outermost object being level 1 (chapter 1 § 1.7). A format nests arrays of arrays. Invalid: formats/nested_points.json opens an object at level 33. Valid: its deepest object is at level 32.",
+  "valid": false,
+  "sentences": [
+    "File 'formats/nested_points.json' nests JSON more than 32 levels deep at /items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items/items; the most is SourceBounds.jsonDepth (32)."
+  ]
+}

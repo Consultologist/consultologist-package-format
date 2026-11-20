@@ -1,0 +1,5 @@
+{
+  "about": "A parallel for capped at one item at a time (chapter 4 § 4.2.3). Invalid: the for standards declares \"parallel\": true with \"maxParallel\": 1. Valid: what the sentence asks, \"parallel\": false and \"maxParallel\": null.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A description of more than 500 code points, its lines joined with \\n (chapter 1 § 1.5.1). Invalid: the agent node plan's description is 501. Valid: it is 500, the limit.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan''s description is 501 characters; the most is 500."
+  ]
+}
