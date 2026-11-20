@@ -799,58 +799,58 @@ Every sentence below is used as written; chapter 11 lists every sentence of this
 
 **Scopes and bounds.**
 - Duplicate in an overlapping scope:
-  *"Node '<id>' in <path> reuses the id of node '<id>' <at the top level | in <other path>>, which <path> can read: rename one. Ids may repeat only where neither can see the other (for example in two sibling loops)."*
+  *"Node '\<id>' in \<path> reuses the id of node '\<id>' \<at the top level | in \<other path>>, which \<path> can read: rename one. Ids may repeat only where neither can see the other (for example in two sibling loops)."*
 - `FormatBounds`:
-  - *"While '<id>' declares max <n>; a while runs at most FormatBounds.passes (15) passes."*
-  - *"Call '<id>' reaches depth <n>; calls nest at most FormatBounds.depth (15) deep."*
-  - *"Loop '<id>' declares maxParallel <n>; the most is FormatBounds.parallel (15)."*
+  - *"While '\<id>' declares max \<n\>; a while runs at most FormatBounds.passes (15) passes."*
+  - *"Call '\<id>' reaches depth \<n\>; calls nest at most FormatBounds.depth (15) deep."*
+  - *"Loop '\<id>' declares maxParallel \<n\>; the most is FormatBounds.parallel (15)."*
 
 **Files and folders.**
-- *"File '<path>' is not listed: every file in <folder> is named once in its index.json, or is index.json or README.md."*
-- *"<folder> has no index.json; every folder lists its members, even when it has none (\"items\": [])."*
-- *"The package has no <folder>/ folder; all nine top-level folders are always present."*
-- *"<list> lists '<id>', but <folder> has no <id>.md or <id>/."*
-- *"<list> lists '<id>' twice."*
-- *"<list> lists '<id>/'; list a folder by its bare id."*
-- *"<folder> holds both <id>.md and <id>/: an id names one file or one folder."*
-- *"Delivery folder '<path>' is inside another delivery folder; delivery folders are one level deep."*
-- *"File '<path>' starts with a byte-order mark; save it as UTF-8 without one."*
-- *"File '<path>' contains a carriage return on line <n> that doesn't end the line; lines end with \n."*
+- *"File '\<path>' is not listed: every file in \<folder> is named once in its index.json, or is index.json or README.md."*
+- *"\<folder> has no index.json; every folder lists its members, even when it has none (\"items\": [])."*
+- *"The package has no \<folder>/ folder; all nine top-level folders are always present."*
+- *"\<list> lists '\<id>', but \<folder> has no \<id>.md or \<id>/."*
+- *"\<list> lists '\<id>' twice."*
+- *"\<list> lists '\<id>/'; list a folder by its bare id."*
+- *"\<folder> holds both \<id>.md and \<id>/: an id names one file or one folder."*
+- *"Delivery folder '\<path>' is inside another delivery folder; delivery folders are one level deep."*
+- *"File '\<path>' starts with a byte-order mark; save it as UTF-8 without one."*
+- *"File '\<path>' contains a carriage return on line \<n\> that doesn't end the line; lines end with \n."*
 
 **Front matter.**
-- *"File '<path>' must start with a line of exactly ---, then one JSON object, then a line of exactly ---."*
-- *"The header of '<path>' is not valid JSON: <parser message>."*
-- *"The header of '<path>' declares '<member>' twice."*
-- *"<Kind> '<id>' has an empty body; its <prompt | template | text> is the body."*
-- *"<Kind> '<id>' has a body; a <computed node | call | check> keeps everything in its header."*
+- *"File '\<path>' must start with a line of exactly ---, then one JSON object, then a line of exactly ---."*
+- *"The header of '\<path>' is not valid JSON: \<parser message>."*
+- *"The header of '\<path>' declares '\<member>' twice."*
+- *"\<Kind> '\<id>' has an empty body; its \<prompt | template | text> is the body."*
+- *"\<Kind> '\<id>' has a body; a \<computed node | call | check> keeps everything in its header."*
 
 **Members.**
-- *"<Declaration> is missing '<member>'; every member is written, and null means none."*
-- *"<Declaration> sets '<member>' to null, which it can never be."*
-- *"<Declaration> in '<path>' declares unknown member '<member>'. Did you mean '<closest>'?"*
-- *"<Declaration> has an empty description; write null for none."*
-- *"<Declaration>'s description is <n> characters; the most is 500."*
-- *"<Declaration> has an empty label."*
-- *"<Node> '<key>' declares reproducible <value>, but its <kind | body | function> makes it <derived>."*
-- *"<Node> '<key>' is kind <kind> and declares producer '<value>'; a <kind> node's producer is <generated | computed>."*
-- *"<Node> '<key>' declares <modelDerived | runDependent | profileCarrying> <value>, but its reads make it <derived>: <the read that does, or none>."*
+- *"\<Declaration> is missing '\<member>'; every member is written, and null means none."*
+- *"\<Declaration> sets '\<member>' to null, which it can never be."*
+- *"\<Declaration> in '\<path>' declares unknown member '\<member>'. Did you mean '\<closest>'?"*
+- *"\<Declaration> has an empty description; write null for none."*
+- *"\<Declaration>'s description is \<n\> characters; the most is 500."*
+- *"\<Declaration> has an empty label."*
+- *"\<Node> '\<key>' declares reproducible \<value>, but its \<kind | body | function> makes it \<derived>."*
+- *"\<Node> '\<key>' is kind \<kind> and declares producer '\<value>'; a \<kind> node's producer is \<generated | computed>."*
+- *"\<Node> '\<key>' declares \<modelDerived | runDependent | profileCarrying> \<value>, but its reads make it \<derived>: \<the read that does, or none>."*
 
 **Ids.**
-- *"'<id>' is not a valid id: a lowercase letter, then lowercase letters, digits or underscores."*
-- *"Id '<id>' is <n> characters; the most is SourceBounds.idLength (64)."*
-- *"Id '<id>' is reserved on Windows (con, prn, aux, nul, com1–com9, lpt1–lpt9) and can't name a file: rename it."*
-- *"Id '<id>' is reserved: <root | member> '<word>' is read in references, so nothing may be called '<id>'."*
-- *"Format '<id>' reuses the name of a <built-in | catalogue> format: rename it."*
-- *"Renderer '<id>' reuses the name of a built-in renderer: rename it."*
-- *"Node '<id>' appears twice inside while '<while>' (<path> and <path>): pass.….node.<id> must name one node."*
+- *"'\<id>' is not a valid id: a lowercase letter, then lowercase letters, digits or underscores."*
+- *"Id '\<id>' is \<n\> characters; the most is SourceBounds.idLength (64)."*
+- *"Id '\<id>' is reserved on Windows (con, prn, aux, nul, com1–com9, lpt1–lpt9) and can't name a file: rename it."*
+- *"Id '\<id>' is reserved: \<root | member> '\<word>' is read in references, so nothing may be called '\<id>'."*
+- *"Format '\<id>' reuses the name of a \<built-in | catalogue> format: rename it."*
+- *"Renderer '\<id>' reuses the name of a built-in renderer: rename it."*
+- *"Node '\<id>' appears twice inside while '\<while>' (\<path> and \<path>): pass.….node.\<id> must name one node."*
 
 **`SourceBounds`.**
-- *"The package has <n> files; the most is SourceBounds.files (512)."*
-- *"File '<path>' is <n> KiB; the most is SourceBounds.fileBytes (256 KiB)."*
-- *"The package is <n> MiB; the most is SourceBounds.totalBytes (2 MiB)."*
-- *"Path '<path>' is <n> characters; the most is SourceBounds.pathLength (200), counted from the package root."*
-- *"File '<path>' nests JSON more than 32 levels deep at <JSON pointer>; the most is SourceBounds.jsonDepth (32)."*
-- *"<Site> in '<path>' has <n> expression nodes; the most is SourceBounds.expressionNodes (1,000)."*
+- *"The package has \<n\> files; the most is SourceBounds.files (512)."*
+- *"File '\<path>' is \<n\> KiB; the most is SourceBounds.fileBytes (256 KiB)."*
+- *"The package is \<n\> MiB; the most is SourceBounds.totalBytes (2 MiB)."*
+- *"Path '\<path>' is \<n\> characters; the most is SourceBounds.pathLength (200), counted from the package root."*
+- *"File '\<path>' nests JSON more than 32 levels deep at \<JSON pointer>; the most is SourceBounds.jsonDepth (32)."*
+- *"\<Site> in '\<path>' has \<n\> expression nodes; the most is SourceBounds.expressionNodes (1,000)."*
 
 ## 2. Types and inputs
 
@@ -1617,73 +1617,73 @@ Every sentence below is used as written; chapter 11 lists every sentence of this
 
 **Sentences outside the checker.**
 - *"This workflow needs the web app"* (a satellite, not the checker).
-- History's *"Not sent to the model: …"* (§ 2.3.5) and *"computed from model text: <key>"* (§ 2.1.2).
+- History's *"Not sent to the model: …"* (§ 2.3.5) and *"computed from model text: \<key>"* (§ 2.1.2).
 
 **Kinds and formats:**
-- *"Node '<id>' declares unknown kind '<kind>' (accepted: agent, rendered, computed, for, while, if, case, call)."*
-- *"Node '<id>' declares kind let; a let is now kind computed, with its JSON Logic in expression."*
-- *"Node '<id>' is kind <kind> and declares producer '<value>'; a <kind> node's producer is <generated | computed>."*
-- *"Node '<id>' declares producer '<value>', which is reserved for a later version (accepted at 31: generated, computed)."*
-- *"Node '<id>' declares <modelDerived | runDependent | profileCarrying> <value>, but its reads make it <derived>: <the read that does, or none>."*
-- *"Node '<id>' is kind agent and returns <format>, which has no binding for producer <producer> in agents/bindings.json."*
-- *"Node '<id>' is kind rendered and returns <format>; a rendered node returns plaintext, markdown_block or markdown_inline."*
-- *"Node '<id>' is kind agent and declares an inline format; an agent's format is named, in formats/."*
-- *"<Flow> '<id>' declares format <declared>, but its ret gives <derived>."*
-- *"Branch <n> of <if | case> '<id>' returns <format>, which is not in the declared union <union>."*
-- *"Format '<name>' is not a built-in, catalogue or package format."*
+- *"Node '\<id>' declares unknown kind '\<kind>' (accepted: agent, rendered, computed, for, while, if, case, call)."*
+- *"Node '\<id>' declares kind let; a let is now kind computed, with its JSON Logic in expression."*
+- *"Node '\<id>' is kind \<kind> and declares producer '\<value>'; a \<kind> node's producer is \<generated | computed>."*
+- *"Node '\<id>' declares producer '\<value>', which is reserved for a later version (accepted at 31: generated, computed)."*
+- *"Node '\<id>' declares \<modelDerived | runDependent | profileCarrying> \<value>, but its reads make it \<derived>: \<the read that does, or none>."*
+- *"Node '\<id>' is kind agent and returns \<format>, which has no binding for producer \<producer> in agents/bindings.json."*
+- *"Node '\<id>' is kind rendered and returns \<format>; a rendered node returns plaintext, markdown_block or markdown_inline."*
+- *"Node '\<id>' is kind agent and declares an inline format; an agent's format is named, in formats/."*
+- *"\<Flow> '\<id>' declares format \<declared>, but its ret gives \<derived>."*
+- *"Branch \<n\> of \<if | case> '\<id>' returns \<format>, which is not in the declared union \<union>."*
+- *"Format '\<name>' is not a built-in, catalogue or package format."*
 
 **Reads:**
-- *"'input.<id>' is read bare; read input.<id>.value, or input.<id>.content for text."*
-- *"'<path>.title' reads the title of a plain enum, which has none; use a labelled oneOf, or read .value."*
-- *"<Condition> compares <path>.title with '<literal>', which is not one of its titles (<titles>)."*
+- *"'input.\<id>' is read bare; read input.\<id>.value, or input.\<id>.content for text."*
+- *"'\<path>.title' reads the title of a plain enum, which has none; use a labelled oneOf, or read .value."*
+- *"\<Condition> compares \<path>.title with '\<literal>', which is not one of its titles (\<titles>)."*
 
 **The dialect:**
-- *"<Format | Input '<id>'> uses keyword '<keyword>' at <path>, which is outside the formats dialect."*
-- *"Format '<name>' declares no $schema; every format file names the dialect (urn:consultologist:spec:31:dialect)."*
-- *"Format '<name>' declares $schema '<value>', but the package is specVersion <n>, whose dialect is <id>."*
-- *"<Format> at <path> declares additionalProperties <value>; every object declares additionalProperties: false."*
-- *"<Format> at <path> lists '<property>' in required but declares no such property."*
-- *"<Format> at <path> leaves '<property>' out of required; every property is listed in required, and an optional one is written as nullable."*
-- *"Node '<id>' returns <format>, an anyOf at its root, which strict mode can't send to a model; wrap it in an object."*
-- *"<Format> at <path> writes a nullable <type> with anyOf; write it as \"type\": [\"<type>\", \"null\"]."*
-- *"<Format> at <path> declares type <list>; a type array is one type plus \"null\"."*
-- *"<Format> at <path> uses format '<value>'; the only format is date, on a string."*
-- *"<Format> at <path> has '<keyword>' beside $ref; only title and description may sit beside a $ref."*
-- *"<Format> at <path> refers to itself; recursive formats aren't supported."*
-- *"Package format '<id>' declares $id; a package format's $id is written at publish."*
-- *"Package format '<id>' is a <string | number | boolean>; a package defines object and array formats, and refers to built-in and catalogue formats by name."*
+- *"\<Format | Input '\<id>'> uses keyword '\<keyword>' at \<path>, which is outside the formats dialect."*
+- *"Format '\<name>' declares no $schema; every format file names the dialect (urn:consultologist:spec:31:dialect)."*
+- *"Format '\<name>' declares $schema '\<value>', but the package is specVersion \<n\>, whose dialect is \<id>."*
+- *"\<Format> at \<path> declares additionalProperties \<value>; every object declares additionalProperties: false."*
+- *"\<Format> at \<path> lists '\<property>' in required but declares no such property."*
+- *"\<Format> at \<path> leaves '\<property>' out of required; every property is listed in required, and an optional one is written as nullable."*
+- *"Node '\<id>' returns \<format>, an anyOf at its root, which strict mode can't send to a model; wrap it in an object."*
+- *"\<Format> at \<path> writes a nullable \<type> with anyOf; write it as \"type\": [\"\<type>\", \"null\"]."*
+- *"\<Format> at \<path> declares type \<list>; a type array is one type plus \"null\"."*
+- *"\<Format> at \<path> uses format '\<value>'; the only format is date, on a string."*
+- *"\<Format> at \<path> has '\<keyword>' beside $ref; only title and description may sit beside a $ref."*
+- *"\<Format> at \<path> refers to itself; recursive formats aren't supported."*
+- *"Package format '\<id>' declares $id; a package format's $id is written at publish."*
+- *"Package format '\<id>' is a \<string | number | boolean>; a package defines object and array formats, and refers to built-in and catalogue formats by name."*
 
 **Annotations:**
-- *"Format '<name>' is a text format and declares no contentMediaType."*
-- *"Format '<name>' is Markdown and declares no x-markdown (block or inline)."*
-- *"<Format> declares <contentMediaType | x-markdown> at <path>, where it doesn't apply."*
-- *"<Input '<id>' | Node '<id>'>'s inline format declares <contentMediaType | x-markdown>; text inside an inline format is a $ref to a text format."*
+- *"Format '\<name>' is a text format and declares no contentMediaType."*
+- *"Format '\<name>' is Markdown and declares no x-markdown (block or inline)."*
+- *"\<Format> declares \<contentMediaType | x-markdown> at \<path>, where it doesn't apply."*
+- *"\<Input '\<id>' | Node '\<id>'>'s inline format declares \<contentMediaType | x-markdown>; text inside an inline format is a $ref to a text format."*
 
 **Formats folder:**
-- *"formats/index.json lists '<id>', but formats/ has no <id>.json."*
+- *"formats/index.json lists '\<id>', but formats/ has no \<id>.json."*
 
 **Inputs:**
-- *"Input '<id>' takes markdown_inline; use plaintext or markdown_block."*
-- *"Input '<id>' takes a choice of shapes (anyOf); an input has one shape."*
-- *"Input '<id>' declares channel '<channel>' (accepted: transcript, image, ambient-note, form)."*
-- *"Input '<id>' declares channel '<channel>', which is only for a text input or an array of text."*
-- *"Input '<id>' declares channel 'form', which needs an object with at least one property."*
-- *"Input '<id>' field '<property>' has no title; the Create page labels each field by its title."*
-- *"Input '<id>' declares default; inputs have no default at 31."*
+- *"Input '\<id>' takes markdown_inline; use plaintext or markdown_block."*
+- *"Input '\<id>' takes a choice of shapes (anyOf); an input has one shape."*
+- *"Input '\<id>' declares channel '\<channel>' (accepted: transcript, image, ambient-note, form)."*
+- *"Input '\<id>' declares channel '\<channel>', which is only for a text input or an array of text."*
+- *"Input '\<id>' declares channel 'form', which needs an object with at least one property."*
+- *"Input '\<id>' field '\<property>' has no title; the Create page labels each field by its title."*
+- *"Input '\<id>' declares default; inputs have no default at 31."*
 
 **Enums:**
-- *"<Subject> declares one value; an enum with one value is a constant, not a choice."*
-- *"<Subject> declares value '<value>' twice."*
-- *"<Subject> value '<value>' must be snake_case (a lowercase letter, then lowercase letters, digits, or underscores)."*
-- *"<Subject> gives two values the title '<title>'."*
-- *"<Subject> writes oneOf branch <n> as <shape>; each branch is exactly { \"const\": <value>, \"title\": <label> }."*
-- *"<Subject> declares both enum and oneOf; write one."*
-- *"<Subject> is nullable but its enum doesn't list null; a nullable enum lists null among its values."*
-- *"<Subject> is nullable but its oneOf has no { \"const\": null } arm; a nullable labelled enum adds one."*
+- *"\<Subject> declares one value; an enum with one value is a constant, not a choice."*
+- *"\<Subject> declares value '\<value>' twice."*
+- *"\<Subject> value '\<value>' must be snake_case (a lowercase letter, then lowercase letters, digits, or underscores)."*
+- *"\<Subject> gives two values the title '\<title>'."*
+- *"\<Subject> writes oneOf branch \<n\> as \<shape>; each branch is exactly { \"const\": \<value>, \"title\": \<label> }."*
+- *"\<Subject> declares both enum and oneOf; write one."*
+- *"\<Subject> is nullable but its enum doesn't list null; a nullable enum lists null among its values."*
+- *"\<Subject> is nullable but its oneOf has no { \"const\": null } arm; a nullable labelled enum adds one."*
 
 **Strict mode's size limits:**
-- *"Format '<name>' declares <n> properties; a format sent to a model declares at most <limit>."*
-- *"Format '<name>' nests <n> levels deep at <path>; a format sent to a model nests at most <limit>."*
+- *"Format '\<name>' declares \<n\> properties; a format sent to a model declares at most \<limit>."*
+- *"Format '\<name>' nests \<n\> levels deep at \<path>; a format sent to a model nests at most \<limit>."*
 
 ## 3. Expressions
 
@@ -2785,7 +2785,7 @@ With § 4.1's nine members, twelve members.
   be skipped) **requires an `else`**, and `null` goes there. A `when` never lists `null`.
 - **A branch may be explicitly empty:** `{ "when": ["omit"], "nodes": [], "ret": null }`, the one
   body whose `nodes` is empty and whose `ret` is `null`, both together. For those values the `case`
-  reads as skipped, with the reason *"case '<id>': arm for <value> does nothing"*. So skipping some values is written in the `case` itself, never as an `if`
+  reads as skipped, with the reason *"case '\<id>': arm for \<value> does nothing"*. So skipping some values is written in the `case` itself, never as an `if`
   around it (§ 4.5.4).
 
 #### 4.5.3 Format, state and exhaustiveness
@@ -3728,8 +3728,8 @@ the two built-in renderers can't be written.)
   The call form (`renderer.concept_bullets(x)`) is refused.
 - **The root `renderer.`** can't collide with Scriban's built-ins or with `node.`, `check.`,
   `input.`, `snippet.` and `macro.`.
-- **`.value` is the input,** the typed object: `node.x.value | renderer.concept_bullets`. The
-  node itself (`node.x | concept_bullets`) and its text (`node.x.content | …`) are not the input.
+- **`.value` is the input,** the typed object: `node.x.value | renderer.concept_bullets`. What a
+  specVersion 30 pipe becomes is chapter 10's.
 - **Typed at publish:** the piped value's format must match the renderer's `input`. The
   result's format is the renderer's `format`.
 - **Chaining is allowed where a template uses renderers**: `{{ node.extract.value | renderer.concept_list | renderer.bullets }}`.
@@ -4297,7 +4297,7 @@ there's **one shape for all three, every member present**:
 
 **Retention goes by where text came from, not what it says**:
 - **`uncovered` and `untested`** come from inputs, so they follow the text retention rule: kept
-  7 days, then deleted, with their hash kept for good This holds for every package,
+  7 days, then deleted, with their hash kept for good. This holds for every package,
   medical or not.
 - **`message`** is package text (the author's `failWith`), so it's kept, as are `pass` and the
   counts.
@@ -4381,7 +4381,7 @@ nodes/sections/index.json           for over node.plan.value.sections, itemLabel
 nodes/sections/planned_terms.md     kind agent, format concept_list   (the terms the plan names)
 nodes/sections/draft.md             kind agent, format plaintext
 nodes/sections/section_terms.md     kind agent, format concept_list   (the terms the draft covers)
-nodes/sections/section.md           kind computed, format titled_section (the loop's ret, § 6.5)
+nodes/sections/section.md           kind computed, format titled_section (the loop's ret, § 6.6.5)
 checks/part_coverage/index.json
 checks/part_coverage/coverage.md
 checks/all_sections_covered.md
@@ -4468,7 +4468,7 @@ Inputs, Nodes, Checks, Deliverables. Each check row says:
   linking to the check's row. A node a check reads gets no extra row.
 - **A failed check that stops a deliverable is a banner at the top of the job:** *"Consultation
   note was blocked: check 'coverage' failed (10 of 12 terms present)."* A gate check that
-  errored gives *"Consultation note was blocked: check 'coverage' could not run (\<error\>)."*. A destination the account hasn't set up has its own banner line (§ 6.8).
+  errored gives *"Consultation note was blocked: check 'coverage' could not run (\<error\>)."* A destination the account hasn't set up has its own banner line (§ 6.8).
 - **The diagram** draws a Checks frame, a thick `gates` edge into the deliverable, and a check
   loop as a frame inside it with a dotted `aligned` edge to its production loop
   (chapter 9).
@@ -4515,7 +4515,7 @@ A template reads each loop item's `state` and `reason` through `.items`:
 |---|---|---|
 | `completed` | the item ran | `null` |
 | `skipped` | its `if` didn't hold | the condition's printed text |
-| `not_run` | stopped early by `until` | *"stopped early at <position name>"*, for example *"stopped early at Sections 3"*: reasons name items by position, never by a drawn name |
+| `not_run` | stopped early by `until` | *"stopped early at \<position name>"*, for example *"stopped early at Sections 3"*: reasons name items by position, never by a drawn name |
 
 - The set is closed and checked at publish. A failed item fails the job (`onInvalid` is `fail`
   or `retry`), so it never reaches a template.
@@ -4568,7 +4568,7 @@ node with `plain`, or a renderer); the only automatic step is escaping.
 
 #### 6.6.5 Headings are the author's
 
-**The template writes the headings,** there are no invented
+**The template writes the headings,** so there are no invented
 `## Paragraphs 1` headings. [#1382](https://github.com/Consultologist/Consultologist-Blazor/issues/1382) closes once this is running and verified.
 
 **The pattern for a loop's sections: a closing `computed` node builds the pair** and is the
@@ -4698,7 +4698,7 @@ everything it reads, and release waits for it.
   sent, not sent or failed (§ 6.8).
 - A deliverable that's blocked or held is **never something to dig for:** History shows the
   banner (§ 6.5).
-- **A deliverable whose gating check was skipped by its own `if` is released**, recorded and shown in History as *"released: check '<id>' didn't apply (its
+- **A deliverable whose gating check was skipped by its own `if` is released**, recorded and shown in History as *"released: check '\<id>' didn't apply (its
   if was false)"* (H-4). A skipped gate gives no `check_result` to fail on. **An empty
   `all_pass`, by contrast, fails** (§ 6.2.2): that check ran and judged nothing.
 - The record holds the outcome as the deliverable row's `state` (`released`, `held`, `failed`,
@@ -4749,7 +4749,7 @@ deliverables/
 - **A failed delivery is retried**: 3 times with back-off over about 15 minutes (engine
   settings, chapter 9 § 3.8), each attempt recorded on the destination's result. If the last also
   fails, the result is `failed`, the operator is alerted, and History shows *"Couldn't send to
-  <destination>. Copy the note instead."* The job stays completed.
+  \<destination>. Copy the note instead."* The job stays completed.
 - **A kind the account hasn't configured:** the job still runs, and the deliverable is produced;
   that destination is recorded as **not sent**: *"not sent: EMR isn't set up for this account"*.
   The job doesn't fail, and the document stays in History.
@@ -4922,7 +4922,7 @@ marks a placeholder.
 - R-D10: *"Deliverable '\<id\>' has whenEmpty \<value\>; write release, hold or fail."*
 - R-D11: *"Deliverables folder '\<path\>' has delivery kind \<kind\>; the kinds are email, pdf, emr and zip."*
 - R-D12: *"deliverables/index.json is missing; the deliverables folder states its delivery."*
-- R-D13: *"Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else."*
+- R-D13 (the same sentence as [chapter 5's R-D8](#511-refusals)): *"Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else."*
 
 **Profile**
 - R-F1: *"\<Subject\> reads profile.\<field\>, which isn't a profile field; the fields are name, credentials, organisation, signature and closing."*

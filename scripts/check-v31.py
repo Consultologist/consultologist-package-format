@@ -514,6 +514,15 @@ def parses(text):
     return True
 
 
+def unescaped_tags(text, name):
+    """GitHub drops an unknown <tag> from prose: a placeholder outside code is written \\<…\\>."""
+    failures = []
+    for number, line in prose_lines(text):
+        if re.search(r"(?<!\\)<[A-Za-z]", re.sub(r"`[^`]*`", "", line)):
+            failures.append(f"{name} line {number}: unescaped < before a letter: {line.strip()[:60]}")
+    return failures
+
+
 def check_document():
     if not DOCUMENT.exists():
         return [f"{DOCUMENT.name}: missing"]
@@ -545,6 +554,7 @@ def check_document():
                 failures.append(f"line {number}: link to {path}, which does not exist")
             elif not path and fragment not in slugs:
                 failures.append(f"line {number}: anchor #{fragment} matches no heading")
+    failures += unescaped_tags(text, DOCUMENT.name)
     for block in re.finditer(r"(?ms)^```json\n(.*?)^```", text):
         if not parses(block.group(1)) and not parses("{" + block.group(1) + "}"):
             line = text[:block.start()].count("\n") + 1
@@ -579,6 +589,7 @@ def check_dialect_document(known_sentences):
     for marker in ("/blob/main/", "/tree/main/"):
         if marker in text:
             failures.append(f"{where}: a link contains {marker}")
+    failures += unescaped_tags(text, str(where))
     known = {plain(sentence) for sentence in known_sentences}
     quoted = re.findall(r'\*"(.*?)"\*', text)
     if not quoted:

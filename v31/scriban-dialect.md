@@ -55,8 +55,8 @@ refused, sentence.
 - A `for` over anything but a list (a range `1..3`, an object).
   - R-D6 (S05-006): *"\<Subject\> runs a for over \<expr\> at line \<n\>; a for runs over a list."*
 - The `for` options `limit:`, `offset:` and `reversed` (they choose which elements appear, which
-  is a decision), and `for.rindex`, `for.length` and `for.changed`. The design gives these no
-  sentence of their own.
+  is a decision), and `for.rindex`, `for.length` and `for.changed`. These forms have no sentence
+  of their own: they are refused by the rule that anything not listed as allowed is refused.
 - **Index access** (`list[0]`, `node.plan.value.sections[2]`): a list is read whole, by a `for`, or
   by identity through `.items`.
   - R-D11 (S05-063): *"\<Subject\> reads \<path\>[\<n\>] at line \<n\>, a position in a list; lists are read whole, with a for, or by identity through .items."*
@@ -137,6 +137,8 @@ _{{ s.reason }}_
 - R-D7 (S05-007): *"\<Subject\> tests \<expr\> in a body if at line \<n\>; a body if tests only loop position, state and whether a check passed. Decide it in a header: a part, a snippet's if or a macro's if."*
 
 - R-D8 (S05-009): *"\<Subject\> branches on \<expr\> and handles \<states\>, but not \<missing\>: add it or an else."*
+
+- R-D8, for example (S05-008): *"Deliverable 'consult' branches on part.state and handles completed and skipped, but not not_run: add it or an else."*
 
 - R-D9 (S05-010): *"\<Subject\> compares \<expr\> with "\<value\>" at line \<n\>; a state is completed, skipped or not_run."*
 
