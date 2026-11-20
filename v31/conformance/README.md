@@ -63,8 +63,10 @@ The exporting area fixes the exact files in the release that carries the cases
   package breaks its rule alone and gives that one sentence; where a rule cannot be broken without
   another sentence also being given, its `about` says so and `sentences` lists them all.
   `python3 scripts/check-v31.py` (group `refusal-packages`) holds the folders to the index, each
-  `expect.json` to this shape, and an invalid case's sentence to its row of `sentences.json`, read
-  as a pattern in which each `<…>` stands for any text.
+  `expect.json` to this shape, and, for an invalid case whose id is a row of `sentences.json`, each
+  of its sentences to the row of some published id and at least one to the case's own row, each row
+  read as a pattern in which each `<…>` stands for any text. The `citations` group does not read
+  the `package/` folders, which are uploads as a reader receives them.
 - **Goldens and vectors** (`operation-goldens`, `printer-goldens`, `renderer-goldens`,
   `dialect-goldens`, `null-vectors`, `text-vectors`, `number-vectors`, `date-vectors`,
   `markdown-escape-vectors`): a case holds an input and the bytes a generator produced for it.
@@ -82,7 +84,11 @@ Area 02, the parser and file model, exports the cases of the sentences its reade
 that a flow node's or a function's own members give, which the file model judges before any type is
 known: `S04-009`, `S04-010`, `S04-011`, `S04-012`, `S04-013`, `S04-018`, `S04-019`, `S04-021`,
 `S04-022`, `S04-023`, `S04-024`, `S04-031`, `S04-033`, `S04-034`, `S04-041`, `S04-042`, `S04-043`,
-`S04-048`, `S04-062`, `S04-067` and `S04-076`. Each invalid package gives its one sentence.
+`S04-048`, `S04-062`, `S04-067` and `S04-076`: 65 cases, 130 packages. Each invalid package gives
+its one sentence. Each side is the smallest package (a manifest, the nine folders, one agent node
+and one deliverable) plus only the construct its rule needs (a loop, a while, an if, a case, a
+function and its call, a snippet folder, a delivery folder, a computed node, a format or a
+renderer), and the invalid side is its valid side with one change.
 
 - **`S01-037` to `S01-039` ship no files.** Their packages would be 513 files, a file of 257 KiB and
   a package over 2 MiB; the library's tests prove them, and the suite does not carry megabytes to
@@ -95,9 +101,12 @@ known: `S04-009`, `S04-010`, `S04-011`, `S04-012`, `S04-013`, `S04-018`, `S04-01
   members and ids; it does not type an expression, follow a read or resolve a format. A later area
   that finds a `valid` package of area 02 invalid by its own rules corrects the package, and the
   cases are exported again.
-- **`S01-017`'s `<parser message>` is the reader's JSON parser's own words** (here .NET's
-  `System.Text.Json`). An outside implementation's parser words it differently; compare that sentence
-  by its row, as the check script does.
+- **`S01-017`'s `<parser message>` is this implementation's `line <n>, column <m>`**: the 1-based
+  line of the file (a header's first line is the file's line 2) and the 1-based column in
+  characters where the JSON stops being valid (where it ends, for an empty or truncated header), as
+  in *"The header of 'nodes/plan.md' is not valid JSON: line 2, column 305."* The text does not say
+  what the message is, so an outside implementation may word it otherwise; compare that sentence by
+  its row, as the check script does.
 
 **This implementation's sentences.** The text gives no sentence for eight rules the reader holds,
 so it says its own, under `A02-…` ids that are not rows of `sentences.json`. They are this
@@ -430,3 +439,15 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   "a agent node's producer", and this implementation's `A02-007` gives "a agent node is a file" the
   same way; `S01-025`'s *"\<Declaration>'s description"* gives "Node 'plan''s description". The
   sentences are used as written.
+- **`S04-024` says "max 0" whatever was written.** Its row, *"Loop '\<id>' declares max 0; the
+  least is 1."*, has no `<n>`, so a `max` of `-3` is also reported as "max 0". The other bounds'
+  rows (`S04-021`, `S04-033`) print the number as written.
+- **`S01-028` prints the rooted key where other node sentences print the id.** Its row reads
+  *"\<Node | Check> '\<key>' is kind …"*, so it says "Node 'node.plan' is kind agent …", while
+  `S01-021` to `S01-026`, `S02-007` and the rest say "Node 'plan'".
+- **A publish report in an upload is dropped, though chapter 1 names two files.**
+  [Chapter 7 § 7.5](../../package-format-v31.md#75-the-publish-pipeline) step 0 drops *"any
+  `resolve.json`, `lock.json` or publish report in the upload"* unread, and § 7.6 names that report
+  `publish-report.json`; [chapter 1 § 1.2](../../package-format-v31.md#12-the-folder-layout) and
+  [§ 1.7](../../package-format-v31.md#17-sourcebounds) name only `resolve.json` and `lock.json`. The
+  reader drops all three at the root before counting.
