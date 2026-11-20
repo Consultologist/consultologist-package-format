@@ -36,15 +36,14 @@ job's record proves both.
   package or an implementation that does otherwise does not conform.
 - **Every refusal has its sentence.** A rule that a checker enforces is followed by the sentence
   the checker says, written between quotation marks and in italics. Sentences are used as
-  written, character for character; chapter 11 lists every one with its audience.
+  written, character for character; [chapter 11](#11-every-sentence) lists every one with its audience.
 - **`<…>` marks a placeholder** in a sentence, a path or a key: the checker fills it with the
   package's own text, an id, a path, a count or a limit, and never with patient text.
 - **Fictional examples only.** Every example person and every clinical text in this document is
   invented.
 - **Section numbers** are written `N.k.j` in headings: chapter N, section k, subsection j. Inside
   a chapter a reference carries the full number (`§ 1.5.3`); from another chapter it is written
-  "chapter 1 § 5.3", meaning section 5.3 of chapter 1, the heading numbered 1.5.3. Chapters not
-  yet linked are named in plain text.
+  "chapter 1 § 5.3", meaning section 5.3 of chapter 1, the heading numbered 1.5.3.
 - **`jsonc` blocks** are annotated JSON, for reading only; every file in a package is strict JSON
   (RFC 8259), with no comments.
 
@@ -57,17 +56,18 @@ text names them:
 - [`v31/constants.json`](v31/constants.json): the versions, kinds, features, producers, limits and
   Markdown extensions the text names;
 - [`v31/profile.json`](v31/profile.json): the closed list of profile fields;
-- [`v31/schemas/`](v31/schemas): one JSON Schema (2020-12) for every kind of file and every compiled
+- `v31/schemas/`: one JSON Schema (2020-12) for every kind of file and every compiled
   document, each linked where this text defines the kind;
 - [`v31/dialect.schema.json`](v31/dialect.schema.json): the meta-schema of the formats dialect;
-- [`v31/formats/`](v31/formats): the built-in formats, one file each, with their index;
-- [`v31/renderers/`](v31/renderers): the built-in renderers, with their index;
+- [`v31/formats/`](v31/formats/index.json): the built-in formats, one file each, with their index;
+- [`v31/renderers/`](v31/renderers/index.json): the built-in renderers, with their index;
 - [`v31/sentences.json`](v31/sentences.json): every refusal, warning and recorded sentence;
 - [`v31/scriban-dialect.md`](v31/scriban-dialect.md): the template dialect, version 1.0.0 (`scriban-dialect@1.0.0`), the rules of chapter 5 § 2 in reference form.
 
-[`v31/conformance/`](v31/conformance) holds hand-written examples of valid and invalid files for each
-schema. They are examples, not goldens. `python3 scripts/check-v31.py` runs the registry's
-checks over all of the above.
+[`v31/conformance/`](v31/conformance/README.md) is the conformance suite ([chapter 12](#12-conformance)). It holds
+hand-written examples of valid and invalid files for each schema, which are examples and not goldens;
+every other part of the suite is exported by the library's generators, never written by hand.
+`python3 scripts/check-v31.py` runs the registry's checks over all of the above.
 
 ### The chapters
 
@@ -79,11 +79,12 @@ checks over all of the above.
 | [4 Loops and functions](#4-loops-and-functions) | `for`, `while`, `until`, branches, `.items`, functions and `call` |
 | [5 Templates and macros](#5-templates-and-macros) | the Scriban dialect, renderers, snippets, parts, macros, whitespace, run spots |
 | [6 Checks, deliverables and the profile](#6-checks-deliverables-and-the-profile) | checks and check loops, deliverables as files, gating, the profile |
-| 7 The compiled documents | `resolve.json`, `lock.json`, evidence and views, in-package tests, the publish report |
-| 8 The record | record storage 12 and the provenance contract |
-| 9 The engine and the pages | loading and scheduling, the per-job ceiling, the satellites' contract, the pages |
-| 10 Migration and tools | the migration from 30, the converter, byte-equivalence, the conformance suite |
-| 11 Refusal sentences | every refusal, warning, job-start and History sentence, in one table |
+| [7 The compiled documents](#7-the-compiled-documents) | `resolve.json`, `lock.json`, evidence and views, in-package tests, the publish report |
+| [8 What an engine does with a package](#8-what-an-engine-does-with-a-package) | the two load paths, loading and admitting versions, scheduling, the per-job ceiling, retries and limits, the drain, where the record is written, delivery; the pages, `WorkflowPackages/Current` and the diagram are the app's and are named, not specified |
+| [9 The record](#9-the-record) | what a job's record pins, keys and sub-row ids, the sentences the record holds, and the provenance contract |
+| [10 Migration (30 → 31)](#10-migration-30--31) | what turns a package at 30 into a package at 31, the converter, the migration report, the snapshot test |
+| [11 Every sentence](#11-every-sentence) | every refusal, warning, job-start, recorded and History sentence, in one table |
+| [12 Conformance](#12-conformance) | the conformance suite: what it holds, where it lives, and which build area exports it |
 
 ## What changes from 30
 
@@ -107,11 +108,11 @@ checks over all of the above.
 | `profile.name`, `profile.signature` | a closed, typed list of profile fields, read only in deliverables and macro bodies | 6 |
 | the engine reads the manifest | the engine reads only `resolve.json`; `lock.json` pins the toolchain | 7 |
 | (none) | `tests/<id>.json`, run offline at publish; a failing test blocks publish | 7 |
-| record storage 11, in the job's Durable entity | record storage 12: keys with roots, check, renderer, macro, decision and call rows, `producer` and model-derived on every row, run facts and run spots; rows in a table, written once, and a canonical record blob at job end | 8 |
-| Mermaid 11, default layout | Mermaid 12 with ELK; renderers, macros, functions and checks drawn | 9 |
+| record storage 11, in the job's Durable entity | record storage 12: keys with roots, check, renderer, macro, decision and call rows, `producer` and model-derived on every row, run facts and run spots; rows in a table, written once, and a canonical record blob at job end | 9 |
+| Mermaid 11, default layout | Mermaid 12 with ELK; renderers, macros, functions and checks drawn | 8 |
 
 Nothing about 30 is kept by reading 31 as a delta: a package at 30 becomes a package at 31 by the
-migration (chapter 10), and the engine reads only what the migration and the registry produce.
+migration ([chapter 10](#10-migration-30--31)), and the engine reads only what the migration and the registry produce.
 
 ## Libraries
 
@@ -155,7 +156,7 @@ its root**, its path of ids joined by `.` (`node.sections.paragraphs.draft_parag
 <package>/
   manifest.json            identity and inputs (§ 1.3)
   README.md                optional, documentation only (§ 1.2.3)
-  dag.mmd                  derived view: committed for example packages, generated at publish (chapter 9)
+  dag.mmd                  derived view: committed for example packages, generated at publish ([chapter 8 § 8.14](#814-what-belongs-to-the-app))
   nodes/                   production
     index.json             the top level, in order
     <id>.md                a leaf: agent, rendered, computed or call
@@ -233,7 +234,7 @@ publish.
 | `deliverables/<id>.md`, `<folder>/index.json`, `<folder>/<id>.md` | delivery settings per folder; each deliverable's header and composition template | the folder's `index.json` | chapter 6 |
 | `tests/<id>.json` | one offline test | `tests/index.json` | chapter 7 |
 | `README.md` (any folder) | documentation | — | § 1.2.3 |
-| `dag.mmd` (root only) | the derived Mermaid view | — | chapter 9 |
+| `dag.mmd` (root only) | the derived Mermaid view | — | [chapter 8 § 8.14](#814-what-belongs-to-the-app) |
 
 #### 1.2.2 Children: every member listed exactly once
 
@@ -382,7 +383,7 @@ example-nested-note/
     note.md                 deliverable.note
   tests/
     index.json
-    migration_snapshot.json written by the migration (chapter 10)
+    migration_snapshot.json written by the migration ([chapter 10 § 10.12](#1012-the-snapshot-test))
 ```
 
 `test/general` at 31:
@@ -519,7 +520,7 @@ is an error.**
 #### 1.5.2 The members by file
 
 The table names each file's members; the owning chapter gives their types, null rules and sentences.
-Each kind of file has a JSON Schema in [`v31/schemas/`](v31/schemas), applied to the file's JSON (a
+Each kind of file has a JSON Schema in `v31/schemas/`, applied to the file's JSON (a
 leaf's header, an `index.json`, a plain JSON file). The members every schema shares are in
 [`common.schema.json`](v31/schemas/common.schema.json).
 
@@ -622,7 +623,7 @@ An id names a file or folder, or a member of a keyed object.
   ([chapter 2 § 5.3](#253-object-schemas-are-fully-typed-nested-text-references-a-text-format)).
 - **`parts` and `part.<id>` keep their names:** `parts` is an agent node's header member and
   `part.` a root, neither of them an id (chapter 5).
-- **A package whose ids collide with a reserved word is renamed by the migration** (chapter 10):
+- **A package whose ids collide with a reserved word is renamed by the migration** ([chapter 10 § 10.6](#106-reserved-ids-are-renamed)):
   `example-nested-note`'s loop is `sections`, not `parts`.
 
 ### 1.7 `SourceBounds`
@@ -694,7 +695,7 @@ Constants of the format, one member per kind of limit.
 - **Every member starts at 15** (`0xF`) and can be **raised alone** later, which is always
   compatible. Lowering one would break packages.
 - **`maxParallel: null`** means "no cap of its own": the loop is limited only by the engine's
-  per-job ceiling (chapter 9). `maxParallel: 1` stays refused,
+  per-job ceiling ([chapter 8 § 8.5](#85-the-per-job-ceiling)). `maxParallel: 1` stays refused,
   pointing to `parallel: false` (chapter 4). Requiring a non-null
   `maxParallel` is [#1474](https://github.com/Consultologist/Consultologist-Blazor/issues/1474) (Milestone 40).
 
@@ -774,16 +775,16 @@ function's name.
 - **Sub-rows** extend an instance's key with `/`: `…/render:<n>`, `…/macro:<id>`, `…/spot:<n>` and
   `…/if:<site>`, for example
   `node.standards.assessment:7/if:macro.letrozole_prescription_text`
-  (chapter 8). Item paths never contain `:`.
+  ([chapter 9](#9-the-record)). Item paths never contain `:`.
 - **Mermaid ids replace `.` with `__`:** `node__sections__paragraphs__draft_paragraph`
-  (chapter 9).
+  ([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 - **Keys are used everywhere at 31,** never only where an id repeats: one key form, no
   conditional.
 - **Where a key replaces a bare id:**
   - **the record** (record storage 12): `nodeOutputs` keys, block ids, `skippedBlocks`, item-step and
-    block events, item progress, collections, the concept source and the `nodes` rows (chapter 8);
+    block events, item progress, collections, the concept source and the `nodes` rows ([chapter 9](#9-the-record));
   - **the engine:** scheduling keys, activity inputs, the derived edges and the walker's resolution
-    (chapter 9);
+    ([chapter 8](#8-what-an-engine-does-with-a-package));
   - **the pages:** Mermaid ids, the Editor's selection keys and links, the rail and History;
   - **`resolve.json` and test files** (chapter 7).
 - **References inside a package** stay `node.x` and resolve outward (§ 1.9.2); the resolver writes
@@ -795,7 +796,7 @@ function's name.
 
 ### 1.10 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format.
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format.
 
 **Scopes and bounds.**
 - Duplicate in an overlapping scope:
@@ -904,7 +905,7 @@ refused:
 
 Three flags spread through the graph: run-dependent, model-derived and profile-carrying. The resolver works out all three from `resolve.json`'s edges
 before any run, records them on each row as `runDependent`, `modelDerived` and `profileCarrying`
-(chapter 8), and History, the diagram and the Editor show them.
+([chapter 9](#9-the-record)), and History, the diagram and the Editor show them.
 **Every node header also writes all three, `modelDerived: true | false`,
 `runDependent: true | false` and `profileCarrying: true | false`, checked against the derived values** as `reproducible` and
 `producer` are; a mismatch is refused. The flags are node members, never formats.
@@ -932,7 +933,7 @@ before any run, records them on each row as `runDependent`, `modelDerived` and `
 
 **Every node header writes `producer`,** how its output can be verified. Like `reproducible`, it
 is checked against the node's kind, a mismatch is refused, and it is recorded on every row
-(member `producer`, chapter 8):
+(member `producer`, [chapter 9](#9-the-record)):
 
 | Node | `producer` at 31 |
 |---|---|
@@ -1035,7 +1036,7 @@ There are two comparisons, each with its own hash:
 - **`integer` is a kind of `number`**: an `integer` value fits where a `number` is
   expected, not the reverse. Numbers are IEEE doubles; chapter 3 § 7 gives the rules.
 - **The record carries both hashes for each format** (`typeHash`, `formatHash`), so a change of
-  wording (a `description`, which is what the model is told) is told apart from a change of shape (chapter 8).
+  wording (a `description`, which is what the model is told) is told apart from a change of shape ([chapter 9](#9-the-record)).
 - **A text format fits where `string` is expected:** annotated strings are compatible with
   `string`; the annotations drive warnings and conversion, never type errors.
   The reverse does not hold, and the typed operations still treat text as text (chapter 3).
@@ -1158,7 +1159,7 @@ prepares a copy;
 
 **The sent format is recorded:** the row holds `formatHash` (the full format), `sentFormatHash`
 (what the model received) and the removed keywords as JSON pointers
-(chapter 8). History shows them as *"Not sent to the model: …"*. The reply is still
+([chapter 9](#9-the-record)). History shows them as *"Not sent to the model: …"*. The reply is still
 validated against the full format (§ 2.3.4).
 
 ### 2.4 Built-in and catalogue formats
@@ -1397,7 +1398,7 @@ Every published format has a `$id`, a URN that doesn't depend on where anything 
   whose format and producer have no binding.
 - **`resolve.json`** records the bundle and a separate `bindings` section; `lock.json` pins the
   agents catalogue beside the formats catalogue (chapter 7). Agent rows in the record name the attested
-  definition and the binding that chose it (chapter 8).
+  definition and the binding that chose it ([chapter 9](#9-the-record)).
 
 ### 2.8 Inputs
 
@@ -1471,7 +1472,7 @@ order. Every member is present.
 
 **Documents need no member.** Any input with a text format takes typed text or a document (the
 parser decides), and an array of a text format takes several items, each typed, a document, or an
-earlier run's deliverable, in the order sent (chapter 9). A data-format input is typed only,
+earlier run's deliverable, in the order sent ([chapter 8 § 8.14](#814-what-belongs-to-the-app)). A data-format input is typed only,
 except an object filled from a `form`. An element from an earlier run's deliverable starts out
 model-derived (§ 2.1.2), and its record links to the job it came from.
 
@@ -1598,14 +1599,14 @@ The input:
 
 - **The input takes the macro's id and label,** and the test is joined with `and` to any existing
   `if`: `{ "and": [ <its if>, <the test> ] }`. Where the macro's id is already an input's id, the
-  migration adds a suffix to the input's (chapter 10).
+  migration adds a suffix to the input's ([chapter 10 § 10.3](#103-per-run-macro-choices-become-boolean-inputs)).
 - **The Create page shows an optional boolean as three choices** (unset, yes, no), so "unset" keeps
   the macro's default, and **unset is sent as `null`**. A plain checkbox would show a default-on choice
-  unchecked while meaning on (chapter 9).
+  unchecked while meaning on ([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 
 ### 2.11 What the migration does to types and inputs
 
-What the migration from 30 does to types and inputs (the format conversions, the inputs' new shape, the optional boolean inputs for per-run macro choices) is chapter 10.
+What the migration from 30 does to types and inputs (the format conversions, the inputs' new shape, the optional boolean inputs for per-run macro choices) is [chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically).
 
 ### 2.12 `WorkflowPackages/Current`: what satellites see
 
@@ -1613,7 +1614,7 @@ The engine's `WorkflowPackages/Current` response is the engine's API to the Copi
 
 ### 2.13 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format.
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format.
 
 **Sentences outside the checker.**
 - *"This workflow needs the web app"* (a satellite, not the checker).
@@ -1705,7 +1706,7 @@ strict equality, the printer, and the evaluator. Scriban, the presentation langu
 
 - **Authors write JSON Logic directly.** What is written in the header is what `resolve.json`
   stores and what the engine runs. There is no expression-string syntax in the spec. The
-  converter (chapter 10) turns expressions into JSON Logic and back as a tool, not as the
+  converter ([chapter 10 § 10.9](#109-the-converter)) turns expressions into JSON Logic and back as a tool, not as the
   format.
 - **Decisions live in headers; bodies only present.** Whether a node runs, an item is included, a
   part or macro is used or a loop stops is a header condition, evaluated and recorded by the
@@ -1784,7 +1785,7 @@ Printed (§ 3.8): `item.id ≠ "billing" or input.include_billing.value = true`.
   anything. Dynamic folder sizes are [#1468](https://github.com/Consultologist/Consultologist-Blazor/issues/1468) (Milestone 40).
 - **A production leaf's own condition is spelled `if`,** a required member that is a condition or
   `null`, so every header gate has one name. A `case` branch keeps `when` for its list of values
-  (chapter 4 § 5.2). The migration rewrites a node's `when` to `if` (chapter 10).
+  (chapter 4 § 5.2). The migration rewrites a node's `when` to `if` ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)).
 
 ### 3.4 What each site may read
 
@@ -1847,9 +1848,9 @@ JSON Logic may read the same `run.*` set as bodies: `run.date`, `run.id`,
 | `run.engine` | `string` | the engine's release version, in the `v2026.11.5` form |
 
 - **Recorded like any read:** the raw value of each run fact the package reads is recorded once
-  per run (chapter 8).
+  per run ([chapter 9](#9-the-record)).
 - **No time zone, no job:** every job is refused at start until the account's time zone is set,
-  whether or not the package reads `run.date` (chapter 9).
+  whether or not the package reads `run.date` ([chapter 8 § 8.2](#82-the-load-step-by-step-31)).
 
 #### 3.4.4 Run-dependence is contagious
 
@@ -1882,7 +1883,7 @@ It never passes through a condition: a branch's `if`, a `case` subject or a `whi
 decides which content exists, not what it is made from.
 
 It is worked out from `resolve.json`'s edges before any run, so the warning can name each value
-before a job starts. Each row records it as `runDependent` (chapter 8). **Every node header
+before a job starts. Each row records it as `runDependent` ([chapter 9](#9-the-record)). **Every node header
 writes it too, as `runDependent: true | false`, checked against the derived value** like
 `reproducible`; a mismatch is refused. Requiring a run-dependent value in a read is [#1478](https://github.com/Consultologist/Consultologist-Blazor/issues/1478)
 (Milestone 40).
@@ -1909,7 +1910,7 @@ way. It says a value came from a model's output somewhere upstream.
   operand's format unchanged, so `trim` of an agent's `plaintext` is `plaintext`; the node's
   producer is `computed` and its `reproducible` stays `true`. The value keeps its lineage through
   the flag, never through its format.
-- **It is recorded and shown:** each row carries `modelDerived` (chapter 8), and History, the
+- **It is recorded and shown:** each row carries `modelDerived` ([chapter 9](#9-the-record)), and History, the
   diagram and the Editor show it: *"computed from model text: node.draft"*.
 - **It is worked out, and written on every node header:** the resolver computes it from
   `resolve.json`'s edges before any run, and each header declares `modelDerived: true | false`,
@@ -1942,7 +1943,7 @@ flag, worked out the same way from `resolve.json`'s edges and describing content
   credentials never reach a model or decide a branch.
 - **It is written and recorded:** every node header writes `profileCarrying: true | false`,
   checked against the derived value like `runDependent`; a mismatch is refused.
-  Each row carries `profileCarrying` (chapter 8), and a row that is
+  Each row carries `profileCarrying` ([chapter 9](#9-the-record)), and a row that is
   profile-carrying follows the profile's retention.
 
 ### 3.5 The operations
@@ -2163,7 +2164,7 @@ Revisiting the rule (required guards, or a library's default behaviour) is
 
 #### 3.6.3 Each operation's null behaviour is a conformance vector
 
-The conformance suite (chapter 10) carries a vector for every row of §§ 3.5.1–3.5.5 with a `null`
+The conformance suite ([chapter 12](#12-conformance)) carries a vector for every row of §§ 3.5.1–3.5.5 with a `null`
 operand, and for every absence case of § 3.6.1.
 
 #### 3.6.4 Truthiness
@@ -2240,7 +2241,7 @@ parentheses only where needed, so the printed text parses back to exactly the tr
   brackets.
 - **Byte-stable and versioned:** printed text is recorded (reasons, decisions), so the printer is
   versioned like a custom operation (any change to its output is a major version) and locked in
-  `lock.json`'s `builtins` (chapter 7). The converter (chapter 10) parses its output back to the
+  `lock.json`'s `builtins` (chapter 7). The converter ([chapter 10 § 10.9](#109-the-converter)) parses its output back to the
   identical tree, and the conformance suite tests the round trip.
 - **`.title` reads** print as written (`input.specialty.title = "Medical oncology"`); the record
   shows the raw value beside the title (§ 3.10).
@@ -2278,7 +2279,7 @@ parentheses only where needed, so the printed text parses back to exactly the tr
 
 ### 3.10 What the record holds
 
-The record's shape is chapter 8's. For expressions:
+The record's shape is [chapter 9](#9-the-record)'s. For expressions:
 
 - **A decision for every condition**,
   in the job's one `decisions` list:
@@ -2296,7 +2297,7 @@ The record's shape is chapter 8's. For expressions:
 
 ### 3.11 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format.
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format.
 
 #### 3.11.1 Refusals at publish
 
@@ -2376,7 +2377,7 @@ This chapter defines the flow nodes of version 31 (`for`, `while`, `if`, `case`)
 `maxParallel`, `until`, `max`), how it names its items (`itemLabel`), and how it is read from
 outside (`.value`, `.items`, `.stopped`); the `FormatBounds` that limit them; and functions:
 named, sealed sub-workflows in `functions/`, run by a `call` node with `with`. How loops and calls
-count toward the per-job ceiling is stated here; the engine side is chapter 9. Conditions inside
+count toward the per-job ceiling is stated here; the engine side is [chapter 8](#8-what-an-engine-does-with-a-package). Conditions inside
 these declarations are JSON Logic, defined in [chapter 3](#3-expressions); folders, ids and scopes
 are [chapter 1](#1-files-and-scopes); formats are [chapter 2](#2-types-and-inputs).
 
@@ -2425,7 +2426,7 @@ read without knowing which folder the file sits in. The resolver checks that `re
 child of that body and refuses anything else (§ 4.10). `ret` is the only member that takes this
 qualified form: references elsewhere still resolve outward by bare id (chapter 1 § 9), and a
 node's fields are always reached through `.value` or `.items`, so `node.sections.paragraphs` is
-never read as a field path. (`example-nested-note`'s loop is called `sections`, because `parts` is a reserved id, chapter 1 § 6; the migration renames it, chapter 10.)
+never read as a field path. (`example-nested-note`'s loop is called `sections`, because `parts` is a reserved id, chapter 1 § 6; the migration renames it, [chapter 10 § 10.6](#106-reserved-ids-are-renamed).)
 
 ### 4.2 `for`
 
@@ -2598,7 +2599,7 @@ loop's, outward (`item.parent.parent`), skipping any `while` between. A paragrap
   output follows 7-day retention, and History then shows the position name. **Reasons always use
   position names** (*"stopped early at Sections 3"*), never a drawn name, since a reason can land in
   a deliverable (chapter 6 § 6.2).
-- **`labelField` is not a member;** chapter 10 covers the migration.
+- **`labelField` is not a member;** [chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically) covers the migration.
 
 #### 4.2.8 Examples (migrated)
 
@@ -2650,7 +2651,7 @@ loop's, outward (`item.parent.parent`), skipping any `while` between. A paragrap
   "ret": "node.standards.section_instructions" }
 ```
 
-Every loop writes every member of its kind, `null` for each one it does not use. How the migration writes them is chapter 10.
+Every loop writes every member of its kind, `null` for each one it does not use. How the migration writes them is [chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically).
 
 ### 4.3 `while`
 
@@ -2806,7 +2807,7 @@ With § 4.1's nine members, twelve members.
   empty branch. An `if` with no `else`, or a `case` with an empty branch, is allowed except where
   a value must always exist: a function's `ret` (§ 4.7.6).
 - **The decision is recorded** in the job's `decisions` list with the printed condition (or the
-  subject and the branch taken), its run-dependence and whether it is model-derived (chapter 8).
+  subject and the branch taken), its run-dependence and whether it is model-derived ([chapter 9](#9-the-record)).
 
 #### 4.5.4 Examples (migrated)
 
@@ -3045,7 +3046,7 @@ chapter 1's leaf members (`kind`, `label`, `description`, `format`, `reproducibl
   only its `.value` and `.content`, typed against the parameter's format; the function
   reads `param.<id>.value` and `.content`, never the caller's `.state` or `.items`.
 - **Its body runs inline** in the caller's orchestration, never as a sub-orchestration: the call's inner nodes are scheduled by the same orchestrator as its siblings, so the
-  per-job ceiling, the call limit and the start order hold inside functions (§ 4.8; chapter 9 § 3).
+  per-job ceiling, the call limit and the start order hold inside functions (§ 4.8; [chapter 8 § 8.5](#85-the-per-job-ceiling)).
 - **Its dependency edges are its arguments.** A call's input hashes are exactly its arguments'
   hashes.
 
@@ -3208,7 +3209,7 @@ the production item's id (chapter 6). The deliverable is `deliverable.emr.consul
 ### 4.8 Concurrency: what counts toward the per-job ceiling
 
 - **The ceiling is not in the format.** The engine holds a per-job ceiling: at most *N* agent
-  calls in flight for one job (for example 16). It is chapter 9's. Function bodies run inline in
+  calls in flight for one job (for example 16). It is [chapter 8 § 8.5](#85-the-per-job-ceiling)'s. Function bodies run inline in
   the job's orchestration, so their calls are scheduled under the same ceiling.
 - **Everything counts the same way:** agent calls in nested loops, inside function calls (at any
   depth), and in check loops.
@@ -3217,7 +3218,7 @@ the production item's id (chapter 6). The deliverable is `deliverable.emr.consul
 - **Total-work limits**, engine settings beside the ceiling, starting at: **200 items
   per loop instance** (§ 4.2.4), **500 agent calls per job** (retries included as one call), and a
   **step budget per render**, starting at **100,000 steps** (chapter 5). Each is checked at run time and fails the job, or the
-  node, with a sentence (chapter 9 § 3.4); publish notes a package whose worst case can exceed one
+  node, with a sentence ([chapter 8 § 8.7](#87-retries-and-limits)); publish notes a package whose worst case can exceed one
   (§ 4.10.2).
 - **Each loop's `maxParallel` still applies within it.** The effective concurrency at a point is
   the smaller of the ceiling and the product of the caps along its nesting path.
@@ -3225,7 +3226,7 @@ the production item's id (chapter 6). The deliverable is `deliverable.emr.consul
   on the node's row. A node fails after 10 minutes of waiting on 429s in total, or after 5
   attempts for another failure, and a job fails if it hasn't finished 30 minutes after its
   orchestration started;
-  all three are engine settings (chapter 9 § 3.4).
+  all three are engine settings ([chapter 8 § 8.7](#87-retries-and-limits)).
 - **At publish, a note rather than a refusal** when nested caps multiply past the engine's
   ceiling (§ 4.10.2). The product is taken along each nesting path of loops and calls. For the
   note's worst case, a `maxParallel: null` loop over a list whose length publish knows (a
@@ -3234,7 +3235,7 @@ the production item's id (chapter 6). The deliverable is `deliverable.emr.consul
 
 ### 4.9 What the record holds
 
-The record is chapter 8's. For flow and functions (storage 12 adds to 11, with qualified keys):
+The record is [chapter 9](#9-the-record)'s. For flow and functions (storage 12 adds to 11, with qualified keys):
 - **loop rows** carry `parallel`, `maxParallel`, `itemLabel`'s field, the count, `.stopped` and
   its reason; one loop-instance row per inner instance;
 - **item rows** keyed by their key with its root and path (`node.sections:2`), named per § 4.2.7,
@@ -3250,7 +3251,7 @@ The record is chapter 8's. For flow and functions (storage 12 adds to 11, with q
 
 ### 4.10 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format.
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format.
 
 #### 4.10.1 Refusals at publish
 
@@ -3507,7 +3508,7 @@ The limits are dialect constants, separate from `FormatBounds`
 | iterations per `for` | 1,000 | the render fails with a sentence (§ 5.11, R-L1) |
 | `if` and `for` nesting | 15 deep | refused at publish (R-L2) |
 | rendered output | 1 MiB (1,048,576 bytes, UTF-8) | the render fails with a sentence (R-L3) |
-| steps per render | 100,000, an engine setting, chapter 9 § 3.4 | the render fails with a sentence (R-L4) |
+| steps per render | 100,000, an engine setting, [chapter 8 § 8.7](#87-retries-and-limits) | the render fails with a sentence (R-L4) |
 | recursion | none possible | there's no `func` or `include`; snippet cycles are refused at publish (§ 5.3.2) |
 
 A render failure fails the node (or the deliverable) as a definition error: no retry. A prompt
@@ -3669,17 +3670,17 @@ real values, so a template reading it is run-specific through that read.
 | The value read | In the run-neutral render | Kept permanently in the record |
 |---|---|---|
 | a raw `run.*` fact (`run.date`) | a run spot | the spot's output |
-| a run-dependent `computed` value | a run spot | its output only if it reads nothing but `run.*`; otherwise it follows 7-day retention (chapter 8) |
+| a run-dependent `computed` value | a run spot | its output only if it reads nothing but `run.*`; otherwise it follows 7-day retention ([chapter 9](#9-the-record)) |
 | a run-dependent `rendered` node | that node's run-neutral text, its own spots kept as spots | as for that node's spots |
 | a run-dependent `agent` node's output | the output itself: the model saw the real values | nothing extra; it follows 7-day retention |
 | a run-dependent flow node's `ret` or call result | as its `ret`'s producer, by this table | as its `ret`'s producer |
 
 **A body with no run spot** has one hash. The record's `runNeutralHash` is written only when the
-body has a run spot, and is `null` otherwise (chapter 8).
+body has a run spot, and is `null` otherwise ([chapter 9](#9-the-record)).
 
 **The advance warning.** The Editor and publish say when a package reads `run.*` or a
 run-dependent value, naming each spot. The warning text is W-1 (§ Refusals). The record side
-(each spot's output and hash, the run facts kept once per run) is in chapter 8.
+(each spot's output and hash, the run facts kept once per run) is in [chapter 9](#9-the-record).
 
 ### 5.5 Renderers
 
@@ -3729,7 +3730,7 @@ the two built-in renderers can't be written.)
 - **The root `renderer.`** can't collide with Scriban's built-ins or with `node.`, `check.`,
   `input.`, `snippet.` and `macro.`.
 - **`.value` is the input,** the typed object: `node.x.value | renderer.concept_bullets`. What a
-  specVersion 30 pipe becomes is chapter 10's.
+  specVersion 30 pipe becomes is [chapter 10 § 10.2](#102-pipes-body-tests-and-the-test-macro)'s.
 - **Typed at publish:** the piped value's format must match the renderer's `input`. The
   result's format is the renderer's `format`.
 - **Chaining is allowed where a template uses renderers**: `{{ node.extract.value | renderer.concept_list | renderer.bullets }}`.
@@ -3777,7 +3778,7 @@ the output hash and length.
 A chain gives one sub-row per step, in pipe order. Every key is written with its root
 ([chapter 1](#1-files-and-scopes)).
 The text itself follows the 7-day retention sweep. History shows the sub-rows under the node
-when it's expanded. The diagram draws them inside the node's frame (chapter 9).
+when it's expanded. The diagram draws them inside the node's frame ([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 
 ### 5.6 Snippets
 
@@ -3900,7 +3901,7 @@ Section standard and section-specific instructions:
 
 (A body `if` that tests `(item.content | string.strip) == ""` is refused (§ 5.2.5). The test
 moves to the part's `if`, using the `blank` operation ([chapter 3](#3-expressions)), and is
-recorded. How the migration from version 30 rewrites such a test is chapter 10's.)
+recorded. How the migration from version 30 rewrites such a test is [chapter 10 § 10.2](#102-pipes-body-tests-and-the-test-macro)'s.)
 
 ### 5.8 Macros
 
@@ -4075,16 +4076,16 @@ and `node.standards.assessment:7/if:macro.letrozole_prescription_text`:
   node's row.
 
 Under a loop the rows are per item, and History and the lineage show them under each
-item. The shape of the rows is chapter 8's.
+item. The shape of the rows is [chapter 9](#9-the-record)'s.
 
 ### 5.9 Decisions recorded for snippets and parts
 
 Every header `if` decision (a snippet's, a part's, a macro's, a macro folder's) is an entry in
-the job's one `decisions` list (chapter 8): its site, the printed
+the job's one `decisions` list ([chapter 9](#9-the-record)): its site, the printed
 condition, its result, a hash of each value it read, whether it was run-dependent, and an
 `expressionHash` of its canonical JSON Logic. Rows link to their decisions by id. Reasons read,
 for example, *"skipped: input.kind.value = "table" is false"*; the
-printer shows `=` and `≠` ([chapter 3](#3-expressions), chapter 8). A placed unit's
+printer shows `=` and `≠` ([chapter 3](#3-expressions), [chapter 9](#9-the-record)). A placed unit's
 text is recorded by hash under the node that placed it.
 
 ### 5.10 What changes from version 30
@@ -4105,7 +4106,7 @@ text is recorded by hash under the node that placed it.
 
 ### 5.11 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format. `<…>`
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format. `<…>`
 marks a placeholder.
 
 **The dialect**
@@ -4361,7 +4362,7 @@ another loop's body.
 
 Each item's check runs **as soon as that item's outputs are ready,** so checking overlaps
 production. Checks are `computed` and make no model calls, so they take **no slot** under the
-per-job ceiling (chapter 9), which counts agent calls only
+per-job ceiling ([chapter 8 § 8.5](#85-the-per-job-ceiling)), which counts agent calls only
 ([chapter 4 § 8](#48-concurrency-what-counts-toward-the-per-job-ceiling)).
 An agent node inside a check loop's body counts like any other.
 
@@ -4440,7 +4441,7 @@ a check loop's items are `check.part_coverage.coverage:2`, with the production i
 named by the loop's `itemLabel`, each linking to its production item (`node.sections:2`). The
 row holds the check's reads and their hashes, its result (the `check_result`, with `uncovered`
 and `untested` retained 7 days, then their hashes and sizes, § 6.2.1), and its effect. The
-shape is chapter 8's.
+shape is [chapter 9](#9-the-record)'s.
 
 **History** has four sections in the order the job runs:
 Inputs, Nodes, Checks, Deliverables. Each check row says:
@@ -4471,7 +4472,7 @@ Inputs, Nodes, Checks, Deliverables. Each check row says:
   errored gives *"Consultation note was blocked: check 'coverage' could not run (\<error\>)."* A destination the account hasn't set up has its own banner line (§ 6.8).
 - **The diagram** draws a Checks frame, a thick `gates` edge into the deliverable, and a check
   loop as a frame inside it with a dotted `aligned` edge to its production loop
-  (chapter 9).
+  ([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 
 ### 6.6 Deliverables as files
 
@@ -4487,7 +4488,7 @@ is `deliverable.consult`, and `deliverables/emr/note.md` is `deliverable.emr.not
 destination folder is part of the id, so the same file name may repeat in different folders
 (`emr/note.md`, `email/note.md`), and moving a deliverable changes its key. The key, with its
 root, is what the record, History and `WorkflowPackages/Current`'s `Results` use
-(chapter 9).
+([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 
 | Member | Type | Null | Meaning |
 |---|---|---|---|
@@ -4605,7 +4606,7 @@ nodes/standards/section.md
   reproduce today's note exactly.
 
 **`test/general`'s deliverable, after the author's edit** (the migration first writes a template
-reproducing version 30's bytes, chapter 10):
+reproducing version 30's bytes, [chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)):
 
 ```
 deliverables/consult.md
@@ -4623,7 +4624,7 @@ deliverables/consult.md
 ```
 
 The last line reads the snippet `snippets/test.md` verbatim at the end of the note; how the
-migration turns version 30's `test` macro into it is chapter 10's.
+migration turns version 30's `test` macro into it is [chapter 10 § 10.2](#102-pipes-body-tests-and-the-test-macro)'s.
 
 **`example-nested-note`, with headings the author chose.** The inner paragraphs get no heading.
 Its loop `parts` is renamed `sections`, since `parts` is a reserved id
@@ -4652,7 +4653,7 @@ deliverables/note.md
 
 Each paragraph is `plaintext`, so it's escaped into the Markdown note.
 
-**The `whenEmpty` values above are the ones the migration writes** (chapter 10).
+**The `whenEmpty` values above are the ones the migration writes** ([chapter 10 § 10.7](#107-whenempty-for-migrated-deliverables)).
 
 #### 6.6.6 When a deliverable comes out empty
 
@@ -4703,7 +4704,7 @@ everything it reads, and release waits for it.
   `all_pass`, by contrast, fails** (§ 6.2.2): that check ran and judged nothing.
 - The record holds the outcome as the deliverable row's `state` (`released`, `held`, `failed`,
   `skipped` or `blocked`) with its reason sentence, and each destination's result in
-  `delivery` (chapter 8).
+  `delivery` ([chapter 9](#9-the-record)).
 
 ### 6.8 Delivery
 
@@ -4742,12 +4743,12 @@ deliverables/
   and its released deliverables stay in History, recorded as *"not sent: the job failed"*.
 - **A job that has succeeded in production enters `delivering`**, shown as
   *"Delivering…"*, with the document viewable throughout. Each attempt is a row in the one record
-  (chapter 8 § 10), and the record is sealed when delivery ends (chapter 9 § 3.8).
+  ([chapter 9 § 9.2](#92-keys-with-their-roots)), and the record is sealed when delivery ends ([chapter 8 § 8.11](#811-delivery-at-the-end)).
 - **A result per destination**: each kind a released deliverable goes to gets its own
   result, `sent`, `not sent` with a reason, or `failed`, so an email that went out beside an EMR that
   isn't set up reads as one of each.
 - **A failed delivery is retried**: 3 times with back-off over about 15 minutes (engine
-  settings, chapter 9 § 3.8), each attempt recorded on the destination's result. If the last also
+  settings, [chapter 8 § 8.11](#811-delivery-at-the-end)), each attempt recorded on the destination's result. If the last also
   fails, the result is `failed`, the operator is alerted, and History shows *"Couldn't send to
   \<destination>. Copy the note instead."* The job stays completed.
 - **A kind the account hasn't configured:** the job still runs, and the deliverable is produced;
@@ -4760,7 +4761,7 @@ deliverables/
 ### 6.9 Deliverables in the record and History
 
 **The row's key** is the deliverable's id with its root (`deliverable.emr.note`), and a renderer
-use under it is `deliverable.emr.note/render:1` (chapter 8).
+use under it is `deliverable.emr.note/render:1` ([chapter 9](#9-the-record)).
 
 **Hashes:** the template's hash before substitution, one hash per substitution, and the hash of
 the final text (`composedHash`).
@@ -4780,7 +4781,7 @@ the final text (`composedHash`).
   ([chapter 5 § 4](#54-run-spots-and-the-two-hashes)).
 - **The outcome** (§ 6.7, the row's `state`) and each destination's delivery result (§ 6.8).
 
-The record's shape and field names are chapter 8's. **History** shows the
+The record's shape and field names are [chapter 9](#9-the-record)'s. **History** shows the
 template with its reads grouped by site, looped sites collapsed to "× N passes" and expandable
 per pass named by `itemLabel`, values while retained (7 days), then hashes and sizes, and the
 one-line check status.
@@ -4845,7 +4846,7 @@ on the Create page. There's no empty substitute. The package's needs are known i
 chapter 7).
 
 **This refusal applies to 31 jobs only**: a job on a package still at 30 keeps 30's
-behaviour until its package moves. The owners' notice before the cutover says so (chapter 10). When
+behaviour until its package moves. The owners' notice before the cutover says so ([chapter 10 § 10.8](#108-a-package-that-stays-at-30-and-what-its-owner-is-told)). When
 the email intake refuses a job for this reason, its reply carries the same sentence (J-1, J-2).
 
 **An empty or whitespace-only value counts as not set**, so a job that reads
@@ -4877,7 +4878,7 @@ registry** (the table in § 6.10.1), never the author's own profile.
   `run.date`. **Every job is refused until it's set**, whether or not the package reads
   `run.date`: *"Set your time zone in your account settings before running a workflow."* Like § 6.10.4's
 refusal, it applies to 31 jobs only, is announced in the owners' notice, and is the email
-intake's reply when it refuses. The pages themselves are chapter 9's.
+intake's reply when it refuses. The pages themselves are [chapter 8 § 8.14](#814-what-belongs-to-the-app)'s.
 
 ### 6.11 What changes from version 30
 
@@ -4894,7 +4895,7 @@ intake's reply when it refuses. The pages themselves are chapter 9's.
 
 ### 6.12 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format. `<…>`
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format. `<…>`
 marks a placeholder.
 
 **Checks**
@@ -4952,7 +4953,7 @@ package as checked, which is the only thing the engine loads; **`lock.json`**, t
 that checked it; `requires` and `needs`; where each file lives, and the line between evidence and
 views; **in-package tests** in `tests/` and the **publish report** that records them. Whether
 `resolve.json` ever needs a `semantics` block is reviewed in Milestone 40
-([#1455](https://github.com/Consultologist/Consultologist-Blazor/issues/1455)). The record that pins both documents is chapter 8.
+([#1455](https://github.com/Consultologist/Consultologist-Blazor/issues/1455)). The record that pins both documents is [chapter 9](#9-the-record).
 
 ### 7.1 Two documents, written once
 
@@ -4978,7 +4979,7 @@ The rules common to both:
 - **Immutable with the version.** A published version is **never re-resolved** and **never
   re-locked**. A change of toolchain that matters is a new version of the package.
 - **No backfill.** Versions below 31 never get either document; they keep today's loading path
-  until they're retired ([#1450](https://github.com/Consultologist/Consultologist-Blazor/issues/1450)). Packages that must keep running are migrated to 31 (chapter 10).
+  until they're retired ([#1450](https://github.com/Consultologist/Consultologist-Blazor/issues/1450)). Packages that must keep running are migrated to 31 ([chapter 10](#10-migration-30--31)).
 - **Every member is present:** `null` means "deliberately none" and a missing key is an
   error. Embedded JSON Schema keeps JSON Schema's own rules (annotations present where they apply).
 - **Every key is written with its root** (`node.sections.paragraphs.draft_paragraph`,
@@ -4988,7 +4989,7 @@ The rules common to both:
 **How they point at each other.** `lock.json` names the hash of the `resolve.json` it belongs to
 (`resolve.hash`). `resolve.json` names its lock **by file name** (`lock: "lock.json"`), not by hash,
 because each hash would otherwise have to contain the other. Every job's record pins both hashes
-(chapter 8), which ties the pair for every job.
+([chapter 9](#9-the-record)), which ties the pair for every job.
 
 ### 7.2 `resolve.json`
 
@@ -5098,7 +5099,7 @@ runs; the producer says how its output can be verified.
 **What a model receives** is its format with `title`, `$id` and the keywords strict mode rejects
 (such as `format: "date"`) removed; the list comes from the attested agent definition, and the
 reply is still validated against the full format. `resolve.json` keeps the full format; the record
-holds the sent format's hash and the removed keywords (chapter 8).
+holds the sent format's hash and the removed keywords ([chapter 9](#9-the-record)).
 
 **`bindings`** records which attested agent serves each format and producer the package's agent
 nodes use, keyed by format id, then producer, kept apart from the types so that a change of agent
@@ -5146,7 +5147,7 @@ and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the
 | `bodyHash` | string | allowed | templated kinds | `sha256:` over the body's UTF-8 bytes; `null` when `body` is `null` |
 | `parts` | object keyed by part id | never | agent nodes | the node's parts, each with its `if` and its text (an array of lines); `{}` for none |
 | `places` | array of string | never | agent nodes | the rooted ids of the macros its prompt places, its parts' text included, in order of appearance; `[]` for none |
-| `renders` | array of render site | never | templated kinds | each pipe step into a `renderer.*`, in order of appearance: `{ "n": <1-based position>, "source": "<path>", "renderer": "<renderer id>" }`; a chain gives one entry per step, and a later step's `source` is the step before it. `[]` for none. Its position `n` is the record's `render:<n>` (chapter 8). |
+| `renders` | array of render site | never | templated kinds | each pipe step into a `renderer.*`, in order of appearance: `{ "n": <1-based position>, "source": "<path>", "renderer": "<renderer id>" }`; a chain gives one entry per step, and a later step's `source` is the step before it. `[]` for none. Its position `n` is the record's `render:<n>` ([chapter 9](#9-the-record)). |
 | `runSpots` | array of run spot | never | templated kinds | each run spot in the body ([chapter 5](#5-templates-and-macros)), the `{{run:<n>}}` marker's `n`: `{ "site": <1-based position>, "at": "<line>:<column>", "reads": "<path>" }`; `[]` for none. A run spot whose read pipes into renderers covers the whole pipeline. |
 | `formatHash` | string | allowed | entries with a `format` | the resolved format's full hash, as in `formatHashes`; `null` for flow kinds that have none |
 | `typeHash` | string | allowed | entries with a `format` | its type hash, as in `typeHashes`; `null` with `formatHash` |
@@ -5175,7 +5176,7 @@ the engine never runs a test.
 
 | Member | Type | Meaning |
 |---|---|---|
-| `edges` | array of `{ "from": string, "to": string, "kind": string }` | every dependency, from a node, check, input, `run.*` or `profile.*` read to what reads it. `kind` is one of `reads`, `if`, `for`, `ret`, `placed`, `calls`, `aligned`, `gates`, matching the diagram's edges (chapter 9). Keys are rooted (`node.plan`, `check.coverage`, `input.consult_draft`, `deliverable.note`, `macro.letrozole`) |
+| `edges` | array of `{ "from": string, "to": string, "kind": string }` | every dependency, from a node, check, input, `run.*` or `profile.*` read to what reads it. `kind` is one of `reads`, `if`, `for`, `ret`, `placed`, `calls`, `aligned`, `gates`, matching the diagram's edges ([chapter 8 § 8.14](#814-what-belongs-to-the-app)). Keys are rooted (`node.plan`, `check.coverage`, `input.consult_draft`, `deliverable.note`, `macro.letrozole`) |
 | `order` | array of string | one topological order of the rooted keys, ties broken by source order. It's for readers and tools; the engine schedules by dataflow |
 
 `dag.mmd` is drawn from this graph.
@@ -5303,7 +5304,7 @@ conversion hints are all here.
 The member names of loops, `while`, `until` and deliverable headers are defined in chapters
 [4](#4-loops-and-functions) and [6](#6-checks-deliverables-and-the-profile); the example only
 shows where they sit. `"…"` marks elision. The loop is `sections`, not 30's `parts`, since `parts`
-is a reserved id at 31; the migration renames it (chapter 10).
+is a reserved id at 31; the migration renames it ([chapter 10 § 10.6](#106-reserved-ids-are-renamed)).
 
 ### 7.3 `requires` and `needs`
 
@@ -5362,7 +5363,7 @@ The members of `lock.json`, as [`lock.schema.json`](v31/schemas/lock.schema.json
 | `operations` | object, operation name → exact version | never | each built-in operation the package uses (the same names as `requires.operations`), exact; `{}` for none |
 | `builtins` | object, name → exact version | never | the built-in machinery that isn't an operation: `markdown_escape` (escaping plain text into Markdown), `plain_conversion` (Markdown to plain text), `formats` (the built-in format definitions), `printer` (the condition printer, [chapter 3](#3-expressions)), and each built-in renderer the package uses (`concept_bullets`, `concept_context`, [chapter 5](#5-templates-and-macros)). |
 | `culture` | string | never | `"invariant"`: every render and operation runs in the invariant culture |
-| `runtime` | object `{ dotnet: string, unicode: string }` | never | the exact .NET runtime that published the package (`"10.0.3"`) and the Unicode version its text handling follows (`"16.0"`). `lower`, `trim`, `words` and `has_word` depend on both; the conformance suite carries vectors for each (chapter 10 § 5) |
+| `runtime` | object `{ dotnet: string, unicode: string }` | never | the exact .NET runtime that published the package (`"10.0.3"`) and the Unicode version its text handling follows (`"16.0"`). `lower`, `trim`, `words` and `has_word` depend on both; the conformance suite carries vectors for each ([chapter 12](#12-conformance)) |
 | `catalogues` | object | never | `formats` (the formats catalogue, `formats@v…`: types), `agents` (the agents catalogue, `agents@v…`: bindings and attested agent definitions), `outputContracts` (`output-contracts@v…`, or `null` when the package uses none), as **separate entries** |
 
 **Recorded, not locked as a range:** the .NET runtime and its Unicode version (`runtime`), so a
@@ -5394,7 +5395,7 @@ commit and release stay on the job's record.
 
 - **`lock.json` records the exact version that checked the package;** `requires` states a
   compatible range; **the engine refuses only outside the range;** the record names the exact
-  versions that ran (chapter 8). A package locked at Scriban 7.2.5 runs on 7.2.6, and the record says
+  versions that ran ([chapter 9](#9-the-record)). A package locked at Scriban 7.2.5 runs on 7.2.6, and the record says
   so.
 - **Ranges are caret only:** `^7.2.5` means at least 7.2.5 and below 8.0.0, so only a major version
   leaves the range.
@@ -5476,7 +5477,7 @@ In order:
    the registry ignore a folder without the stamp, so a publish that dies partway can be retried
    from step 0, overwriting the unstamped folder. **A stamped version folder is immutable**;
    nothing writes to it again. At load the engine checks `resolve.json`'s hash, `lock.json`'s
-   hash and `lock.json`'s `resolve.hash` against the stamp (chapter 9 § 1.2).
+   hash and `lock.json`'s `resolve.hash` against the stamp ([chapter 8 § 8.2](#82-the-load-step-by-step-31)).
 
 Validation and tests run against `resolve.json`, the document the engine will run, never against the
 source a second time. The Editor's "Run tests" and CI run steps 0–3 without writing.
@@ -5525,7 +5526,7 @@ it ships in Milestone 40 ([#1422](https://github.com/Consultologist/Consultologi
 ### 7.8 In-package tests (`tests/`)
 
 Packages carry their own tests, run **offline**: a test makes no model calls. It runs on the
-engine's deterministic harness, the one the migration builds for byte-equivalence (chapter 10), with
+engine's deterministic harness, the one the migration builds for byte-equivalence ([chapter 10 § 10.12](#1012-the-snapshot-test)), with
 every agent node's output stubbed.
 Tests against live models are Milestone 40 ([#1402](https://github.com/Consultologist/Consultologist-Blazor/issues/1402), [#1415](https://github.com/Consultologist/Consultologist-Blazor/issues/1415)).
 
@@ -5551,7 +5552,7 @@ matter. Every member is present.
 
 A stub key is the node's **rooted key**, then, for an instance inside a loop or a `while`, `:` and
 its path: item ids and pass numbers from the outermost inward, joined by `/`, exactly the record's
-row key (chapter 8): `node.plan`, `node.sections.outline:2`,
+row key ([chapter 9](#9-the-record)): `node.plan`, `node.sections.outline:2`,
 `node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge:3`. Inside a function the key
 goes through the call node: `node.hpi_section.standard_draft`.
 
@@ -5571,7 +5572,7 @@ members, each optional:
 |---|---|---|
 | `ran` | array of row key | these instances completed |
 | `skipped` | array of row key | these instances were skipped (by condition, or not run by `until` or `max`) |
-| `decisions` | object, decision id → boolean or branch id | each listed condition's result (chapter 8 § 5's ids) |
+| `decisions` | object, decision id → boolean or branch id | each listed condition's result ([chapter 9 § 9.3](#93-sub-row-ids)'s ids) |
 | `loops` | object, row key → `{ "count": integer }` or `{ "passes": integer, "stopped": string }` | loop counts, `while` passes and how a `while` or `until` stopped |
 | `values` | object, row key → JSON value | `computed` values, compared as canonical JSON |
 | `prompts` | object, row key → `{ "text": string }` or `{ "hash": string }` | the sent text of an agent node's prompt, exactly or by its sent-text hash |
@@ -5589,7 +5590,7 @@ the first failing expectation in the order of the table above, then by key.
 - **The migration writes one snapshot test per package,** `tests/migration_snapshot.json`, from
   its migrated run: fictional inputs, stubs generated from the formats, and the resulting prompts
   and deliverables as expectations **by hash**, so every migrated package starts with one test
-  pinning its behaviour (chapter 10).
+  pinning its behaviour ([chapter 10 § 10.12](#1012-the-snapshot-test)).
 
 #### 7.8.5 Example (made-up package `example-checks`, fictional values)
 
@@ -5652,7 +5653,7 @@ normalisation, the warnings, and the per-job ceiling note. Its schema is
 
 ### 7.10 Refusals
 
-Every sentence below is used as written; chapter 11 lists every sentence of this format. `<…>`
+Every sentence below is used as written; [chapter 11](#11-every-sentence) lists every sentence of this format. `<…>`
 marks a placeholder.
 
 **At start** (the Create page, then the engine), from `requires`, `needs` and the engine's break
@@ -6898,3 +6899,70 @@ chapter that gives the sentence and the title of its section. The audience is `a
 | S10-004 | 10 · Refusals | *"the prompt reads profile.\<field\>, which a 31 prompt doesn't read; move it to a deliverable or a macro body."* | author |
 | S10-005 | 10 · Refusals | *"\<package\> stays at version 30 for now: \<reason\>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives."* | clinician |
 | S10-006 | 10 · Refusals | *"Renamed '\<id\>' to '\<new id\>'; '\<id\>_\<kind\>' was already taken."* | author |
+
+## 12. Conformance
+
+The conformance suite is released with this document in `consultologist-package-format`, under
+[`v31/conformance/`](v31/conformance/README.md), so that an implementation outside this repository
+can be checked against the format. **Its expectations are exported by the library's generators,
+as for every spec bump, and are never written by hand:** a golden, a vector or an expected
+document is a byte sequence that code produced, and a hand-typed one would be a guess. The hand-written
+files of the suite are the schemas' example instances, which are examples and not goldens
+([`v31/conformance/README.md`](v31/conformance/README.md)).
+
+### 12.1 The index
+
+[`v31/conformance/index.json`](v31/conformance/index.json), judged by
+[`conformance-index.schema.json`](v31/schemas/conformance-index.schema.json), lists the suite by
+family:
+
+| Member | Type | Meaning |
+|---|---|---|
+| `specVersion` | integer | `31` |
+| `families` | array of family | one per kind of case, in § 12.2's order |
+
+**A family** is `{ "id", "path", "about", "exportedBy", "cases" }`, every member written:
+
+| Member | Type | Meaning |
+|---|---|---|
+| `id` | string | the family's id, as named in § 12.2 |
+| `path` | string | where its cases live, from the root of the repository |
+| `about` | string | what it holds |
+| `exportedBy` | string | the build area that exports it, by number and name |
+| `cases` | array of string | the cases, by path within the family; `[]` until the area that exports the family has exported them |
+
+Each family is **empty until its area exports it,** except `schemas`, whose `cases` are the
+example files of this release. The `constants` family and the sentences of `refusal-packages` are
+published as the files named in § 12.2, and carry no case files of their own. An implementation
+reads a family's cases from its `path`, never from this chapter.
+
+### 12.2 What the suite holds
+
+Each item of the suite, where it lives under `v31/`, and the build area that exports it:
+
+| Item | Family `id` | Lives at | Exported by |
+|---|---|---|---|
+| **The schemas** of the 31 file kinds, of `resolve.json` and `lock.json` (with their media types, `application/vnd.consultologist.resolve+json` and `application/vnd.consultologist.lock+json`), of the publish report (`application/vnd.consultologist.publish-report+json`), and the dialect's meta-schema (`urn:consultologist:spec:31:dialect`); each with hand-written example instances, valid and invalid | `schemas` | `v31/schemas/`, `v31/dialect.schema.json`; the examples in `v31/conformance/schemas/` | area 00, the contracts (here, now) |
+| **The published constants:** `FormatBounds`, `SourceBounds` (as `bounds.json`, [chapter 1](#1-files-and-scopes)), the reserved ids, the producer values (with those reserved for Milestone 40), the Markdig extension list for the pinned Markdig version, and the profile fields | `constants` | `v31/bounds.json`, `v31/constants.json`, `v31/profile.json`: files, not cases | area 00, the contracts (here, now) |
+| **A valid and an invalid package for every refusal sentence;** each invalid package carries the exact sentence it must produce. The sentences themselves are [chapter 11](#11-every-sentence) | `refusal-packages` | `v31/sentences.json` (here, now); the packages in `v31/conformance/refusal-packages/` | the sentences: area 00, the contracts (here, now); the packages: areas 02 to 08, each for the sentences of the chapters it builds (area 02, parser and file model; area 03, types; area 04, JSON Logic; area 05, resolver and lock; area 06, engine loading and scheduling; area 07, prompts and macros; area 08, checks, deliverables and the profile) |
+| **Golden tests, operations:** every built-in operation's output; any change to output bytes is a major version ([chapter 7 § 7.4.3](#743-versioning-built-in-operations-and-machinery)) | `operation-goldens` | `v31/conformance/operation-goldens/` | area 04, JSON Logic |
+| **Golden tests, the printer:** the printer's text for every operation, with `=` and `≠` ([chapter 3 § 3.8](#38-the-printer)) | `printer-goldens` | `v31/conformance/printer-goldens/` | area 04, JSON Logic |
+| **Golden tests, the built-in renderers** ([chapter 5 § 5.5](#55-renderers)) | `renderer-goldens` | `v31/conformance/renderer-goldens/` | area 07, prompts and macros, and area 08, checks, deliverables and the profile |
+| **Golden tests, Scriban dialect features** ([chapter 5 § 5.2](#52-the-dialect)) | `dialect-goldens` | `v31/conformance/dialect-goldens/` | area 07, prompts and macros |
+| **Null and absence vectors** for every JSON Logic operation, one per rule in chapter 3's table ([§ 3.6.3](#363-each-operations-null-behaviour-is-a-conformance-vector)) | `null-vectors` | `v31/conformance/null-vectors/` | area 04, JSON Logic |
+| **Text-handling vectors** for `lower`, `trim`, `words` and `has_word`, pinned to the .NET runtime and Unicode version `lock.json` records ([chapter 7 § 7.4.1](#741-members)), so a runtime change that moves case mapping or word characters is caught | `text-vectors` | `v31/conformance/text-vectors/` | area 04, JSON Logic |
+| **Number vectors:** IEEE doubles, non-finite results giving `null`, and `integer` as a kind of `number` ([chapter 3 § 3.7](#37-typing)) | `number-vectors` | `v31/conformance/number-vectors/` | area 04, JSON Logic |
+| **Date vectors** for the date operations ([chapter 3 § 3.5.5](#355-date-operations)) | `date-vectors` | `v31/conformance/date-vectors/` | area 04, JSON Logic |
+| **Markdown escape vectors:** CommonMark's backslash escapes for ASCII punctuation ([chapter 6](#6-checks-deliverables-and-the-profile)) | `markdown-escape-vectors` | `v31/conformance/markdown-escape-vectors/` | area 07, prompts and macros, and area 08, checks, deliverables and the profile |
+| **Fixtures for the compiled documents:** fixture packages with their expected `resolve.json` and `lock.json` bytes and hashes, `requires` and `needs`, and the publish report (including the ceiling note and test results) | `compiled-documents` | `v31/conformance/compiled-documents/` | area 05, resolver and lock, and area 11, registry and publish |
+| **Migration vectors:** 30 packages with their expected 31 output and notices, so an outside implementation of the migration ([chapter 10](#10-migration-30--31)) can be checked too | `migration-vectors` | `v31/conformance/migration-vectors/` | area 10, migration |
+
+### 12.3 A case
+
+What a case looks like is fixed by the area that exports its family, in the same release as the
+cases. Three things are fixed here. A case of `refusal-packages` is a package folder with an
+`expect.json` holding `valid` and, for an invalid package, the sentences the checker must produce,
+exactly as [chapter 11](#11-every-sentence) prints them. A golden or a vector holds an input and
+the bytes a generator produced for it. A `schemas` case is a hand-written instance of one schema,
+`{ "about", "instance" }`, which is valid or invalid by its file name
+([`v31/conformance/README.md`](v31/conformance/README.md)).
