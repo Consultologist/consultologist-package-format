@@ -55,11 +55,13 @@ The exporting area fixes the exact files in the release that carries the cases
   there). `expect.json` has exactly three members, in this order: `about` (the rule, what the
   invalid package does to break it, and what the valid one does to keep it, in words), `valid` (a
   boolean, `true` in `valid/` and `false` in `invalid/`) and `sentences` (a list of strings: `[]` for
-  a valid package; for an invalid one, every sentence the reader gives, in the reader's order). It is
+  a valid package; for an invalid one, every sentence the checker gives (the reader, then the type
+  rules), in its order). It is
   written with 2-space indentation, `\n` line ends and a final newline, and writes `'`, `≠`, `–`
   and `…` as themselves. The index lists a case as `<sentence id>/valid` and
-  `<sentence id>/invalid`. **The cases are exported by the library's parser and are never written
-  by hand:** the exporter runs each package through the reader and writes what it said. An invalid
+  `<sentence id>/invalid`. **The cases are exported by the library's checker and are never written
+  by hand:** the exporter runs each package through the reader and, when the reader accepts it,
+  through the type rules, and writes what they said. An invalid
   package breaks its rule alone and gives that one sentence; where a rule cannot be broken without
   another sentence also being given, its `about` says so and `sentences` lists them all.
   `python3 scripts/check-v31.py` (group `refusal-packages`) holds the folders to the index, each
@@ -95,10 +97,11 @@ renderer), and the invalid side is its valid side with one change.
   say three sentences. `S01-040` (a path of 201 characters) and `S01-041` (JSON nested 33 deep) are
   small and ship.
 - **Chapter 1's other rows have no case here.** `S01-001` (*"Did you mean 'label'?"*) is the hint
-  that ends `S01-023`'s sentence, not a sentence of its own; `S01-004`, `S01-027` and `S01-029` need
-  types, reads or the call graph and are later areas' cases.
-- **A valid package is valid by the file model only.** Area 02 judges files, folders, headers,
-  members and ids; it does not type an expression, follow a read or resolve a format. A later area
+  that ends `S01-023`'s sentence, not a sentence of its own; `S01-004` and `S01-029` need reads or
+  the call graph and are later areas' cases; `S01-027` needs only the node's kind and is area 03's.
+- **A valid package was valid by the file model only** when area 02 exported it. From area 03 on it
+  passes the type rules too (none needed correcting), and it is still not judged on expressions,
+  reads or the call graph. A later area
   that finds a `valid` package of area 02 invalid by its own rules corrects the package, and the
   cases are exported again.
 - **`S01-017`'s `<parser message>` is this implementation's `line <n>, column <m>`**: the 1-based
@@ -126,10 +129,9 @@ open point for the text, which should give the rule a sentence:
 
 ## The refusal packages of the types (area 03)
 
-From area 03 on, every case, area 02's included, is held to the reader and the type rules of
-[chapter 2](../../package-format-v31.md#2-types-and-inputs) together: the exporter runs each package
-through the reader and, when the reader accepts it, through the type rules, and writes what they
-said. Area 02's 65 cases came out unchanged, their valid packages passing the type rules as well.
+From area 03 on, every case, area 02's included, is held to the type rules of
+[chapter 2](../../package-format-v31.md#2-types-and-inputs) as well as the reader. Area 02's 65
+cases came out unchanged, their valid packages passing the type rules as well.
 Area 03 adds 52 cases, 104 packages, built as area 02's are (the smallest package plus one
 construct, here a format file, a second input, a while or an if, and an invalid side that is its
 valid side with one change): one for each chapter 2 sentence a package can reach, `S01-027` (a
@@ -143,6 +145,29 @@ catalogue format can reach them (a package format whose root is an `anyOf` is re
 agent returns it, and the annotations in a package's own or an inline format are `S02-037` and
 `S02-038`); `S02-009`, whose words are `S01-028`'s, which has its case; and `S02-011`, because the
 three flags follow from what a node reads.
+
+**This implementation's sentences for the types.** The text gives no sentence for eleven rules the
+type rules hold, so they say their own, under `A03-…` ids that are not rows of `sentences.json`.
+Like the `A02-…` ones, they are this implementation's and each is an open point for the text:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A03-001` | *"Package format '\<id>' is neither an object nor a list; a package defines object and array formats, and refers to built-in and catalogue formats by name."* | a package format whose root is neither an object, a list nor a scalar ([chapter 2 § 2.4](../../package-format-v31.md#24-built-in-and-catalogue-formats)) |
+| `A03-002` | *"\<Format> at \<path> refers to #/$defs/\<name>, which the file doesn't define."* | a `#/$defs` reference names a definition of the file ([chapter 2 § 2.6.3](../../package-format-v31.md#263-references-by-bare-id-no-shadowing)) |
+| `A03-003` | *"\<Format> at \<path> writes '\<keyword>' as \<what it is>; it is \<what it must be>."* | a keyword of the wrong JSON type ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+| `A03-004` | *"\<Format> at \<path> uses '\<keyword>', which belongs on \<an object \| a list \| a string>."* | a keyword on a schema of another type ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+| `A03-005` | *"\<Format> at \<path> declares no type; write type, $ref or anyOf."* | every schema declares its type ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+| `A03-006` | *"\<Format> at \<path> is an object without '\<keyword>'; every object writes properties, required and additionalProperties: false."* | an object writes all three ([chapter 2 § 2.3.3](../../package-format-v31.md#233-required-additionalproperties-and-the-root)) |
+| `A03-007` | *"\<Format> at \<path> is a list without items; write the one schema its items follow."* | a list writes `items` ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+| `A03-008` | *"\<Format> at \<path> writes anyOf with \<n> member; a union has two or more."* | a union has two or more members ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+| `A03-009` | *"\<Format> declares \<keyword> '\<value>' (accepted: \<list>)."* | `contentMediaType` is `text/plain` or `text/markdown`, `x-markdown` is `block` or `inline` ([chapter 2 § 2.5.1](../../package-format-v31.md#251-the-annotations)); no package reaches it, so it has no case |
+| `A03-010` | *"\<Subject> lists null but is not nullable; write "type": ["string", "null"], or remove null."* | an enum lists `null` only on a nullable string ([chapter 2 § 2.3.2](../../package-format-v31.md#232-one-way-to-write-nullable)) |
+| `A03-011` | *"Format '\<id>' expands to more than 10,000 schemas through the formats it refers to; refer to fewer."* | a format's full form, every reference inlined, can be built ([chapter 2 § 2.3.1](../../package-format-v31.md#231-the-keywords)) |
+
+The count `A03-011` makes is this implementation's: each schema object visited while the references
+are inlined, a referenced format counted at each place it is referenced. Another implementation may
+count otherwise, so only the far side of the limit is meant by its case: its invalid package is past
+10,000 by this count, and its valid package is under the limit, not on it.
 
 ## The schemas' examples
 
