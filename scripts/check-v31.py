@@ -476,9 +476,81 @@ def check_renderers():
     return failures
 
 
+DOCUMENT = ROOT / "package-format-v31.md"
+LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)\)")
+
+
+def github_slug(heading):
+    """GitHub's anchor for a heading: lower case, punctuation dropped, spaces to hyphens."""
+    heading = re.sub(r"[`*]", "", heading.strip().lower())
+    return re.sub(r"[^\w\- ]", "", heading).replace(" ", "-")
+
+
+def prose_lines(text):
+    """The document's lines outside fenced code blocks, as (line number, line)."""
+    fenced = False
+    for number, line in enumerate(text.splitlines(), 1):
+        if line.startswith("```"):
+            fenced = not fenced
+        elif not fenced:
+            yield number, line
+
+
+def plain(text):
+    """Text as a reader sees it: no emphasis markers, no backslash escapes, one space between words."""
+    text = text.replace("*", "")
+    text = re.sub(r"\\(.)", r"\1", text)
+    return re.sub(r"\s+", " ", text)
+
+
+def check_document():
+    if not DOCUMENT.exists():
+        return [f"{DOCUMENT.name}: missing"]
+    text = DOCUMENT.read_text(encoding="utf-8")
+    failures = []
+    if "specVersion 31" not in text:
+        failures.append("the document never says 'specVersion 31'")
+    chapters = [int(m.group(1)) for line in text.splitlines()
+                if (m := re.match(r"## (\d+)\. ", line))]
+    if chapters != list(range(1, len(chapters) + 1)):
+        failures.append(f"chapter headings are {chapters}, expected 1 to {len(chapters)} in order")
+    slugs, seen = set(), {}
+    for _, line in prose_lines(text):
+        heading = re.match(r"#{1,6} (.*)", line)
+        if heading:
+            slug = github_slug(heading.group(1))
+            count = seen.get(slug, 0)
+            seen[slug] = count + 1
+            slugs.add(slug if count == 0 else f"{slug}-{count}")
+    for marker in ("/blob/main/", "/tree/main/"):
+        if marker in text:
+            failures.append(f"a link contains {marker}")
+    for number, line in prose_lines(text):
+        for target in LINK.findall(re.sub(r"`[^`]*`", "", line)):
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+            path, _, fragment = target.partition("#")
+            if path and not (ROOT / path).exists():
+                failures.append(f"line {number}: link to {path}, which does not exist")
+            elif not path and fragment not in slugs:
+                failures.append(f"line {number}: anchor #{fragment} matches no heading")
+            elif path.endswith(".md") and fragment and path == DOCUMENT.name and fragment not in slugs:
+                failures.append(f"line {number}: anchor #{fragment} matches no heading")
+    document, load_failures = load(V31 / "sentences.json")
+    if document is None:
+        return failures + load_failures
+    body = plain(text)
+    for entry in document["sentences"]:
+        if int(entry["part"]) <= len(chapters) and plain(entry["sentence"]) not in body:
+            failures.append(f"{entry['id']} (part {entry['part']}, {entry['section']}) "
+                            f"is not in the document: {entry['sentence'][:70]}")
+    return failures
+
+
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
-          ("renderers", check_renderers), ("self", check_self)]
+          ("renderers", check_renderers), ("self", check_self),
+          ("document", check_document)]
 
 
 def main():
