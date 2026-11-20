@@ -716,7 +716,7 @@
       "id": "refusal-packages",
       "path": "v31/conformance/refusal-packages",
       "about": "A valid and an invalid package for every refusal sentence; each invalid package carries the exact sentence it must produce. The sentences are v31/sentences.json.",
-      "exportedBy": "areas 02 to 08, each for the sentences of the chapters it builds (area 02, parser and file model; area 03, types; area 04, JSON Logic; area 05, resolver and lock; area 06, engine loading and scheduling; area 07, prompts and macros; area 08, checks, deliverables and the profile); the sentences themselves, area 00, the contracts",
+      "exportedBy": "the sentences: area 00, the contracts; the packages: areas 02 to 08, each for the sentences of the chapters it builds (area 02, parser and file model; area 03, types; area 04, JSON Logic; area 05, resolver and lock; area 06, engine loading and scheduling; area 07, prompts and macros; area 08, checks, deliverables and the profile)",
       "cases": []
     },
     {

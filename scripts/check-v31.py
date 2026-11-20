@@ -419,18 +419,15 @@ def check_formats():
     return failures
 
 
-# The registry's own files and the schema each must satisfy. The conformance index is written by a
-# later task, so it is judged only once it exists.
-SELF = [("bounds", V31 / "bounds.json", True), ("constants", V31 / "constants.json", True),
-        ("profile", V31 / "profile.json", True), ("sentences", V31 / "sentences.json", True),
-        ("conformance-index", V31 / "conformance" / "index.json", False)]
+# The registry's own files, each required, and the schema each must satisfy.
+SELF = [("bounds", V31 / "bounds.json"), ("constants", V31 / "constants.json"),
+        ("profile", V31 / "profile.json"), ("sentences", V31 / "sentences.json"),
+        ("conformance-index", V31 / "conformance" / "index.json")]
 
 
 def check_self():
     registry, failures = build_registry()
-    for name, path, required in SELF:
-        if not required and not path.exists():
-            continue
+    for name, path in SELF:
         document, errors = load(path)
         failures += errors
         validator = validator_for(schema_for(name), registry, failures)
@@ -669,6 +666,16 @@ def check_dialect_document(known_sentences):
     return failures
 
 
+def conformance_table_rows(chapter):
+    """Chapter 12's suite table, by family id: the Lives-at cell and the Exported-by cell."""
+    rows = {}
+    for line in chapter.splitlines():
+        cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", line)[1:-1]]
+        if len(cells) == 4 and re.fullmatch(r"`[a-z-]+`", cells[1]):
+            rows[cells[1].strip("`")] = (cells[2], cells[3])
+    return rows
+
+
 def check_conformance_index():
     """Chapter 12's suite: the index names real cases, lists `schemas`' example files exactly, and follows chapter 12's table."""
     path = V31 / "conformance" / "index.json"
@@ -686,13 +693,21 @@ def check_conformance_index():
         if family.get("id") == "schemas":
             on_disk = sorted(str(file.relative_to(CONFORMANCE)) for file in CONFORMANCE.rglob("*.json"))
             expect(failures, "the schemas family's cases (the example files on disk)",
-                   sorted(family["cases"]), on_disk)
+                   sorted(family.get("cases", [])), on_disk)
     if "schemas" not in ids:
         failures.append("the index has no schemas family")
     chapter = chapter_bodies(DOCUMENT.read_text(encoding="utf-8")).get(CONFORMANCE_CHAPTER, "")
+    rows = conformance_table_rows(chapter)
     positions = [chapter.find(f"| `{id_}` |") for id_ in ids]
-    if -1 in positions or positions != sorted(positions):
+    if -1 in positions or positions != sorted(positions) or sorted(rows) != sorted(ids):
         failures.append(f"chapter {CONFORMANCE_CHAPTER}'s table does not list the index's families in order: {ids}")
+    for family in families:
+        lives_at, exported_by = rows.get(family.get("id"), ("", ""))
+        where = family.get("path", "").rstrip("/")
+        if not any(token.startswith(where) for token in re.findall(r"`([^`]+)`", lives_at)):
+            failures.append(f"family {family.get('id')}: path {where} is not in chapter {CONFORMANCE_CHAPTER}'s Lives-at cell")
+        expect(failures, f"family {family.get('id')}'s exportedBy against chapter {CONFORMANCE_CHAPTER}'s table",
+               family.get("exportedBy"), exported_by.replace(" (here, now)", ""))
     return failures
 
 
