@@ -288,3 +288,13 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   [chapter 8 § 8.8](../../package-format-v31.md#88-the-publish-note) says "\<ceiling\>" and "since
   \<loop key\> has no maxParallel and reads a list of unknown length". Both are published, each under
   its own id. Which wording is the sentence an engine writes is not settled.
+- **`versionsRan` is given three shapes.** The design's record part says `versionsRan` takes
+  "exactly `lock.json`'s shape" and lists its members flat (`packageFormat`, `dialect`, …,
+  `runtime` "(the .NET runtime)" and `unicode` "(its Unicode version)"); its record example writes
+  `packageFormat` and `dialect` flat and has no `runtime`; and `lock.json`'s member table
+  ([chapter 7 § 7.4.1](../../package-format-v31.md#741-members)) nests them as
+  `resolver: { packageFormat, dialect }` and `runtime: { dotnet, unicode }`.
+  [Chapter 9 § 9.1](../../package-format-v31.md#91-what-a-31-jobs-record-pins) and the provenance
+  contract (`provenance-record.md` §§ 6.3 and 6.14) follow "exactly `lock.json`'s shape", with
+  `resolver` and `runtime` nested as the lock nests them. Whether `lock.json`'s `documentVersion`,
+  `package`, `resolve` and `catalogues` appear in `versionsRan` is not stated.
