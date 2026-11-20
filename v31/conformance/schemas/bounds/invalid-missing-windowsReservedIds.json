@@ -1,0 +1,58 @@
+{
+  "about": "The member windowsReservedIds is missing.",
+  "instance": {
+    "specVersion": 31,
+    "sourceBounds": {
+      "files": 512,
+      "fileBytes": 262144,
+      "totalBytes": 2097152,
+      "pathLength": 200,
+      "idLength": 64,
+      "jsonDepth": 32,
+      "expressionNodes": 1000
+    },
+    "formatBounds": {
+      "passes": 15,
+      "depth": 15,
+      "parallel": 15
+    },
+    "reservedIds": [
+      "input",
+      "inputs",
+      "node",
+      "nodes",
+      "check",
+      "checks",
+      "function",
+      "functions",
+      "test",
+      "tests",
+      "snippet",
+      "snippets",
+      "macro",
+      "macros",
+      "part",
+      "parts",
+      "renderer",
+      "renderers",
+      "format",
+      "formats",
+      "deliverable",
+      "deliverables",
+      "param",
+      "params",
+      "item",
+      "items",
+      "pass",
+      "passes",
+      "run",
+      "runs",
+      "profile",
+      "profiles",
+      "value",
+      "values",
+      "content",
+      "contents"
+    ]
+  }
+}

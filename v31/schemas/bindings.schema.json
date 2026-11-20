@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:bindings",
+  "title": "agents/bindings.json",
+  "description": "Which attested agent serves which format for which producer, and the custom-format agent; no instructions.",
+  "type": "object",
+  "required": [
+    "version",
+    "formats",
+    "custom"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The agents catalogue's version."
+    },
+    "formats": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "required": [
+            "agentName",
+            "agentVersion"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "agentName": {
+              "type": "string",
+              "description": "The attested agent's name."
+            },
+            "agentVersion": {
+              "type": "integer",
+              "description": "Its version."
+            }
+          },
+          "description": "An attested agent: a name and a version, no instructions."
+        },
+        "propertyNames": {
+          "enum": [
+            "generated"
+          ]
+        },
+        "description": "Producer to attested agent; at 31 the only producer with bindings is generated."
+      },
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "Which attested agent serves which format for which producer, keyed by format id."
+    },
+    "custom": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "agentName",
+          "agentVersion"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "agentName": {
+            "type": "string",
+            "description": "The attested agent's name."
+          },
+          "agentVersion": {
+            "type": "integer",
+            "description": "Its version."
+          }
+        },
+        "description": "An attested agent: a name and a version, no instructions."
+      },
+      "propertyNames": {
+        "enum": [
+          "generated"
+        ]
+      },
+      "description": "The custom-format agent, serving a package's own formats."
+    }
+  }
+}

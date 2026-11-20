@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:migration-report",
+  "title": "migration-report.json",
+  "description": "The report of a migration to 31: the old and new versions, the hand edits made and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
+  "type": "object",
+  "required": [
+    "oldVersion",
+    "newVersion",
+    "handEdits",
+    "texts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "oldVersion": {
+      "type": "string",
+      "description": "The version migrated from."
+    },
+    "newVersion": {
+      "type": "string",
+      "description": "The version migrated to."
+    },
+    "handEdits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The hand edits made; [] for none."
+    },
+    "texts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "site",
+          "oldHash",
+          "newHash",
+          "equal",
+          "expected",
+          "explanation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "site": {
+            "type": "string",
+            "description": "The compared text's site: the file and place in it."
+          },
+          "oldHash": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+            "description": "The hash of the text at 30."
+          },
+          "newHash": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+            "description": "The hash of the text at 31."
+          },
+          "equal": {
+            "type": "boolean",
+            "description": "Whether the two texts are equal."
+          },
+          "expected": {
+            "type": "boolean",
+            "description": "Whether the rewrite declares and explains the difference."
+          },
+          "explanation": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the difference is expected; null unless expected is true."
+          }
+        },
+        "description": "One compared text.",
+        "if": {
+          "required": [
+            "expected"
+          ],
+          "properties": {
+            "expected": {
+              "const": false
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "explanation": {
+              "type": "null"
+            }
+          }
+        }
+      },
+      "description": "One entry per compared text; [] for none."
+    }
+  }
+}

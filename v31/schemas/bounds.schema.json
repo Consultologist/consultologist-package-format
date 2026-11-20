@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:bounds",
+  "title": "bounds.json",
+  "description": "The spec-level bounds, published in the format-spec release; a package cannot set them.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "sourceBounds",
+    "formatBounds",
+    "windowsReservedIds",
+    "reservedIds"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31."
+    },
+    "sourceBounds": {
+      "type": "object",
+      "required": [
+        "files",
+        "fileBytes",
+        "totalBytes",
+        "pathLength",
+        "idLength",
+        "jsonDepth",
+        "expressionNodes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "files": {
+          "type": "integer",
+          "description": "The most files in a package, every index.json included."
+        },
+        "fileBytes": {
+          "type": "integer",
+          "description": "The most bytes in one file, after line-ending normalisation."
+        },
+        "totalBytes": {
+          "type": "integer",
+          "description": "The most bytes in all, uncompressed."
+        },
+        "pathLength": {
+          "type": "integer",
+          "description": "The longest path in characters, counted from the package root."
+        },
+        "idLength": {
+          "type": "integer",
+          "description": "The longest id in characters."
+        },
+        "jsonDepth": {
+          "type": "integer",
+          "description": "The deepest nesting in any JSON value."
+        },
+        "expressionNodes": {
+          "type": "integer",
+          "description": "The most nodes in one JSON Logic expression."
+        }
+      },
+      "description": "The limits on a package's source."
+    },
+    "formatBounds": {
+      "type": "object",
+      "required": [
+        "passes",
+        "depth",
+        "parallel"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "passes": {
+          "type": "integer",
+          "description": "The most passes of a while."
+        },
+        "depth": {
+          "type": "integer",
+          "description": "The deepest nesting of calls."
+        },
+        "parallel": {
+          "type": "integer",
+          "description": "The most iterations of a loop in parallel."
+        }
+      },
+      "description": "The limits on a format's evaluation and on calls."
+    },
+    "windowsReservedIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "uniqueItems": true,
+      "description": "The ids Windows reserves as file names."
+    },
+    "reservedIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "uniqueItems": true,
+      "description": "The ids the namespaces reserve."
+    }
+  }
+}

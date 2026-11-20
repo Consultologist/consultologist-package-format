@@ -1,0 +1,17 @@
+{
+  "about": "A family has id, path, about, exportedBy and cases.",
+  "instance": {
+    "specVersion": 31,
+    "families": [
+      {
+        "id": "schemas",
+        "path": "conformance/schemas",
+        "about": "Instances each schema accepts or refuses.",
+        "cases": [
+          "check/valid-coverage.json",
+          "check/invalid-missing-label.json"
+        ]
+      }
+    ]
+  }
+}

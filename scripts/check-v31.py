@@ -419,8 +419,30 @@ def check_formats():
     return failures
 
 
+# The registry's own files and the schema each must satisfy. The conformance index is written by a
+# later task, so it is judged only once it exists.
+SELF = [("bounds", V31 / "bounds.json", True), ("constants", V31 / "constants.json", True),
+        ("profile", V31 / "profile.json", True), ("sentences", V31 / "sentences.json", True),
+        ("conformance-index", V31 / "conformance" / "index.json", False)]
+
+
+def check_self():
+    registry, failures = build_registry()
+    for name, path, required in SELF:
+        if not required and not path.exists():
+            continue
+        document, errors = load(path)
+        failures += errors
+        validator = validator_for(schema_for(name), registry, failures)
+        if document is None or validator is None:
+            continue
+        for error in validator.iter_errors(document):
+            failures.append(f"{path.relative_to(ROOT)}: /{'/'.join(map(str, error.path))}: {error.message}")
+    return failures
+
+
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
-          ("examples", check_examples), ("formats", check_formats)]
+          ("examples", check_examples), ("formats", check_formats), ("self", check_self)]
 
 
 def main():

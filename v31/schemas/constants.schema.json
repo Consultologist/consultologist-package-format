@@ -1,0 +1,481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:constants",
+  "title": "constants.json",
+  "description": "The registry's constants: versions, kinds, features, producers, limits and Markdig extensions.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "dialects",
+    "evaluator",
+    "operations",
+    "builtins",
+    "templateBuiltins",
+    "standardOperations",
+    "kinds",
+    "features",
+    "producers",
+    "runFacts",
+    "channels",
+    "deliveryKinds",
+    "whenEmpty",
+    "states",
+    "deliverableStates",
+    "edgeKinds",
+    "limits",
+    "mediaTypes",
+    "markdig"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31."
+    },
+    "dialects": {
+      "type": "object",
+      "required": [
+        "formats",
+        "templates"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "formats": {
+          "type": "string",
+          "description": "The formats dialect's $schema URN."
+        },
+        "templates": {
+          "type": "string",
+          "description": "The template dialect's name and version."
+        }
+      },
+      "description": "The two dialects."
+    },
+    "evaluator": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Our evaluator's exact version."
+    },
+    "operations": {
+      "type": "object",
+      "required": [
+        "size",
+        "blank",
+        "words",
+        "lines",
+        "lower",
+        "trim",
+        "starts_with",
+        "ends_with",
+        "plain",
+        "object",
+        "matches",
+        "has_word",
+        "terms_subset",
+        "all_pass",
+        "count_pass",
+        "days_between",
+        "years_between",
+        "add_days"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "size": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "size's exact version."
+        },
+        "blank": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "blank's exact version."
+        },
+        "words": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "words's exact version."
+        },
+        "lines": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "lines's exact version."
+        },
+        "lower": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "lower's exact version."
+        },
+        "trim": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "trim's exact version."
+        },
+        "starts_with": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "starts_with's exact version."
+        },
+        "ends_with": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "ends_with's exact version."
+        },
+        "plain": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "plain's exact version."
+        },
+        "object": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "object's exact version."
+        },
+        "matches": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "matches's exact version."
+        },
+        "has_word": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "has_word's exact version."
+        },
+        "terms_subset": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "terms_subset's exact version."
+        },
+        "all_pass": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "all_pass's exact version."
+        },
+        "count_pass": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "count_pass's exact version."
+        },
+        "days_between": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "days_between's exact version."
+        },
+        "years_between": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "years_between's exact version."
+        },
+        "add_days": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "add_days's exact version."
+        }
+      },
+      "description": "Each built-in custom operation and its version."
+    },
+    "builtins": {
+      "type": "object",
+      "required": [
+        "concept_bullets",
+        "concept_context",
+        "formats",
+        "markdown_escape",
+        "plain_conversion",
+        "printer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "concept_bullets": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "concept_bullets's exact version."
+        },
+        "concept_context": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "concept_context's exact version."
+        },
+        "formats": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "formats's exact version."
+        },
+        "markdown_escape": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "markdown_escape's exact version."
+        },
+        "plain_conversion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "plain_conversion's exact version."
+        },
+        "printer": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "printer's exact version."
+        }
+      },
+      "description": "The built-in machinery that is not an operation, and the built-in renderers, with versions."
+    },
+    "templateBuiltins": {
+      "type": "object",
+      "required": [
+        "string.upcase",
+        "string.downcase",
+        "string.capitalize",
+        "string.strip",
+        "array.join",
+        "array.size",
+        "date.to_string"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "string.upcase": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "string.upcase's exact version."
+        },
+        "string.downcase": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "string.downcase's exact version."
+        },
+        "string.capitalize": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "string.capitalize's exact version."
+        },
+        "string.strip": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "string.strip's exact version."
+        },
+        "array.join": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "array.join's exact version."
+        },
+        "array.size": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "array.size's exact version."
+        },
+        "date.to_string": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "date.to_string's exact version."
+        }
+      },
+      "description": "The template built-ins and their versions."
+    },
+    "standardOperations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The standard JSON Logic operations."
+    },
+    "kinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The node kinds."
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The behaviours not tied to one kind."
+    },
+    "producers": {
+      "type": "object",
+      "required": [
+        "accepted",
+        "reserved"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "accepted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The producers accepted at 31."
+        },
+        "reserved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The producers reserved and refused at 31."
+        }
+      },
+      "description": "The producers."
+    },
+    "runFacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The run facts."
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The input channels."
+    },
+    "deliveryKinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The delivery kinds."
+    },
+    "whenEmpty": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The whenEmpty values."
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The states of a node."
+    },
+    "deliverableStates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The states of a deliverable."
+    },
+    "edgeKinds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "The kinds of an edge in resolve.json's graph."
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "descriptionCodePoints",
+        "matchesPatternCodePoints",
+        "matchesRepetition",
+        "matchesTextBytes",
+        "templateForIterations",
+        "templateNesting",
+        "templateOutputBytes",
+        "testsSeconds",
+        "itemNameCharacters"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "descriptionCodePoints": {
+          "type": "integer",
+          "description": "The limit descriptionCodePoints."
+        },
+        "matchesPatternCodePoints": {
+          "type": "integer",
+          "description": "The limit matchesPatternCodePoints."
+        },
+        "matchesRepetition": {
+          "type": "integer",
+          "description": "The limit matchesRepetition."
+        },
+        "matchesTextBytes": {
+          "type": "integer",
+          "description": "The limit matchesTextBytes."
+        },
+        "templateForIterations": {
+          "type": "integer",
+          "description": "The limit templateForIterations."
+        },
+        "templateNesting": {
+          "type": "integer",
+          "description": "The limit templateNesting."
+        },
+        "templateOutputBytes": {
+          "type": "integer",
+          "description": "The limit templateOutputBytes."
+        },
+        "testsSeconds": {
+          "type": "integer",
+          "description": "The limit testsSeconds."
+        },
+        "itemNameCharacters": {
+          "type": "integer",
+          "description": "The limit itemNameCharacters."
+        }
+      },
+      "description": "The numeric limits the design states."
+    },
+    "mediaTypes": {
+      "type": "object",
+      "required": [
+        "resolve",
+        "lock",
+        "publishReport"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "resolve": {
+          "type": "string",
+          "description": "The media type of the resolve document."
+        },
+        "lock": {
+          "type": "string",
+          "description": "The media type of the lock document."
+        },
+        "publishReport": {
+          "type": "string",
+          "description": "The media type of the publishReport document."
+        }
+      },
+      "description": "The media types of the compiled documents."
+    },
+    "markdig": {
+      "type": "object",
+      "required": [
+        "version",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Markdig's exact version."
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The Markdown extensions enabled."
+        }
+      },
+      "description": "Markdig's version and extensions."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:agents",
+  "title": "agents/agents.json",
+  "description": "The attested agent versions and, for each, the keywords its strict mode rejects.",
+  "type": "object",
+  "required": [
+    "version",
+    "agents"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "The agents catalogue's version."
+    },
+    "agents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "required": [
+            "strictRejects"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "strictRejects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "The keywords its provider's strict mode rejects."
+            }
+          },
+          "description": "One attested version."
+        },
+        "propertyNames": {
+          "type": "string",
+          "pattern": "^\\d+$"
+        },
+        "description": "Version to attested definition."
+      },
+      "description": "Attested agents keyed by name."
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "about": "previewTimeZone is present.",
+  "instance": {
+    "specVersion": 31,
+    "fields": {
+      "name": {
+        "format": "string",
+        "label": "name",
+        "preview": "Dr A. Sample"
+      },
+      "credentials": {
+        "format": "string",
+        "label": "credentials",
+        "preview": "MD, FRCPC"
+      },
+      "organisation": {
+        "format": "string",
+        "label": "organisation",
+        "preview": "Sample Oncology Clinic"
+      },
+      "signature": {
+        "format": "plaintext",
+        "label": "signature",
+        "preview": "Dr A. Sample\nSample Oncology Clinic"
+      },
+      "closing": {
+        "format": "plaintext",
+        "label": "closing line",
+        "preview": "Please call the clinic with any questions."
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "about": "A family is closed.",
+  "instance": {
+    "specVersion": 31,
+    "families": [
+      {
+        "id": "schemas",
+        "path": "conformance/schemas",
+        "about": "Instances each schema accepts or refuses.",
+        "exportedBy": "scripts/check-v31.py",
+        "cases": [
+          "check/valid-coverage.json",
+          "check/invalid-missing-label.json"
+        ],
+        "note": "x"
+      }
+    ]
+  }
+}

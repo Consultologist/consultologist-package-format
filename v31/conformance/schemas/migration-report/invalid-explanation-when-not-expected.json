@@ -1,0 +1,28 @@
+{
+  "about": "explanation is null unless expected is true.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [
+      "Renamed the loop parts to sections."
+    ],
+    "texts": [
+      {
+        "site": "nodes/plan.md",
+        "oldHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "newHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "equal": true,
+        "expected": false,
+        "explanation": "An unexpected note."
+      },
+      {
+        "site": "checks/coverage.md",
+        "oldHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "newHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "equal": false,
+        "expected": true,
+        "explanation": "A !x converted to blank(x)."
+      }
+    ]
+  }
+}

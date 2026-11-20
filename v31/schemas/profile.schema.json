@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:profile",
+  "title": "profile.json",
+  "description": "The closed profile list and its preview values.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "fields",
+    "previewTimeZone"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31."
+    },
+    "fields": {
+      "type": "object",
+      "required": [
+        "name",
+        "credentials",
+        "organisation",
+        "signature",
+        "closing"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "object",
+          "required": [
+            "format",
+            "label",
+            "preview"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "enum": [
+                "string",
+                "plaintext"
+              ],
+              "description": "The field's format."
+            },
+            "label": {
+              "type": "string",
+              "description": "The field's label."
+            },
+            "preview": {
+              "type": "string",
+              "description": "The fictional value the Editor previews it with."
+            }
+          },
+          "description": "A profile field."
+        },
+        "credentials": {
+          "type": "object",
+          "required": [
+            "format",
+            "label",
+            "preview"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "enum": [
+                "string",
+                "plaintext"
+              ],
+              "description": "The field's format."
+            },
+            "label": {
+              "type": "string",
+              "description": "The field's label."
+            },
+            "preview": {
+              "type": "string",
+              "description": "The fictional value the Editor previews it with."
+            }
+          },
+          "description": "A profile field."
+        },
+        "organisation": {
+          "type": "object",
+          "required": [
+            "format",
+            "label",
+            "preview"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "enum": [
+                "string",
+                "plaintext"
+              ],
+              "description": "The field's format."
+            },
+            "label": {
+              "type": "string",
+              "description": "The field's label."
+            },
+            "preview": {
+              "type": "string",
+              "description": "The fictional value the Editor previews it with."
+            }
+          },
+          "description": "A profile field."
+        },
+        "signature": {
+          "type": "object",
+          "required": [
+            "format",
+            "label",
+            "preview"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "enum": [
+                "string",
+                "plaintext"
+              ],
+              "description": "The field's format."
+            },
+            "label": {
+              "type": "string",
+              "description": "The field's label."
+            },
+            "preview": {
+              "type": "string",
+              "description": "The fictional value the Editor previews it with."
+            }
+          },
+          "description": "A profile field."
+        },
+        "closing": {
+          "type": "object",
+          "required": [
+            "format",
+            "label",
+            "preview"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "enum": [
+                "string",
+                "plaintext"
+              ],
+              "description": "The field's format."
+            },
+            "label": {
+              "type": "string",
+              "description": "The field's label."
+            },
+            "preview": {
+              "type": "string",
+              "description": "The fictional value the Editor previews it with."
+            }
+          },
+          "description": "A profile field."
+        }
+      },
+      "description": "The closed profile list."
+    },
+    "previewTimeZone": {
+      "type": "string",
+      "description": "The time zone the Editor previews run.date in."
+    }
+  }
+}

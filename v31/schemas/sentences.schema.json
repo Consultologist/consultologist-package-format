@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:sentences",
+  "title": "sentences.json",
+  "description": "Every refusal sentence of the design, one row each.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "sentences"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31."
+    },
+    "sentences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "part",
+          "section",
+          "sentence",
+          "audience"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^S(0[1-9]|10)-\\d{3}$",
+            "description": "The sentence's id: S, the part, a dash and a number."
+          },
+          "part": {
+            "type": "string",
+            "pattern": "^(0[1-9]|10)$",
+            "description": "The part of the design it comes from."
+          },
+          "section": {
+            "type": "string",
+            "description": "The section of the part it comes from."
+          },
+          "sentence": {
+            "type": "string",
+            "description": "The sentence word for word."
+          },
+          "audience": {
+            "enum": [
+              "author",
+              "clinician"
+            ],
+            "description": "Who reads it."
+          }
+        },
+        "description": "One refusal or warning sentence."
+      },
+      "description": "Every sentence of refusal-sentences.md."
+    }
+  }
+}

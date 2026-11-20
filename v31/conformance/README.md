@@ -88,3 +88,43 @@ The `formats` check group does enforce the first of these on the built-in format
 - **An input's `format` beside part 02 § 8.1.** The schema refuses the name `markdown_inline` and
   an inline schema whose root has `anyOf`. It does not refuse `{ "$ref": "markdown_inline" }`
   written inline; the checker does.
+- **The compiled documents' schemas read from the member tables.** Part 07 § 2.9's `resolve.json`
+  example is abridged and cannot be a valid instance as printed (its `deliverable.note` also leaves
+  out `parent`, which § 2.5's table marks "every entry"); `resolve/valid-minimal.json` is a
+  hand-made smallest package instead. Where the tables leave a member's inner shape open, the
+  schemas add nothing: `requires.agents` values are strings (the design writes them as version
+  strings, `"4"`), `lock.libraries` and `lock.runtime` values are strings, `lock.catalogues`
+  entries are strings (`outputContracts` also `null`), `warnings` and `refusals` entries are
+  `{ sentence, at }`. The entries of `nodes`, `checks`, `renderers`, `snippets`, `macros` and
+  `deliverables` fix only the derived members § 2.5 marks "every entry" (`id`, `parent`, `reads`,
+  `runDependent`, `profileCarrying`, `modelDerived`) and stay open to the header members, whose
+  shape is the source schemas', applied by the resolver; `formats.$defs` entries are any object
+  (the dialect is checked on the registry's formats, not on the bundle).
+- **Readings this schema makes.** `lock.package` and `publish-report.package` share
+  `resolve`'s `package` (version `vYYYY.MM.N`, as in the manifest). Carets: `requires` ranges are
+  `^x.y.z` (part 07 § 4.2: "caret only"); `lock` versions of the evaluator, operations and
+  built-ins are `x.y.z` (§ 4.3: semantic versions), library and runtime versions are any string.
+  `resolve.bindings` takes the producer `generated` only (part 02 § 7: "at 31 the only producer
+  with bindings is `generated`"), and `via` is `format` or `custom`, so the reserved `producer` is
+  refused. A function's entry requires its `nodes` map (§ 2.5: "each function, with its own flat
+  `nodes` map") and is otherwise open, since part 04 owns its other members. An input's
+  `description` is the manifest's written form (lines or `null`), where § 2.3 says "lines or
+  `null`" and the abridged example shows only `null`.
+- **Three sentences of the member tables are coupled in the schemas:** `publishedAtUtc` is `null`
+  when `outcome` is `refused`; `refusals` is `[]` when it is `published`; a test's `firstMismatch`
+  is `null` when its `result` is `pass`; a migration text's `explanation` is `null` unless
+  `expected` is true. The tables do not say the converse (that a published report has a time, or
+  that a failing test has a mismatch), so the schemas do not.
+- **`migration-report.json`'s top level.** Part 10 § 3.2 names four things (the old and new
+  versions, the hand edits, the compared texts) and fixes only the entry's members. The
+  members `oldVersion`, `newVersion`, `handEdits` and `texts` are this plan's names; the two
+  versions are strings with no pattern, since the design does not say whether they are package
+  versions or spec versions.
+- **The registry's own files.** The schemas of `bounds.json`, `constants.json`, `profile.json`,
+  `sentences.json` fix shape, not values: the `constants` and `sentences` check groups pin the
+  values and the rows. `agents.json` and `bindings.json` live in the agents catalogue; their
+  schemas are here and are shown by copies of the catalogue's files. A binding's producer key is
+  `generated` only (as for `resolve`); an attested version key is digits; `agentVersion` is an
+  integer where `requires.agents` writes the same version as a string.
+- **`conformance/index.json`'s schema** is this plan's (`{ specVersion, families: [{ id, path,
+  about, exportedBy, cases }] }`); the `self` group judges the file once a later task writes it.

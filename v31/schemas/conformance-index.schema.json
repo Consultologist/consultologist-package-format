@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:conformance-index",
+  "title": "conformance/index.json",
+  "description": "The conformance suite's index: each family, where it lives and its cases.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "families"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31."
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "about",
+          "exportedBy",
+          "cases"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The family's id."
+          },
+          "path": {
+            "type": "string",
+            "description": "Where its cases live."
+          },
+          "about": {
+            "type": "string",
+            "description": "What it holds."
+          },
+          "exportedBy": {
+            "type": "string",
+            "description": "What exports it."
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The cases, by path within the family."
+          }
+        },
+        "description": "One family of conformance cases."
+      },
+      "description": "The families of conformance cases."
+    }
+  }
+}
