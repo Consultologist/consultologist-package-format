@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:publish-report",
+  "title": "publish-report.json",
+  "description": "The outcome of one publish, tests included. Not evidence: records never pin it. Every member is present; null means deliberately none.",
+  "type": "object",
+  "required": [
+    "documentVersion",
+    "package",
+    "outcome",
+    "publishedAtUtc",
+    "publishedBy",
+    "sourceHash",
+    "resolveHash",
+    "lockHash",
+    "normalised",
+    "refusals",
+    "warnings",
+    "tests"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documentVersion": {
+      "const": 1,
+      "description": "The shape of the report; 1."
+    },
+    "package": {
+      "$ref": "urn:consultologist:spec:31:schema:resolve#/$defs/package",
+      "description": "The version published."
+    },
+    "outcome": {
+      "enum": [
+        "published",
+        "refused"
+      ],
+      "description": "A written report always says published; a refused publish returns the report without writing it."
+    },
+    "publishedAtUtc": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "When it was written, RFC 3339; null when refused."
+    },
+    "publishedBy": {
+      "enum": [
+        "ci",
+        "editor",
+        "api",
+        "operator-migration"
+      ],
+      "description": "What started the publish."
+    },
+    "sourceHash": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+      "description": "The hash of the source, as in resolve.json."
+    },
+    "resolveHash": {
+      "anyOf": [
+        {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The hash of resolve.json; null when publish stopped before step 4."
+    },
+    "lockHash": {
+      "anyOf": [
+        {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The hash of lock.json; null when publish stopped before step 4."
+    },
+    "normalised": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The paths whose line endings were normalised at step 0; [] for none."
+    },
+    "refusals": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:resolve#/$defs/warning"
+      },
+      "description": "Every refusal sentence, with its file path; [] when published."
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:consultologist:spec:31:schema:resolve#/$defs/warning"
+      },
+      "description": "As resolve.json's warnings, the per-job ceiling note included."
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "fileHash",
+          "result",
+          "outcomeHash",
+          "firstMismatch",
+          "durationMs"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The test's id."
+          },
+          "fileHash": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+            "description": "The hash of the test file's bytes."
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail"
+            ],
+            "description": "The test's verdict; passed only ever means a count."
+          },
+          "outcomeHash": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+            "description": "The hash of the harness's canonical outcome, so two runs of the same test can be compared."
+          },
+          "firstMismatch": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "expectation",
+                  "key",
+                  "expected",
+                  "actual"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "expectation": {
+                    "type": "string",
+                    "description": "The expectation that failed."
+                  },
+                  "key": {
+                    "type": "string",
+                    "description": "The key it concerns."
+                  },
+                  "expected": {
+                    "type": "string",
+                    "description": "The expected hash for text, the value for everything else."
+                  },
+                  "actual": {
+                    "type": "string",
+                    "description": "The actual hash for text, the value for everything else."
+                  }
+                }
+              }
+            ],
+            "description": "The first mismatch, or null when passed."
+          },
+          "durationMs": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "The test's run time in milliseconds."
+          }
+        },
+        "description": "One test's result.",
+        "if": {
+          "required": [
+            "result"
+          ],
+          "properties": {
+            "result": {
+              "const": "pass"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "firstMismatch": {
+              "type": "null"
+            }
+          }
+        }
+      },
+      "description": "One result per test, in id order; [] for none."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "refused"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "publishedAtUtc": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "published"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "refusals": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

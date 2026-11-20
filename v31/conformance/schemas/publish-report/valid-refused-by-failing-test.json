@@ -1,0 +1,39 @@
+{
+  "about": "A refused publish that stopped at a failing test, with its first mismatch.",
+  "instance": {
+    "documentVersion": 1,
+    "package": {
+      "name": "example-nested-note",
+      "version": "v2026.12.2"
+    },
+    "outcome": "refused",
+    "publishedAtUtc": null,
+    "publishedBy": "editor",
+    "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "resolveHash": null,
+    "lockHash": null,
+    "normalised": [],
+    "refusals": [
+      {
+        "sentence": "Test 'basic' failed at expectation 'outputs'.",
+        "at": "tests/basic.json"
+      }
+    ],
+    "warnings": [],
+    "tests": [
+      {
+        "id": "basic",
+        "fileHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "result": "fail",
+        "outcomeHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "firstMismatch": {
+          "expectation": "outputs",
+          "key": "node.plan",
+          "expected": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "actual": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "durationMs": 9
+      }
+    ]
+  }
+}

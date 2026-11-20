@@ -1,0 +1,25 @@
+{
+  "about": "A refused publish: no time, no resolve or lock hash, one refusal with its file path, no tests run.",
+  "instance": {
+    "documentVersion": 1,
+    "package": {
+      "name": "example-nested-note",
+      "version": "v2026.12.2"
+    },
+    "outcome": "refused",
+    "publishedAtUtc": null,
+    "publishedBy": "editor",
+    "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "resolveHash": null,
+    "lockHash": null,
+    "normalised": [],
+    "refusals": [
+      {
+        "sentence": "File 'nodes/extra.md' is not listed: every file in nodes is named once in its index.json, or is index.json or README.md.",
+        "at": "nodes/extra.md"
+      }
+    ],
+    "warnings": [],
+    "tests": []
+  }
+}

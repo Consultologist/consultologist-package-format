@@ -1,0 +1,43 @@
+{
+  "about": "A hash is sha256: and 64 lowercase hex digits (the design's 9b41… written in full).",
+  "instance": {
+    "documentVersion": 1,
+    "package": {
+      "name": "example-nested-note",
+      "version": "v2026.12.1"
+    },
+    "resolve": {
+      "hash": "sha256:9b41"
+    },
+    "resolver": {
+      "packageFormat": "package-format@v2026.12.1",
+      "dialect": "scriban-dialect@1.0.0"
+    },
+    "libraries": {
+      "Corvus.JsonSchema": "4.3.17",
+      "Corvus.Text.Json.JsonLogic": "5.8.11",
+      "Markdig": "0.41.3",
+      "Scriban": "7.2.5"
+    },
+    "evaluator": "1.0.0",
+    "operations": {
+      "size": "1.0.0"
+    },
+    "builtins": {
+      "formats": "1.0.0",
+      "markdown_escape": "1.0.0",
+      "plain_conversion": "1.0.0",
+      "printer": "1.0.0"
+    },
+    "culture": "invariant",
+    "runtime": {
+      "dotnet": "10.0.3",
+      "unicode": "16.0"
+    },
+    "catalogues": {
+      "agents": "agents@v2026.12.1",
+      "formats": "formats@v2026.12.1",
+      "outputContracts": null
+    }
+  }
+}

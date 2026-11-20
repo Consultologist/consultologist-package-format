@@ -1,0 +1,42 @@
+{
+  "about": "outputContracts is null when the package uses none; a missing key is an error.",
+  "instance": {
+    "documentVersion": 1,
+    "package": {
+      "name": "example-nested-note",
+      "version": "v2026.12.1"
+    },
+    "resolve": {
+      "hash": "sha256:9b41d146217970dab2b17153612a284404509c7dbd16065a5b2aa2e3b7378855"
+    },
+    "resolver": {
+      "packageFormat": "package-format@v2026.12.1",
+      "dialect": "scriban-dialect@1.0.0"
+    },
+    "libraries": {
+      "Corvus.JsonSchema": "4.3.17",
+      "Corvus.Text.Json.JsonLogic": "5.8.11",
+      "Markdig": "0.41.3",
+      "Scriban": "7.2.5"
+    },
+    "evaluator": "1.0.0",
+    "operations": {
+      "size": "1.0.0"
+    },
+    "builtins": {
+      "formats": "1.0.0",
+      "markdown_escape": "1.0.0",
+      "plain_conversion": "1.0.0",
+      "printer": "1.0.0"
+    },
+    "culture": "invariant",
+    "runtime": {
+      "dotnet": "10.0.3",
+      "unicode": "16.0"
+    },
+    "catalogues": {
+      "agents": "agents@v2026.12.1",
+      "formats": "formats@v2026.12.1"
+    }
+  }
+}

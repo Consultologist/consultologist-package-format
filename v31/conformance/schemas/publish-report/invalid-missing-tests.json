@@ -1,0 +1,26 @@
+{
+  "about": "The member tests is missing; every member is present.",
+  "instance": {
+    "documentVersion": 1,
+    "package": {
+      "name": "example-nested-note",
+      "version": "v2026.12.1"
+    },
+    "outcome": "published",
+    "publishedAtUtc": "2026-12-01T14:30:00Z",
+    "publishedBy": "ci",
+    "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "resolveHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "lockHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "normalised": [
+      "nodes/plan.md"
+    ],
+    "refusals": [],
+    "warnings": [
+      {
+        "sentence": "The estimated worst case of this package is under the job limit.",
+        "at": null
+      }
+    ]
+  }
+}

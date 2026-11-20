@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:lock",
+  "title": "lock.json",
+  "description": "The exact toolchain that checked a package: written only by publish, canonical, with no timestamp. Every member is present; null means deliberately none.",
+  "type": "object",
+  "required": [
+    "documentVersion",
+    "package",
+    "resolve",
+    "resolver",
+    "libraries",
+    "evaluator",
+    "operations",
+    "builtins",
+    "culture",
+    "runtime",
+    "catalogues"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "documentVersion": {
+      "const": 1,
+      "description": "The shape of lock.json; 1 at 31."
+    },
+    "package": {
+      "$ref": "urn:consultologist:spec:31:schema:resolve#/$defs/package",
+      "description": "The package name and its version tag, as in resolve.json."
+    },
+    "resolve": {
+      "type": "object",
+      "required": [
+        "hash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "hash": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+          "description": "The hash of the resolve.json this lock belongs to."
+        }
+      },
+      "description": "The resolve.json this lock belongs to."
+    },
+    "resolver": {
+      "type": "object",
+      "required": [
+        "packageFormat",
+        "dialect"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "packageFormat": {
+          "type": "string",
+          "description": "The format library and registry release that resolved and validated it, for example package-format@v2026.12.1."
+        },
+        "dialect": {
+          "type": "string",
+          "description": "The Scriban dialect spec's version, for example scriban-dialect@1.0.0."
+        }
+      },
+      "description": "The release that resolved and validated the package."
+    },
+    "libraries": {
+      "type": "object",
+      "required": [
+        "Corvus.JsonSchema",
+        "Corvus.Text.Json.JsonLogic",
+        "Markdig",
+        "Scriban"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "Corvus.JsonSchema": {
+          "type": "string",
+          "description": "Corvus.JsonSchema's exact version."
+        },
+        "Corvus.Text.Json.JsonLogic": {
+          "type": "string",
+          "description": "Corvus.Text.Json.JsonLogic's exact version."
+        },
+        "Markdig": {
+          "type": "string",
+          "description": "Markdig's exact version."
+        },
+        "Scriban": {
+          "type": "string",
+          "description": "Scriban's exact version."
+        }
+      },
+      "description": "The third-party libraries whose change could alter a rendered prompt, a validation verdict, a composed document or a hash, each exact."
+    },
+    "evaluator": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Our evaluator's exact version."
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^\\d+\\.\\d+\\.\\d+$"
+      },
+      "propertyNames": {
+        "enum": [
+          "size",
+          "blank",
+          "words",
+          "lines",
+          "lower",
+          "trim",
+          "starts_with",
+          "ends_with",
+          "plain",
+          "object",
+          "matches",
+          "has_word",
+          "terms_subset",
+          "all_pass",
+          "count_pass",
+          "days_between",
+          "years_between",
+          "add_days"
+        ]
+      },
+      "description": "Each built-in operation the package uses, the same names as requires.operations, exact; {} for none."
+    },
+    "builtins": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^\\d+\\.\\d+\\.\\d+$"
+      },
+      "propertyNames": {
+        "enum": [
+          "concept_bullets",
+          "concept_context",
+          "formats",
+          "markdown_escape",
+          "plain_conversion",
+          "printer"
+        ]
+      },
+      "description": "The built-in machinery that is not an operation, and each built-in renderer the package uses, exact."
+    },
+    "culture": {
+      "const": "invariant",
+      "description": "Every render and operation runs in the invariant culture."
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "dotnet",
+        "unicode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dotnet": {
+          "type": "string",
+          "description": "The exact .NET runtime that published the package."
+        },
+        "unicode": {
+          "type": "string",
+          "description": "The Unicode version its text handling follows."
+        }
+      },
+      "description": "The runtime that published the package, recorded and not locked as a range."
+    },
+    "catalogues": {
+      "type": "object",
+      "required": [
+        "agents",
+        "formats",
+        "outputContracts"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agents": {
+          "type": "string",
+          "description": "The agents catalogue, agents@v...: bindings and attested agent definitions."
+        },
+        "formats": {
+          "type": "string",
+          "description": "The formats catalogue, formats@v...: types."
+        },
+        "outputContracts": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The output-contracts catalogue, output-contracts@v..., or null when the package uses none."
+        }
+      },
+      "description": "The catalogues, as separate entries."
+    }
+  }
+}
