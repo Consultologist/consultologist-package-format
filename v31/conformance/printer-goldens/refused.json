@@ -1,0 +1,65 @@
+{
+  "about": "What the printer writes for a rule the written form refuses (D23: the printer is total); such text is shown in refusals and is not parsed back.",
+  "cases": [
+    {
+      "about": "D23: an operation whose operand count its form cannot show prints as name(a, b).",
+      "rule": {
+        "<": [
+          1,
+          2,
+          3
+        ]
+      },
+      "text": "<(1, 2, 3)"
+    },
+    {
+      "about": "D23: an operation outside § 3.5 prints as name(a, b).",
+      "rule": {
+        "map": [
+          [
+            1
+          ],
+          2
+        ]
+      },
+      "text": "map([1], 2)"
+    },
+    {
+      "about": "D23: a refused standard operation prints as name(a, b).",
+      "rule": {
+        "==": [
+          1,
+          2
+        ]
+      },
+      "text": "==(1, 2)"
+    },
+    {
+      "about": "D23: an operation with a bare operand prints as name(a).",
+      "rule": {
+        "!": true
+      },
+      "text": "!(true)"
+    },
+    {
+      "about": "D23: var with a number prints as var(5).",
+      "rule": {
+        "var": 5
+      },
+      "text": "var(5)"
+    },
+    {
+      "about": "D23: an object with two members is not a rule, and prints as its canonical JSON.",
+      "rule": {
+        "b": 2,
+        "a": 1
+      },
+      "text": "{\"a\":1,\"b\":2}"
+    },
+    {
+      "about": "D23: an object with no member is not a rule, and prints as its canonical JSON.",
+      "rule": {},
+      "text": "{}"
+    }
+  ]
+}

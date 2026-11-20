@@ -243,15 +243,15 @@ open point for the text:
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):
-21 files of goldens and 16 of vectors, 597 cases. Each holds a rule written as a package writes it
+22 files of goldens and 16 of vectors, 606 cases. Each holds a rule written as a package writes it
 and what this implementation's evaluator or printer gave for it.
 
 | Family | Files (cases) | Holds |
 |---|---|---|
-| `operation-goldens` | one per custom operation of [§ 3.5.2 to § 3.5.5](../../package-format-v31.md#352-custom-text-operations), `<name>.json` (18 files, 153 cases) | every branch of each operation's meaning, and a value of the wrong kind; `plain.json` holds the Markdown conversion's cases |
-| `printer-goldens` | `operations.json` (39), `precedence.json` (26), `literals.json` (28) | every operation printed once; precedence and parentheses; every literal form, and the forms that keep the tree ([§ 3.8](../../package-format-v31.md#38-the-printer)) |
+| `operation-goldens` | one per custom operation of [§ 3.5.2 to § 3.5.5](../../package-format-v31.md#352-custom-text-operations), `<name>.json` (18 files, 154 cases) | every branch of each operation's meaning, and a value of the wrong kind; `plain.json` holds the Markdown conversion's cases |
+| `printer-goldens` | `operations.json` (39), `precedence.json` (26), `literals.json` (28), `refused.json` (7) | every operation printed once; precedence and parentheses; every literal form, and the forms that keep the tree ([§ 3.8](../../package-format-v31.md#38-the-printer)); what the printer writes for a rule the written form refuses (an operand count its form cannot show, an operation outside [§ 3.5](../../package-format-v31.md#35-the-operations), a bare operand, `var` of a number, an object that is not a rule) |
 | `null-vectors` | `standard.json` (62), `text.json` (16), `structural.json` (8), `dates.json` (10), `absence.json` (27) | a `null` operand in each position of every row of [§ 3.5.1 to § 3.5.5](../../package-format-v31.md#35-the-operations); `absence.json` holds every row of [§ 3.6.1](../../package-format-v31.md#361-what-a-read-gives), the pitfall of [§ 3.6.2](../../package-format-v31.md#362-the-null-rules) and the truthiness of [§ 3.6.4](../../package-format-v31.md#364-truthiness) |
-| `text-vectors` | `lower.json` (15), `trim.json` (30), `words.json` (30), `has_word.json` (40) | case pairs outside ASCII (`Ω`, `İ`, `ẞ`, `Ǆ`, Cherokee, the Deseret letter U+10400) for `lower`; every `White_Space` character, and four look-alikes that are not, for `trim` and `words`; each category of word character beside the word, and ten that are not, for `has_word` |
+| `text-vectors` | `lower.json` (15), `trim.json` (30), `words.json` (30), `has_word.json` (41) | case pairs outside ASCII (`Ω`, `İ`, `ẞ`, `Ǆ`, Cherokee, the Deseret letter U+10400) for `lower`; every `White_Space` character, and four look-alikes that are not, for `trim` and `words`; each category of word character beside the word, and ten that are not, for `has_word` |
 | `number-vectors` | `arithmetic.json` (25), `non-finite.json` (13), `integers.json` (13) | IEEE results (`0.1 + 0.2`), overflow and division by zero giving `null`, a whole result written without a fraction, `1.0 === 1` ([§ 3.7](../../package-format-v31.md#37-typing)) |
 | `date-vectors` | `days_between.json` (17), `years_between.json` (15), `add_days.json` (16), `comparisons.json` (14) | every 29 February case of [§ 3.5.5](../../package-format-v31.md#355-date-operations), the bounds of years 0001 and 9999, malformed dates |
 
@@ -265,7 +265,9 @@ and what this implementation's evaluator or printer gave for it.
   their shortest form): write the value canonically and compare the bytes.
 - a printer golden: `{ "about", "rule", "text" }`. Print `rule` and compare the text exactly; the
   text parses back to exactly `rule` ([§ 3.8](../../package-format-v31.md#38-the-printer)), which the
-  library's tests check for every case.
+  library's tests check for every case but those of `refused.json`. Those rules have a fault of the
+  written form: the printer still writes them (it is total), the text is shown in refusals, and it
+  is not parsed back.
 
 `data` is one object whose members are the roots a rule reads (`input`, `node`, `check`, `pass`,
 `run`, …), as an engine builds them: an unsupplied input is
@@ -295,7 +297,7 @@ vectors pin this implementation's choices, and an implementation that chooses ot
 | D19, numbers | `cat` writes a number in its RFC 8785 form (`1e+21`, `1e-7`, `2.0` as `2`); a result that is not finite is `null`; `%` has the sign of the dividend |
 | D20, Unicode | whitespace is Unicode `White_Space`; `lower` is .NET's `ToLowerInvariant`, the invariant culture's simple mapping, which leaves `İ` (U+0130) as it is and lowers `Σ` to `σ` wherever it stands; `size` counts code points; a word character is a letter, a mark, a decimal digit or connector punctuation, judged per code point (so `𐐀` beside a word is a word character for `has_word`). The vectors carry no runtime or Unicode version of their own: `lock.json` records them |
 | D21, check operations | `terms_subset`'s operands are `concept_list` values; `null`, or anything else, is an empty list; `uncovered` and `untested` are `null` when empty. For `all_pass` and `count_pass`, an element with a `state` is judged when its `state` is `completed`, on its `value`; an element without one is judged as it is; an element that is not an object, or whose judged value has no boolean `pass`, is not judged |
-| D23, the printer | one-operand `-` on a number literal prints `-(1)` (a negative literal prints `-1`); a child of a function form, an array or an `object` is never parenthesised; a `var` path that is not dot-joined identifiers, or whose first segment is a printer word (`true`, `false`, `null`, `not`, `and`, `or`, `in`, `if`, `then`, `else`), prints as `var("<path>")`; an `object` field that is not an identifier prints as a JSON string; an empty `object` prints `{}` |
+| D23, the printer | one-operand `-` on a number literal prints `-(1)` (a negative literal prints `-1`); a child of a function form, an array or an `object` is never parenthesised; a `var` path that is not dot-joined identifiers, or whose first segment is a printer word (`true`, `false`, `null`, `not`, `and`, `or`, `in`, `if`, `then`, `else`), prints as `var("<path>")`; an `object` field that is not an identifier prints as a JSON string; an empty `object` prints `{}`; the printer is total: an operation whose operand count its form cannot show, an operation outside § 3.5, or one with a bare operand, prints as `name(a, b)`, and an object that is not a rule as its canonical JSON |
 
 **What has no vector.** `matches` over text of more than 1 MiB fails the node that owns the
 condition (`S03-040`), and a condition that yields no boolean fails it too (`S03-041`): both are

@@ -420,15 +420,26 @@
       "result": false
     },
     {
-      "about": "§ 3.5.3 has_word: a word outside ASCII.",
+      "about": "§ 3.5.3 has_word: a word outside ASCII, standing alone.",
       "rule": {
         "has_word": [
-          "la douleur thoracique",
-          "douleur"
+          "Mme Okafor : céphalée depuis hier",
+          "céphalée"
         ]
       },
       "data": {},
       "result": true
+    },
+    {
+      "about": "§ 3.5.3 has_word: a word outside ASCII, followed by a letter, is not found.",
+      "rule": {
+        "has_word": [
+          "céphalées",
+          "céphalée"
+        ]
+      },
+      "data": {},
+      "result": false
     },
     {
       "about": "§ 3.5.3 has_word: a word that begins with a non-word character is bounded by what is before it.",

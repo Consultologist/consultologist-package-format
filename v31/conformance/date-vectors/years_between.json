@@ -90,7 +90,7 @@
       "result": 0
     },
     {
-      "about": "§ 3.5.5 years_between: mirrored, 29 February to 28 February of a year with no 29 February is 0.",
+      "about": "§ 3.5.5 years_between: mirrored, 28 February of a year with no 29 February back to 29 February is 0.",
       "rule": {
         "years_between": [
           "2009-02-28",

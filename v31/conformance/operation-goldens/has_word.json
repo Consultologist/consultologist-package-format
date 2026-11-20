@@ -90,10 +90,21 @@
       "output": "false"
     },
     {
-      "about": "§ 3.5.3 has_word: an accented letter is a word character, but the second occurrence stands alone.",
+      "about": "§ 3.5.3 has_word: an accented letter directly after the word is a word character.",
       "rule": {
         "has_word": [
-          "paín pain",
+          "painé",
+          "pain"
+        ]
+      },
+      "data": {},
+      "output": "false"
+    },
+    {
+      "about": "§ 3.5.3 has_word: an occurrence beside an accented letter does not count, a later one standing alone does.",
+      "rule": {
+        "has_word": [
+          "painé pain",
           "pain"
         ]
       },

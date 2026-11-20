@@ -139,24 +139,20 @@
       ]
     },
     {
-      "about": "§ 3.6.1 a blank optional text input is missing (\"\" counts as missing).",
+      "about": "§ 3.6.1 a blank optional input's .content is null, as an unsupplied one's.",
       "rule": {
-        "missing": [
-          "input.consult_draft.content"
-        ]
+        "var": "input.consult_draft.content"
       },
       "data": {
         "input": {
           "consult_draft": {
-            "value": "",
-            "content": "",
+            "value": null,
+            "content": null,
             "title": null
           }
         }
       },
-      "result": [
-        "input.consult_draft.content"
-      ]
+      "result": null
     },
     {
       "about": "§ 3.6.1 a node that completed: its .value is its value.",
