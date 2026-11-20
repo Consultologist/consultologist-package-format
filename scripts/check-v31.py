@@ -697,8 +697,9 @@ def check_conformance_index():
         failures.append(f"{path.relative_to(ROOT)}: a family id is repeated")
     for family in families:
         for case in family.get("cases", []):
-            if not (ROOT / family.get("path", "") / case).is_file():
-                failures.append(f"family {family.get('id')}: case {case} is not a file under {family.get('path')}")
+            # A case is a file (a schema's example) or a folder (a refusal package's valid/ or invalid/).
+            if not (ROOT / family.get("path", "") / case).exists():
+                failures.append(f"family {family.get('id')}: case {case} is not a file or folder under {family.get('path')}")
         if family.get("id") == "schemas":
             on_disk = sorted(str(file.relative_to(CONFORMANCE)) for file in CONFORMANCE.rglob("*.json"))
             expect(failures, "the schemas family's cases (the example files on disk)",
@@ -720,6 +721,89 @@ def check_conformance_index():
     return failures
 
 
+REFUSAL_PACKAGES = V31 / "conformance" / "refusal-packages"
+AREA_SENTENCE_ID = re.compile(r"^A\d{2}-\d{3}$")
+EXPECT_KEYS = ["about", "valid", "sentences"]
+# The one case whose package has no manifest.json: its sentence is about that absence.
+WITHOUT_MANIFEST = {"A02-003/invalid"}
+
+
+def sentence_pattern(id_, row):
+    """A row of sentences.json as a pattern: literal text escaped; each outermost <…> (nested ones, and
+    <a | b> choices, as one) any text, non-greedy. S04-009's first word may be any flow kind's, as
+    chapter 4 says ("also While, If, Case")."""
+    pattern, literal, depth = "", "", 0
+    for character in row:
+        if character == "<":
+            if depth == 0:
+                pattern += re.escape(literal) + ".+?"
+                literal = ""
+            depth += 1
+        elif character == ">" and depth > 0:
+            depth -= 1
+        elif depth == 0:
+            literal += character
+    pattern += re.escape(literal)
+    if id_ == "S04-009":
+        pattern = "(?:Loop|While|If|Case)" + pattern[len(re.escape("Loop")):]
+    return pattern
+
+
+def check_refusal_packages():
+    """Chapter 12 § 12.3's refusal packages: the family lists exactly the case folders on disk; each
+    expect.json is { about, valid, sentences }, valid as its folder says; an invalid case's sentence
+    is its row of sentences.json, as a pattern (an A<area>-<n> case is this implementation's sentence,
+    judged by shape only); every package has its manifest.json."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    document, errors = load(V31 / "sentences.json")
+    failures += errors
+    if index is None or document is None:
+        return failures
+    rows = {entry["id"]: entry["sentence"] for entry in document.get("sentences", [])}
+    family = next((f for f in index.get("families", []) if f.get("id") == "refusal-packages"), None)
+    if family is None:
+        return failures + ["the index has no refusal-packages family"]
+
+    on_disk = sorted(f"{case.name}/{side.name}"
+                     for case in (REFUSAL_PACKAGES.iterdir() if REFUSAL_PACKAGES.is_dir() else [])
+                     if case.is_dir() for side in case.iterdir() if side.is_dir())
+    expect(failures, "the refusal-packages family's cases (the case folders on disk)",
+           sorted(family.get("cases", [])), on_disk)
+    for case in on_disk:
+        id_, side = case.split("/")
+        where = f"refusal-packages/{case}"
+        if side not in ("valid", "invalid"):
+            failures.append(f"{where}: a case folder is valid/ or invalid/")
+            continue
+        if id_ not in rows and not AREA_SENTENCE_ID.match(id_):
+            failures.append(f"{where}: {id_} is neither a row of sentences.json nor an area's sentence")
+        if case not in WITHOUT_MANIFEST and not (REFUSAL_PACKAGES / case / "package" / "manifest.json").is_file():
+            failures.append(f"{where}: no package/manifest.json")
+        expected, errors = load(REFUSAL_PACKAGES / case / "expect.json")
+        failures += errors
+        if expected is None:
+            continue
+        if not isinstance(expected, dict) or list(expected) != EXPECT_KEYS:
+            failures.append(f"{where}/expect.json: expected exactly {EXPECT_KEYS}")
+            continue
+        about, valid, sentences = (expected[key] for key in EXPECT_KEYS)
+        if not isinstance(about, str) or not about.strip():
+            failures.append(f"{where}/expect.json: about is not a non-empty string")
+        if valid is not (side == "valid"):
+            failures.append(f"{where}/expect.json: valid is {valid!r} in a {side}/ folder")
+        if not isinstance(sentences, list) or not all(isinstance(s, str) for s in sentences):
+            failures.append(f"{where}/expect.json: sentences is not a list of strings")
+            continue
+        if (side == "valid") == bool(sentences):
+            failures.append(f"{where}/expect.json: a valid package says no sentence, an invalid one at least one")
+        # A case that cannot break its rule alone lists every sentence the parser gives; one is its own.
+        if side == "invalid" and id_ in rows and sentences:
+            pattern = sentence_pattern(id_, rows[id_])
+            if not any(re.fullmatch(pattern, sentence, re.DOTALL) for sentence in sentences):
+                failures.append(f"{where}/expect.json: no sentence is {id_}'s row: {sentences[0][:70]}")
+    return failures
+
+
 PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 
 
@@ -735,8 +819,8 @@ def check_citations():
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
           ("renderers", check_renderers), ("self", check_self),
-          ("conformance", check_conformance_index), ("document", check_document),
-          ("citations", check_citations)]
+          ("conformance", check_conformance_index), ("refusal-packages", check_refusal_packages),
+          ("document", check_document), ("citations", check_citations)]
 
 
 def main():
