@@ -1,0 +1,9 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list"
+  }
+}

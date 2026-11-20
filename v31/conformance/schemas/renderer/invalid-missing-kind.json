@@ -1,0 +1,9 @@
+{
+  "about": "Every member is written: 'kind' is missing.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "description": null,
+    "input": "concept_list",
+    "format": "markdown_block"
+  }
+}

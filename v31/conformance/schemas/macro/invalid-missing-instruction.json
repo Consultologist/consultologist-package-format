@@ -1,0 +1,16 @@
+{
+  "about": "Every member is written: 'instruction' is missing.",
+  "instance": {
+    "label": "Letrozole prescription text",
+    "description": null,
+    "if": {
+      "===": [
+        {
+          "var": "node.prescribes_letrozole.value.answer"
+        },
+        true
+      ]
+    },
+    "format": "plaintext"
+  }
+}

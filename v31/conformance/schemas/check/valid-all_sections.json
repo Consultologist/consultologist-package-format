@@ -1,0 +1,23 @@
+{
+  "about": "checks/all_sections.md (part 04 section 7.11): an aggregate with all_pass; the leaf members are written out.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "All sections covered",
+    "description": null,
+    "format": "check_result",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "all_pass": [
+        {
+          "var": "check.section_coverage.items"
+        },
+        "Not every section covers its planned terms."
+      ]
+    }
+  }
+}

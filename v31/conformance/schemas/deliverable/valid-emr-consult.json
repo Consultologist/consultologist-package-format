@@ -1,0 +1,19 @@
+{
+  "about": "deliverables/emr/consult.md of example-functions: gated by a check, and an object format (made up).",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "titled_section",
+    "if": {
+      "===": [
+        {
+          "var": "input.include_billing.value"
+        },
+        true
+      ]
+    },
+    "check": "check.all_sections",
+    "whenEmpty": "release"
+  }
+}

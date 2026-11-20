@@ -1,0 +1,21 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "label": "",
+    "description": null,
+    "if": {
+      "===": [
+        {
+          "var": "node.prescribes_letrozole.value.answer"
+        },
+        true
+      ]
+    },
+    "format": "plaintext",
+    "instruction": [
+      "Place the following marker, alone on its own line, in the assessment and plan,",
+      "after the medication discussion:",
+      "{{~ macro.letrozole_prescription_text.content }}"
+    ]
+  }
+}

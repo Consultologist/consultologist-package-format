@@ -1,0 +1,15 @@
+{
+  "about": "Every member is written: 'expression' is missing.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Terms covered",
+    "description": null,
+    "format": "check_result",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null
+  }
+}

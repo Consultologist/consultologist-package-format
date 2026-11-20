@@ -1,0 +1,10 @@
+{
+  "about": "A renderer always returns a text format, never a package format.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": "concept_list"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "about": "Every member is written: 'label' is missing.",
+  "instance": {
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "markdown_block"
+  }
+}

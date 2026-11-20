@@ -1,0 +1,12 @@
+{
+  "about": "whenEmpty is release, hold or fail.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "drop"
+  }
+}

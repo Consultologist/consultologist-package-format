@@ -1,0 +1,10 @@
+{
+  "about": "A description is null for none; [] is refused.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": [],
+    "input": "concept_list",
+    "format": "markdown_block"
+  }
+}

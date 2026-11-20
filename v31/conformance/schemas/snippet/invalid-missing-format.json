@@ -1,0 +1,10 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null
+  }
+}

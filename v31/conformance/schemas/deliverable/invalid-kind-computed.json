@@ -1,0 +1,12 @@
+{
+  "about": "kind is rendered.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "computed",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

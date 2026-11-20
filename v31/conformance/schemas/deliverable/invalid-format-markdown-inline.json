@@ -1,0 +1,12 @@
+{
+  "about": "markdown_inline is refused as a deliverable format: a document stands on its own lines.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_inline",
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

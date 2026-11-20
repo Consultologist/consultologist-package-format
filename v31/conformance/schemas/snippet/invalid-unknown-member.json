@@ -1,0 +1,12 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "markdown_block",
+    "extra": null
+  }
+}

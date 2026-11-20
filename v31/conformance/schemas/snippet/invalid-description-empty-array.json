@@ -1,0 +1,9 @@
+{
+  "about": "A description is null for none; [] is refused.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [],
+    "if": null,
+    "format": "markdown_block"
+  }
+}

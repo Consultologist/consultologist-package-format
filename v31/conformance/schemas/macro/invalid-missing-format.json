@@ -1,0 +1,20 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "label": "Letrozole prescription text",
+    "description": null,
+    "if": {
+      "===": [
+        {
+          "var": "node.prescribes_letrozole.value.answer"
+        },
+        true
+      ]
+    },
+    "instruction": [
+      "Place the following marker, alone on its own line, in the assessment and plan,",
+      "after the medication discussion:",
+      "{{~ macro.letrozole_prescription_text.content }}"
+    ]
+  }
+}

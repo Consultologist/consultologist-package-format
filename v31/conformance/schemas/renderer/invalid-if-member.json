@@ -1,0 +1,11 @@
+{
+  "about": "A renderer has no if.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": "markdown_block",
+    "if": null
+  }
+}

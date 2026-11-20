@@ -1,0 +1,10 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "label": " ",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": "markdown_block"
+  }
+}

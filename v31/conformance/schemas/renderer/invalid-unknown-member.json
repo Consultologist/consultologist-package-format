@@ -1,0 +1,11 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": "markdown_block",
+    "extra": null
+  }
+}

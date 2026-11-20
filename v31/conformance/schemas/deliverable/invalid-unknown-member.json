@@ -1,0 +1,13 @@
+{
+  "about": "A declaration is closed: an unknown member is refused.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold",
+    "extra": null
+  }
+}

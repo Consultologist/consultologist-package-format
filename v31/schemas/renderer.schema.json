@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:renderer",
+  "title": "renderers/<id>.md header",
+  "description": "A renderer's header. The JSON object between the --- lines only; the body is outside this schema. The body is its template, which reads only the piped value.",
+  "type": "object",
+  "required": [
+    "label",
+    "kind",
+    "description",
+    "input",
+    "format"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the renderer; never empty or whitespace."
+    },
+    "kind": {
+      "const": "rendered",
+      "description": "The mechanism: rendered."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the renderer)."
+    },
+    "input": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
+      "description": "The format the renderer accepts: a format name or an inline schema."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/textFormat",
+      "description": "The text format of what the renderer returns: plaintext, markdown_block or markdown_inline."
+    }
+  }
+}

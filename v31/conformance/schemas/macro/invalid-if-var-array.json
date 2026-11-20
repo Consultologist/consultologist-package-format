@@ -1,0 +1,18 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "label": "Letrozole prescription text",
+    "description": null,
+    "if": {
+      "var": [
+        "node.x.value"
+      ]
+    },
+    "format": "plaintext",
+    "instruction": [
+      "Place the following marker, alone on its own line, in the assessment and plan,",
+      "after the medication discussion:",
+      "{{~ macro.letrozole_prescription_text.content }}"
+    ]
+  }
+}

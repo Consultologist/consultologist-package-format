@@ -1,0 +1,11 @@
+{
+  "about": "A snippet's format is a text format, never a package format.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "standard_section"
+  }
+}

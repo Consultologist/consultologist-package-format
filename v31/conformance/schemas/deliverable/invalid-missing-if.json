@@ -1,0 +1,11 @@
+{
+  "about": "Every member is written: 'if' is missing.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

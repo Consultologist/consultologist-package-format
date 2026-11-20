@@ -1,0 +1,10 @@
+{
+  "about": "input is never null.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": null,
+    "format": "markdown_block"
+  }
+}

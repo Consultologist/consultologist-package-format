@@ -1,0 +1,8 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "if": null,
+    "format": "markdown_block"
+  }
+}

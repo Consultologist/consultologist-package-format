@@ -1,0 +1,10 @@
+{
+  "about": "renderers/concept_bullets.md header (part 05 section 5.1).",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": "markdown_block"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "about": "A renderer's input may be an inline schema, and its format markdown_inline (made up).",
+  "instance": {
+    "label": "Terms joined",
+    "kind": "rendered",
+    "description": [
+      "Joins a list of terms with commas."
+    ],
+    "input": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "format": "markdown_inline"
+  }
+}

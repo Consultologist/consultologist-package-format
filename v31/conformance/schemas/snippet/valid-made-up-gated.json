@@ -1,0 +1,16 @@
+{
+  "about": "A snippet with a condition (made up).",
+  "instance": {
+    "label": "Closing line",
+    "description": null,
+    "if": {
+      "===": [
+        {
+          "var": "input.include_billing.value"
+        },
+        true
+      ]
+    },
+    "format": "plaintext"
+  }
+}

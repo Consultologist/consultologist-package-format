@@ -1,0 +1,14 @@
+{
+  "about": "A deliverable's format is a name.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": {
+      "type": "string"
+    },
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

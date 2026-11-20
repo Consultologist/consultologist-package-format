@@ -1,0 +1,11 @@
+{
+  "about": "Every member is written: 'kind' is missing.",
+  "instance": {
+    "label": "Consultation note",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

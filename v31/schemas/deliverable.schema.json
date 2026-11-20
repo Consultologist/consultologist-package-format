@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:deliverable",
+  "title": "deliverables/<id>.md header",
+  "description": "A deliverable's header. The JSON object between the --- lines only; the body is outside this schema. The body is its composition template.",
+  "type": "object",
+  "required": [
+    "label",
+    "kind",
+    "description",
+    "format",
+    "if",
+    "check",
+    "whenEmpty"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the deliverable; never empty or whitespace."
+    },
+    "kind": {
+      "const": "rendered",
+      "description": "The mechanism: rendered."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the deliverable)."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
+      "not": {
+        "const": "markdown_inline"
+      },
+      "description": "The composed output's format by name: markdown_block, plaintext or an object format; markdown_inline is refused."
+    },
+    "if": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+      "description": "A JSON Logic condition for whether the deliverable exists, or null for always."
+    },
+    "check": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/rootedKey"
+            },
+            {
+              "pattern": "^check\\."
+            }
+          ]
+        }
+      ],
+      "description": "The check that gates release, written check.<id>, or null for ungated."
+    },
+    "whenEmpty": {
+      "enum": [
+        "release",
+        "hold",
+        "fail"
+      ],
+      "description": "What happens when the composed text is empty."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": {
+      "var": [
+        "input.x.value"
+      ]
+    },
+    "format": "markdown_block"
+  }
+}

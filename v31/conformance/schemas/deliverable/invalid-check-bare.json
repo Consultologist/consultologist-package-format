@@ -1,0 +1,12 @@
+{
+  "about": "check names a check: check.<id>.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": "coverage",
+    "whenEmpty": "hold"
+  }
+}

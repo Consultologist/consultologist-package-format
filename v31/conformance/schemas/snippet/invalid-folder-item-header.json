@@ -1,0 +1,12 @@
+{
+  "about": "A folder item's header is its value, not a snippet header: a title member is refused here.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "markdown_block",
+    "title": "History of Present Illness"
+  }
+}

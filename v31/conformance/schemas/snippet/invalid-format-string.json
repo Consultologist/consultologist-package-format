@@ -1,0 +1,11 @@
+{
+  "about": "A snippet's format is a text format: string is not one.",
+  "instance": {
+    "label": "SNOMED tool guidance",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "string"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "about": "sources is removed: the template's reads are the sources.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold",
+    "sources": [
+      "node.plan"
+    ]
+  }
+}

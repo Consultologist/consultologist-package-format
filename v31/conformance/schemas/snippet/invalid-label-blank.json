@@ -1,0 +1,11 @@
+{
+  "about": "A label is never empty or whitespace.",
+  "instance": {
+    "label": "\t",
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "markdown_block"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "about": "instruction is never null.",
+  "instance": {
+    "label": "Letrozole prescription text",
+    "description": null,
+    "if": {
+      "===": [
+        {
+          "var": "node.prescribes_letrozole.value.answer"
+        },
+        true
+      ]
+    },
+    "format": "plaintext",
+    "instruction": null
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "about": "Every member is written: 'format' is missing.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "if": null,
+    "check": null,
+    "whenEmpty": "hold"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "about": "A check's format is always check_result.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Terms covered",
+    "description": null,
+    "format": "plaintext",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "terms_subset": [
+        {
+          "var": "node.extract_input_terms.value"
+        },
+        {
+          "var": "node.extract_note_terms.value"
+        },
+        "The note does not cover every clinical term found in the referral."
+      ]
+    }
+  }
+}

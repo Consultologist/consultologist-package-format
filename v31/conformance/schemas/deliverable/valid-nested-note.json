@@ -1,0 +1,12 @@
+{
+  "about": "deliverables/note.md of example-nested-note (part 06 section 6.5).",
+  "instance": {
+    "label": "Nested consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null,
+    "whenEmpty": "fail"
+  }
+}

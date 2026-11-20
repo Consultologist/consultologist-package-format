@@ -1,0 +1,11 @@
+{
+  "about": "Every member is written: 'whenEmpty' is missing.",
+  "instance": {
+    "label": "Consultation note",
+    "kind": "rendered",
+    "description": null,
+    "format": "markdown_block",
+    "if": null,
+    "check": null
+  }
+}

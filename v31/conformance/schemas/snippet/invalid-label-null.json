@@ -1,0 +1,11 @@
+{
+  "about": "A label is never null.",
+  "instance": {
+    "label": null,
+    "description": [
+      "How to use the concept lookup tool."
+    ],
+    "if": null,
+    "format": "markdown_block"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:macro",
+  "title": "macros/<id>.md header",
+  "description": "A macro's header. The JSON object between the --- lines only; the body is outside this schema. The body is its verbatim text.",
+  "type": "object",
+  "required": [
+    "label",
+    "description",
+    "if",
+    "format",
+    "instruction"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "label": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+      "description": "The display name of the macro; never empty or whitespace."
+    },
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (the macro)."
+    },
+    "if": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+      "description": "A JSON Logic condition for whether the macro is offered, or null for always."
+    },
+    "format": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/textFormat",
+      "description": "The text format of the body: plaintext, markdown_block or markdown_inline."
+    },
+    "instruction": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Where to place the macro, joined with a newline; it holds the macro's own marker once."
+    }
+  }
+}

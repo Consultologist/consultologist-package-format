@@ -1,0 +1,12 @@
+{
+  "about": "A macro with if null is always offered (made up; an inline marker).",
+  "instance": {
+    "label": "Follow-up sentence",
+    "description": null,
+    "if": null,
+    "format": "markdown_inline",
+    "instruction": [
+      "Place {{ macro.follow_up.content }} at the end of the plan."
+    ]
+  }
+}

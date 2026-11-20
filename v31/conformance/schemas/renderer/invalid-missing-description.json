@@ -1,0 +1,9 @@
+{
+  "about": "Every member is written: 'description' is missing.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "input": "concept_list",
+    "format": "markdown_block"
+  }
+}

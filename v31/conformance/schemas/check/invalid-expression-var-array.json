@@ -1,0 +1,20 @@
+{
+  "about": "A var is written as a string, never an array.",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Terms covered",
+    "description": null,
+    "format": "check_result",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": {
+      "var": [
+        "node.a.value"
+      ]
+    }
+  }
+}

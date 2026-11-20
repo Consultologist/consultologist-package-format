@@ -1,0 +1,12 @@
+{
+  "about": "A renderer's format is a text format name, not an inline schema.",
+  "instance": {
+    "label": "Concepts as bullets",
+    "kind": "rendered",
+    "description": null,
+    "input": "concept_list",
+    "format": {
+      "type": "string"
+    }
+  }
+}
