@@ -438,6 +438,10 @@ def check_self():
     return failures
 
 
+# The renderers chapter 5 section 5.5.1 prints whole, byte for byte.
+PRINTED_RENDERERS = ["concept_bullets"]
+
+
 def check_renderers():
     """Part 05 section 5.1: each renderer file is a header, then a non-empty body of its own."""
     registry, failures = build_registry()
@@ -470,6 +474,11 @@ def check_renderers():
     for item in listed:
         if not (V31 / "renderers" / f"{item}.md").exists():
             failures.append(f"renderers/index.json: {item} has no file")
+    document = DOCUMENT.read_text(encoding="utf-8") if DOCUMENT.exists() else ""
+    for item in PRINTED_RENDERERS:
+        path = V31 / "renderers" / f"{item}.md"
+        if path.exists() and f"```\n{path.read_text(encoding='utf-8')}```\n" not in document:
+            failures.append(f"{DOCUMENT.name}: no code block prints {path.relative_to(ROOT)} as it is")
     return failures
 
 

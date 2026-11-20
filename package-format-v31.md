@@ -3706,22 +3706,34 @@ The body is a non-empty template that reads **only `value`**, the piped value (�
 renderer is reproducible by construction: the same value always gives the same bytes. Its body
 pipes into no renderer (R-N7); chaining happens at a use site (§ 5.5.2).
 
+The built-in `concept_bullets`, as the registry publishes it in
+[`v31/renderers/concept_bullets.md`](v31/renderers/concept_bullets.md) (its `value` is a
+`concept_list`, whose list is `value.concepts`):
+
 ```
-renderers/concept_bullets.md
 ---
 { "label": "Concepts as bullets", "kind": "rendered", "description": null,
   "input": "concept_list", "format": "markdown_block" }
 ---
-{{~ if value.size == 0 ~}}
-(none)
+{{~ if value.concepts.size == 0 ~}}
+(none){{~ else ~}}
+{{~ for c in value.concepts ~}}
+{{~ if c.isSnomedConcept ~}}
+- {{ c.term }} ({{ c.type }}) - {{ c.id }}{{ if !c.isActive }} [not active SNOMED concept]{{ end }}{{ if !for.last }}
+{{ end ~}}
 {{~ else ~}}
-…
+- {{ c.term }} [not SNOMED concept]{{ if !for.last }}
+{{ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
 ```
 
-(The `if` above tests a list's size, which § 5.2.5 refuses in other bodies. **A renderer's body
-may test its own `value` in an `if`**: a renderer decides nothing that's
+(The first `if` above tests a list's size, which § 5.2.5 refuses in other bodies. **A renderer's
+body may test its own `value` in an `if`**: a renderer decides nothing that's
 recorded, since its whole output is a function of `value`, hashed as one sub-row. Without this,
-the two built-in renderers can't be written.)
+the two built-in renderers can't be written. **In that test it may read a list's size as
+`.size`** (`value.concepts.size == 0`), as the built-in renderers do.)
 
 #### 5.5.2 The call: a pipe to the root `renderer.`
 

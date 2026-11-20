@@ -118,7 +118,9 @@ has already decided and recorded:
 - A `state` is compared only with a literal from the closed set.
 - **Testing anything else is refused:** a data value, an input, a node's text, a run fact. The one
   exception is a renderer's body, which may test its own `value`: a renderer decides nothing that
-  is recorded, since its whole output is a function of `value`. The sentence points to the header
+  is recorded, since its whole output is a function of `value`. In that test it may read a list's
+  size as `.size` (`value.concepts.size == 0`), as the built-in renderers do
+  ([chapter 5 § 5.5.1](../package-format-v31.md#551-the-file)). The sentence points to the header
   forms: a part, a snippet's `if` or a macro's `if`.
 - **Completeness:** an `if` that branches on a `state` must handle every state or end with an
   `else`, which keeps the template safe when a state is added later.
@@ -277,6 +279,7 @@ The advance warning, which is not a refusal:
 | `for` over a range or an object | refused | R-D6 (S05-006) |
 | `for` options `limit:`, `offset:`, `reversed`; `for.rindex`, `for.length`, `for.changed` | refused | none of their own |
 | `if`, `else if`, `else` on loop position, state and check pass | allowed | none |
+| `if` in a renderer's body on its own `value`, a list's `.size` included | allowed | none |
 | `if` on anything else | refused | R-D7 (S05-007) |
 | a state compared with a value outside `completed`, `skipped`, `not_run` | refused | R-D9 (S05-010) |
 | an `if` on a state that misses a state and has no `else` | refused | R-D8 (S05-009) |

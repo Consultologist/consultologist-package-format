@@ -104,6 +104,23 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   stamped from the producing node; the format and the stored value disagree by that one member.
   The area that builds renderers (07) inherits the question of whether `concept_list` gains
   `source` or the renderer loses it.
+- **`concept_context` pipes inside an `if`.** The built-in `concept_context` tests blank support as
+  `{{ if c.support != null && (c.support | string.strip) != "" }}`, a pipe inside an `if`'s test.
+  [Chapter 5 § 5.2.1](../../package-format-v31.md#521-statements) lists the pipe (`x | string.strip`)
+  and the output tag "optionally piped", and
+  [§ 5.2.5](../../package-format-v31.md#525-a-body-if-tests-recorded-facts-only) combines a test's
+  facts "with `!`, `&&`, `||` and parentheses"; neither says a pipe may stand inside a test, and
+  anything not listed as allowed is refused. So the registry's own renderer needs a construct the
+  dialect as published refuses. The renderer's bytes are proven against the C# renderer and are not
+  changed; whether the dialect allows a pipe to a built-in inside a renderer body's `if` is to be
+  settled before the dialect checker is built (area 07).
+- **Chapter 5's printed renderer.** The design prints `renderers/concept_bullets.md` testing
+  `value.size == 0`, with `(none)` on a line of its own. The registry's file
+  ([`v31/renderers/concept_bullets.md`](../renderers/concept_bullets.md)) tests
+  `value.concepts.size == 0`, since a `concept_list` value is an object whose list is `concepts`,
+  and writes `(none){{~ else ~}}`, which gives the C# renderer's bytes.
+  [Chapter 5 § 5.5.1](../../package-format-v31.md#551-the-file) prints the registry's file, and
+  `scripts/check-v31.py` holds the two equal.
 - **`check_result`'s nullable arrays.**
   [Chapter 6 § 6.2.1](../../package-format-v31.md#621-the-format) writes `uncovered` and `untested`
   as `{ "type": ["array", "null"], "items": … }`, a type array of a non-scalar plus `null`, while
