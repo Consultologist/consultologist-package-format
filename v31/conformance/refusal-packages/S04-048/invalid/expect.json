@@ -1,7 +1,7 @@
 {
-  "about": "A case branch half empty: nodes [] with a ret, or nodes with a null ret (chapter 4 § 4.5.2). Invalid: the case route's third branch declares \"nodes\": [] with a ret. Valid: the empty branch, nodes [] and ret null together.",
+  "about": "A case branch half empty: nodes [] with a ret, or nodes with a null ret (chapter 4 § 4.5.2). Invalid: the case route's second branch declares \"nodes\": [] with a ret. Valid: the empty branch, nodes [] and ret null together.",
   "valid": false,
   "sentences": [
-    "Case 'route' branch 3 writes nodes [] with ret node.sections_draft.route.narrative_draft; an empty branch writes nodes [] and ret null together."
+    "Case 'route' branch 2 writes nodes [] with ret node.route.narrative_draft; an empty branch writes nodes [] and ret null together."
   ]
 }

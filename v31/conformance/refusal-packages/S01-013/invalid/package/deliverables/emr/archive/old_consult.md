@@ -3,4 +3,4 @@
 ---
 Re: Margaret Okafor
 
-{{ node.refine.content }}
+{{ node.plan.content }}

@@ -1,1 +1,1 @@
-{ "description": ["The standard sections of a consult note, in order."], "items": ["hpi", "assessment_plan"], "format": "standard_section" }
+{ "description": ["The standard sections of a consult note, in order."], "items": ["hpi"], "format": "plaintext" }

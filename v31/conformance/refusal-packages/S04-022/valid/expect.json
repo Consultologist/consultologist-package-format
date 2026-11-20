@@ -1,5 +1,5 @@
 {
-  "about": "A maxParallel on a sequential for (chapter 4 § 4.2.3). Invalid: the for standards declares \"parallel\": false with \"maxParallel\": 4. Valid: \"parallel\": false with \"maxParallel\": null.",
+  "about": "A maxParallel on a sequential for (chapter 4 § 4.2.3). Invalid: the for sections declares \"parallel\": false with \"maxParallel\": 4. Valid: \"parallel\": false with \"maxParallel\": null.",
   "valid": true,
   "sentences": []
 }

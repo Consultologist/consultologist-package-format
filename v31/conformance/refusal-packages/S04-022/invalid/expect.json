@@ -1,7 +1,7 @@
 {
-  "about": "A maxParallel on a sequential for (chapter 4 § 4.2.3). Invalid: the for standards declares \"parallel\": false with \"maxParallel\": 4. Valid: \"parallel\": false with \"maxParallel\": null.",
+  "about": "A maxParallel on a sequential for (chapter 4 § 4.2.3). Invalid: the for sections declares \"parallel\": false with \"maxParallel\": 4. Valid: \"parallel\": false with \"maxParallel\": null.",
   "valid": false,
   "sentences": [
-    "Loop 'standards' declares maxParallel 4 with parallel false; a sequential loop runs one item at a time: write \"maxParallel\": null."
+    "Loop 'sections' declares maxParallel 4 with parallel false; a sequential loop runs one item at a time: write \"maxParallel\": null."
   ]
 }

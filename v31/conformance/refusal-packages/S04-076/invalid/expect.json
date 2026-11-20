@@ -1,7 +1,7 @@
 {
-  "about": "A case branch whose when holds null (chapter 4 § 4.5.2). Invalid: the case route's third branch declares \"when\": [\"omit\", null]. Valid: \"when\": [\"omit\"].",
+  "about": "A case branch whose when holds null (chapter 4 § 4.5.2). Invalid: the case route's second branch declares \"when\": [\"omit\", null]. Valid: \"when\": [\"omit\"].",
   "valid": false,
   "sentences": [
-    "Case 'route' branch 3 lists null; a null subject goes to the else."
+    "Case 'route' branch 2 lists null; a null subject goes to the else."
   ]
 }

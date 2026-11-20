@@ -1,5 +1,5 @@
 {
-  "about": "A function parameter that declares a package input's member (chapter 4 § 4.7.2.1). Invalid: the parameter standard of draft_section declares \"required\": true. Valid: label, description and format only.",
+  "about": "A function parameter that declares a package input's member (chapter 4 § 4.7.2.1). Invalid: the parameter draft of draft_section declares \"required\": true. Valid: label, description and format only.",
   "valid": true,
   "sentences": []
 }

@@ -1,1 +1,1 @@
-{ "description": null, "items": ["plan", "section_count", "sections", "sections_draft", "refine", "billing_gate", "standards", "extract_input_terms", "extract_note_terms"] }
+{ "description": null, "items": ["plan", "billing_gate"] }

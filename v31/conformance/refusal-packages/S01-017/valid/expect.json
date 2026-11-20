@@ -1,5 +1,5 @@
 {
-  "about": "A header that is not JSON (chapter 1 § 1.4). Invalid: nodes/plan.md's header ends with a comma before its closing brace. Valid: without the comma. The sentence carries the JSON parser's own message.",
+  "about": "A header that is not JSON (chapter 1 § 1.4). Invalid: nodes/plan.md's header ends with a comma before its closing brace. Valid: without the comma. The sentence's parser message is this implementation's: the line and column of the file where the JSON stops being valid.",
   "valid": true,
   "sentences": []
 }

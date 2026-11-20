@@ -1,5 +1,5 @@
 {
-  "about": "A folder without its index.json (chapter 1 § 1.2.2). Invalid: the snippet folder snippets/standards holds its two items and no index.json. Valid: the folder with its index.json.",
+  "about": "A folder without its index.json (chapter 1 § 1.2.2). Invalid: the snippet folder snippets/standards holds its item and no index.json. Valid: the folder with its index.json.",
   "valid": true,
   "sentences": []
 }
