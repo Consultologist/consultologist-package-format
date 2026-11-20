@@ -441,8 +441,44 @@ def check_self():
     return failures
 
 
+def check_renderers():
+    """Part 05 section 5.1: each renderer file is a header, then a non-empty body of its own."""
+    registry, failures = build_registry()
+    validator = validator_for(schema_for("renderer"), registry, failures)
+    index, errors = load(V31 / "renderers" / "index.json")
+    failures += errors
+    listed = index["items"] if index else []
+    for path in sorted((V31 / "renderers").glob("*.md")):
+        where = path.relative_to(ROOT)
+        text = path.read_text(encoding="utf-8")
+        parts = text.split("\n---\n", 1) if text.startswith("---\n") else None
+        if parts is None:
+            failures.append(f"{where}: does not start with a --- line")
+            continue
+        header_text, body = parts[0][4:], parts[1] if len(parts) > 1 else ""
+        try:
+            header = json.loads(header_text)
+        except json.JSONDecodeError as error:
+            failures.append(f"{where}: the header is not JSON ({error})")
+            continue
+        if validator:
+            for error in validator.iter_errors(header):
+                failures.append(f"{where}: header /{'/'.join(map(str, error.path))}: {error.message}")
+        if path.stem not in listed:
+            failures.append(f"{where}: not listed in renderers/index.json")
+        if not body.strip():
+            failures.append(f"{where}: the body is empty")
+        if "renderer." in body:
+            failures.append(f"{where}: the body pipes into a renderer")
+    for item in listed:
+        if not (V31 / "renderers" / f"{item}.md").exists():
+            failures.append(f"renderers/index.json: {item} has no file")
+    return failures
+
+
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
-          ("examples", check_examples), ("formats", check_formats), ("self", check_self)]
+          ("examples", check_examples), ("formats", check_formats),
+          ("renderers", check_renderers), ("self", check_self)]
 
 
 def main():

@@ -1,0 +1,4 @@
+{
+  "description": ["The built-in renderers: the two byte-stable renderings of a concept list."],
+  "items": ["concept_bullets", "concept_context"]
+}
