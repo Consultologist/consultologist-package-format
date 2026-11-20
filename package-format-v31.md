@@ -6221,3 +6221,291 @@ sentence in `stateReason`, and a deliverable's row does the same; the sentences 
   *"The model service \<timed out | returned an error | couldn't be reached\> \<n\> times in a row."*;
   and a job past its time limit: *"The job didn't finish within \<n\> minutes."* History adds
   *"Run the workflow again later."* ([chapter 8 § 8.13](#813-sentences-the-engine-shows)).
+
+## 10. Migration (30 → 31)
+
+This chapter is where "At 30 … At 31" lives: what turns a package at 30 into a package at 31, and
+what the migration reports. The migration is **one library rewrite from 30, chained from older
+versions:** a package older than 30 is first raised through the existing chain in the same run. It
+reads specVersion 30, never writes an unknown member ([chapter 1](#1-files-and-scopes)), and
+produces the migrated package as a folder ([chapter 1 § 1.2](#12-the-folder-layout)), a list of
+notices, a migration report (§ 10.11) and a snapshot test (§ 10.12). Byte-equivalence with 30 is
+reported, never a gate. The operator's procedure and the project's schedule are not part of the
+format and are not in this document.
+
+### 10.1 What the rewrite does mechanically
+
+Every rewrite the format defines is listed here, with the chapter that defines the 31 form.
+
+| At 30 | At 31 | Chapter |
+|---|---|---|
+| one `manifest.json` with every node, prompts as files | files and folders. **All nine top-level folders are written, each with its `index.json`, even when empty** (`"items": []`): `nodes/`, `checks/`, `functions/`, `renderers/`, `snippets/`, `macros/`, `formats/`, `deliverables/`, `tests/`; each function folder gets its `snippets/`, `macros/`, `formats/` and `renderers/`. Flow folders get their `index.json` | [1](#1-files-and-scopes) |
+| the manifest's `nodes`, `macros` and `snippets` lists | moved into `nodes/index.json`, `macros/index.json` and `snippets/index.json`, members by bare id; the manifest keeps identity and inputs | [1](#1-files-and-scopes) |
+| `templating` in the manifest | dropped; `lock.json` and `requires` record the Scriban version | [1](#1-files-and-scopes) |
+| optional members omitted | every member written, `null` for none | [1](#1-files-and-scopes) |
+| `\r\n` line endings | normalised to `\n`, as import and publish do | [1](#1-files-and-scopes) |
+| node headers | **`reproducible` written on every node**, from the derived value (`rendered` and `computed` `true`, `agent` `false`, a flow node from its body, a `call` from its function), and the migration report lists each node whose 30 claim differed; **`producer` written on every node and check**, from its kind (`"generated"` for `agent`, `"computed"` for every other); **`modelDerived`, `runDependent` and `profileCarrying` written on every node and check**, from the values the resolver derives; `format` written on flow nodes, from `ret` | [1](#1-files-and-scopes), [2](#2-types-and-inputs) |
+| an id now reserved (`parts`, `items`, `value`, …) | renamed, with every reference rewritten (§ 10.6) | [1](#1-files-and-scopes) |
+| `format` with `producer` | `kind` and `format` on every node | [2](#2-types-and-inputs) |
+| `prose` and `agent_*` formats; `x-generated` | **the plain format of the same shape:** `prose` and `agent_plaintext` → `plaintext`, `agent_markdown_block` → `markdown_block`, `agent_markdown_inline` → `markdown_inline`; object formats keep their names. `x-generated` is dropped: the node's `producer` says who wrote the value | [2](#2-types-and-inputs), [7](#7-the-compiled-documents) |
+| a format file | **`$schema` written** as `urn:consultologist:spec:31:dialect` | [2](#2-types-and-inputs) |
+| an object format (catalogue or package) whose `required` lists only some properties | every property listed in `required`, the optional ones made nullable (§ 10.5) | [2](#2-types-and-inputs) |
+| inputs as an array with `type`, `values`, `fields`, `items`, `expectedContent` | an object keyed by id: `text` → `markdown_block`; `enum` + `values` → **a plain `enum`, with no invented titles**; `date` → `"date"`; `fields` → `properties` + `required` listing every field, optional ones made nullable; `expectedContent` → `channel`; `description: null` added | [2](#2-types-and-inputs) |
+| 30's "one or many" union inputs | **their array form**, since inputs refuse a top-level `anyOf` | [2](#2-types-and-inputs) |
+| a long free-text `string` field | unchanged; a notice **suggests** a text format, never applied automatically | [2](#2-types-and-inputs) |
+| bare `input.x` reads, in conditions, expressions and templates | **`input.x.value`**, or **`input.x.content`** for a text-format input, since a bare `input.<id>` is refused | [2](#2-types-and-inputs) |
+| `labelField` on an input | `itemLabel` on **each loop** that iterates the input (several loops get the same value) | [4](#4-loops-and-functions) |
+| a node's `when` gate | `if`; a `case` branch keeps `when` | [3](#3-expressions) |
+| a `case` with no `else` whose branches miss some values (which 30 skipped) | **an explicitly empty branch for the missing values**, `{ "when": [<values>], "nodes": [], "ret": null }`, so every `case` is exhaustive and those values still read as skipped, with the reason *"case '\<id\>': arm for \<value\> does nothing"*. The `case` keeps its shape and keys: `example-conditional-sections`' `route` gains `{ "when": ["omit"], "nodes": [], "ret": null }` | [4](#4-loops-and-functions) |
+| string conditions (Scriban) | JSON Logic, by the converter (§ 10.9); `==`/`!=` written `===`/`!==`; `!x` on text → `blank(x)`, each listed in the migration report (§ 10.10) | [3](#3-expressions) |
+| `let` (a Scriban expression) | `kind: computed` with JSON Logic in `expression`, by the converter | [3](#3-expressions) |
+| a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
+| deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says | [6](#6-checks-deliverables-and-the-profile) |
+| the deliverable header's signature | `{{ profile.signature }}` in the template | [6](#6-checks-deliverables-and-the-profile) |
+| built-in renderers in C# (`concept_bullets`, `concept_context`) | **built-in Scriban renderers in the registry**, versioned and locked, their ids reserved; piped as `\| renderer.concept_bullets` | [5](#5-templates-and-macros) |
+| whitespace forms version 31 refuses, `-` on a tag | rewritten to the accepted forms | [5](#5-templates-and-macros) |
+| simple `{{ if }}…{{ end }}` blocks in prompts | lifted into parts | [5](#5-templates-and-macros) |
+| `failIfEmpty` on agent nodes | carried over unchanged, written `true`, `false` or `null` | [5](#5-templates-and-macros) |
+| optional macros: per-run choices with a `default` | **boolean inputs** (§ 10.3) | [2](#2-types-and-inputs), [5](#5-templates-and-macros) |
+| no tests | one snapshot test (§ 10.12) | [7](#7-the-compiled-documents) |
+
+### 10.2 Pipes, body tests and the `test` macro
+
+Three rewrites in templates are stated here because the chapters that define the 31 form point to
+this one.
+
+- **A version 30 pipe becomes a pipe into a renderer.** 30's `node.x | concept_bullets` (the node)
+  and `node.x.content | …` become **`node.x.value | renderer.concept_bullets`**: the piped value is
+  the node's typed `.value`, and the renderer is a built-in Scriban renderer of the registry
+  ([chapter 5 § 5.5](#55-renderers)).
+- **A body `if` becomes a part.** A simple `{{ if }}…{{ end }}` block in a prompt is lifted into a
+  part ([chapter 5 § 5.7](#57-parts)); a body `if` too complex to lift is a hand edit (§ 10.4).
+  30's `test/general` tests `(item.content | string.strip) == ""` in a body `if`, which 31 refuses:
+  the test moves to the part's `if`, written with the `blank` operation
+  ([chapter 3](#3-expressions)), and is recorded as a decision.
+- **The `test` macro becomes a snippet.** 30's `test` macro (`at: append`, "the last line of the
+  note") becomes `snippets/test.md`, which the deliverable's template reads verbatim at the end of
+  the note, `{{ snippet.test.content }}`; the template itself is first written to reproduce 30's
+  bytes ([chapter 6 § 6.6.5](#665-headings-are-the-authors)).
+
+### 10.3 Per-run macro choices become boolean inputs
+
+Inputs have no `default` member, so each optional macro at 30 becomes an optional boolean input, and
+the macro's offer condition reads it so that a run that doesn't answer gets 30's default:
+
+| 30's `default` | The macro's `if` at 31 | Unanswered (`null`) means |
+|---|---|---|
+| `false` | `{ "===": [ { "var": "input.<id>.value" }, true ] }` | not offered |
+| `true` | `{ "!==": [ { "var": "input.<id>.value" }, false ] }` | offered |
+
+When 30's macro already had an `if`, the two are joined with `and`. **The input takes the macro's
+id and label.** An id that's already an input's id gets the suffix `_macro` (`letrozole` →
+`letrozole_macro`), and the rename is in the migration report. An optional boolean input is shown
+in three states (unset, yes, no), and unset is sent as `null`
+([chapter 2 § 2.10](#210-per-run-macro-choices-become-optional-boolean-inputs)). The new input is
+written:
+
+```jsonc
+"include_billing_note": {               // the macro's id
+  "label": "Include the billing note",  // the macro's label
+  "description": null,
+  "format": "boolean",
+  "required": false,
+  "channel": null
+}
+```
+
+Re-evaluating a `default` member is
+[#1456](https://github.com/Consultologist/Consultologist-Blazor/issues/1456) (Milestone 40).
+
+### 10.4 Hand edits, with notices
+
+When the rewrite can't decide, it still writes the package, with **one notice per edit**, and
+validation fails with sentences until each is made. The cases:
+- a body `if` too complex to lift into a part;
+- macros placed on deliverables with conditions or model judgement;
+- a condition or `let` the converter can't map (§ 10.10);
+- **a 30 prompt that reads `profile.*`:** at 31 a prompt never reads the profile
+  ([chapter 5](#5-templates-and-macros)), so the read is a hand edit, and the owner is told about
+  it in the after-notice (§ 10.8), with what replaced it.
+
+Notices that need no edit (a renamed id, a `!x` converted to `blank(x)`, a suggested text format)
+are listed in the migration report and block nothing.
+
+The script exits **0** when the package migrated cleanly, **1** with *"written; hand edits remain"*,
+and **2** when it refused, writing no package (unreadable input, or a version below 5).
+
+Each notice reads:
+
+*"Hand edit needed in \<file\>, \<member\>: \<reason\>."*
+
+The reason for a prompt that reads the profile is:
+
+*"the prompt reads profile.\<field\>, which a 31 prompt doesn't read; move it to a deliverable or a macro body."*
+
+### 10.5 Every property required
+
+At 31 every property of every format is listed in `required`, and an optional one is nullable
+([chapter 2 § 2.3](#23-the-dialect)). The migration rewrites today's formats to match:
+- **package formats and inputs' object fields** in each migrated package;
+- **the catalogue's formats,** released as new versions with the contracts.
+
+Agents then return explicit `null`s for optional fields where they used to leave the key out.
+**The record and History treat an explicit `null` as absent,** and the byte-equivalence report
+(§ 10.11) notes the difference rather than failing on it.
+
+### 10.6 Reserved ids are renamed
+
+An id that 31 reserves (`input(s)`, `node(s)`, `check(s)`, `function(s)`, `test(s)`, `snippet(s)`,
+`macro(s)`, `part(s)`, `renderer(s)`, `format(s)`, `deliverable(s)`, `param(s)`, `item(s)`,
+`pass(es)`, `run(s)`, `profile(s)`, `value(s)`, `content(s)`) is renamed by the migration
+([chapter 1 § 1.6](#16-ids)). **Object field names are never renamed:** they have no reserved list,
+since a field is always read after `.value`, so 30's `title` fields keep their name:
+
+- **In example packages each rename is hand-chosen:** `example-nested-note`'s loop `parts` becomes
+  **`sections`**, so `nodes/parts/…` becomes `nodes/sections/…` and `node.parts.…` becomes
+  `node.sections.…` everywhere, `ret` values included.
+- **In account packages the kind is added as a suffix:** a `for` loop `parts` becomes `parts_for`.
+- **A rename that collides** with an existing id gets a numeric suffix (`_2`, `_3`, …), the id
+  shortened first so the whole stays within 64 characters, and is listed in the report:
+  *"Renamed '\<id\>' to '\<new id\>'; '\<id\>\_\<kind\>' was already taken."*
+- **Every rename is reported,** and every reference to it is rewritten: reads, `ret`, `in`,
+  conditions, templates, test keys.
+
+### 10.7 `whenEmpty` for migrated deliverables
+
+- **Account packages:** `"release"`, which keeps 30's behaviour (30 produces an empty deliverable
+  as is).
+- **Example packages, hand-chosen:** `"hold"` for `test/general`, `"fail"` for
+  `example-nested-note`, and `"release"` for the rest.
+
+### 10.8 A package that stays at 30, and what its owner is told
+
+- **A package that can't be migrated faithfully may stay at 30:** its pin is unchanged, and its
+  owner is told why, until the Milestone 41 Editor lets them migrate it themselves. It keeps 30's
+  load path until the old spec versions retire
+  ([#1450](https://github.com/Consultologist/Consultologist-Blazor/issues/1450)); old versions
+  stay readable and old records keep their meaning ([chapter 8 § 8.1](#81-two-load-paths-chosen-by-specversion)).
+  The owner's notice reads:
+
+  *"\<package\> stays at version 30 for now: \<reason\>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives."*
+
+- **A migrated version is recorded as a migration:** its publish record says
+  *"migrated by the operator from \<old version\>"*, with the byte-equivalence report and the list
+  of hand edits attached.
+- **Owners are told** before the migration that their packages will be migrated and that editing
+  returns with Milestone 41, and after it what changed, with the report and the hand edits. **The
+  notice also says that 31 jobs are refused until the account's time zone is set, and when a
+  profile field the package reads is missing** ([chapter 6 §§ 6.10.4 and 6.10.7](#6104-a-missing-field-refuses-the-job));
+  those refusals apply to 31 jobs only.
+
+### 10.9 The converter
+
+The conversion logic is a library, not part of the format: the format and the checker only ever
+see JSON Logic. It takes 30's conditions, which are Scriban boolean expressions, and 30's `let`s,
+which are single Scriban expressions over pure builtins, and maps the subset that has a counterpart
+in 31's operation set ([chapter 3 § 3.5](#35-the-operations)), **using the table below as written;**
+the operations themselves, their signatures and their null rules are chapter 3's. The reverse
+direction, JSON Logic to text, is the printer ([chapter 3 § 3.8](#38-the-printer)), which the
+converter reuses; there is one printer.
+
+| At 30 (Scriban) | At 31 (JSON Logic) |
+|---|---|
+| a read: `node.x.value.y`, `node.x.content`, `item.id`, `item.value.y`, `pass.number`, `run.x` | `{ "var": "<the same path, with its root>" }` |
+| a read of an input: `input.x`, `input.x.y` | `{ "var": "input.x.value" }` (or `input.x.content` for a text-format input), `{ "var": "input.x.value.y" }` |
+| `a == b`, `a != b` | `{ "===": [a, b] }`, `{ "!==": [a, b] }` |
+| `a < b`, `a <= b`, `a > b`, `a >= b` | the same operators, two operands |
+| `a && b`, `a \|\| b` | `and`, `or` (flattened: `a && b && c` is one `and`) |
+| `!a`, with `a` boolean | `{ "!": [a] }` |
+| `!a`, with `a` text | `{ "blank": [a] }` (§ 10.10) |
+| `+ - * / %` on numbers | the same operators |
+| `(x \| array.size)`, `x.size` on a list | `{ "size": [x] }` |
+| `string.downcase x`, `string.strip x` | `{ "lower": [x] }`, `{ "trim": [x] }` |
+| `string.starts_with x "p"`, `string.ends_with x "p"` | `starts_with`, `ends_with` |
+| `string.contains x "p"` | `{ "in": ["p", x] }` |
+| `date.parse "YYYY-MM-DD"` | the literal string, typed `date` by its comparison |
+| a number, `true`, `false`, a quoted string | the JSON literal |
+| `{ a: x, b: y }` (a `let`'s object) | the `object` operation ([chapter 3](#3-expressions)) |
+| `[x, y]` | a JSON array |
+
+- **Equality is always written strict** (`===`/`!==`); `==`/`!=` are never written.
+- **A 30 classifier gate keeps its format:** today's catalogue `classification`
+  (`{ value: string }`) is unchanged, so a macro gated on a classifier's *yes* reads
+  `{ "===": [ { "var": "node.<id>.value.value" }, "yes" ] }`. The built-in `judgement`
+  ([chapter 2 § 2.4](#24-built-in-and-catalogue-formats)) is for classifiers written at 31; the
+  migration doesn't rewrite a `classification` into it.
+- **The output is canonical:** the same input always gives the same bytes (RFC 8785 ordering for
+  any object), so migrated packages diff cleanly and the round-trip fixtures are stable.
+
+### 10.10 What the converter refuses, and `!x` on text
+
+Anything outside the table gives no logic and one notice per reason, which the migration turns into
+a hand edit (§ 10.4), with a notice. In particular:
+- a builtin or pipe with no 31 operation;
+- a comparison the 31 checker refuses by type (for example `<` on text), using **the checker's own
+  sentence** ([chapter 3](#3-expressions));
+- a read of `profile.*` in a condition, which 31 refuses;
+- an assignment, a template, or more than one statement.
+
+For anything but a refusal on type, the notice reads:
+
+*"The condition '\<expression\>' uses \<construct\>, which has no JSON Logic form at 31: rewrite it by hand."*
+
+**`!x` on text converts to `blank(x)`.** It differs from 30 only for whitespace-only text (30's
+truthiness treats it as present; `blank` counts it as blank), so **the migration report lists every
+such conversion.** For every condition in the public packages and the fixture set, 30's evaluator on
+the Scriban string and 31's evaluator on the converted JSON Logic agree on generated fictional
+inputs, including `null` and absent values, except this whitespace case, which is listed as an
+expected difference in the byte-equivalence report, never silently accepted.
+
+### 10.11 The migration report
+
+- **Reported, never a gate.** Each difference between the 30 package's prompts and deliverables and
+  the migrated package's, rendered on fixed fictional inputs with model outputs stubbed, is listed
+  with its file, its site and both texts' hashes, and marked **expected** where the rewrite
+  declares and explains it (for example a whitespace form version 31 refuses, or a `!x` converted
+  to `blank(x)`). An optional field that 30 left out and 31 sends as `null` (§ 10.5) is noted,
+  never counted as a failure. The report **never blocks publish,** for public or account
+  packages.
+- **What it also lists:** every renamed id (§ 10.6), every `_macro` suffix (§ 10.3), every `!x`
+  converted to `blank(x)` (§ 10.10), and every suggestion made.
+- **It notes a package whose estimated worst case passes the job limit** (30 minutes, or a
+  total-work limit, [chapter 8 § 8.7](#87-retries-and-limits)), with the estimate, in the
+  sentence of [chapter 8 § 8.8](#88-the-publish-note):
+  *"\<package\> could run for about \<n\> minutes in the worst case; this engine stops a job after \<limit\> minutes."*
+- **Its shape:** one JSON document, `migration-report.json`, beside the publish report in the
+  version's folder ([`migration-report.schema.json`](v31/schemas/migration-report.schema.json)).
+  Like the other derived files, it never lives in source.
+
+  | Member | Type | Meaning |
+  |---|---|---|
+  | `oldVersion` | string | the version migrated from |
+  | `newVersion` | string | the version migrated to |
+  | `handEdits` | array of string | the hand edits made; `[]` for none |
+  | `texts` | array of entry | one entry per compared text; `[]` for none |
+
+  **An entry of `texts`** is `{ "site", "oldHash", "newHash", "equal", "expected", "explanation" }`:
+
+  | Member | Type | Null | Meaning |
+  |---|---|---|---|
+  | `site` | string | never | the compared text's site: the file and the place in it |
+  | `oldHash` | string (`sha256:…`) | never | the hash of the text at 30 |
+  | `newHash` | string (`sha256:…`) | never | the hash of the text at 31 |
+  | `equal` | boolean | never | whether the two texts are equal |
+  | `expected` | boolean | never | whether the rewrite declares and explains the difference |
+  | `explanation` | string | allowed | why the difference is expected; `null` unless `expected` is true |
+
+### 10.12 The snapshot test
+
+**The migration writes one test per package** from its migrated run, so every migrated package
+starts with one test pinning its behaviour. It follows the grammar of in-package tests
+([chapter 7 § 7.8](#78-in-package-tests-tests)): fictional `inputs`, every input listed; fixed
+`profile` and `run` values for exactly what the package reads; `outputs` stubbed per agent node,
+item and pass, keyed by key with root; and `expect` holding the resulting prompts and deliverables
+**by hash,** since exact text would put a whole note into the package and a hash pins the same
+bytes. The stubs are generated from each node's format, deterministically, seeded by the node's
+key, item path and pass, so the same package and inputs always give the same stubs.
+
+- **Its id is `migration_snapshot`, at `tests/migration_snapshot.json`.**
+- Like every test, it runs offline in CI, and at publish, where a failure blocks publish. Its
+  result goes in the publish report, never in a job's record.
