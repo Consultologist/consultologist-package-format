@@ -546,6 +546,12 @@ def check_document():
         if marker in text:
             failures.append(f"a link contains {marker}")
     for number, line in prose_lines(text):
+        stripped = line.strip()
+        if (re.match(r"[.,;:](\s|$)", stripped) or (stripped and not stripped.startswith("```")
+                and not re.fullmatch(r"[-|: ]+|[-*+]|\d+\.", stripped)
+                and re.fullmatch(r"[^\w{}\[\]()…]+", stripped))):
+            failures.append(f"line {number}: a line of orphaned punctuation: {stripped[:40]}")
+    for number, line in prose_lines(text):
         for target in LINK.findall(re.sub(r"`[^`]*`", "", line)):
             if target.startswith(("http://", "https://", "mailto:")):
                 continue

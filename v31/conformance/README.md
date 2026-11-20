@@ -157,7 +157,3 @@ The `formats` check group does enforce the first of these on the built-in format
   `dag.mmd`, then `lock.json`, then the publish report, then `resolve.json` last (item 5), and
   then the "published" stamp last (item 6). Both are called "last"; the text keeps both as the
   design has them, `resolve.json` last of the files and the stamp last of all.
-- **A `case` listed under `reads` edges.** Part 07 § 2.7 lists `kind` values `reads`, `if`, `for`,
-  `ret`, `placed`, `calls`, `aligned`, `gates`, which `constants.json`'s `edgeKinds` repeats; no
-  `case` kind is listed, so a `case` subject's edge is a `reads` edge by that list. The design does
-  not say so.

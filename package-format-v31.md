@@ -4972,22 +4972,18 @@ The rules common to both:
 - **Hashes are SHA-256 over the canonical, uncompressed bytes,** written `sha256:<64 lowercase hex>`.
   Compression (for example gzip) is only for storage and transport.
 - **No timestamps in either document.** Compiling the same source with the same toolchain gives the
-  same bytes. The time of publishing is in the registry and the publish report
-.
+  same bytes. The time of publishing is in the registry and the publish report.
 - **Written only by publish,** with the registry's toolchain. Never authored, never accepted from
   an upload, never in any source (§ 7.7).
 - **Immutable with the version.** A published version is **never re-resolved** and **never
-  re-locked**. A change of toolchain that matters is a new version of the package
-.
+  re-locked**. A change of toolchain that matters is a new version of the package.
 - **No backfill.** Versions below 31 never get either document; they keep today's loading path
   until they're retired ([#1450](https://github.com/Consultologist/Consultologist-Blazor/issues/1450)). Packages that must keep running are migrated to 31 (chapter 10).
-.
 - **Every member is present:** `null` means "deliberately none" and a missing key is an
   error. Embedded JSON Schema keeps JSON Schema's own rules (annotations present where they apply).
 - **Every key is written with its root** (`node.sections.paragraphs.draft_paragraph`,
   `check.part_coverage.coverage`, `deliverable.emr.note`, `input.consult_draft`), as in the record,
-  test files and History links
-.
+  test files and History links.
 
 **How they point at each other.** `lock.json` names the hash of the `resolve.json` it belongs to
 (`resolve.hash`). `resolve.json` names its lock **by file name** (`lock: "lock.json"`), not by hash,
@@ -5002,8 +4998,7 @@ because each hash would otherwise have to contain the other. Every job's record 
 bodies inline as JSON strings, formats as one `$defs` bundle, conditions and `computed` expressions
 as canonical JSON Logic, the flattened node tree, the derived graph, `requires`, `needs` and the
 warnings. Packages are at most 2 MiB of source (`SourceBounds`, [chapter 1](#1-files-and-scopes)),
-so one document and one hash cover everything
-.
+so one document and one hash cover everything.
 
 **Declared, never embedded:** engine capabilities (the template engine, the evaluator, built-in
 operations, built-in renderers, node kinds, features, attested agents), listed in `requires` with
@@ -5065,14 +5060,12 @@ The manifest's inputs object, keyed by id, with each entry's five members as wri
 document.
 
 **The order is explicit** in `inputOrder`, since RFC 8785 sorts an object's members and the written
-order is the Create page's
-.
+order is the Create page's.
 
 #### 7.2.4 `formats` and `bindings`
 
 **`formats` is one self-contained JSON Schema bundle:** `{ "$defs": { "<id>": <schema>, … } }`,
-holding every format the package uses, from its three homes, with no shadowing between them
-:
+holding every format the package uses, from its three homes, with no shadowing between them:
 - **built-ins** (`string`, `number`, `boolean`, `date`, `plaintext`, `markdown_block`,
   `markdown_inline`, `check_result`, …) from the package-format registry's definitions file;
 - **catalogue formats** (`concept_list`, `classification`, …) from the formats catalogue at the
@@ -5083,8 +5076,7 @@ Each entry keeps its `$id` URN ([chapter 2](#2-types-and-inputs)),
 which names its origin and version; a package format's `$id` is derived at publish
 (`urn:consultologist:package:example-nested-note@v2026.12.1:format:verdict`), never written in
 source. Each entry keeps its `$schema` (`urn:consultologist:spec:31:dialect`, checked against
-`specVersion` at publish) and its annotations (`contentMediaType`, `x-markdown`)
-.
+`specVersion` at publish) and its annotations (`contentMediaType`, `x-markdown`).
 Inline schemas written on an input or a node stay inline where they're written; they carry no
 `contentMediaType` or `x-markdown`.
 
@@ -5110,8 +5102,7 @@ holds the sent format's hash and the removed keywords (chapter 8).
 
 **`bindings`** records which attested agent serves each format and producer the package's agent
 nodes use, keyed by format id, then producer, kept apart from the types so that a change of agent
-and a change of type are distinguishable
-:
+and a change of type are distinguishable:
 
 | Member | Type | Null | Meaning |
 |---|---|---|---|
@@ -5123,8 +5114,7 @@ A binding holds no instructions: what the model should write is the format's own
 kept in the format above ([chapter 2 § 5.1](#251-the-annotations)).
 
 A node never names an agent; its agent comes through its format's and producer's binding, and its
-settings live in the attested agent definition
-.
+settings live in the attested agent definition.
 
 #### 7.2.5 The flat maps: `nodes`, `checks`, `functions`
 
@@ -5140,8 +5130,7 @@ rewritten to `#/$defs/<id>`, conditions and expressions in canonical JSON Logic
 ([chapter 3](#3-expressions)), reference strings (`in`, `ret`, a `case` subject, `with`) written
 with their roots. The written `format`, `reproducible`, `producer`, `modelDerived`,
 `runDependent` and `profileCarrying` are among them; publish has already checked each against the value it derives,
-and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the **derived members**
-:
+and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the **derived members**:
 
 | Derived member | Type | Null | On | Meaning |
 |---|---|---|---|---|
@@ -5157,8 +5146,8 @@ and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the
 | `bodyHash` | string | allowed | templated kinds | `sha256:` over the body's UTF-8 bytes; `null` when `body` is `null` |
 | `parts` | object keyed by part id | never | agent nodes | the node's parts, each with its `if` and its text (an array of lines); `{}` for none |
 | `places` | array of string | never | agent nodes | the rooted ids of the macros its prompt places, its parts' text included, in order of appearance; `[]` for none |
-| `renders` | array of render site | never | templated kinds | each pipe step into a `renderer.*`, in order of appearance: `{ "n": <1-based position>, "source": "<path>", "renderer": "<renderer id>" }`; a chain gives one entry per step, and a later step's `source` is the step before it. `[]` for none. Its position `n` is the record's `render:<n>` (chapter 8). Entry shape  |
-| `runSpots` | array of run spot | never | templated kinds | each run spot in the body ([chapter 5](#5-templates-and-macros)), the `{{run:<n>}}` marker's `n`: `{ "site": <1-based position>, "at": "<line>:<column>", "reads": "<path>" }`; `[]` for none. A run spot whose read pipes into renderers covers the whole pipeline. Entry shape  |
+| `renders` | array of render site | never | templated kinds | each pipe step into a `renderer.*`, in order of appearance: `{ "n": <1-based position>, "source": "<path>", "renderer": "<renderer id>" }`; a chain gives one entry per step, and a later step's `source` is the step before it. `[]` for none. Its position `n` is the record's `render:<n>` (chapter 8). |
+| `runSpots` | array of run spot | never | templated kinds | each run spot in the body ([chapter 5](#5-templates-and-macros)), the `{{run:<n>}}` marker's `n`: `{ "site": <1-based position>, "at": "<line>:<column>", "reads": "<path>" }`; `[]` for none. A run spot whose read pipes into renderers covers the whole pipeline. |
 | `formatHash` | string | allowed | entries with a `format` | the resolved format's full hash, as in `formatHashes`; `null` for flow kinds that have none |
 | `typeHash` | string | allowed | entries with a `format` | its type hash, as in `typeHashes`; `null` with `formatHash` |
 
@@ -5171,8 +5160,7 @@ deliverable's `reads` are its sources: the retired `sources` member is derived f
 `sourceHash` is the SHA-256 of a canonical listing of the source: a JSON array, sorted by path, of
 `{ "path": "<path from the package root, / separated>", "hash": "sha256:<hash of the file's bytes>" }`
 for every source file, canonicalised by RFC 8785. File hashes are taken **after line-ending
-normalisation** ([chapter 1](#1-files-and-scopes))
-.
+normalisation** ([chapter 1](#1-files-and-scopes)).
 
 - **Included:** `manifest.json` and every file under `nodes/`, `checks/`, `functions/`,
   `renderers/`, `snippets/`, `macros/`, `formats/`, `deliverables/` and `tests/` (every
@@ -5196,8 +5184,7 @@ the engine never runs a test.
 
 Each warning is `{ "sentence": string, "at": string | null }`, the publish report's refusal shape:
 the sentence word for word as publish gave it, and the file path it concerns
-(`nodes/sections/outline.md`), or `null` for the package as a whole
-.
+(`nodes/sections/outline.md`), or `null` for the package as a whole.
 Warnings never block publish; run-spot warnings, the per-job ceiling note and
 conversion hints are all here.
 
@@ -5313,7 +5300,7 @@ conversion hints are all here.
 }
 ```
 
-The member names of loops, `while`, `until` and deliverable headers are defined in parts
+The member names of loops, `while`, `until` and deliverable headers are defined in chapters
 [4](#4-loops-and-functions) and [6](#6-checks-deliverables-and-the-profile); the example only
 shows where they sit. `"…"` marks elision. The loop is `sections`, not 30's `parts`, since `parts`
 is a reserved id at 31; the migration renames it (chapter 10).
@@ -5321,8 +5308,7 @@ is a reserved id at 31; the migration renames it (chapter 10).
 ### 7.3 `requires` and `needs`
 
 Both are **derived, never authored,** and **minimal**: only what the package uses, so a package
-without `call` runs on an engine without functions
-.
+without `call` runs on an engine without functions.
 
 #### 7.3.1 `requires`: what the package needs from the engine
 
@@ -5338,13 +5324,12 @@ without `call` runs on an engine without functions
 
 **Not listed:** package content (prompts, snippets, renderers, formats, functions), which is
 embedded and covered by the hash; catalogue versions, which are in `lock.json`; delivery kinds, since
-an unsupported kind is produced and recorded as not sent 
+an unsupported kind is produced and recorded as not sent.
 
 **The value validator** (`Corvus.JsonSchema` behind our own interface) and **Markdig** are not in
 `requires`. They're pinned exactly in `lock.json` and covered by the engine's break points (§ 7.4);
 a change in their output reaches packages through the versions of what uses them (the evaluator,
-`plain`, the Markdown escaping), which golden tests guard (§ 7.4.3)
-.
+`plain`, the Markdown escaping), which golden tests guard (§ 7.4.3).
 
 **The engine checks `requires` before the job starts,** when the Create page asks, and again when
 the job starts, and compares `lock.json`'s exact versions with its break points (§ 7.4.4).
@@ -5454,8 +5439,7 @@ the package's floor, and a published document never changes. Instead:
   re-render above.
 
 Swapping either Corvus library for json-everything ([#1458](https://github.com/Consultologist/Consultologist-Blazor/issues/1458), [#1459](https://github.com/Consultologist/Consultologist-Blazor/issues/1459)) follows the same rule: byte-identical
-golden tests and corpus re-render, or it counts as major
-.
+golden tests and corpus re-render, or it counts as major.
 
 ### 7.5 The publish pipeline
 
@@ -5486,8 +5470,7 @@ In order:
    5. write into the registry's `{name}/{version}/`: the source files and the regenerated `dag.mmd`,
       then `lock.json`, then the publish report, then **`resolve.json` last**.
 
-   6. write the version's **"published" stamp last**, recording `resolveHash` and `lockHash`
-.
+   6. write the version's **"published" stamp last**, recording `resolveHash` and `lockHash`.
 
    Every hash is taken from final bytes. **A version exists only once stamped:** the engine and
    the registry ignore a folder without the stamp, so a publish that dies partway can be retried
@@ -5524,8 +5507,7 @@ it ships in Milestone 40 ([#1422](https://github.com/Consultologist/Consultologi
 
 ### 7.7 Evidence and views
 
-**The rule: evidence is publish-only; views may be committed**
-.
+**The rule: evidence is publish-only; views may be committed**.
 
 | | Evidence: `resolve.json`, `lock.json` | Views: `dag.mmd` (and `workflow.sw.json`, M40) |
 |---|---|---|
@@ -5534,7 +5516,7 @@ it ships in Milestone 40 ([#1422](https://github.com/Consultologist/Consultologi
 | **In source** | never: not in the repository, not in an account's working copy | example packages: committed and CI-checked; account packages: generated at publish |
 
 **Never trust an uploaded copy:**
-- **Importing a package** (.zip, #847) that contains `resolve.json` or `lock.json` ignores them, and
+- **Importing a package** (a .zip) that contains `resolve.json` or `lock.json` ignores them, and
   the Editor says so once (§ 7.10). Publishing always regenerates both.
 - A `resolve.json` or `lock.json` **committed to the examples repository** is ignored by publish, and
   CI warns that it shouldn't be there (§ 7.10).
@@ -5680,8 +5662,7 @@ points (§ 7.4.4):
   package locked before one of the engine's break points (§ 7.4.4).
 - *"This workflow (\<package\>@\<version\>) needs \<kind or feature\> '\<name\>', which this engine doesn't support. Publish a new version of the workflow to run it on this engine."*
 - *"This workflow (\<package\>@\<version\>) needs agent \<agent name\> version \<version\>, which this engine doesn't have. Publish a new version of the workflow to run it on this engine."*
-- *"This workflow needs your signature. Choose one in Profile."*
-; for other fields,
+- *"This workflow needs your signature. Choose one in Profile."*; for other fields,
   *"This workflow needs your \<field label\>. Set it in Profile, under Letter details."*
 - *"Set your time zone in your account settings before running a workflow."* Every 31 job, until the account's time zone is set (31 jobs only).
   No `needs` member is required, since every 31 job needs the zone.
@@ -5691,7 +5672,7 @@ points (§ 7.4.4):
 - *"Workflow \<package\>@\<version\> can't run: its lock doesn't match the hash published for it, or doesn't belong to its compiled document."*
 
 **At publish, from tests** (§ 7.8):
-- *"Test '\<test id\>' failed: \<expectation\> for \<key\> expected \<expected\>, got \<actual\>. Publish stopped."*
+- *"Test '\<test id\>' failed: \<expectation\> for \<key\> expected \<expected\>, got \<actual\>. Publish stopped."* The refusal names the test and its first mismatch.
 - *"Test '\<test id\>' has no stub for \<row key\>, which runs. Add it to outputs."*
 - *"Test '\<test id\>' stubs \<row key\> with a value that isn't \<format\>: \<first validation error\>."*
 - *"Test '\<test id\>' gives no value for input '\<input id\>'. List every input; use null for an optional input left unset."*
