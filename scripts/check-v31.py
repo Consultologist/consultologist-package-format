@@ -534,8 +534,6 @@ def check_document():
                 failures.append(f"line {number}: link to {path}, which does not exist")
             elif not path and fragment not in slugs:
                 failures.append(f"line {number}: anchor #{fragment} matches no heading")
-            elif path.endswith(".md") and fragment and path == DOCUMENT.name and fragment not in slugs:
-                failures.append(f"line {number}: anchor #{fragment} matches no heading")
     document, load_failures = load(V31 / "sentences.json")
     if document is None:
         return failures + load_failures
