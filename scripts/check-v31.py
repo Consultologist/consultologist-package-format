@@ -479,7 +479,7 @@ def check_renderers():
 DOCUMENT = ROOT / "package-format-v31.md"
 DIALECT_DOCUMENT = V31 / "scriban-dialect.md"
 DIALECT_VERSION = "scriban-dialect@1.0.0"
-CHAPTERS_WRITTEN = 6
+CHAPTERS_WRITTEN = 7
 LINK = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)\)")
 
 

@@ -153,3 +153,11 @@ The `formats` check group does enforce the first of these on the built-in format
   (part 05's dialect sentences, part 06's deliverable sentences); part 06's R-D13 is part 05's R-D8.
   The text writes a label alone inside its own chapter and with the chapter ("chapter 5 § 11, R-D8")
   from the other; the sentence ids in `sentences.json` (`S05-…`, `S06-…`) are unambiguous.
+- **Chapter 7's publish order.** Part 07 § 5 step 4 lists six writes: the source files and
+  `dag.mmd`, then `lock.json`, then the publish report, then `resolve.json` last (item 5), and
+  then the "published" stamp last (item 6). Both are called "last"; the text keeps both as the
+  design has them, `resolve.json` last of the files and the stamp last of all.
+- **A `case` listed under `reads` edges.** Part 07 § 2.7 lists `kind` values `reads`, `if`, `for`,
+  `ret`, `placed`, `calls`, `aligned`, `gates`, which `constants.json`'s `edgeKinds` repeats; no
+  `case` kind is listed, so a `case` subject's edge is a `reads` edge by that list. The design does
+  not say so.
