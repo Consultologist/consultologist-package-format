@@ -1,0 +1,47 @@
+{
+  "about": "Every member is written: 'run' is missing.",
+  "instance": {
+    "description": [
+      "Two planned sections; the second fails coverage; the note is held."
+    ],
+    "inputs": {
+      "referral": "Margaret Okafor, 58, referred for fatigue and a raised TSH (fictional)."
+    },
+    "profile": {
+      "signature": "Dr A. Fictional\nInternal Medicine"
+    },
+    "outputs": {
+      "node.plan": {
+        "sections": [
+          {
+            "title": "History"
+          },
+          {
+            "title": "Plan"
+          }
+        ]
+      },
+      "node.sections.draft:1": "Fatigue for three months; no weight change.",
+      "node.sections.draft:2": "Repeat thyroid tests in six weeks."
+    },
+    "expect": {
+      "checks": {
+        "check.part_coverage.coverage:1": {
+          "pass": true
+        },
+        "check.part_coverage.coverage:2": {
+          "pass": false
+        },
+        "check.all_covered": {
+          "pass": false
+        }
+      },
+      "deliverables": {
+        "deliverable.note": {
+          "state": "held",
+          "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    }
+  }
+}

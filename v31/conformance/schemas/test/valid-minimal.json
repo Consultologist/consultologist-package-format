@@ -1,0 +1,13 @@
+{
+  "about": "{} checks only that the run completes; null inputs, empty profile and run.",
+  "instance": {
+    "description": null,
+    "inputs": {
+      "referral": null
+    },
+    "profile": {},
+    "run": {},
+    "outputs": {},
+    "expect": {}
+  }
+}

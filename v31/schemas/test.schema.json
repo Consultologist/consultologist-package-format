@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:test",
+  "title": "tests/<id>.json",
+  "description": "One offline test; plain JSON with no front matter. Every member is present; only the members of expect may be left out.",
+  "type": "object",
+  "required": [
+    "description",
+    "inputs",
+    "profile",
+    "run",
+    "outputs",
+    "expect"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "description": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+      "description": "For people only, never sent to a model: lines joined with a newline, or null for none (what the test pins)."
+    },
+    "inputs": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+      },
+      "description": "A fictional raw value for every declared input, or null for an optional input left unset."
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "credentials": {
+          "type": "string"
+        },
+        "organisation": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "closing": {
+          "type": "string"
+        }
+      },
+      "description": "A fixed fictional value for exactly the profile fields the package needs; {} when none."
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "timeZone"
+          ],
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "timeZone": {
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "package": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        }
+      },
+      "description": "A fixed value for exactly the run facts the package reads (date, id, package, engine); {} when none."
+    },
+    "outputs": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+      },
+      "description": "A stubbed value for every agent node instance that runs, keyed by the node's rooted key and, inside a loop or while, : and its item or pass path."
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ran": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rowKey"
+          },
+          "description": "Row keys of instances that completed."
+        },
+        "skipped": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rowKey"
+          },
+          "description": "Row keys of instances that were skipped (by condition, or not run by until or max)."
+        },
+        "decisions": {
+          "type": "object",
+          "propertyNames": {
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "string"
+            ]
+          },
+          "description": "Decision id to the condition's result (a boolean) or the branch taken (a branch id)."
+        },
+        "loops": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/rowKey"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "count"
+                ],
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "passes",
+                  "stopped"
+                ],
+                "properties": {
+                  "passes": {
+                    "type": "integer"
+                  },
+                  "stopped": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "description": "Row key to { count } for a loop's item count, or { passes, stopped } for a while's passes and how it stopped."
+        },
+        "values": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/rowKey"
+          },
+          "description": "Row key to the JSON value a computed node is expected to hold, compared as canonical JSON."
+        },
+        "prompts": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/rowKey"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "hash"
+                ],
+                "properties": {
+                  "hash": {
+                    "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+                    "description": "The sent-text hash."
+                  }
+                }
+              }
+            ]
+          },
+          "description": "Row key to { text } or { hash }: the sent text of an agent node's prompt, exactly or by its sent-text hash."
+        },
+        "checks": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^check\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "pass"
+            ],
+            "properties": {
+              "pass": {
+                "type": "boolean"
+              }
+            }
+          },
+          "description": "Check row key to { pass }: the check result's pass."
+        },
+        "deliverables": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^deliverable\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "text"
+                ],
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "released",
+                      "held",
+                      "failed",
+                      "skipped",
+                      "blocked"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state",
+                  "hash"
+                ],
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "released",
+                      "held",
+                      "failed",
+                      "skipped",
+                      "blocked"
+                    ]
+                  },
+                  "hash": {
+                    "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+                    "description": "The composed text's hash."
+                  }
+                }
+              }
+            ]
+          },
+          "description": "Deliverable key to { state, text } or { state, hash }: the deliverable's state and its composed text or hash."
+        }
+      },
+      "description": "What the run is checked against. Every member is optional: an omitted expectation is not checked, and {} checks only that the run completes."
+    }
+  },
+  "$defs": {
+    "rowKey": {
+      "type": "string",
+      "pattern": "^(node|check|deliverable)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+    }
+  }
+}

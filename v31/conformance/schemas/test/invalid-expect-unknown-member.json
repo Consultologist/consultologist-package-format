@@ -1,0 +1,37 @@
+{
+  "about": "expect is closed to the eight expectations of part 07 section 8.3.",
+  "instance": {
+    "description": [
+      "Two planned sections; the second fails coverage; the note is held."
+    ],
+    "inputs": {
+      "referral": "Margaret Okafor, 58, referred for fatigue and a raised TSH (fictional)."
+    },
+    "profile": {
+      "signature": "Dr A. Fictional\nInternal Medicine"
+    },
+    "run": {
+      "date": {
+        "value": "2026-11-16",
+        "timeZone": "America/Toronto"
+      }
+    },
+    "outputs": {
+      "node.plan": {
+        "sections": [
+          {
+            "title": "History"
+          },
+          {
+            "title": "Plan"
+          }
+        ]
+      },
+      "node.sections.draft:1": "Fatigue for three months; no weight change.",
+      "node.sections.draft:2": "Repeat thyroid tests in six weeks."
+    },
+    "expect": {
+      "warnings": []
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "about": "A loop expectation is { count } or { passes, stopped }, not both.",
+  "instance": {
+    "description": [
+      "Two planned sections; the second fails coverage; the note is held."
+    ],
+    "inputs": {
+      "referral": "Margaret Okafor, 58, referred for fatigue and a raised TSH (fictional)."
+    },
+    "profile": {
+      "signature": "Dr A. Fictional\nInternal Medicine"
+    },
+    "run": {
+      "date": {
+        "value": "2026-11-16",
+        "timeZone": "America/Toronto"
+      }
+    },
+    "outputs": {
+      "node.plan": {
+        "sections": [
+          {
+            "title": "History"
+          },
+          {
+            "title": "Plan"
+          }
+        ]
+      },
+      "node.sections.draft:1": "Fatigue for three months; no weight change.",
+      "node.sections.draft:2": "Repeat thyroid tests in six weeks."
+    },
+    "expect": {
+      "loops": {
+        "node.sections": {
+          "count": 2,
+          "passes": 1,
+          "stopped": "end"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "about": "Every one of the eight expectations at once.",
+  "instance": {
+    "description": [
+      "Two planned sections; the second fails coverage; the note is held."
+    ],
+    "inputs": {
+      "referral": "Margaret Okafor, 58, referred for fatigue and a raised TSH (fictional)."
+    },
+    "profile": {
+      "signature": "Dr A. Fictional\nInternal Medicine"
+    },
+    "run": {
+      "date": {
+        "value": "2026-11-16",
+        "timeZone": "America/Toronto"
+      },
+      "id": "run-1",
+      "package": "example-checks@v2026.12.1",
+      "engine": "31.0.0"
+    },
+    "outputs": {
+      "node.plan": {
+        "sections": [
+          {
+            "title": "History"
+          },
+          {
+            "title": "Plan"
+          }
+        ]
+      },
+      "node.sections.draft:1": "Fatigue for three months; no weight change.",
+      "node.sections.draft:2": "Repeat thyroid tests in six weeks."
+    },
+    "expect": {
+      "ran": [
+        "node.plan",
+        "node.sections.draft:1"
+      ],
+      "skipped": [
+        "node.sections.draft:2"
+      ],
+      "decisions": {
+        "node.refine/if:pass2": true,
+        "node.standards.assessment:7/if:macro.letrozole_prescription_text": "omit"
+      },
+      "loops": {
+        "node.sections": {
+          "count": 2
+        },
+        "node.refine": {
+          "passes": 3,
+          "stopped": "bound"
+        }
+      },
+      "values": {
+        "node.section_count": 2
+      },
+      "prompts": {
+        "node.plan": {
+          "text": "Plan the sections."
+        },
+        "node.sections.draft:1": {
+          "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "checks": {
+        "check.all_covered": {
+          "pass": true
+        }
+      },
+      "deliverables": {
+        "deliverable.note": {
+          "state": "released",
+          "text": "## Summary"
+        }
+      }
+    }
+  }
+}
