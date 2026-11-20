@@ -276,16 +276,21 @@ def check_examples():
         validator = validator_for(schema_for(folder.name), registry, failures)
         if validator is None:
             continue
+        schema_id = validator.schema["$id"]
         for path, expected in [(p, True) for p in valid] + [(p, False) for p in invalid]:
             example, errors = load(path)
             failures += errors
             if example is None:
                 continue
             name = path.relative_to(ROOT)
-            if list(example) != ["about", "instance"] or not example["about"]:
-                failures.append(f"{name}: expected {{ about, instance }} with a non-empty about")
+            if list(example) not in (["about", "instance"], ["about", "against", "instance"]) \
+                    or not example["about"]:
+                failures.append(f"{name}: expected {{ about, [against,] instance }} with a non-empty about")
                 continue
-            accepted = validator.is_valid(example["instance"])
+            judge = validator
+            if "against" in example:
+                judge = Draft202012Validator({"$ref": schema_id + example["against"]}, registry=registry)
+            accepted = judge.is_valid(example["instance"])
             if accepted != expected:
                 failures.append(f"{name}: expected the schema to "
                                 f"{'accept' if expected else 'refuse'} it")

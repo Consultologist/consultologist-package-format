@@ -1,0 +1,15 @@
+{
+  "about": "A $defs name is not bound by the id pattern: #/$defs/sectionRow is a valid $ref.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "array",
+    "items": {
+      "$ref": "#/$defs/sectionRow"
+    },
+    "$defs": {
+      "sectionRow": {
+        "$ref": "plaintext"
+      }
+    }
+  }
+}

@@ -2,7 +2,9 @@
 
 `schemas/<name>/` holds hand-written instance files for the schema `<name>` (`dialect` is
 `v31/dialect.schema.json`; any other name is `v31/schemas/<name>.schema.json`). Each file is
-`{ "about": "<the rule, in words>", "instance": <the JSON> }`. A `valid-*.json` instance must
+`{ "about": "<the rule, in words>", "instance": <the JSON> }`, with an optional
+`"against": "<a pointer>"` member (written between `about` and `instance`) that judges the instance against
+that part of the schema instead of its root, for example `"#/$defs/inline"` for the dialect. A `valid-*.json` instance must
 validate and an `invalid-*.json` instance must not; `python3 scripts/check-v31.py` runs them
 (group `examples`). They are examples, not goldens.
 
@@ -20,6 +22,9 @@ These rules of part 02 are left to the validator and have no invalid example her
 - an `enum` value that is not snake_case, and duplicate or empty `oneOf` titles (§ 9);
 - a text format missing its `contentMediaType` or `x-markdown` (§ 5.1);
 - strict mode's size limits and an `anyOf` at the root of a format sent to a model (§ 3.3).
+- Readings of the design: an `enum` or a labelled `oneOf` must sit beside an explicit string
+  `type` (the design says "on a string" and always writes the type); a `$defs` name is any name
+  without a `/`, not bound by the id pattern.
 
 The `formats` check group does enforce the first of these on the built-in formats.
 

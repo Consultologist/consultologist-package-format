@@ -1,0 +1,8 @@
+{
+  "about": "Judged as an inline schema (the dialect's $defs/inline), a $schema is refused.",
+  "against": "#/$defs/inline",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "string"
+  }
+}

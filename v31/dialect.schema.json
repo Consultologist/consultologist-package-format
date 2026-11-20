@@ -156,7 +156,7 @@
         },
         "$ref": {
           "type": "string",
-          "pattern": "^([a-z][a-z0-9_]*|#/\\$defs/[a-z][a-z0-9_]*)$"
+          "pattern": "^([a-z][a-z0-9_]*|#/\\$defs/[^/]+)$"
         },
         "title": {
           "type": "string"

@@ -1,0 +1,51 @@
+{
+  "about": "Part 02 section 8.4's sections input format, judged as an inline schema (the dialect's $defs/inline): an array of objects with a title on each property, a labelled oneOf and a nullable $ref by anyOf.",
+  "against": "#/$defs/inline",
+  "instance": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "kind",
+        "notes"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "kind": {
+          "type": "string",
+          "title": "Kind",
+          "oneOf": [
+            {
+              "const": "narrative",
+              "title": "Narrative"
+            },
+            {
+              "const": "table",
+              "title": "Table"
+            },
+            {
+              "const": "omit",
+              "title": "Leave out"
+            }
+          ]
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "$ref": "markdown_block"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Notes for this section"
+        }
+      }
+    }
+  }
+}
