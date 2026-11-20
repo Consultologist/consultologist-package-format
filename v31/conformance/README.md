@@ -74,3 +74,17 @@ The `formats` check group does enforce the first of these on the built-in format
   most 500 code points joined; and that every `reproducible`, `modelDerived`, `runDependent` and
   `profileCarrying` equals its derived value, where the schemas fix only the values the design fixes
   by kind (an agent node, a rendered node, a computed node and a check).
+- **`failIfEmpty`.** Part 05 § 1.2 types it a string or `null` (the sentence the job fails with);
+  part 10 § 1.2 says it is "written true, false or null". The schema follows part 05's member table.
+- **A deliverable's `format`.** Part 01 § 5.1 says every `format` is "a format name or an inline
+  schema"; part 06 § 6.1 says `markdown_block`, `plaintext` or an object format. The schema takes a
+  name.
+- **`macro.instruction`'s `minItems: 1`** follows from the marker having to appear exactly once
+  in the instruction (S05-044), not from part 05 § 8.1's member table.
+- **Patterns that are this schema's reading.** The row-key, stub-key and `check.` / `deliverable.`
+  key patterns in `test.schema.json` are not design sentences. The `itemLabel` pattern
+  is the id pattern, taken from part 02 § 5.3 (field names follow the id pattern); part 04 § 2.1
+  says only "a field name (string)".
+- **An input's `format` beside part 02 § 8.1.** The schema refuses the name `markdown_inline` and
+  an inline schema whose root has `anyOf`. It does not refuse `{ "$ref": "markdown_inline" }`
+  written inline; the checker does.

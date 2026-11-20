@@ -60,8 +60,17 @@
       "description": "A JSON Logic condition for whether the check runs, or null for always."
     },
     "expression": {
-      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/jsonLogic",
-      "description": "The JSON Logic expression that returns a check_result."
+      "allOf": [
+        {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/jsonLogic"
+        },
+        {
+          "not": {
+            "type": "null"
+          }
+        }
+      ],
+      "description": "The JSON Logic expression that returns a check_result; never null."
     }
   }
 }

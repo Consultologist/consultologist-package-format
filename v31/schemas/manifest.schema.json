@@ -18,7 +18,6 @@
   "properties": {
     "name": {
       "type": "string",
-      "minLength": 1,
       "description": "The package's name, for example example-nested-note or test/general."
     },
     "version": {
@@ -81,7 +80,20 @@
           },
           "format": {
             "$ref": "urn:consultologist:spec:31:schema:common#/$defs/formatRef",
-            "description": "The input's type, which picks the widget: a format name or an inline schema."
+            "not": {
+              "anyOf": [
+                {
+                  "const": "markdown_inline"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "anyOf"
+                  ]
+                }
+              ]
+            },
+            "description": "The input's type, which picks the widget: a format name or an inline schema; markdown_inline and a root anyOf are refused."
           },
           "required": {
             "type": "boolean",

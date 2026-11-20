@@ -1,0 +1,16 @@
+{
+  "about": "expression is never null (part 06 section 1.1).",
+  "instance": {
+    "kind": "computed",
+    "producer": "computed",
+    "label": "Terms covered",
+    "description": null,
+    "format": "check_result",
+    "reproducible": true,
+    "modelDerived": true,
+    "runDependent": false,
+    "profileCarrying": false,
+    "if": null,
+    "expression": null
+  }
+}
