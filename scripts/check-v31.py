@@ -593,6 +593,9 @@ def check_document():
             failures.append(f"{entry['id']} (part {entry['part']}, {entry['section']}) is not in "
                             f"chapter {chapter}: {entry['sentence'][:70]}")
     table = [line for line in bodies.get(SENTENCES_CHAPTER, "").splitlines() if line.startswith("|")]
+    expected_rows = [(e["id"], e["sentence"], e["audience"]) for e in document["sentences"]]
+    if renderer.parse(renderer.render(document["sentences"])) != expected_rows:
+        failures.append("scripts/render-sentences.py does not round-trip the sentences")
     if table != renderer.render(document["sentences"]).splitlines():
         failures.append(f"chapter {SENTENCES_CHAPTER}'s table is not what scripts/render-sentences.py prints")
     return failures + check_dialect_document({e["sentence"] for e in document["sentences"]})
@@ -628,10 +631,37 @@ def check_dialect_document(known_sentences):
     return failures
 
 
+def check_conformance_index():
+    """Chapter 12's suite: the index names real cases, lists `schemas`' example files exactly, and follows chapter 12's table."""
+    path = V31 / "conformance" / "index.json"
+    document, failures = load(path)
+    if document is None:
+        return failures
+    families = document.get("families", [])
+    ids = [family.get("id") for family in families]
+    if len(set(ids)) != len(ids):
+        failures.append(f"{path.relative_to(ROOT)}: a family id is repeated")
+    for family in families:
+        for case in family.get("cases", []):
+            if not (ROOT / family.get("path", "") / case).is_file():
+                failures.append(f"family {family.get('id')}: case {case} is not a file under {family.get('path')}")
+        if family.get("id") == "schemas":
+            on_disk = sorted(str(file.relative_to(CONFORMANCE)) for file in CONFORMANCE.rglob("*.json"))
+            expect(failures, "the schemas family's cases (the example files on disk)",
+                   sorted(family["cases"]), on_disk)
+    if "schemas" not in ids:
+        failures.append("the index has no schemas family")
+    chapter = chapter_bodies(DOCUMENT.read_text(encoding="utf-8")).get(CONFORMANCE_CHAPTER, "")
+    positions = [chapter.find(f"| `{id_}` |") for id_ in ids]
+    if -1 in positions or positions != sorted(positions):
+        failures.append(f"chapter {CONFORMANCE_CHAPTER}'s table does not list the index's families in order: {ids}")
+    return failures
+
+
 CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
           ("renderers", check_renderers), ("self", check_self),
-          ("document", check_document)]
+          ("conformance", check_conformance_index), ("document", check_document)]
 
 
 def main():
