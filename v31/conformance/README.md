@@ -134,3 +134,13 @@ The `formats` check group does enforce the first of these on the built-in format
   integer where `requires.agents` writes the same version as a string.
 - **`conformance/index.json`'s schema** is this plan's (`{ specVersion, families: [{ id, path,
   about, exportedBy, cases }] }`); the `self` group judges the file once a later task writes it.
+- **Rules the design hands to "v30 §".** Parts 03 and 04 say several rules are "as v30 § 2.2",
+  "§ 2.4", "§ 2.5", "§ 3.1", "§ 3.2" and "§ 3.4" (alignment by path, `item.parent`, an empty list,
+  how a `while` runs, the pass object, `until` and `max`) and give `pass`'s type as "as v30 § 3.2".
+  The normative text has no 30 to lean on, so chapter 4 restates them from `package-format-v30.md`
+  (the pass object's members, item paths, one count per loop instance, `pass.….node.<id>` at any
+  depth, no edge for an earlier pass), and chapter 3 types `pass.node.<id>` as the named node's
+  format. These are the text's readings of v30, not words of the design.
+- **A call's `producer`.** Part 04 § 7.7's member table for a `call` lists no `producer`, while its
+  own example writes `"producer": "computed"` and part 01 § 5.2 lists it for a `call`. The text
+  follows part 01 (every node writes it).

@@ -75,7 +75,7 @@ checks over all of the above.
 | [1 Files and scopes](#1-files-and-scopes) | the folder layout, file kinds, every member required, ids, namespaces and qualified keys, `SourceBounds`, `FormatBounds` |
 | [2 Types and inputs](#2-types-and-inputs) | `kind` and `format`, the dialect, text formats, format `$id`s, inputs, enum labels |
 | [3 Expressions](#3-expressions) | JSON Logic: conditions, `computed`, every operation, null rules, `run.*`, the printer, the evaluator, `matches` and `has_word` |
-| 4 Loops and functions | `for`, `while`, `until`, branches, `.items`, functions and `call` |
+| [4 Loops and functions](#4-loops-and-functions) | `for`, `while`, `until`, branches, `.items`, functions and `call` |
 | 5 Templates and macros | the Scriban dialect, renderers, snippets, parts, macros, whitespace, run spots |
 | 6 Checks, deliverables and the profile | checks and check loops, deliverables as files, gating, the profile |
 | 7 The compiled documents | `resolve.json`, `lock.json`, evidence and views, in-package tests, the publish report |
@@ -421,9 +421,7 @@ test/general/
     index.json  migration_snapshot.json
 ```
 
-(Which of its 30 constructs the migration rewrites into these files, the classifier node and the
-`test` macro's move into the deliverable template among them, is
-chapter 10. Its `standard_section` field keeps its name `title`: field
+(Its `standard_section` field is called `title`: field
 names have no reserved list ([chapter 2 § 5.3](#253-object-schemas-are-fully-typed-nested-text-references-a-text-format)).)
 
 ### 1.4 Front matter
@@ -494,7 +492,7 @@ is an error.**
 | `modelDerived` | boolean | no | every node and check, checked against the derived value ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
 | `runDependent` | boolean | no | every node and check, checked against the derived value ([chapter 2 § 1.2](#212-the-contagious-flags-run-dependent-and-model-derived)) |
 | `profileCarrying` | boolean | no | every node and check, checked against the derived value ([chapter 3 § 4.6](#346-profile-carrying-is-contagious)) |
-| `if` | a JSON Logic condition (chapter 3) | yes: always | every production leaf (`agent`, `rendered`, `computed`, `call`), check, snippet, macro, macro folder and deliverable. A node's own condition is spelled `if`, replacing 30's `when`; a `case` branch keeps `when` for its values (chapter 4) |
+| `if` | a JSON Logic condition (chapter 3) | yes: always | every production leaf (`agent`, `rendered`, `computed`, `call`), check, snippet, macro, macro folder and deliverable. A node's own condition is spelled `if`; a `case` branch keeps `when` for its values (chapter 4) |
 
 - **`label` may not be empty or whitespace**.
   A loop's item naming is `itemLabel`, never `label`;
@@ -624,10 +622,8 @@ An id names a file or folder, or a member of a keyed object.
   ([chapter 2 § 5.3](#253-object-schemas-are-fully-typed-nested-text-references-a-text-format)).
 - **`parts` and `part.<id>` keep their names:** `parts` is an agent node's header member and
   `part.` a root, neither of them an id (chapter 5).
-- **The migration renames reserved ids,** reports every rename and rewrites every reference to it.
-  In example packages each rename is hand-chosen: `example-nested-note`'s loop `parts` becomes
-  `sections`. In account packages the kind is added as a suffix (`parts` → `parts_for`)
-  (chapter 10).
+- **A package whose ids collide with a reserved word is renamed by the migration** (chapter 10):
+  `example-nested-note`'s loop is `sections`, not `parts`.
 
 ### 1.7 `SourceBounds`
 
@@ -1747,8 +1743,7 @@ chapter 7's.
 
 #### 3.2.3 Example
 
-The `applies` branch of `example-conditional-sections`, migrated from
-`item.id != "billing" || input.include_billing == true`:
+The `applies` branch of `example-conditional-sections`, a section kept unless it is the billing one and billing was not asked for:
 
 ```json
 { "or": [
@@ -2371,3 +2366,992 @@ throws) and § 3.9 (a condition that yields no boolean fails its node).
   owns the condition fails, recorded with this reason.
 - *"\<site\> \<member\> yields \<a value kind\>; a condition yields a boolean."* The node that owns
   the condition fails (§ 3.9).
+
+## 4. Loops and functions
+
+This chapter defines the flow nodes of version 31 (`for`, `while`, `if`, `case`) as folders with an
+`index.json`, every member with its type and null rule; how a loop runs (`parallel`,
+`maxParallel`, `until`, `max`), how it names its items (`itemLabel`), and how it is read from
+outside (`.value`, `.items`, `.stopped`); the `FormatBounds` that limit them; and functions:
+named, sealed sub-workflows in `functions/`, run by a `call` node with `with`. How loops and calls
+count toward the per-job ceiling is stated here; the engine side is chapter 9. Conditions inside
+these declarations are JSON Logic, defined in [chapter 3](#3-expressions); folders, ids and scopes
+are [chapter 1](#1-files-and-scopes); formats are [chapter 2](#2-types-and-inputs).
+
+### 4.1 Flow nodes are folders
+
+A `for`, `while`, `if` or `case` is a folder, `nodes/…/<id>/`, described by its `index.json`.
+The folder's children are the files and folders its `index.json` lists; a child listed
+nowhere is a stray and is refused (chapter 1).
+
+Each kind's `index.json` is judged by its schema:
+[`flow-for`](v31/schemas/flow-for.schema.json), [`flow-while`](v31/schemas/flow-while.schema.json),
+[`flow-if`](v31/schemas/flow-if.schema.json) and [`flow-case`](v31/schemas/flow-case.schema.json).
+
+**Members every flow node's `index.json` has** (every member present, `null` only where stated):
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `kind` | `"for"` \| `"while"` \| `"if"` \| `"case"` | never | what the node is |
+| `label` | string | **never** | the display name: the rail, History, the diagram |
+| `description` | array of strings (lines) | `null` = none | for people only, at most 500 characters joined |
+| `format` | a format name or an inline schema (chapter 2) | never | the node's return type, written, and checked against the type its `ret` gives it (§§ 4.2.5, 4.3.4, 4.5.3) by type equality; a mismatch is refused |
+| `reproducible` | boolean | never | written, and checked against the derived value: `true` only if everything in its body that its result depends on is `true`; a mismatch is refused |
+| `producer` | `"computed"` | never | written, and checked against the kind: a flow node is `computed` even when its body holds agent nodes; a mismatch is refused (chapter 2 § 1.3) |
+| `modelDerived` | boolean | never | written, and checked against the derived value: `true` when its `ret`, or anything its result is made from, is model-derived, as when its body holds an agent node; a mismatch is refused (chapter 3 § 4.5) |
+| `runDependent` | boolean | never | written, and checked against the derived value: `true` when its source or its `ret` is run-dependent (a condition passes no flag on, chapter 3 § 4.4); a mismatch is refused (chapter 3 § 4.4) |
+| `profileCarrying` | boolean | never | written, and checked against the derived value: `true` when its source or its `ret` is profile-carrying; a mismatch is refused (chapter 3 § 4.6) |
+
+Each kind adds its own members, below. A member of another kind is refused (§ 4.10).
+Run-dependence, the model-derived flag and the profile-carrying flag are worked out from the body
+(chapter 3 §§ 4.4–4.6), and written as `runDependent`, `modelDerived` and `profileCarrying`,
+checked against those values.
+
+**`ret` is the child's full name:** the root and the
+qualified key of one of that body's **own** children, as the record keys it (chapter 1):
+`"ret": "node.sections.paragraphs"` in `nodes/sections/index.json`,
+`"ret": "node.sections.paragraphs.draft_paragraph"` in `nodes/sections/paragraphs/index.json`,
+`"ret": "check.part_coverage.coverage"` in `checks/part_coverage/index.json` (a check loop).
+Inside a function the key is counted from the function's root (`"ret": "node.apply_instructions"`).
+The root says which namespace the child is in (`node.` or `check.`), and the whole name can be
+read without knowing which folder the file sits in. The resolver checks that `ret` names a direct
+child of that body and refuses anything else (§ 4.10). `ret` is the only member that takes this
+qualified form: references elsewhere still resolve outward by bare id (chapter 1 § 9), and a
+node's fields are always reached through `.value` or `.items`, so `node.sections.paragraphs` is
+never read as a field path. (`example-nested-note`'s loop is called `sections`, because `parts` is a reserved id, chapter 1 § 6.)
+
+### 4.2 `for`
+
+#### 4.2.1 Members
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `in` | a reference string (§ 4.2.2) | never | the list the loop iterates |
+| `parallel` | boolean | never | `true`: items run at the same time; `false`: one at a time, in list order |
+| `maxParallel` | integer, 2 to `FormatBounds.parallel` (15) | `null` = no cap of its own | how many items run at once; must be `null` when `parallel` is `false` |
+| `until` | a JSON Logic condition (chapter 3) | `null` = runs every item | stops after the item where it holds; non-null requires `"parallel": false` |
+| `max` | integer, at least 1 | `null` = no cap | runs the first `max` items in list order |
+| `itemLabel` | a field name (string) | `null` = position names | names each item (§ 4.2.7) |
+| `nodes` | array of ids, at least one | never | the body, in order |
+| `ret` | the child's full name (§ 4.1) | never | the body node whose value is each item's value |
+
+Together with § 4.1's eight members, a `for`'s `index.json` has exactly sixteen members.
+
+#### 4.2.2 What a loop iterates
+
+`in` is a **reference string** naming a list, never a JSON Logic expression.
+A list that has to be computed is a `computed` node, which `in` then names (compute, then name):
+
+| Source | Example | Its items are known |
+|---|---|---|
+| an array input | `"input.sections.value"` | at start |
+| a snippet folder | `"snippet.standards"` | at start: a folder's items have no `if`, so its size is its number of files (chapter 1; dynamic sizes are [#1468](https://github.com/Consultologist/Consultologist-Blazor/issues/1468)) |
+| a list in a visible node's value | `"node.plan.value.sections"` | when that node completes, for this loop instance |
+| a list field of the outer item | `"item.value.paragraphs"` | when the outer item is known |
+| a loop's `.items` | `"node.sections.items"` | item by item, as each completes (§ 4.2.6) |
+| inside a function, a parameter's list | `"param.sections.value"` | at the call |
+
+- A node in an enclosing body is read by id and aligned on the common path:
+  `"node.outline.value.points"` inside `sections` is *this* section's outline. A loop nests in a
+  `for`'s or a `while`'s body, or in a branch, to any depth; a body may not hold the node that
+  holds it.
+- **Any loop may iterate `.items`**, a production loop as well as a check loop (chapter 6),
+  with the same rules: for example to write one line per section, skipped sections included,
+  each naming its state.
+- The source must be typed as a list (a JSON Schema array). Item ids keep their source's form: array
+  inputs 0-based, a node's list 1-based, folder items their file stems. No id holds `/` or `:`.
+- **An item path** is the item ids from the outermost loop inward, joined by `/`. At one level a
+  path is the item id; deeper, an item is `2/1` (`node.sections.paragraphs.draft_paragraph:2/1`).
+- **One count per loop instance.** A loop instance is an inner loop under one outer path. Each
+  instance settles its own count, once. An instance is *not yet known* until its outer item exists
+  and its source has completed.
+
+#### 4.2.3 `parallel` and `maxParallel`
+
+- **`"parallel": true`** schedules every item at once, or at most `maxParallel` at a time; when
+  one completes the next starts, in list order.
+- **`"parallel": false`** runs the items one at a time, in list order; item *n*+1 starts when
+  item *n* completes. It is the only form that allows `until`.
+- **One way to say "one at a time":** `"parallel": true, "maxParallel": 1` is refused, pointing
+  to `"parallel": false`.
+  The Editor offers 2 and up (or "none") when `parallel` is on, and a loaded package holding 1
+  shows the sentence with a one-click "Make sequential" fix.
+- **Per loop instance:** an inner loop's cap applies within each outer item, so caps multiply
+  across nesting (§ 4.8).
+- **`maxParallel: null`** means the loop wants no cap of its own; it is limited only by the
+  engine's per-job ceiling (§ 4.8). The package says how much parallelism a loop wants; the
+  deployment decides how much it gets.
+
+#### 4.2.4 `until`, `max` and `.stopped`
+
+`until`, `max` and `.stopped`:
+
+- **`until` is checked after each item**, over that item's body nodes by bare id, `item`, and
+  anything that runs before the loop (chapter 3 § 4.2). The loop stops after the item where it
+  holds, so which items ran is the same on every run.
+- **The items it didn't run stay** in the loop's count and `.items`, with state `not_run` and
+  the reason *"stopped early at \<position name\>"* (§ 4.2.6).
+- **`max`** runs the first `max` items in list order; the rest are `not_run`, with the reason
+  *"not run: beyond max \<n\>"*, and the loop's `.stopped` is `"bound"`.
+- **`.stopped`** is `"until"` (its `until` held), `"bound"` (its `max` was reached) or `"end"` (it
+  ran out of items), typed by those values.
+- **An empty list** settles at 0 items, with `.stopped` `"end"`, never a failure. For an inner
+  loop, that instance settles at zero items, with its reason, and the outer item still completes.
+- **A `null` source** (a nullable list, or a read of a node that was skipped) settles the same
+  way, at 0 items with `.stopped` `"end"`, and the loop's row records the reason
+  *"0 items: \<reference\> is null"*.
+- **At most 200 items per loop instance**: an engine setting, checked at run time. A
+  list longer than that fails the loop's node with *"Loop '\<id\>' was given \<n\> items; this
+  engine runs at most \<limit\> per loop."*, and publish notes a loop whose list could be longer
+  (§ 4.10.2).
+
+Example, fictional: reading prior letters in order until one answers the referral question.
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Prior letters", "description": null,
+  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "input.prior_letters.value",
+  "parallel": false, "maxParallel": null,
+  "until": { "===": [ { "var": "node.read_letter.value.answers_question" }, true ] },
+  "max": null, "itemLabel": null,
+  "nodes": ["read_letter", "letter_summary"], "ret": "node.letters.letter_summary" }
+```
+
+#### 4.2.5 Reading a loop from outside
+
+| Member | Type | Means |
+|---|---|---|
+| `.value` | `list<T>`, `T` its `ret`'s format | the values of the items that **completed**, in item order |
+| `.items` | a list of the element of § 4.2.6 | every item, in item order, each paired with its outputs by identity |
+| `.content` | `markdown_block` | the standard rendering (`## <item name>`, then the item's text, joined by blank lines), so a reader of the loop gets one document (chapter 5) |
+| `.state` | `"completed"` \| `"skipped"` \| `"not_run"` | the loop node's own state (inside an untaken branch, a loop is `skipped`) |
+| `.stopped` | `"until"` \| `"bound"` \| `"end"` | § 4.2.4 |
+
+- **A loop's `format`** is `list<T>`, in JSON Schema `{ "type": "array", "items": T }`;
+  nested loops nest (`list<list<plaintext>>`).
+- **`.value` holds completed items only.** Items that didn't run are absent, never `null`
+  placeholders; they are seen, with their `state` and `reason`, through `.items`. `.value` stays a clean
+  `list<T>` that templates and `all_pass` can read without a `null` test (chapter 3 § 5.4).
+- **No zipping by position.** Pairing two lists by index isn't offered: an `if`, an `until` or a
+  reordered `index.json` would put a heading over the wrong text. `.items` pairs by identity.
+
+#### 4.2.6 `item` and the `.items` element
+
+**Inside the body, `item`** is the innermost loop's current item; `item.parent` the enclosing
+loop's, outward (`item.parent.parent`), skipping any `while` between. A paragraph reads its section's title as `item.parent.value.title`.
+
+| Member | Type | Means |
+|---|---|---|
+| `item.id` | string | the item id (§ 4.2.2) |
+| `item.value` | the source's element type | the element: a row, a folder item's header data, an element of a node's list |
+| `item.content` | text | for a snippet folder item only: its body |
+| `item.parent` | an item | the enclosing loop's item; refused in an outermost loop |
+
+**Each element of `.items`:**
+
+| Member | Type | Null | Means |
+|---|---|---|---|
+| `item` | an item, as above | never | the source element this row came from |
+| `label` | string | never | the item's name (§ 4.2.7) |
+| `state` | `"completed"` \| `"skipped"` \| `"not_run"` | never | the state of the item's `ret`, so an item whose `ret` is an untaken `if` is `skipped` |
+| `reason` | string | `null` when completed | package text and fixed engine sentences only, never patient text: the printed condition for `skipped` (*"skipped: item.value.kind = "narrative" is false"*), *"stopped early at \<position name\>"* or *"not run: beyond max \<n\>"* for `not_run` |
+| `value` | `T` | `null` unless completed | the `ret`'s value |
+| `content` | text | `null` unless completed | the text of the item's `ret` |
+| `nodes` | an object keyed by body id | never | each body node for this item: `.value`, `.content`, `.state` |
+
+- **The states are a closed set.** A template that branches on `state` must handle every state
+  or end with an `else` (chapter 5). `onInvalid` is `fail` or `retry`, so a failed item fails the
+  job and never reaches a reader.
+- **A loop over `.items`** (a check loop, or a production loop, § 4.2.2) has the element above as
+  its `item`, so it reads `item.state`, `item.value` and `item.nodes.<id>` for the same item.
+- **Check items share the production items' ids**, so `check.part_coverage.coverage:2` lines up
+  with `node.sections:2`.
+
+#### 4.2.7 `itemLabel`: naming items
+
+- **`itemLabel` names a field of each element,** or is `null` for position names. It names items
+  in the rail, progress, History and the record. `label` stays the loop's display name.
+- **The field must be guaranteed** to be a non-null string on every element:
+  - a node's list: listed in the element schema's `required` and typed a non-nullable `string`;
+  - an array input: a required `string` property of each row (`example-conditional-sections` uses `title`);
+  - a snippet folder: required in the folder's `format`. A folder item's header is typed data
+    with no `if` (chapter 5); fields have no reserved names (chapter 2 § 5.3), so `test/general`'s
+    field keeps its name `title` and its snippet loop writes `"itemLabel": "title"`;
+  - a loop over `.items`: `"itemLabel": "label"`, the element's own `label`, which carries the
+    production loop's item name; check loops name their items the same way.
+- **At run time,** a value that is empty after trimming falls back to the position name, marked
+  in the record.
+- **Position names:** with `"itemLabel": null`, items are named `<loop label> <n>`, the loop's
+  `label` and the 1-based position: *"Sections 2"*
+  (the loop owns naming).
+- **Retention:** a name is trimmed and cut to 120
+  characters ending in "…", and is **kept in the record past the retention sweep only when it
+  comes from package text** (a snippet folder's header). A name drawn from an input or a model's
+  output follows 7-day retention, and History then shows the position name. **Reasons always use
+  position names** (*"stopped early at Sections 3"*), never a drawn name, since a reason can land in
+  a deliverable (chapter 6 § 6.2).
+- **`labelField` is not a member;** chapter 10 covers the migration.
+
+#### 4.2.8 Examples (migrated)
+
+`example-nested-note`, `nodes/sections/index.json` and `nodes/sections/paragraphs/index.json`
+(the loop is `sections`, chapter 1 § 6):
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Sections", "description": null,
+  "format": { "type": "array", "items": { "type": "array", "items": { "$ref": "plaintext" } } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "node.plan.value.sections",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "itemLabel": "title",
+  "nodes": ["outline", "paragraphs"], "ret": "node.sections.paragraphs" }
+```
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Paragraphs", "description": null,
+  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "node.outline.value.points",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "itemLabel": null,
+  "nodes": ["draft_paragraph"], "ret": "node.sections.paragraphs.draft_paragraph" }
+```
+
+`example-conditional-sections`, `nodes/sections_draft/index.json`:
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Sections — drafting each requested section by its kind", "description": null,
+  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "input.sections.value",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "itemLabel": "title",
+  "nodes": ["route"], "ret": "node.sections_draft.route" }
+```
+
+`test/general`, `nodes/standards/index.json`:
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Standards", "description": null,
+  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "snippet.standards",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "itemLabel": "title",
+  "nodes": ["section_instructions", "patient_section_draft", "standard_section_draft"],
+  "ret": "node.standards.section_instructions" }
+```
+
+Every loop writes every member of its kind, `null` for each one it does not use. How the migration writes them is chapter 10.
+
+### 4.3 `while`
+
+#### 4.3.1 Members
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `while` | a JSON Logic condition | never | the check; the body runs again while it holds |
+| `max` | integer, 1 to `FormatBounds.passes` (15) | never | the bound; there is no default |
+| `until` | a JSON Logic condition | `null` = none | checked after each pass; whichever of `while` and `until` stops first wins |
+| `checkFirst` | boolean | never | `false`: the check runs after each pass (at least one pass); `true`: before each pass (zero passes possible) |
+| `nodes` | array of ids, at least one | never | the body, in order |
+| `ret` | the child's full name (§ 4.1) | never | the body node whose last pass's value the while returns |
+
+With § 4.1's eight members, a `while`'s `index.json` has fourteen members. A `while` has no `parallel`,
+`maxParallel` or `itemLabel`: it is sequential by definition and its passes are numbered.
+`checkFirst` is required.
+
+#### 4.3.2 How it runs
+
+A `while` runs as follows:
+- the body runs, then again for as long as `while` holds and `until` doesn't, at most `max`
+  passes;
+- **reaching the bound is a named state**: *"stopped at its bound of 3; the check never stopped
+  holding"*; the run continues with the last pass's output;
+- with `checkFirst: true` and a check that fails at once, zero passes run: `.passes` is 0,
+  `.stopped` is `"check"`, and the returned node reads as skipped.
+
+#### 4.3.3 What a pass reads
+
+A pass is an object with one shape everywhere: `pass`, `pass.previous`, `pass.parent` and each
+element of `pass.history` have `.number` (from 1), `.node.<id>`, `.previous`, `.parent` and
+`.history`. In JSON Logic:
+
+| Read | Means | Dependency edge |
+|---|---|---|
+| `node.judge` or `pass.node.judge` | this pass's node | yes |
+| `pass.number` | this pass's number, from 1 | no |
+| `pass.previous.node.judge` | one pass back; `null` on the first pass | no |
+| `pass.parent.number` | the enclosing while's pass, skipping any `for` between | this pass: yes |
+| `pass.history` | every earlier pass, oldest first | no |
+
+In conditions, `pass.history` is readable only through `size`; templates may loop over it
+(chapter 5)
+(positional reads are refused, chapter 3 § 2.2).
+
+`pass.….node.<id>` names a node under that pass's `while` at any depth. Reading an earlier pass
+adds no dependency edge, so a redraft and its judge form no cycle.
+
+#### 4.3.4 Reading a while from outside
+
+`.value` and `.content` are the last pass's `ret`; `.passes` is the pass count; `.stopped` is
+`"check"`, `"until"` or `"bound"`; `.history` is every pass, each element giving `.number` and `.node.<id>` for the `while`'s direct body nodes, in pass order; `.state` as § 4.2.5. A
+`while`'s `format` is exactly its `ret`'s.
+
+#### 4.3.5 Example (migrated)
+
+`example-nested-note`, `nodes/refine/index.json`, from `node.judge.value.verdict != "good"`:
+
+```json
+{ "kind": "while", "producer": "computed", "label": "Refining the summary", "description": null,
+  "format": "plaintext",
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "while": { "!==": [ { "var": "node.judge.value.verdict" }, "good" ] },
+  "max": 3, "until": null, "checkFirst": false,
+  "nodes": ["draft_summary", "judge"], "ret": "node.refine.draft_summary" }
+```
+
+Printed: `node.judge.value.verdict ≠ "good"`. `verdict` is a `string` with an enum, so it is data
+and strict equality applies; `"good"` is checked against the enum.
+
+### 4.4 Reading across levels
+
+The scope rules of chapter 1 § 9 hold:
+
+- A body node reads its siblings, the nodes of the bodies that enclose it (aligned by path), and
+  the top level. `node.x` resolves outward; nothing is resolved by "nearest wins".
+- **A node inside a body is a list from outside it**: read the loop (`node.paragraphs`), never
+  its body node.
+- **Siblings across instances are not readable:** `node.draft_paragraph` always aligns to the
+  reader's own path.
+- Inside a function, resolution stops at the function's root (§ 4.7.4).
+
+**The contagious flags cross levels too** (chapter 3 §§ 4.4–4.6). Run-dependence, the model-derived flag and the profile-carrying flag pass
+into a loop's items when its source has them, out through a flow node's `ret`, and through a
+call's arguments and result. A condition (an `if`, a `case` subject, a `while`, an `until`)
+passes none of them on to what it chooses.
+
+- **The output of every node whose `producer` isn't `computed` is model-derived,** so every
+  agent node's output is; the reverse doesn't hold (§ 4.7.10's pattern B is a computed
+  `judgement` that is model-derived).
+- **An input element from a previous run's deliverable** starts out model-derived, and the
+  record links to the job it came from. In a mixed array input, only those elements are; typed
+  text and uploaded documents start clean. Other machine sources (OCR, transcription) are
+  producers reserved for Milestone 40 (`extracted`; chapter 2 § 1.3).
+
+### 4.5 Branches: `if` and `case`
+
+#### 4.5.1 `if`
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `if` | a JSON Logic condition | never | the decision |
+| `then` | a body: `{ "nodes": [ids], "ret": full name }` | never | runs when the condition holds |
+| `else` | a body | `null` = no else | runs when it doesn't |
+
+With § 4.1's eight members, eleven members. A body object has exactly `nodes` (at least one id) and
+`ret`.
+
+#### 4.5.2 `case`
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `case` | a reference string | never | the subject |
+| `branches` | array, at least one, of `{ "when": [values], "nodes": [ids], "ret": full name }`; an empty branch writes `"nodes": []` and `"ret": null` | never | one branch per set of values |
+| `else` | a body | `null` only when the branches list every value and the subject can't be `null` | runs when no branch's values match, and when the subject is `null` |
+
+With § 4.1's eight members, eleven members.
+
+- **The subject** is a reference string, never a JSON Logic expression (chapter 3 § 3); a subject
+  that has to be computed is a `computed` node the `case` names. It must be typed as an
+  enumerated `string`: `enum`, or `oneOf` with `const` (chapter 2):
+  `"item.value.kind"`, `"node.triage.value.category"`, `"input.encounter_kind.value"`.
+- **Each `when` lists one or more values** of the subject's enum (the raw values, never titles);
+  a value may appear in at most one branch, once.
+- **Every `case` is exhaustive:** if the branches don't list every value, an `else` is required,
+  and publish refuses a `case` that could match nothing. A `case` therefore always runs a
+  branch for every value.
+- **A subject that can be `null`** (a nullable enum, chapter 2 § 3.2, or a read of a node that may
+  be skipped) **requires an `else`**, and `null` goes there. A `when` never lists `null`.
+- **A branch may be explicitly empty:** `{ "when": ["omit"], "nodes": [], "ret": null }`, the one
+  body whose `nodes` is empty and whose `ret` is `null`, both together. For those values the `case`
+  reads as skipped, with the reason *"case '<id>': arm for <value> does nothing"*. So skipping some values is written in the `case` itself, never as an `if`
+  around it (§ 4.5.4).
+
+#### 4.5.3 Format, state and exhaustiveness
+
+- **The format of an `if` or `case` is the union of what its bodies return**
+  (`plaintext | classification`; in JSON Schema `anyOf`). Each body's `ret` must be a
+  member, and each member returned by some body. When every body returns one
+  format, the union is that format. The `anyOf` is the result itself, with no wrapper object,
+  and the condition's row records which branch ran
+  (chapter 2 § 3.3).
+- **A reader of a union:** `.content` always; `.value` only if every member has a value;
+  `.value.<field>` only if every member declares it compatibly.
+- **An untaken `if` with no `else`,** and a `case` whose subject took an empty branch, have state
+  `skipped`; their `.value` and `.content` read as `null` in JSON Logic (chapter 3 § 6.1). Skipped is
+  a state, not a union member, so an empty branch adds nothing to the union.
+- **Exhaustive** means every value of the subject has a branch, or an `else`, which every `case`
+  is (§ 4.5.2). **Always runs a body** is stronger: an `if` with an `else`, or a `case` with no
+  empty branch. An `if` with no `else`, or a `case` with an empty branch, is allowed except where
+  a value must always exist: a function's `ret` (§ 4.7.6).
+- **The decision is recorded** in the job's `decisions` list with the printed condition (or the
+  subject and the branch taken), its run-dependence and whether it is model-derived (chapter 8).
+
+#### 4.5.4 Examples (migrated)
+
+`example-conditional-sections`. The input's `kind` enum is `narrative`, `table`, `omit`. `route`
+is a `case` with a branch for `narrative`, one for `table` and an explicitly empty one for `omit`,
+so every value is listed and no `else` is needed.
+
+`nodes/sections_draft/route/index.json`:
+
+```json
+{ "kind": "case", "producer": "computed", "label": "Routing a section by its kind", "description": null,
+  "format": "plaintext",
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "case": "item.value.kind",
+  "branches": [
+    { "when": ["narrative"], "nodes": ["narrative_draft"], "ret": "node.sections_draft.route.narrative_draft" },
+    { "when": ["table"],     "nodes": ["table_draft"],     "ret": "node.sections_draft.route.table_draft" },
+    { "when": ["omit"],      "nodes": [],                  "ret": null } ],
+  "else": null }
+```
+
+An omitted section's `route` reads as skipped, with the reason *"case 'route': arm for omit does
+nothing"*.
+
+`nodes/patient_summaries/narrative_only/index.json`:
+
+```json
+{ "kind": "if", "producer": "computed", "label": "Narrative sections only", "description": null,
+  "format": "plaintext",
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "if": { "===": [ { "var": "item.value.kind" }, "narrative" ] },
+  "then": { "nodes": ["patient_summary"], "ret": "node.patient_summaries.narrative_only.patient_summary" },
+  "else": null }
+```
+
+`nodes/standing_sections/applies/index.json`:
+
+```json
+{ "kind": "if", "producer": "computed", "label": "Holding the billing section back unless asked", "description": null,
+  "format": "plaintext",
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "if": { "or": [ { "!==": [ { "var": "item.id" }, "billing" ] },
+                  { "===": [ { "var": "input.include_billing.value" }, true ] } ] },
+  "then": { "nodes": ["standing_draft"], "ret": "node.standing_sections.applies.standing_draft" },
+  "else": null }
+```
+
+When a fictional section "Billing" is skipped, its reason reads *"skipped: item.id ≠ "billing"
+or input.include_billing.value = true is false"*.
+
+### 4.6 `FormatBounds`
+
+| Member | Value | Limits |
+|---|---|---|
+| `passes` | 15 | a `while`'s `max`: 1 to 15 |
+| `depth` | 15 | nested function calls: 0 to 15 (§ 4.7.8) |
+| `parallel` | 15 | a loop's `maxParallel`: 2 to 15, or `null` |
+
+- **Constants of the format,** defined in the spec and in `Consultologist.PackageFormat`, covered
+  by the dialect version, and **never written in a package**.
+- **Each can be raised alone later,** which is always compatible; lowering one would break
+  packages.
+- **Messages name the limit** (§ 4.10).
+- A `for`'s `max` has no format bound: at least 1, no cap.
+
+### 4.7 Functions
+
+A function is a **named, reusable sub-workflow**: a group of nodes behind declared, typed inputs
+and one typed result, run by a `call` node from anywhere.
+Functions are within a package; imports from other packages are [#1420](https://github.com/Consultologist/Consultologist-Blazor/issues/1420) (Milestone 40).
+
+#### 4.7.1 The definition folder
+
+```
+functions/
+  index.json                     (the folder's own index: chapter 1)
+  draft_section/
+    index.json                   (the definition, § 4.7.2)
+    standard_draft.md
+    patient_draft.md
+    apply_instructions.md
+    snippets/ formats/ renderers/ macros/     (always present, each with its index.json: its own definitions, § 4.7.3)
+```
+
+- **`functions/<id>/`** holds one function; the folder name is its id.
+- **Its nodes are its direct children** (files and flow folders), listed in `nodes` as in any
+  body.
+- **Its own definitions** live in sub-folders shaped like a package's. `snippets/`, `macros/`,
+  `formats/` and `renderers/` are **always present**, each with its `index.json`, even when empty
+  (`"items": []`), so an empty folder says visibly that the function defines nothing there.
+  Their names can't collide with a node's id: `snippet(s)`, `macro(s)`, `format(s)` and
+  `renderer(s)` are reserved ids everywhere (chapter 1).
+- **Function ids are their own namespace,** named only by a `call`'s `function`, never by
+  `node.x`; a function and a node may share an id. Function ids are unique among functions.
+
+#### 4.7.2 `functions/<id>/index.json`
+
+Judged by [`v31/schemas/function-index.schema.json`](v31/schemas/function-index.schema.json).
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | never | the display name |
+| `description` | array of strings | `null` = none | for people only |
+| `inputs` | an object keyed by parameter id (§ 4.7.2.1) | never (`{}` = no parameters) | the parameters, in written order |
+| `uses` | `{ "snippets", "macros", "formats", "renderers" }`, each an array of ids | never; `[]` = none | the package definitions it uses (§ 4.7.3) |
+| `nodes` | array of ids, at least one | never | its top-level body, in order |
+| `ret` | the child's full name, counted from the function's root (§ 4.1) | never | the body node it returns (§ 4.7.6) |
+| `format` | a format name or inline schema | never | the function's result type; must equal its `ret`'s format |
+
+##### 4.7.2.1 Parameters: typed, and all required
+
+Each member of `inputs` is:
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `label` | string | never | shown in the Editor and History |
+| `description` | array of strings | `null` = none | for people only |
+| `format` | a format name or inline schema | never | the parameter's type |
+
+- **Parameters are `{ label, description, format }`, all three required**:
+  the package inputs' shape without `required` and `channel`. `description` follows
+  chapter 1's one rule (lines or `null`, at most 500 code points). **Every parameter is required:**
+  a call passes every one (§ 4.7.7); `required` would always be true, and `channel` concerns how a
+  person supplies an input, which a call never does.
+- **A parameter that may be empty** declares a nullable format, and the caller passes `null`
+  explicitly for an optional value; a parameter is never left out. `null` is written as the
+  argument itself (`"with": { "prior_letter": null }`), the one literal `with` accepts (§ 4.7.7).
+- **Read as `param.<id>`,** with `.value` and `.content` as for a node.
+
+#### 4.7.3 `uses`: declared definitions
+
+- A function may use the package's snippets, macros, formats and renderers **only if it lists
+  them** in `uses`, and may hold its own (§ 4.7.1).
+- **Built-in formats** (the package-format registry's) and **catalogue formats**
+  (`concept_list`, `classification`, …) are always available without listing.
+- **A snippet passed as data** (`"with": { "standard": "snippet.standards.hpi" }`) is an
+  argument, read as `param.standard`, and isn't listed. **A snippet a prompt places as text**
+  (`{{~ snippet.snomed_tool_guidance.content }}`) is a definition and is listed.
+- **No shadowing:** a function's own definition may not share an id with one it lists in `uses`.
+- **A listed definition never used** is a warning, not a refusal.
+
+#### 4.7.4 Sealed: what a function reads
+
+Inside a function, every template, condition and computed expression may read:
+- **`param.<id>`**, its parameters;
+- **`node.<id>`** for nodes inside the function, at any depth within it, resolved outward only up
+  to the function's root;
+- `item` and `pass` of loops and whiles **inside** the function;
+- its own and its listed definitions (`snippet.*`, `macro.*`, `renderer.*`, `part.*` of its own
+  nodes).
+
+**Refused inside a function:** `input.*`; nodes outside it; a caller's `item` or `pass`;
+`run.*` and `profile.*` read directly (pass them in, § 4.7.7); `check.*`; `deliverable.*`.
+
+So everything a function uses is visible at the call site: data through `with`, definitions
+through `uses`. A function's result depends only on its arguments, which makes it testable alone
+(chapter 7).
+
+#### 4.7.5 What a function may contain
+
+- **Allowed:** every kind a package's `nodes/` may hold: `agent`, `rendered`, `computed`, `for`,
+  `while`, `if`, `case`, and `call` (of **other** functions); parts and macros (§ 4.7.10).
+- **Refused:**
+  - **recursion,** direct or through other functions: the checker builds the call graph at
+    publish and refuses any cycle;
+  - **deliverables:** top-level and terminal; a function returns a value and a top-level
+    deliverable composes it;
+  - **checks:** checks gate releases and functions release nothing. A function may compute a
+    `check_result` **as data** (a `computed` node with `terms_subset`) and return it. Checking
+    each call's output is a check loop over the calls' `.items` (chapter 6).
+
+#### 4.7.6 One `ret`, always valued, one format
+
+- **`ret` names one node** of the function's top-level body. The function's `format` is that
+  node's format, checked at publish.
+- **`ret` must always have a value:** a node that always runs; or an `if` with an `else`; or a
+  `case` with no empty branch (§§ 4.5.2–4.5.3). A `ret` that may be skipped is refused.
+- **One format:** when `ret` is an `if` or `case`, every body must return the **same** format;
+  no unions as function results. A function that returns different shapes wraps them in an
+  object format, built by a closing computed node on each body.
+- **Several values** are one object format, built by a closing computed node with `object`:
+
+  ```
+  ---
+  { "kind": "computed", "producer": "computed", "label": "Result", "format": "drafted_section",
+    "modelDerived": true, "runDependent": false, "profileCarrying": false,
+    "expression": { "object": {
+        "title":    { "var": "param.standard.value.title" },
+        "text":     { "var": "node.apply_instructions.content" },
+        "concepts": { "var": "node.extract.value" } } } }
+  ---
+  ```
+
+  (other leaf members as chapter 1). `text` is text through the nested-text rule (chapter 2 § 5.3), and the
+  result is model-derived, since it is built from agents' output (chapter 3 § 4.5).
+- **A loop as `ret`** is allowed; the function returns `list<…>`.
+- **`.content` of an object result** is its canonical JSON, as for any object-valued node.
+
+#### 4.7.7 The `call` node
+
+A `call` is a leaf, `<id>.md`, **header only** (its body must be empty), judged by
+[`v31/schemas/node-call.schema.json`](v31/schemas/node-call.schema.json). Its members, besides
+chapter 1's leaf members (`kind`, `label`, `description`, `format`, `reproducible`, `modelDerived`,
+`runDependent`, `profileCarrying`, and the node's own condition, `if`):
+
+| Member | Type | Null | Meaning |
+|---|---|---|---|
+| `kind` | `"call"` | never | |
+| `format` | a format name or inline schema | never | written, as on every node, and equal to the function's `format` by type equality |
+| `reproducible` | boolean | never | written, and checked against the function's `ret`'s value; a mismatch is refused |
+| `modelDerived` | boolean | never | written, and checked against the derived value: `true` when the function's `ret` is model-derived, or an argument is; a mismatch is refused |
+| `runDependent` | boolean | never | written, and checked against the derived value: `true` when the function's `ret` is run-dependent, or an argument is; a mismatch is refused |
+| `profileCarrying` | boolean | never | written, and checked against the derived value: `true` when the function's `ret` is profile-carrying, or an argument is; a mismatch is refused |
+| `function` | a function id | never | the function to run |
+| `with` | an object keyed by parameter id; each value a reference string, or the literal `null` | never (`{}` for a function with no parameters) | the arguments |
+
+- **`with` names every parameter, and only those.** A missing or extra parameter is refused.
+- **Each argument is a reference string,** as `in` is, never a JSON Logic expression:
+  `input.<id>.value`, `.content` or `.title` (a bare `input.<id>` is refused, chapter 2),
+  `node.<id>`, `check.<id>`, `item`, `item.parent`, `snippet.<folder>.<item>`, `param.<id>`
+  (inside a function), `run.<fact>`, `profile.<field>` (see below), or a field path under one of
+  these (`node.plan.value.sections`). The literal `null` is the one literal (§ 4.7.2.1): a constant or
+  computed argument is a `computed` node that the argument names (compute, then name).
+- **Each argument is type-checked** against its parameter's format at publish.
+- **`profile.*` may be passed in through `with`** (`"with": { "signature": "profile.signature" }`),
+  and then only to reach deliverables and macro bodies. The parameter
+  **carries the profile's restriction** through the function: reading it in a prompt, a part or a
+  condition is refused (chapter 6 § 10.2, R-F3), and it may be read in a macro body or passed on
+  through `with`.
+- **`run.*` may be passed in:** `"with": { "today": "run.date" }`. The parameter is then
+  run-dependent (chapter 3 § 4.4). In the same way, a parameter bound to a model-derived argument
+  is model-derived (chapter 3 § 4.5).
+- **Its value is the function's `ret`,** read like any node (`node.hpi_section.value`,
+  `.content`).
+- **A whole reference passed to `with`** (`node.<id>`, `item`, `check.<id>`) gives the function
+  only its `.value` and `.content`, typed against the parameter's format; the function
+  reads `param.<id>.value` and `.content`, never the caller's `.state` or `.items`.
+- **Its body runs inline** in the caller's orchestration, never as a sub-orchestration: the call's inner nodes are scheduled by the same orchestrator as its siblings, so the
+  per-job ceiling, the call limit and the start order hold inside functions (§ 4.8; chapter 9 § 3).
+- **Its dependency edges are its arguments.** A call's input hashes are exactly its arguments'
+  hashes.
+
+Inside a loop, one call per item:
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Standards", "description": null,
+  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "snippet.standards",
+  "parallel": true, "maxParallel": 4, "until": null, "max": null,
+  "itemLabel": "title",
+  "nodes": ["section"], "ret": "node.standards.section" }
+```
+
+```jsonc
+// nodes/standards/section.md (header only)
+---
+{ "kind": "call", "producer": "computed", "label": "Drafting the section", "description": null,
+  "format": "plaintext", "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "function": "draft_section",
+  "with": { "standard": "item", "draft": "input.consult_draft.content" } }
+  // plus chapter 1's remaining leaf members
+---
+```
+
+Loop bodies stay inline and anonymous; a function is the named, reusable form, and a `call` is
+the one way to run it, at the top level, in a loop body or inside another function.
+
+#### 4.7.8 Depth and recursion
+
+- **Recursion is refused** at publish, so nesting is already finite; the bound is about
+  readability and cost.
+- **Depth is measured,** not written: the deepest chain of nested calls, from a top-level node,
+  against `FormatBounds.depth` (15).
+- **Counting**:
+  a `call` outside every function is at depth 0; a `call` inside a function reached at depth *d*
+  is at depth *d*+1. "0 means no nested calls" then holds, and `FormatBounds.depth` 15 allows
+  sixteen function frames on one chain.
+
+#### 4.7.9 Ids and record keys
+
+- **Ids inside a function are free:** a function may use any node id, even one at the package's
+  top level or in another function. Within the function, the disjoint-scope rules of chapter 1 § 9.2 apply.
+- **Record keys go through the call node,** joined with `.` and written with their root
+  (chapter 1 § 9.3); the function's name is recorded on the call's row, not in the key:
+
+  | Where | Key |
+  |---|---|
+  | a top-level call | `node.hpi_section` |
+  | its inner node | `node.hpi_section.standard_draft` |
+  | a call inside a loop, item 3 | `node.standards.section.standard_draft:3` |
+  | a nested call | `node.hpi_section.refine_call.judge` |
+
+#### 4.7.10 Macros inside functions
+
+- A function places a macro only if it lists it in `uses` or holds its own.
+- **A macro's `if` is evaluated where the macro is placed,** in the function's sealed scope;
+  the checker verifies every name it reads exists there. A macro folder's shared `if` is
+  evaluated in the same scope. The decision is recorded within the call.
+- **Pattern A (the default):** the function holds its own classifier with the id the macro's
+  `if` reads, so each call decides on its own arguments.
+- **Pattern B (the decision is made once):** the caller decides, passes the answer in, and a computed node
+  inside the function, with the classifier's id, holds it:
+
+  ```
+  ---
+  { "kind": "computed", "producer": "computed", "label": "Prescribes letrozole (passed in)", "format": "judgement",
+    "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+    "expression": { "var": "param.letrozole.value" } }
+  ---
+  ```
+
+  saved as `functions/draft_section/prescribes_letrozole.md`. **Pattern B needs no exception**:
+  the computed node returns `judgement`, the same format the classifier returns, with producer `computed`; its expression passes the parameter's value
+  through, so the parameter is a `judgement` too, and the macro's `if` reads
+  `node.prescribes_letrozole.value.answer` under either pattern. It is
+  **model-derived** (chapter 3 § 4.5), because the caller's classifier, an agent, wrote the
+  answer. Where the value came from is carried by the flag, not the format, so the macro's
+  decision is shown as model-derived in History, as it is under pattern A.
+- **A macro's `if` naming a parameter is refused** (chapter 3 § 4.2).
+
+#### 4.7.11 Example: a made-up package
+
+`example-functions` is made up for this document; the patient is fictional (Margaret Okafor).
+
+```
+example-functions/
+  manifest.json            identity, and inputs: consult_draft (markdown_block)
+  snippets/
+    index.json
+    standards/             index.json (format standard_section), hpi.md, plan.md, …
+  formats/                 index.json, standard_section.json
+  renderers/               index.json ("items": [])
+  macros/                  index.json ("items": [])
+  functions/
+    index.json
+    draft_section/
+      index.json           inputs: standard (standard_section), draft (markdown_block)
+      standard_draft.md    agent · plaintext
+      patient_draft.md     agent · plaintext
+      apply_instructions.md agent · plaintext
+      snippets/ macros/ formats/ renderers/    each index.json ("items": [])
+  nodes/
+    index.json             items: standards, extract_input_terms
+    standards/
+      index.json           for … in snippet.standards, maxParallel 4, itemLabel "title"
+      section.md           call draft_section, with standard ← item, draft ← input.consult_draft.content
+    extract_input_terms.md agent · concept_list
+  checks/
+    index.json
+    section_coverage/
+      index.json           for … in node.standards.items, itemLabel "label"
+      coverage.md          computed · check_result (terms_subset per section)
+    all_sections.md        computed · check_result (all_pass)
+  deliverables/
+    index.json
+    emr/
+      consult.md           check: check.all_sections
+  tests/                   index.json, and the package's tests
+```
+
+All nine top-level folders are present, each with its `index.json`, and the function's four
+definition folders likewise, empty ones included (chapter 1).
+
+`functions/draft_section/index.json`:
+
+```json
+{ "label": "Draft a section",
+  "description": ["Drafts one consult section from a standard, then applies the patient's facts."],
+  "inputs": {
+    "standard": { "label": "Standard", "description": null, "format": "standard_section" },
+    "draft":    { "label": "Consult draft", "description": null, "format": "markdown_block" } },
+  "uses": { "snippets": [], "macros": [], "formats": ["standard_section"], "renderers": [] },
+  "nodes": ["standard_draft", "patient_draft", "apply_instructions"],
+  "ret": "node.apply_instructions",
+  "format": "plaintext" }
+```
+
+`checks/section_coverage/index.json` (check loops are chapter 6's; shown for `.items`):
+
+```json
+{ "kind": "for", "producer": "computed", "label": "Section coverage", "description": null,
+  "format": { "type": "array", "items": { "$ref": "check_result" } },
+  "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false,
+  "in": "node.standards.items",
+  "parallel": true, "maxParallel": null, "until": null, "max": null,
+  "itemLabel": "label",
+  "nodes": ["coverage"], "ret": "check.section_coverage.coverage" }
+```
+
+Its `coverage` check's `if` skips sections that didn't complete:
+`{ "===": [ { "var": "item.state" }, "completed" ] }`. `checks/all_sections.md`'s expression:
+`{ "all_pass": [ { "var": "check.section_coverage.items" }, "Not every section covers its planned terms." ] }`.
+
+The record's keys for the third standard: `node.standards.section:3` (the call),
+`node.standards.section.patient_draft:3`; and `check.section_coverage.coverage:3`, which shares
+the production item's id (chapter 6). The deliverable is `deliverable.emr.consult`.
+
+### 4.8 Concurrency: what counts toward the per-job ceiling
+
+- **The ceiling is not in the format.** The engine holds a per-job ceiling: at most *N* agent
+  calls in flight for one job (for example 16). It is chapter 9's. Function bodies run inline in
+  the job's orchestration, so their calls are scheduled under the same ceiling.
+- **Everything counts the same way:** agent calls in nested loops, inside function calls (at any
+  depth), and in check loops.
+  **Only agent calls count:** `rendered` and `computed` nodes make no model call and don't
+  count.
+- **Total-work limits**, engine settings beside the ceiling, starting at: **200 items
+  per loop instance** (§ 4.2.4), **500 agent calls per job** (retries included as one call), and a
+  **step budget per render**, starting at **100,000 steps** (chapter 5). Each is checked at run time and fails the job, or the
+  node, with a sentence (chapter 9 § 3.4); publish notes a package whose worst case can exceed one
+  (§ 4.10.2).
+- **Each loop's `maxParallel` still applies within it.** The effective concurrency at a point is
+  the smaller of the ceiling and the product of the caps along its nesting path.
+- **429 responses and other service failures** are retried with back-off and recorded as retries
+  on the node's row. A node fails after 10 minutes of waiting on 429s in total, or after 5
+  attempts for another failure, and a job fails if it hasn't finished 30 minutes after its
+  orchestration started;
+  all three are engine settings (chapter 9 § 3.4).
+- **At publish, a note rather than a refusal** when nested caps multiply past the engine's
+  ceiling (§ 4.10.2). The product is taken along each nesting path of loops and calls. For the
+  note's worst case, a `maxParallel: null` loop over a list whose length publish knows (a
+  snippet folder) counts its length, and over any other list counts as unbounded, which the note
+  says. Requiring a non-null `maxParallel` is [#1474](https://github.com/Consultologist/Consultologist-Blazor/issues/1474) (Milestone 40).
+
+### 4.9 What the record holds
+
+The record is chapter 8's. For flow and functions (storage 12 adds to 11, with qualified keys):
+- **loop rows** carry `parallel`, `maxParallel`, `itemLabel`'s field, the count, `.stopped` and
+  its reason; one loop-instance row per inner instance;
+- **item rows** keyed by their key with its root and path (`node.sections:2`), named per § 4.2.7,
+  with state and reason;
+- **pass rows** for a `while`, its `passes` and `stopped`;
+- **a decision** in the job's one `decisions` list for every `if`, `case`, `while`, `until` and
+  item condition: its site, the printed condition (or the subject and the branch taken), its
+  result, a hash of each value read, whether it was run-dependent, and an `expressionHash`;
+  rows link to their decisions by id;
+- **a call row** with the function's id, its arguments' hashes, its result's hash and its
+  `depth`, expanding to its inner rows like a loop item;
+- **`modelDerived`, `runDependent` and `profileCarrying`** on every row (chapter 3 §§ 4.4–4.6).
+
+### 4.10 Refusals
+
+Every sentence below is used as written; chapter 11 lists every sentence of this format.
+
+#### 4.10.1 Refusals at publish
+
+Placeholders: `<id>` a node, loop, function or call id; `<n>`, `<m>` numbers; `<format>` a type
+string (chapter 2).
+
+**Every flow node**
+
+| Sentence |
+|---|
+| *"Loop '\<id\>' declares label null; a loop's or branch's label is what the rail, History and the diagram show: write one."* (also `While`, `If`, `Case`) |
+| *"\<Kind\> '\<id\>' declares \<member\>, which belongs to \<a for \| a while \| an if \| a case\>."* |
+| *"\<subject\> returns nothing; name the body node the outside reads with ret."* (`ret` null) |
+| *"\<subject\> returns \<ret\>, which is not one of its own children (\<full names\>): write the child's full name, for example node.sections.paragraphs."* |
+| *"\<subject\> lists node '\<id\>' twice; a body is a set."* |
+| *"\<Kind\> '\<id\>' declares format \<format\>; its ret makes it \<format\>."* |
+| *"\<Kind\> '\<id\>' declares reproducible \<true \| false\>; its body makes it \<false \| true\>."* (also `Call`) |
+| *"\<Kind\> '\<id\>' declares \<modelDerived \| runDependent \| profileCarrying\> \<true \| false\>; its body makes it \<false \| true\>."* (also `Call`) |
+| *"\<Kind\> '\<id\>' \<in \| case \| with \<param\>\> is an expression; it names one readable thing: compute the value in a computed node and name that."* |
+
+`<subject>` is `Loop 'x'`, `While 'x'`, `If 'x' then`, `If 'x' else`, `Case 'x' branch <n>`,
+`Case 'x' else`, or `Function 'x'`.
+
+**`for`**
+
+| Sentence |
+|---|
+| *"Loop '\<id\>' has no body; name the nodes that run per item in nodes."* |
+| *"Loop '\<id\>' declares parallel true with maxParallel 1, which runs one item at a time; declare "parallel": false and "maxParallel": null instead."* |
+| *"Loop '\<id\>' declares maxParallel \<n\>; the most is FormatBounds.parallel (15)."* |
+| *"Loop '\<id\>' declares maxParallel \<n\>; the least is 2, or null for no cap of its own."* (0, negative, not an integer) |
+| *"Loop '\<id\>' declares maxParallel \<n\> with parallel false; a sequential loop runs one item at a time: write "maxParallel": null."* |
+| *"Loop '\<id\>' declares until with parallel true; until stops after the item where it holds, which needs items in order: declare "parallel": false and "maxParallel": null."* |
+| *"Loop '\<id\>' declares max 0; the least is 1."* |
+| *"Loop '\<id\>' iterates \<reference\>, which is \<format\>; only a list can be iterated."* |
+| *"Loop '\<id\>' iterates item.value.\<field\>, but it runs inside no loop; item.value names the enclosing loop's item."* |
+| *"Loop '\<id\>' iterates node.\<y\>.value.\<z\>; \<y\> runs inside loop '\<l\>' — a loop iterates a node outside it, or in an enclosing loop's body."* |
+| *"Loop '\<id\>' itemLabel '\<field\>' is not a field of the elements of \<reference\> (fields: \<fields\>)."* |
+| *"Loop '\<id\>' itemLabel '\<field\>' may be missing or null; itemLabel names a field every element has as a string."* |
+| *"Loop '\<id\>' itemLabel '\<field\>' is \<format\>; itemLabel names a string field."* |
+
+**`while`**
+
+| Sentence |
+|---|
+| *"While '\<id\>' declares max null; a while must declare its bound (1 to 15)."* |
+| *"While '\<id\>' declares max \<n\>; a while runs at most FormatBounds.passes (15) passes."* |
+| *"While '\<id\>' declares max \<n\>; the least is 1."* |
+| *"While '\<id\>' has no body; name the nodes that run per pass in nodes."* |
+| *"Node '\<id\>' in while '\<w\>' is neither returned nor read; name it with ret, read it from a body node or from the check."* |
+| *"\<site\> reads pass.number, but it runs inside no while; pass is a while's pass."* |
+| *"\<site\> reads pass.parent, but its while runs inside no while; pass.parent is the enclosing while's pass."* |
+| *"\<site\> reads pass.previous.node.\<id\>, which is not in while '\<w\>'; a pass reads the while's own nodes."* |
+
+**Reads across levels**
+
+| Sentence |
+|---|
+| *"\<site\> reads node '\<id\>', which runs inside loop '\<l\>'; read node.\<l\>."* |
+| *"\<site\> reads item.parent, but its loop runs inside no loop; item.parent is the enclosing loop's item."* |
+
+**`if` and `case`**
+
+| Sentence |
+|---|
+| *"If '\<id\>' declares then null; an if runs a then body."* |
+| *"Case '\<id\>' has no branches; a case runs one branch per set of values."* |
+| *"Case '\<id\>' branch \<n\> lists no value; a branch's when names one or more values."* |
+| *"Case '\<id\>' switches on \<reference\>, which is \<format\>; a case switches on an enumerated string."* |
+| *"Case '\<id\>' branch \<n\> lists "\<value\>", which is not one of \<reference\>'s values (\<values\>)."* |
+| *"Case '\<id\>' lists "\<value\>" in branches \<n\> and \<m\>; a value belongs to one branch."* |
+| *"Case '\<id\>' doesn't list \<values\> and has no else; a case has a branch for every value: add a branch, an empty branch, or an else."* |
+| *"Case '\<id\>' switches on \<reference\>, which can be null, and has no else; a null subject goes to the else: add one."* |
+| *"Case '\<id\>' branch \<n\> lists null; a null subject goes to the else."* |
+| *"Case '\<id\>' branch \<n\> writes nodes \<[] \| ids\> with ret \<ret\>; an empty branch writes nodes [] and ret null together."* |
+| skip reason *"case '\<id\>': arm for \<value\> does nothing"* |
+
+**Functions and calls**
+
+| Sentence |
+|---|
+| *"Node '\<id\>' in function '\<f\>' reads input.\<name\>; a function reads only its parameters: add a parameter and pass it in with."* |
+| *"Node '\<id\>' in function '\<f\>' reads \<reference\>; a function reads only its parameters: add a parameter and pass it in with."* (outer `node.*`, a caller's `item` or `pass`, `run.*`, `check.*`, `profile.*`) |
+| *"Function '\<f\>' uses \<snippet \| macro \| format \| renderer\> '\<id\>' but doesn't list it in uses."* |
+| *"Function '\<f\>' has its own \<snippet \| macro \| format \| renderer\> '\<id\>' and also uses the package's: rename one."* |
+| *"Function '\<a\>' calls '\<b\>', which calls '\<a\>': functions may not call themselves."* (for a longer cycle the chain is named in full) |
+| *"Function '\<a\>' calls '\<a\>': functions may not call themselves."* |
+| *"Call '\<id\>' reaches depth \<n\>; calls nest at most FormatBounds.depth (15) deep."* |
+| *"Function '\<f\>' returns node.\<id\>, an if with no else: add an else, or return a node that always runs."* |
+| *"Function '\<f\>' returns node.\<id\>, which runs inside if '\<b\>' and may be skipped: return a node that always runs."* |
+| *"Function '\<f\>' returns node.\<id\>, a case with an empty branch for \<values\>: return a node that always runs."* |
+| *"Function '\<f\>' returns node.\<id\>, whose branches return \<format\> and \<format\>: a function returns one format. Wrap them in an object format."* |
+| *"Function '\<f\>' declares format \<format\>; its ret '\<id\>' returns \<format\>."* |
+| *"Function '\<f\>' holds a \<checks \| deliverables\> folder; checks and deliverables live only at the package's top level: return a check_result or a value instead."* |
+| *"Macro '\<m\>' is placed in function '\<f\>', where its if reads node.\<id\>, which doesn't exist there: add a classifier with that id (pattern A), or pass the decision in and hold it in a computed node (pattern B)."* |
+| *"Call '\<id\>' names function '\<f\>', which the package doesn't define."* |
+| *"Call '\<id\>' passes no \<param\>; function '\<f\>' takes \<params\>."* (a parameter left out, even an optional one: pass null) |
+| *"Call '\<id\>' passes \<param\>, which function '\<f\>' doesn't take (\<params\>)."* |
+| *"Function '\<f\>' parameter '\<param\>' declares \<required \| channel\>; a parameter has label, description and format, and every one is passed."* |
+| *"Call '\<id\>' passes \<reference\> (\<format\>) as \<param\>; function '\<f\>' takes \<format\>."* |
+| *"Function '\<id\>' reads param.\<name\>, which carries profile.\<field\>, in \<a prompt \| a part \| a condition\>; the profile is read only in deliverables and macro bodies."* (chapter 6 R-F3) |
+| *"Call '\<id\>' declares format \<format\>; function '\<f\>' returns \<format\>."* |
+| *"Call '\<id\>' has a body; a call is a header only."* |
+
+#### 4.10.2 Notes and warnings at publish
+
+| Sentence | Kind |
+|---|---|
+| *"Up to \<n\> agent calls could run at once; this engine runs at most \<N\> per job, so the rest wait their turn."* | note |
+| *"An unbounded number of agent calls could run at once (loop '\<id\>' has no cap over a list known only at run time); this engine runs at most \<N\> per job, so the rest wait their turn."* | note |
+| *"Loop '\<id\>' iterates \<reference\>, which could hold more than \<limit\> items; this engine runs at most \<limit\> per loop, and fails the loop beyond that."* | note |
+| *"Up to \<n\> agent calls could run in one job; this engine runs at most \<limit\> per job, and fails the job beyond that."* | note |
+| *"Function '\<f\>' lists \<snippet \| macro \| format \| renderer\> '\<id\>' in uses but never uses it."* | warning |
