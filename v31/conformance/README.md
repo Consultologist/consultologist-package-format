@@ -203,10 +203,9 @@ reading the inputs; `S03-020` and `S03-021` are a deliverable's `if`, `S03-022` 
   loop over `item.value` and `check.notes_checked.items`); area 05, judging them, corrects any it
   finds invalid, and the cases are exported again.
 - **These chapter 3 sentences have no package.** `S03-001` (*"skipped: … is false"*) is the reason
-  a decision's record gives, not a refusal. `S03-036` and `S03-044` follow from the three flags of
-  [§ 3.4.4 to § 3.4.6](../../package-format-v31.md#344-run-dependence-is-contagious), which are worked out from the
-  compiled package's edges and from what templates read (areas 05 and 07); no package reaches them
-  yet. `S03-037` and `S03-038` are warnings and `S03-039` a note: a package that gets them is
+  a decision's record gives, not a refusal. (`S03-036` and `S03-044`, which follow from the three
+  flags of [§ 3.4.4 to § 3.4.6](../../package-format-v31.md#344-run-dependence-is-contagious), are said by the
+  resolver, area 05, and have their cases there.) `S03-037` and `S03-038` are warnings and `S03-039` a note: a package that gets them is
   accepted, and `expect.json` lists refusals only. `S03-040` and `S03-041`, and this
   implementation's `A04-011`, are failures at run time
   ([§ 3.11.3](../../package-format-v31.md#3113-failures-at-run-time)), said when a rule is evaluated, never at publish.
@@ -326,6 +325,31 @@ of calls sixteen deep), and one for this implementation's `A05-005`:
 A `with` value written as an object or a list is `S04-017`, said in place of `A02-001` as for an `in`;
 a call's body stays the reader's `S01-020`. `S04-074` (a format a function lists in `uses` and never
 names) is a warning, and a package that gets it is accepted, so it has no case.
+
+The resolver then works out what each value is made from, and from that `reproducible` and the three
+flags ([chapter 2 § 2.1.1](../../package-format-v31.md#211-reproducible),
+[chapter 3 § 3.4.4 to § 3.4.6](../../package-format-v31.md#344-run-dependence-is-contagious),
+[chapter 4 § 4.1](../../package-format-v31.md#41-flow-nodes-are-folders)), and holds each header to them. A flag
+passes along what a value is made from (a computed node's expression, a body's reads, a call's
+arguments and its function's result, a flow node's `ret`, a loop's source), never through a condition
+or from an earlier pass. What a Scriban body reads is this implementation's area 07's: until it is
+known a body's reads are unknown, not empty, and a flag that depends on one is not judged, so an
+agent's `runDependent` and `profileCarrying` are taken as written. No earlier case changed.
+
+It adds 5 cases, 10 packages: `S03-036` (a computed node that declares `modelDerived` false but reads
+an agent's output), `S04-015` (a while of computed nodes that declares `reproducible` false),
+`S04-016` (a loop that returns an agent's output and declares `modelDerived` false), `S03-044` (a
+condition that reads the result of a call passed `profile.signature`), and one for this
+implementation's `A05-003`:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A05-003` | *"Node '\<a>' reads node '\<b>', which reads node '\<a>': nodes can't read each other in a circle. Break the circle."* | what a node reads is computed before it, so nodes cannot read each other in a circle ([chapter 4 § 4.4](../../package-format-v31.md#44-reading-across-levels)); a longer circle is named in full |
+
+`S04-063` (a macro placed in a function whose `if` reads a node the function does not have), and the
+rules of `S04-035`, `S04-052`, `S04-069` and `S04-074` for what bodies read, need what a body places
+and reads, so no package reaches them through the checker yet; `S04-035`, `S04-052` and `S04-069`
+have their cases from what headers read.
 
 ## The goldens and vectors of JSON Logic (area 04)
 

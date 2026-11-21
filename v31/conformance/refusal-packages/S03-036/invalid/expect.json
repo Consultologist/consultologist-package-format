@@ -1,0 +1,7 @@
+{
+  "about": "A node's flags are what its reads make them (chapter 3 § 3.4.5). The computed node section_count measures the plan, an agent's output. Invalid: it declares modelDerived false. Valid: true.",
+  "valid": false,
+  "sentences": [
+    "Node 'section_count' declares modelDerived false, but its reads make it true: node.plan.content."
+  ]
+}

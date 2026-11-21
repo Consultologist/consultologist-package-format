@@ -1,0 +1,7 @@
+{
+  "about": "Nodes don't read each other in a circle (chapter 4 § 4.4). The computed node first counts one more than the computed node second. Invalid: second counts one more than first. Valid: second measures the draft.",
+  "valid": false,
+  "sentences": [
+    "Node 'first' reads node 'second', which reads node 'first': nodes can't read each other in a circle. Break the circle."
+  ]
+}

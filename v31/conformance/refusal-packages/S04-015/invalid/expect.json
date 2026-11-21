@@ -1,0 +1,7 @@
+{
+  "about": "A flow node is reproducible exactly when what its result is made from is (chapter 4 § 4.1). The while tally returns a computed node. Invalid: it declares reproducible false. Valid: true.",
+  "valid": false,
+  "sentences": [
+    "While 'tally' declares reproducible false; its body makes it true."
+  ]
+}

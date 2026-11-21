@@ -1,0 +1,1 @@
+{ "label": "Sign the note", "description": null, "inputs": { "sig": { "label": "Signature", "description": null, "format": "plaintext" } }, "uses": { "snippets": [], "macros": [], "formats": [], "renderers": [] }, "nodes": ["closing"], "ret": "node.closing", "format": "plaintext" }

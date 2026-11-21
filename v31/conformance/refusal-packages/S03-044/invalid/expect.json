@@ -1,0 +1,7 @@
+{
+  "about": "A condition never reads profile text (chapter 3 § 3.4.6). The call signed passes profile.signature to the function sign, so its value carries profile text; the computed node signed_length runs when its if holds. Invalid: the if reads node.signed.content. Valid: input.consult_draft.content.",
+  "valid": false,
+  "sentences": [
+    "Node 'signed_length' reads node.signed.content, which carries profile text; prompts, parts and conditions don't read profile text."
+  ]
+}
