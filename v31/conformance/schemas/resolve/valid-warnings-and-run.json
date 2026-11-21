@@ -1,5 +1,5 @@
 {
-  "about": "The minimal instance with a description, a tag, a run fact and two warnings (one for the package as a whole). An instance for the schema; not compiled output.",
+  "about": "The minimal instance derived from another package, with a description, a tag, a run fact and two warnings (one for the package as a whole). An instance for the schema; not compiled output.",
   "instance": {
     "documentVersion": 1,
     "specVersion": 31,
@@ -7,6 +7,7 @@
       "name": "example-minimal",
       "version": "v2026.12.1"
     },
+    "derivedFrom": "example-base@v2026.11.1",
     "title": "Minimal demo",
     "description": "A demonstration. Not intended for clinical use.",
     "tags": [

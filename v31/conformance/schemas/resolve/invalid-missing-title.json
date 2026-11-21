@@ -7,6 +7,7 @@
       "name": "example-minimal",
       "version": "v2026.12.1"
     },
+    "derivedFrom": null,
     "description": null,
     "tags": [],
     "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",

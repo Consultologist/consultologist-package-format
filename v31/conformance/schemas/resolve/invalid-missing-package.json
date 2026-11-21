@@ -3,6 +3,7 @@
   "instance": {
     "documentVersion": 1,
     "specVersion": 31,
+    "derivedFrom": null,
     "title": "Minimal demo",
     "description": null,
     "tags": [],

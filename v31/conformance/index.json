@@ -605,6 +605,7 @@
         "resolve/invalid-missing-bindings.json",
         "resolve/invalid-missing-checks.json",
         "resolve/invalid-missing-deliverables.json",
+        "resolve/invalid-missing-derivedFrom.json",
         "resolve/invalid-missing-description.json",
         "resolve/invalid-missing-documentVersion.json",
         "resolve/invalid-missing-formatHashes.json",

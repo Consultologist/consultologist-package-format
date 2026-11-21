@@ -8,6 +8,7 @@
     "documentVersion",
     "specVersion",
     "package",
+    "derivedFrom",
     "title",
     "description",
     "tags",
@@ -45,6 +46,13 @@
     "package": {
       "$ref": "#/$defs/package",
       "description": "The package name and its version tag."
+    },
+    "derivedFrom": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The manifest's derivedFrom, carried under the same name: the name@version this package was copied from, or null if none. A member that only steers publish (chapter 7 § 7.2.2)."
     },
     "title": {
       "type": "string",

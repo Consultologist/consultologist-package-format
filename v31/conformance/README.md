@@ -593,6 +593,9 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   (`id`, `parent`, `reads`, `runDependent`, `profileCarrying`, `modelDerived`) and stay open to the
   header members, whose shape is the source schemas', applied by the resolver; `formats.$defs`
   entries are any object (the dialect is checked on the registry's formats, not on the bundle).
+  The table of [§ 7.2.2](../../package-format-v31.md#722-top-level-members) has no `derivedFrom` row,
+  but its text carries the manifest's members that only steer publish "under the same names when
+  they exist at 31", and `derivedFrom` does: `resolve.json` requires it, a string or `null`.
 - **Readings the compiled-document schemas make.** `lock.package` and `publish-report.package` share
   `resolve`'s `package` (version `vYYYY.MM.N`, as in the manifest). Carets: `requires` ranges are
   `^x.y.z` ([chapter 7 § 7.4.2](../../package-format-v31.md#742-lock-exactly-refuse-by-compatible-range):
