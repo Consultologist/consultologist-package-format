@@ -1,0 +1,7 @@
+{
+  "about": "A folder item's body is rendered only where a template reads it as item.content in its loop; passed to a function (or read by a computed node's expression) it is carried as written, so there it is plain text, no tag and no raw block (chapter 5 § 5.6.2; chapter 4 § 4.7.7; this implementation's sentence). The loop standards' call section passes item to the function draft_section as param.standard. Invalid: hpi's body writes item.value.title. Valid: it writes only text.",
+  "valid": false,
+  "sentences": [
+    "Snippet 'standards/hpi' holds a tag at line 1, and Call 'section' passes it to function 'draft_section' as param.standard, where it isn't rendered; keep a folder item's body plain text, or read it as item.content in its loop."
+  ]
+}
