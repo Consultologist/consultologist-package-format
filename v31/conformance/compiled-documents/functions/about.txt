@@ -1,8 +1,8 @@
-example-functions: the function draft_section of three agents, called in a loop over the snippet folder standards; two agents extracting terms; the check loop section_coverage over the loop's .items and the check all_sections (chapter 4 § 4.7.11).
+example-functions, after chapter 4 § 4.7.11 (with an agent plan and a second agent extracting terms, which the example does not have): the function draft_section of three agents, called in a loop over the snippet folder standards; the check loop section_coverage over the loop's .items and the check all_sections; and the deliverable deliverable.emr.consult, gated by all_sections, in the delivery folder emr, which delivers to emr and email as one zip.
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
 
-resolve.json: sha256:11daa68e8b9277c3fc95b8c2179e6ee55a29d168bacacce374fd198bfb9640b2
-lock.json: sha256:51fafcdc2621f8e56c6b9ab1e9da15ddcd0deaae71c8ab4636b5d8b665c88acf
+resolve.json: sha256:e7448aa04e8e7146a3aaafb3bc920bdee89389c832ada6924deba1c2f1a419f8
+lock.json: sha256:3780118b78b5602674eadb39df6318f33d2d538c85a4a5e6108c78d3fdde1c61
 
 What each Scriban body reads is stated by a stub, as the bodies are written, until this implementation's dialect (area 07) says it; area 07 regenerates these documents.

@@ -1,4 +1,4 @@
-example-conditional-sections: a required list input of sections, each with a title and a kind; a loop routing each section by a case on its kind (the omit branch empty), a loop holding an if on the kind, and a loop holding an if on the section's id and a boolean input (chapter 4 § 4.5.4).
+example-conditional-sections: a required list input of sections, each with a title and a kind; a loop routing each section by a case on its kind (the omit branch empty), a loop holding an if on the kind, and a loop holding an if on the section's id and a boolean input, after chapter 4 § 4.5.4.
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
 

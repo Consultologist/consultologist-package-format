@@ -440,12 +440,15 @@ declines). The typing of [§ 3.7](../../package-format-v31.md#37-typing) is judg
 ## The compiled documents (area 05)
 
 Area 05, the resolver and the lock, exports 3 cases of the `compiled-documents` family
-([chapter 7](../../package-format-v31.md#7-the-compiled-documents)): `nested-note` (two nested loops
-and a while, [chapter 4 § 4.2.8](../../package-format-v31.md#428-examples-migrated) and
+([chapter 7](../../package-format-v31.md#7-the-compiled-documents)), each built after an example of
+chapter 4, not the example itself: `nested-note` (two nested loops and a while, after
+[chapter 4 § 4.2.8](../../package-format-v31.md#428-examples-migrated) and
 [§ 4.3.5](../../package-format-v31.md#435-example-migrated)), `conditional` (a `case` with an empty
-branch and two `if`s inside loops, [§ 4.5.4](../../package-format-v31.md#454-examples-migrated)) and
-`functions` (a function called in a loop over a snippet folder, and a check loop over the loop's
-`.items`, [§ 4.7.11](../../package-format-v31.md#4711-example-a-made-up-package)). A case is a folder:
+branch and two `if`s inside loops, after [§ 4.5.4](../../package-format-v31.md#454-examples-migrated))
+and `functions` (a function called in a loop over a snippet folder, a check loop over the loop's
+`.items`, and the deliverable `deliverable.emr.consult` gated by a check, in a delivery folder that
+delivers to two kinds as one zip, after [§ 4.7.11](../../package-format-v31.md#4711-example-a-made-up-package),
+with two agents the example does not have). A case is a folder:
 
 ```
 compiled-documents/<case>/source/manifest.json, nodes/index.json, …
@@ -488,17 +491,29 @@ gives other bytes:
   is `null`.
 - **Functions** are entries of `functions` with their index's members as written, `inputOrder`,
   `ret`, `body` (the top-level keys), their own `nodes`, `renderers`, `snippets` and `macros` maps,
-  `reproducible`, `formatHash` and `typeHash`. A function's own format would be bundled as
-  `<function>__<format>`.
+  `formatHash` and `typeHash`, and the members
+  [§ 7.2.5](../../package-format-v31.md#725-the-flat-maps-nodes-checks-functions) puts on every
+  entry: `id` (the function's id), `parent` (`null`), `reads` (what its own entries read from outside
+  its nodes: its `param.*` reads and its definitions', sorted) and the three flags of its `ret` with
+  its parameters reading nothing (what a call takes from the function before its arguments'). It has
+  no `reproducible`: a call's is held against its `ret`'s, which is in `nodes`.
 - **`graph`.** `order` is level by level: a flow node comes before its body, each level in a
   topological order of the edges lifted to it, ties by source order (inputs, `nodes/`, `checks/`,
   deliverables). There are no edges between a function's own nodes, only `calls` from
   `function.<id>` to each call; a loop over another loop's `.items` has a `for` and an `aligned`
   edge from it.
 - **Deliverables** carry their folder's `delivery` and `bundle`, as the `index.json` of the folder
-  that holds them writes them: delivery is declared on folders only, with no inheritance
-  ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)), and the engine loads nothing but
-  `resolve.json`.
+  that holds them writes them (`[]` and `null` when it writes none): delivery is declared on folders
+  only, with no inheritance ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)), and the
+  text embeds "every piece of package content" in `resolve.json`
+  ([chapter 7 § 7.2.1](../../package-format-v31.md#721-whats-in-it-and-what-isnt)), the only file the
+  engine loads; its tables
+  ([§ 7.2.2](../../package-format-v31.md#722-top-level-members),
+  [§ 7.2.5](../../package-format-v31.md#725-the-flat-maps-nodes-checks-functions)) give these
+  members no place. An entry per delivery folder, as snippet folders have, was not chosen: the root
+  `deliverables/` folder has no rooted key, so its settings could not be held. A delivery folder's
+  `description`, for people only, is not carried. A deliverable's header that writes either member
+  itself is refused by the reader, so the folder's are never overwritten.
 - **`lock.json`'s `operations`** are those `requires.operations` names; `builtins` the four pieces of
   machinery, and each built-in renderer an entry renders through.
 
