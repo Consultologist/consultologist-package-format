@@ -1,7 +1,7 @@
 {
   "about": "A copy of the agents catalogue's agents/v31/bindings.json.",
   "instance": {
-    "version": "v2026.12.1",
+    "version": "v2026.12.2",
     "formats": {
       "plaintext": {
         "generated": {
