@@ -1,4 +1,4 @@
 ---
-{ "kind": "computed", "producer": "computed", "label": "Counting the sections", "description": null, "format": "number", "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null, "expression": { "size": [{ "var": "node.plan.value.sections" }] } }
+{ "kind": "computed", "producer": "computed", "label": "Measuring the plan", "description": null, "format": "number", "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null, "expression": { "size": [{ "var": "node.plan.content" }] } }
 ---
-Count the sections of the plan.
+Measure the plan.

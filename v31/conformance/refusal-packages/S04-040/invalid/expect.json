@@ -1,0 +1,7 @@
+{
+  "about": "item.parent is the enclosing loop's item (chapter 4 § 4.2.6). The loop notes summarises each prior note that has text. Invalid: its note_summary reads item.parent.value, but notes runs inside no loop. Valid: item.value.",
+  "valid": false,
+  "sentences": [
+    "Node 'note_summary' reads item.parent, but its loop runs inside no loop; item.parent is the enclosing loop's item."
+  ]
+}

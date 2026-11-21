@@ -1,0 +1,5 @@
+{
+  "about": "A pass reads the while's own nodes (chapter 4 § 4.3.3). The summary of the while refine is drafted again only when the previous pass's judge had something to say. Invalid: it reads pass.previous.node.plan, which is not in refine. Valid: pass.previous.node.judge.",
+  "valid": true,
+  "sentences": []
+}

@@ -240,6 +240,31 @@ open point for the text:
 | `A04-010` | *"\<site> gives \<operation> a \<operand> that is \<what it is>; \<operand> is written as text."* | a `pattern`, a `word`, a `failWith` and a `missing` path are literal strings ([chapter 3 § 3.5.3](../../package-format-v31.md#353-matches-and-has_word), [§ 3.5.4](../../package-format-v31.md#354-custom-structural-and-check-operations), [§ 3.5.1](../../package-format-v31.md#351-standard-json-logic-operations)) |
 | `A04-011` | *"\<site> \<member> could not be evaluated: \<detail>."* | the evaluator declines a rule outside the format and never throws ([chapter 3 § 3.9](../../package-format-v31.md#39-the-evaluator)); said at run time, so it has no case |
 
+## The refusal packages of the resolver (area 05)
+
+From area 05 on, every case is held to the resolver as well: before its expressions are checked,
+every read through `node`, `check`, `item`, `pass` and `param` is resolved to the one thing its place
+can see ([chapter 1 § 1.9](../../package-format-v31.md#19-scopes-and-keys),
+[chapter 4 § 4.4](../../package-format-v31.md#44-reading-across-levels)) and typed by it, so a read
+that area 04 accepted with no type is now judged. Fourteen earlier cases changed, and only in what
+they read:
+
+- the valid and invalid packages of `A02-007`, `S01-003`, `S01-012`, `S01-036`, `S02-015`, `S04-009`
+  to `S04-013`, `S04-031`, `S04-033` and `S04-034` hold the while `refine`, whose `while` compared
+  its judge's `plaintext` value with `"good"`, which `S03-002` refuses once the judge is typed; it
+  now runs again while the judge has something to say (`! blank(node.judge.content)`), and the
+  judge's prompt asks for that;
+- the packages of `S01-020` hold a computed node that counted `node.plan.value.sections`, which the
+  smallest package's `plaintext` plan does not have (`S03-014`); it now measures the plan's text.
+
+Their sentences are unchanged. The valid packages of `S03-020` and `S03-030`, which read through
+those roots, resolve as they are.
+
+Area 05 adds 7 cases, 14 packages, built as the earlier areas' are: one for each sentence of the
+reads across levels a package can reach, `S04-036` to `S04-040` (what a pass reads, a node inside a
+loop read from outside it, `item.parent` in an outermost loop) and `S04-050` and `S04-051` (a
+function reads only its parameters). Each invalid package gives its one sentence.
+
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):

@@ -1,0 +1,5 @@
+{
+  "about": "pass.parent is the enclosing while's pass (chapter 4 § 4.3.3). The judge of the while refine runs from its second pass. Invalid: it reads pass.parent.number, but refine runs inside no while. Valid: pass.number.",
+  "valid": true,
+  "sentences": []
+}

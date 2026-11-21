@@ -1,0 +1,7 @@
+{
+  "about": "A node inside a loop is a list from outside it: read the loop (chapter 4 § 4.4). The loop notes summarises each prior note. Invalid: the agent node plan's if reads node.note_summary, which runs inside notes. Valid: node.notes.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads node 'note_summary', which runs inside loop 'notes'; read node.notes."
+  ]
+}
