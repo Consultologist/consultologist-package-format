@@ -354,6 +354,13 @@ implementation's `A05-003`:
 |---|---|---|
 | `A05-003` | *"Node '\<a>' reads node '\<b>', which reads node '\<a>': nodes can't read each other in a circle. Break the circle."* | what a node reads is computed before it, so nodes cannot read each other in a circle ([chapter 4 § 4.4](../../package-format-v31.md#44-reading-across-levels)); a longer circle is named in full |
 
+A read of this pass's node, `pass.node.<id>`, is a dependency edge as `node.<id>` is
+([chapter 4 § 4.3.3](../../package-format-v31.md#433-what-a-pass-reads)), so publish refuses what the
+engine could not load: two nodes of one `while` body that read each other through it, or a node that
+reads through it the flow node enclosing it, are a circle (`A05-003`); a node inside an inner loop of
+the body, read through it from outside that loop, is a list from there (`S04-039`). One pass back
+(`pass.previous.node.<id>`, `pass.history`) is no edge. Both sentences keep their cases.
+
 `S04-063` (a macro placed in a function whose `if` reads a node the function does not have), and the
 rules of `S04-035`, `S04-052`, `S04-069` and `S04-074` for what bodies read, need what a body places
 and reads, so no package reaches them through the checker yet; `S04-035`, `S04-052` and `S04-069`
@@ -609,6 +616,8 @@ package. The area's own sentences, which are not in `sentences.json`, are:
 | `A07-012` | *"Snippet '\<id>' \<places \<unit> \| pipes into \<renderer> \| reads \<path>>, and \<subject> reads it as \<path> at line \<n>; a folder item's body read in a loop places no part, macro or snippet, pipes into no renderer and reads no run.\* or run-dependent value."* | a loop over a snippet folder reads each item's body as `item.content`, rendered where it is read, so one tag stands for a different body per item: that body is checked at each place that reads it and only presents ([chapter 5 § 5.6.2](../../package-format-v31.md#562-snippet-folders); this implementation's rule) |
 | `A07-013` | *"Snippet '\<id>' holds a tag at line \<n>, and \<subject> \<passes it to function '\<f>' as param.\<p> \| reads it in its expression>, where it isn't rendered; keep a folder item's body plain text, or read it as item.content in its loop."* | a folder item's body is rendered only where a template reads it as `item.content` in its loop; carried out of the loop as text, by a `call`'s `with` (the item, a folder item, a loop's `.items`) or a `computed` node's `expression`, nothing renders it, so there every body of that folder is plain text, no tag and no raw block ([chapter 5 § 5.6.2](../../package-format-v31.md#562-snippet-folders); [chapter 4 § 4.7.7](../../package-format-v31.md#477-the-call-node); this implementation's rule) |
 | `A07-014` | *"Nodes '\<a>' and '\<b>' bind agent '\<name>' at versions \<m> and \<n>; a package binds one version of an agent."* | `requires.agents` names one integer version of each agent, so a package whose agent nodes are bound to two versions of one agent is refused at publish ([chapter 7 § 7.3.1](../../package-format-v31.md#731-requires-what-the-package-needs-from-the-engine)). The published agents catalogue binds each agent at one version and a package does not choose its agents' versions, so no package reaches it against the published registry: it has no package |
+| `A07-015` | *"MacroChoices names '\<id>', which is not a boolean input of the package."* | a per-run choice is an optional boolean input that takes the macro's id ([chapter 5 § 5.8.2](../../package-format-v31.md#582-whether-the-header-if)), so at the job start each entry of the request's `MacroChoices` is the value of the package's boolean input of that id, exactly as if the request had sent it; an id that is no input, or an input that is not `boolean`, refuses the start. Said at the job start, never at publish, so it has no package |
+| `A07-016` | *"Input '\<id>' is given one value in Inputs and another in MacroChoices; send it once."* | an input sent both ways, as an input (other than `null`) and in `MacroChoices`, with different values refuses the start. Said at the job start, so it has no package |
 
 The compiled documents are exported again from the dialect's reading, in place of the reads the
 exporter stated. Every agent, `rendered` node and deliverable entry gains `placements` (each unit its
