@@ -309,7 +309,7 @@ which node reads: the valid and invalid packages of `S04-050` and `S04-051` gave
 `patient_draft`, an `if`, which may skip it (`S04-058`); the `if` is now on a second node of the
 function, `draft_note`. Their sentences are unchanged but for the node they name.
 
-It adds 18 cases, 36 packages: `S04-064` to `S04-066`, `S04-068` and `S04-070` (a call naming no
+It adds 17 cases, 34 packages: `S04-064` to `S04-066`, `S04-068` and `S04-070` (a call naming no
 function, leaving out a parameter or passing one the function does not take, an argument of another
 type, a call's format that is not its function's), `S04-069` (a parameter bound to `profile.signature`
 read by a condition inside the function), `S04-057` to `S04-061` (a function's `ret` that is an `if`
