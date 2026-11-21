@@ -1067,6 +1067,14 @@
         "S04-042/valid",
         "S04-043/invalid",
         "S04-043/valid",
+        "S04-044/invalid",
+        "S04-044/valid",
+        "S04-045/invalid",
+        "S04-045/valid",
+        "S04-046/invalid",
+        "S04-046/valid",
+        "S04-047/invalid",
+        "S04-047/valid",
         "S04-048/invalid",
         "S04-048/valid",
         "S04-050/invalid",
@@ -1077,6 +1085,8 @@
         "S04-062/valid",
         "S04-067/invalid",
         "S04-067/valid",
+        "S04-075/invalid",
+        "S04-075/valid",
         "S04-076/invalid",
         "S04-076/valid"
       ]

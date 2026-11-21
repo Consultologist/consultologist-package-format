@@ -1,0 +1,7 @@
+{
+  "about": "A case's values are its subject's (chapter 4 § 4.5.2). The case route drafts the note by the input note_kind, narrative or omit. Invalid: its first branch lists narrative and prose. Valid: narrative.",
+  "valid": false,
+  "sentences": [
+    "Case 'route' branch 1 lists \"prose\", which is not one of input.note_kind.value's values (\"narrative\", \"omit\")."
+  ]
+}

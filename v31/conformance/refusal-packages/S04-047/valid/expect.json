@@ -1,0 +1,5 @@
+{
+  "about": "Every case is exhaustive: a branch for every value, or an else (chapter 4 § 4.5.2). The case route drafts the note by the input note_kind. Invalid: it has no branch for omit and no else. Valid: an empty branch for omit.",
+  "valid": true,
+  "sentences": []
+}

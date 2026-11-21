@@ -1,0 +1,5 @@
+{
+  "about": "A subject that can be null requires an else (chapter 4 § 4.5.2). The case route drafts the note by the input note_kind. Invalid: note_kind may be null. Valid: it may not.",
+  "valid": true,
+  "sentences": []
+}

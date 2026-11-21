@@ -1,0 +1,5 @@
+{
+  "about": "A value belongs to one branch (chapter 4 § 4.5.2). The case route drafts the note by the input note_kind. Invalid: its second, empty branch lists omit and narrative, which the first lists. Valid: omit.",
+  "valid": true,
+  "sentences": []
+}

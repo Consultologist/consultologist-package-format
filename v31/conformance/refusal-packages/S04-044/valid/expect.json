@@ -1,0 +1,5 @@
+{
+  "about": "A case switches on an enumerated string (chapter 4 § 4.5.2). The case route drafts the note by the input note_kind. Invalid: it switches on input.consult_draft.value, a markdown_block. Valid: input.note_kind.value.",
+  "valid": true,
+  "sentences": []
+}

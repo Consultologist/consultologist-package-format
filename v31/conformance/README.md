@@ -287,6 +287,18 @@ which, like the `A04-…` ones, is not in `sentences.json`:
 |---|---|---|
 | `A05-001` | *"\<Kind> '\<id>' \<member> '\<text>' is not a reference; a reference is a root, then names joined by dots."* | a loop's `in` is a reference string, a root then names joined by dots, with no position ([chapter 4 § 4.2.2](../../package-format-v31.md#422-what-a-loop-iterates)) |
 
+The resolver then types each `case`'s subject as a loop's source is, and holds the branches' values to
+it ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)). Four earlier cases changed, and only in
+what their case switches on: the valid and invalid packages of `S04-042`, `S04-043`, `S04-048` and
+`S04-076` hold the case `route`, which switched on `node.plan.value.kind`, which the smallest
+package's `plaintext` plan does not have (`S03-014`). It now switches on a new required input,
+`note_kind`, an enum of `narrative` and `omit`. Their sentences are unchanged.
+
+It adds 5 cases, 10 packages: `S04-044` (a subject that is not an enumerated string), `S04-045` (a value
+that is not one of the subject's), `S04-046` (a value in two branches), `S04-047` (a value no branch
+lists, with no `else`) and `S04-075` (a subject that can be null, with no `else`). An `A05-001` or
+`S04-017` written in a `case` is said as it is for an `in`, and has no case of its own.
+
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):
