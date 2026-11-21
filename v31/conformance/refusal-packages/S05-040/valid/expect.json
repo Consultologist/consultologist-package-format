@@ -1,0 +1,5 @@
+{
+  "about": "A part is placed once (chapter 5 § 5.7.2). The plan declares and places the part closing. Invalid: its prompt places it twice. Valid: once.",
+  "valid": true,
+  "sentences": []
+}

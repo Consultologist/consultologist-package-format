@@ -1,0 +1,5 @@
+{
+  "about": "A plain enum has no titles (chapter 2 § 2.2.1), in a template's read too. The plan's prompt names the input note_kind, a plain enum. Invalid: it reads input.note_kind.title. Valid: input.note_kind.value.",
+  "valid": true,
+  "sentences": []
+}

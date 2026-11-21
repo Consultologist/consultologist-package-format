@@ -1,0 +1,5 @@
+{
+  "about": "A for runs over a whole list in order (chapter 5 § 5.2.1; this implementation's sentence). The plan's prompt lists the input sections' titles. Invalid: its for takes limit:2. Valid: the whole list.",
+  "valid": true,
+  "sentences": []
+}

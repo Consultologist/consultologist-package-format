@@ -1,0 +1,5 @@
+{
+  "about": "A folder item's header is of its folder's format (chapter 5 § 5.6.2). The snippet folder standards holds hpi, whose format is an object with a title. Invalid: hpi's header writes heading. Valid: title.",
+  "valid": true,
+  "sentences": []
+}

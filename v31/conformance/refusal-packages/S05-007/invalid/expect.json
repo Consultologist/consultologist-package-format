@@ -1,0 +1,7 @@
+{
+  "about": "A body if tests only a loop position, a state or whether a check passed (chapter 5 § 5.2.5). The plan's prompt lists the input sections' titles, a separator between each. Invalid: the separator's if tests s.title, a value. Valid: it tests !for.last.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' tests s.title in a body if at line 5; a body if tests only loop position, state and whether a check passed. Decide it in a header: a part, a snippet's if or a macro's if."
+  ]
+}

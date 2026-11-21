@@ -1,0 +1,5 @@
+{
+  "about": "A unit is placed at the top level of its template; its own if decides it (chapter 5 § 5.2.6; this implementation's sentence). The note places the snippet tone. Invalid: inside an if on the plan's state. Valid: at the top level.",
+  "valid": true,
+  "sentences": []
+}

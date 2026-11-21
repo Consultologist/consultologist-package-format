@@ -1,0 +1,7 @@
+{
+  "about": "A snippet's body reads what each place that places it gives (chapter 5 § 5.3.2). The snippet title_line reads item.value.title; the outline in the loop sections places it. Invalid: the plan's prompt, outside any loop, places it too. Valid: the outline alone.",
+  "valid": false,
+  "sentences": [
+    "Snippet 'title_line' reads item.value.title, which isn't available where Node 'plan' places it at line 4."
+  ]
+}

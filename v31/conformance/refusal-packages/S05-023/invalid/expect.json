@@ -1,0 +1,7 @@
+{
+  "about": "A snippet never reaches itself (chapter 5 § 5.3.2). The plan's prompt places intro, which places outro. Invalid: outro places intro. Valid: it places nothing.",
+  "valid": false,
+  "sentences": [
+    "Snippet 'intro' reaches itself: intro → outro → intro."
+  ]
+}

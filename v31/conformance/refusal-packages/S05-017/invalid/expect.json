@@ -1,0 +1,7 @@
+{
+  "about": "A block placement stands alone on its line (chapter 5 § 5.2.6). The plan's prompt places the snippet tone. Invalid: text before it on its line. Valid: alone.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places {{~ snippet.tone.content }} inside a line at line 4; it removes the space before it. Use {{ snippet.tone.content }}."
+  ]
+}

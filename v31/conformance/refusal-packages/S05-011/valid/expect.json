@@ -1,0 +1,5 @@
+{
+  "about": "A template reads what is there (chapter 5 § 5.3.1). The note writes the plan. Invalid: it reads node.plan.value.sections, which a plaintext does not have. Valid: node.plan.content.",
+  "valid": true,
+  "sentences": []
+}

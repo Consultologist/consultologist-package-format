@@ -1,0 +1,5 @@
+{
+  "about": "A value piped into a renderer is of its input (chapter 5 § 5.5.2; the worked example S05-027). identify_problem renders concepts as bullets. Invalid: it pipes node.plan.value, a section_plan, into renderer.concept_bullets. Valid: node.extract.value, a concept_list.",
+  "valid": true,
+  "sentences": []
+}

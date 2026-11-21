@@ -1,0 +1,7 @@
+{
+  "about": "A template reads a member of an input or a node, never it bare (chapter 5 § 5.3.1; this implementation's sentence). The plan's prompt writes the draft. Invalid: it reads input.consult_draft. Valid: its .content.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads input.consult_draft at line 3; read .content of it."
+  ]
+}

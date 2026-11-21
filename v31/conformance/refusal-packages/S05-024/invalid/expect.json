@@ -1,0 +1,7 @@
+{
+  "about": "An output that reads a run fact reads nothing else (chapter 5 § 5.4). The note writes the run's id. Invalid: it pipes the draft into string.upcase with run.id. Valid: run.id alone.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'note' reads input.consult_draft.content and run.id in one output at line 3; an output that reads a run fact reads nothing else."
+  ]
+}

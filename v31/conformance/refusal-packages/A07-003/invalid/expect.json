@@ -1,0 +1,7 @@
+{
+  "about": "A macro's instruction places no macro or part (chapter 5 § 5.8.3; this implementation's sentence). The agent closing places the macro follow_up. Invalid: its instruction places macro.recall. Valid: none.",
+  "valid": false,
+  "sentences": [
+    "Macro 'follow_up' places macro.recall in its instruction; combine instructions by placing each macro in the prompt."
+  ]
+}

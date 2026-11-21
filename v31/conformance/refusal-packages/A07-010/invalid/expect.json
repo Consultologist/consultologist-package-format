@@ -1,0 +1,7 @@
+{
+  "about": "A snippet's text is a text format (chapter 5 § 5.6.1; this implementation's sentence). The plan's prompt places the snippet tone. Invalid: tone declares the format string. Valid: plaintext.",
+  "valid": false,
+  "sentences": [
+    "Snippet 'tone' declares format string; a snippet's text is plaintext, markdown_block or markdown_inline."
+  ]
+}

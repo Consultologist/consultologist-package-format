@@ -1,0 +1,7 @@
+{
+  "about": "A template uses only the seven built-ins, each piped (chapter 5 § 5.2.2). The plan's prompt writes the draft. Invalid: it pipes the draft into string.replace. Valid: it writes it as it is.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' calls string.replace at line 3; the allowed built-ins are string.upcase, string.downcase, string.capitalize, string.strip, array.join, array.size and date.to_string."
+  ]
+}

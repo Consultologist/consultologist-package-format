@@ -1,0 +1,7 @@
+{
+  "about": "A node that places a macro returns a text format (chapter 5 § 5.8.3). The agent closing places the macro follow_up. Invalid: closing returns a concept_list. Valid: a plaintext.",
+  "valid": false,
+  "sentences": [
+    "Node 'closing' places macro.follow_up, and returns concept_list; macros are placed only in agent nodes returning a text format."
+  ]
+}

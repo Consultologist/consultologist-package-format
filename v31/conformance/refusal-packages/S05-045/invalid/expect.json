@@ -1,0 +1,7 @@
+{
+  "about": "A macro's instruction holds no other macro's marker (chapter 5 § 5.8.4). The agent closing places the macro follow_up. Invalid: its instruction also holds recall's marker. Valid: its own alone.",
+  "valid": false,
+  "sentences": [
+    "Macro 'follow_up' has the marker of macro 'recall' in its instruction."
+  ]
+}

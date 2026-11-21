@@ -1,0 +1,7 @@
+{
+  "about": "A part's text only presents; its own if decides it (chapter 5 § 5.7.1; this implementation's sentence). The plan places the part closing. Invalid: its text holds an if. Valid: none.",
+  "valid": false,
+  "sentences": [
+    "Part 'closing' of node 'plan' uses if; a part's text only presents."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A plaintext macro's body writes no Markdown (chapter 5 § 5.8.1). The agent closing places the macro follow_up. Invalid: its body starts a line with - . Valid: plain text.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A snippet placed in a part's text places no part or macro (chapter 5 § 5.6.3; this implementation's sentence). The part closing places the snippet closer. Invalid: closer places the macro follow_up. Valid: it places nothing.",
+  "valid": true,
+  "sentences": []
+}

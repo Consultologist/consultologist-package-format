@@ -1,0 +1,7 @@
+{
+  "about": "A part a node declares is placed (chapter 5 § 5.7.2). The plan declares the part closing. Invalid: its prompt never places it. Valid: it places it.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' declares part 'closing' but never places it."
+  ]
+}

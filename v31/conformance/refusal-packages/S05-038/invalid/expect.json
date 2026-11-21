@@ -1,0 +1,7 @@
+{
+  "about": "A prompt places only the parts its node declares (chapter 5 § 5.7.2). The plan declares and places the part closing. Invalid: it also places part.signoff, which it does not declare. Valid: closing alone.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places part.signoff, which its header doesn't declare."
+  ]
+}

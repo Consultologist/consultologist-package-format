@@ -1,0 +1,7 @@
+{
+  "about": "A renderer reads only its piped value (chapter 5 § 5.5.1). The renderer terms_list lists concepts. Invalid: it also reads node.plan.content. Valid: value alone.",
+  "valid": false,
+  "sentences": [
+    "Renderer 'terms_list' reads node.*; a renderer reads only the value piped into it."
+  ]
+}

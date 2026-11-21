@@ -1,0 +1,7 @@
+{
+  "about": "A template places a snippet the package defines (chapter 5 § 5.6.3). The plan's prompt places the snippet tone. Invalid: it places snippet.voice, which nothing defines. Valid: snippet.tone.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places snippet.voice, which this package doesn't define."
+  ]
+}

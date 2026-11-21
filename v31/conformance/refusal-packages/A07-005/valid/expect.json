@@ -1,0 +1,5 @@
+{
+  "about": "A template is one Scriban can read: every tag closed (chapter 5 § 5.2; this implementation's sentence). The plan's prompt writes the draft. Invalid: its tag is never closed. Valid: it is.",
+  "valid": true,
+  "sentences": []
+}

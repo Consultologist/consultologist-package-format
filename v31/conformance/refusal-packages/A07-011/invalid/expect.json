@@ -1,0 +1,7 @@
+{
+  "about": "A template places at most 1,000 units, counting what they place (this implementation's sentence and limit). The plan's prompt places block, which places line 999 times: 1,000 units. Invalid: block places line once more.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places more than 1,000 parts, snippets and macros, counting what its parts and snippets place; place fewer."
+  ]
+}

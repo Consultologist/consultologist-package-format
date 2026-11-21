@@ -1,0 +1,5 @@
+{
+  "about": "A prompt never reads a node that carries profile text through a macro (chapter 5 § 5.8.6). The agent closing places the macro signature, which writes profile.signature, so closing carries profile text; the note reads it. Invalid: the plan's prompt reads it too. Valid: the note alone.",
+  "valid": true,
+  "sentences": []
+}

@@ -475,10 +475,12 @@ to [`resolve.schema.json`](../schemas/resolve.schema.json) and `lock.json` to
 **What the cases pin that the text leaves open.** An outside implementation that chooses otherwise
 gives other bytes:
 
-- **What a Scriban body reads** is this implementation's area 07's (the dialect). Until it is built,
-  the reads of each body are stated by the exporter as the body is written (`{{ item.value.title }}`
-  reads `item.value.title`), so every body is known and the documents are complete; area 07 exports
-  the cases again from its own reading.
+- **What a Scriban body reads** is what the dialect ([`scriban-dialect.md`](../scriban-dialect.md))
+  finds in it as written (`{{ item.value.title }}` reads `item.value.title`), with the reads of what it
+  places (a part's text, a snippet's body, a macro's instruction and body) counted as its own
+  ([chapter 5 § 5.3.2](../../package-format-v31.md#532-snippet-and-macro-bodies-are-templates)), so
+  every body is known and the documents are complete (area 07; see
+  [The dialect (area 07)](#the-dialect-area-07)).
 - **`reads`** of a read through `node`, `check`, `input` or `param` is the key and its first member
   (`node.plan.value`, `input.consult_draft.content`); one through `item`, `pass`, `run`, `profile` or
   a snippet is the path as written (`item.value.title`, `snippet.standards`); distinct, sorted. A flow
@@ -555,6 +557,68 @@ to right): `true` where the operand is Markdown or of a type not known, `false` 
 or a string; `[]` for a rule with no `plain`, and `{}` for an entry with none of the four. The three
 cases changed in that member alone, and so in their `resolve.json` hash and `lock.json`'s
 `resolve.hash`.
+
+## The dialect (area 07)
+
+Area 07, prompts and macros, holds every Scriban body of a package to the dialect at publish
+([chapter 5](../../package-format-v31.md#5-templates-and-macros),
+[`scriban-dialect.md`](../scriban-dialect.md)): its statements and built-ins, what each site reads, its
+body `if`s, placement forms, run spots, renderers, snippets, parts and macros. The dialect is the sixth
+step of the check, after the expressions and before the derived values, and what it finds in each body
+is what the resolver is told that body reads.
+
+Three earlier cases changed, and only so that their bodies are valid templates:
+
+- the packages of `S01-007` and `S04-052` hold the snippet folder `standards`, whose `format` was
+  `plaintext` while its item's header is an object with a title (`S05-036`); the folder's format is now
+  that object;
+- the valid package of `S01-036` holds the while `refine` with two `if`s, `brief` and `detailed`, which
+  nothing read (`S04-035`, now judged through the bodies); the judge's prompt reads both.
+
+It adds 60 cases, 120 packages, built as the earlier areas' are, one for each publish sentence of
+chapter 5: `S05-001` to `S05-007`, `S05-009` to `S05-011`, `S05-013`, `S05-015` to `S05-026`,
+`S05-028` to `S05-031`, `S05-033` to `S05-040`, `S05-042` to `S05-051`, `S05-063` and `S05-064`; and
+three of other chapters that only a template reaches: `S02-019` (a template reading the title of a
+plain enum), `S06-028` (a template reading a field outside the profile's five) and `S04-063` (a macro a
+function's agent places, whose `if` reads a node outside the function; the macro is the function's own,
+which a placement in a function finds first). `S05-009`'s case is the package of its worked example,
+`S05-008` (the deliverable `consult` branching on `part.state` with no `else`), and `S05-026`'s that of
+`S05-027` (`identify_problem` piping a `section_plan` into `renderer.concept_bullets`): each says the
+example's sentence word for word.
+
+No package reaches `S05-041` (a node that is no agent declaring parts): the reader refuses a `parts`
+member on any other kind first. `S05-060` (W-1, a run spot) and `S05-061` (W-2, a `markdown_block`
+renderer piped inside a line) are warnings: a package that gets them is accepted, and they are in
+`resolve.json`'s `warnings`. `S05-012`, `S05-014`, `S05-053` to `S05-059`, `S05-062` and `A07-006`
+are said at run time, while a body renders or a reply is read, never at publish, so they have no
+package. The area's own sentences, which are not in `sentences.json`, are:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A07-001` | *"Snippet '\<id>' places \<part.\* or macro.\*>, and \<subject> places it in \<a part's text \| a macro's instruction>; a snippet placed there doesn't place parts or macros."* | a snippet placed in a part's text or a macro's instruction places no part or macro, itself or through a snippet it places (the guard, [chapter 5 § 5.6.3](../../package-format-v31.md#563-placing-a-snippet)) |
+| `A07-002` | *"Part '\<name>' of node '\<id>' uses \<if or part.\*>; a part's text only presents."* | a part's text has no `if` of its own and places no part; its header `if` decides it ([chapter 5 § 5.7.1](../../package-format-v31.md#571-the-member)) |
+| `A07-003` | *"Macro '\<id>' places \<macro.\* or part.\*> in its instruction; combine instructions by placing each macro in the prompt."* | a macro's instruction holds its own marker and places no macro or part ([chapter 5 § 5.8.3](../../package-format-v31.md#583-where-placing-the-instruction)) |
+| `A07-004` | *"\<Subject> uses \<form> at line \<n>; a for runs over a whole list in order and reads only for.first, for.last, for.index, for.even and for.odd."* | a `for` takes no `limit:`, `offset:`, `reversed` or `else`, and reads no other loop position ([chapter 5 § 5.2.1](../../package-format-v31.md#521-statements)) |
+| `A07-005` | *"\<Subject> can't be read as a template at line \<n>: close every tag and every if and for."* | a body is one Scriban reads; the sentence never quotes Scriban's own message ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect)) |
+| `A07-006` | *"\<Subject> stopped rendering: array.join met a list with an empty element."* | at run time `array.join` over a list holding `null` fails its node ([chapter 5 § 5.2.2](../../package-format-v31.md#522-built-ins)). Said at run time, never at publish, so it has no package |
+| `A07-007` | *"\<Subject> writes \<path> at line \<n>, which is \<an object \| a list>; read a member, loop over it or pipe it into a renderer."* | an output writes text, never a whole object or list ([chapter 5 § 5.2.2](../../package-format-v31.md#522-built-ins)) |
+| `A07-008` | *"\<Subject> reads \<path> at line \<n>; read \<.value \| .content \| .title> of it."* | a node, an input, a check or a parameter is read through a member, never bare ([chapter 5 § 5.3.1](../../package-format-v31.md#531-the-table)) |
+| `A07-009` | *"\<Subject> places \<unit> at line \<n> inside \<an if \| a for>; a part, a snippet or a macro is placed at the top level of its template, and its own if decides it."* | a placement's decision is recorded once, so it is not made inside an `if` or a `for` ([chapter 5 § 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace)) |
+| `A07-010` | *"Snippet '\<id>' declares format \<format>; a snippet's text is plaintext, markdown_block or markdown_inline."* | a single snippet's `format` is a text format ([chapter 5 § 5.6.1](../../package-format-v31.md#561-a-single-snippet)) |
+| `A07-011` | *"\<Subject> places more than \<limit> parts, snippets and macros, counting what its parts and snippets place; place fewer."* | a template places at most 1,000 units, counting what each places in turn, so publish never expands without bound (this implementation's limit) |
+
+The compiled documents are exported again from the dialect's reading, in place of the reads the
+exporter stated. Every agent, `rendered` node and deliverable entry gains `placements` (each unit its
+body places, in order, placed units expanded in place: `site`, `within`, its `if` with keys rooted for
+the entry's place, that rule's `plainConverts`, and a macro's marker `form`; a macro in a folder
+preceded once by its folder's `macro-folder.<id>`) and `names` (each `node.<id>` or `check.<id>` the
+body writes, mapped to the rooted key it names there, where the two differ). Each run spot gains `unit`
+(the placed unit whose text holds it, `null` for the body) and `neutral` (`marker` or `text`, what
+stands for it in the run-neutral render). A built-in renderer a package pipes into is embedded in
+`renderers` as a package renderer is, with its formats bundled. The reads the dialect found are the
+ones the exporter had stated, so the three cases changed in `names` and `placements` alone (each `{}`
+and `[]` but the nested note's judge, whose `node.draft_summary` names `node.refine.draft_summary`),
+and so in their `resolve.json` hash and `lock.json`'s `resolve.hash`.
 
 ## The schemas' examples
 

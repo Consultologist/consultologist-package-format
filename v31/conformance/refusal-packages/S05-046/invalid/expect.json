@@ -1,0 +1,7 @@
+{
+  "about": "The placing node's format takes the macro's (chapter 5 § 5.8.3). The agent closing, a plaintext, places the macro follow_up. Invalid: follow_up is a markdown_block. Valid: a plaintext.",
+  "valid": false,
+  "sentences": [
+    "Node 'closing' places macro.follow_up, whose format is markdown_block; an plaintext node takes plaintext."
+  ]
+}

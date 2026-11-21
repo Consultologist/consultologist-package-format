@@ -1,0 +1,5 @@
+{
+  "about": "Only an agent's prompt places a macro (chapter 5 § 5.8.3). The agent closing places the macro follow_up. Invalid: the note places it too. Valid: closing alone.",
+  "valid": true,
+  "sentences": []
+}

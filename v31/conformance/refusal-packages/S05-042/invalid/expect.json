@@ -1,0 +1,7 @@
+{
+  "about": "A macro's body places no macro (chapter 5 § 5.8.1). The agent closing places the macro follow_up. Invalid: follow_up's body places macro.recall. Valid: it places nothing.",
+  "valid": false,
+  "sentences": [
+    "Macro 'follow_up' places macro.recall in its body; a macro body is output text, written after the model replies. Put shared text in a snippet and place it in both."
+  ]
+}

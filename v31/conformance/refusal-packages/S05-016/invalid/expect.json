@@ -1,0 +1,7 @@
+{
+  "about": "A placement keeps its whitespace with ~, never with - (chapter 5 § 5.2.6). The plan's prompt places the snippet tone. Invalid: its tag opens with {{-. Valid: with {{~.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places snippet.tone.content with - at line 4; it removes blank lines between paragraphs."
+  ]
+}

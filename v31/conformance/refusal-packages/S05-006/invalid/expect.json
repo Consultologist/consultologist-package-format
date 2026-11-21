@@ -1,0 +1,7 @@
+{
+  "about": "A for runs over a list (chapter 5 § 5.2.1). The plan's prompt lists the input sections' titles. Invalid: its for runs over input.consult_draft.content, a text. Valid: over input.sections.value.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' runs a for over input.consult_draft.content at line 5; a for runs over a list."
+  ]
+}

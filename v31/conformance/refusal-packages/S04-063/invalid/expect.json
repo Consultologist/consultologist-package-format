@@ -1,0 +1,7 @@
+{
+  "about": "A macro placed in a function reads only what the function has (chapter 4 § 4.7.10). The function draft_section's agent places the function's own macro follow_up, whose if reads its classifier. Invalid: the if reads node.plan, outside the function. Valid: node.classify, in it.",
+  "valid": false,
+  "sentences": [
+    "Macro 'follow_up' is placed in function 'draft_section', where its if reads node.plan, which doesn't exist there: add a classifier with that id (pattern A), or pass the decision in and hold it in a computed node (pattern B)."
+  ]
+}

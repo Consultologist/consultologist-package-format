@@ -1,0 +1,5 @@
+{
+  "about": "In a chain each renderer's format is the next one's input (chapter 5 § 5.5.2). The summary renders the extracted concepts as bullets. Invalid: it pipes the bullets, a markdown_block, into renderer.concept_bullets again. Valid: once.",
+  "valid": true,
+  "sentences": []
+}

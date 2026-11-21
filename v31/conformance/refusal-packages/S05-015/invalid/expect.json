@@ -1,0 +1,7 @@
+{
+  "about": "A placement trims before it, never after (chapter 5 § 5.2.6). The plan's prompt places the snippet tone. Invalid: its tag closes with ~}}. Valid: with }}.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' places snippet.tone.content with ~}} at line 4; it removes the line's newline, joining two lines. Use {{~ snippet.tone.content }} alone on a line."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A renderer returns a text format (chapter 5 § 5.5.1). The renderer terms_list lists concepts. Invalid: its format is concept_list. Valid: markdown_block.",
+  "valid": true,
+  "sentences": []
+}

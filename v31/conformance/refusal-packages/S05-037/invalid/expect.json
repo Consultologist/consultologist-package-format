@@ -1,0 +1,7 @@
+{
+  "about": "A snippet is placed by its .content (chapter 5 § 5.6.3). The plan's prompt places the snippet tone. Invalid: it writes snippet.tone bare. Valid: snippet.tone.content.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads snippet.tone at line 4; read its text as snippet.tone.content."
+  ]
+}

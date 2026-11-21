@@ -1,0 +1,7 @@
+{
+  "about": "A template pipes into a renderer that exists (chapter 5 § 5.5.2). The summary renders the extracted concepts as bullets. Invalid: it pipes into renderer.concept_lines, which nothing defines. Valid: renderer.concept_bullets.",
+  "valid": false,
+  "sentences": [
+    "Node 'summary' pipes into renderer.concept_lines, which this package doesn't define."
+  ]
+}

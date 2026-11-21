@@ -1,0 +1,5 @@
+{
+  "about": "A template reads only its site's roots (chapter 5 § 5.3.1). The plan's prompt writes the draft. Invalid: it reads deliverable.note.content, which a prompt never reads. Valid: input.consult_draft.content.",
+  "valid": true,
+  "sentences": []
+}

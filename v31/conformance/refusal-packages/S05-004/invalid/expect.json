@@ -1,0 +1,7 @@
+{
+  "about": "A template does not stand in for a missing value (chapter 5 § 5.2.2): object.default is refused. The plan's prompt writes the draft. Invalid: it pipes the draft into object.default. Valid: it writes it as it is.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' calls object.default at line 3; choosing text is a decision: put it in a header condition."
+  ]
+}

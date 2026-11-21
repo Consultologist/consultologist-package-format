@@ -1,0 +1,7 @@
+{
+  "about": "A template reads only its site's roots (chapter 5 § 5.3.1). The plan's prompt writes the draft. Invalid: it reads deliverable.note.content, which a prompt never reads. Valid: input.consult_draft.content.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads deliverable.* at line 3; prompt reads node.*, input.*, check.*, item, pass, param (in functions), snippet.*, part.* (its own node's), macro.*, the renderer. pipe, run.*."
+  ]
+}

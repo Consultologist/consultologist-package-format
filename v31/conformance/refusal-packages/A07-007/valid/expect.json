@@ -1,0 +1,5 @@
+{
+  "about": "A template writes text, not a whole object or list (chapter 5 § 5.2.2; this implementation's sentence). The plan's prompt lists the input sections' titles. Invalid: it also writes input.sections.value, a list. Valid: the loop alone.",
+  "valid": true,
+  "sentences": []
+}

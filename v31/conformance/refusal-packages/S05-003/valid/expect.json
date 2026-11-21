@@ -1,0 +1,5 @@
+{
+  "about": "A template never cuts text short (chapter 5 § 5.2.2): string.truncate is refused. The plan's prompt writes the draft. Invalid: it pipes the draft into string.truncate 200. Valid: it writes it whole.",
+  "valid": true,
+  "sentences": []
+}

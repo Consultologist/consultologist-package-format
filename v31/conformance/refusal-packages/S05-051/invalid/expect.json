@@ -1,0 +1,7 @@
+{
+  "about": "A macro's body holds no marker (chapter 5 § 5.8.4). The agent closing places the macro follow_up. Invalid: its body holds its own marker. Valid: none.",
+  "valid": false,
+  "sentences": [
+    "Macro 'follow_up' has a marker in its body; a body is the text that replaces the marker."
+  ]
+}

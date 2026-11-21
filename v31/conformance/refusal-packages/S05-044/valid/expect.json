@@ -1,0 +1,5 @@
+{
+  "about": "A macro's instruction holds its own marker exactly once (chapter 5 § 5.8.4). The agent closing places the macro follow_up. Invalid: its instruction holds no marker. Valid: one.",
+  "valid": true,
+  "sentences": []
+}

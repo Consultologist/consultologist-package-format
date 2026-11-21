@@ -1,0 +1,5 @@
+{
+  "about": "A renderer's body pipes into no renderer (chapter 5 § 5.5.1). The renderer terms_list lists concepts. Invalid: it pipes each term into renderer.terms_list. Valid: it writes it.",
+  "valid": true,
+  "sentences": []
+}

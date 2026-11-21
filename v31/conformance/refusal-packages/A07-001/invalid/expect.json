@@ -1,0 +1,7 @@
+{
+  "about": "A snippet placed in a part's text places no part or macro (chapter 5 § 5.6.3; this implementation's sentence). The part closing places the snippet closer. Invalid: closer places the macro follow_up. Valid: it places nothing.",
+  "valid": false,
+  "sentences": [
+    "Snippet 'closer' places macro.follow_up, and Part 'closing' of node 'plan' places it in a part's text; a snippet placed there doesn't place parts or macros."
+  ]
+}

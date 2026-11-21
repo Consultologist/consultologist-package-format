@@ -1,0 +1,7 @@
+{
+  "about": "A renderer is called by a pipe, with no arguments (chapter 5 § 5.5.2). The summary renders the extracted concepts as bullets. Invalid: it calls renderer.concept_bullets(1). Valid: it pipes into renderer.concept_bullets.",
+  "valid": false,
+  "sentences": [
+    "Node 'summary' calls renderer.concept_bullets at line 2; pipe into it: node.extract.value | renderer.concept_bullets."
+  ]
+}

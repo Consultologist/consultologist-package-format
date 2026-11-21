@@ -1,0 +1,5 @@
+{
+  "about": "A macro's body places no part (chapter 5 § 5.8.1). The agent closing places the macro follow_up. Invalid: follow_up's body places part.closing. Valid: it places nothing.",
+  "valid": true,
+  "sentences": []
+}

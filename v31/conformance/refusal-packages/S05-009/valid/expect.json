@@ -1,0 +1,5 @@
+{
+  "about": "A body if branching on a state with no else handles every state (chapter 5 § 5.2.5; the worked example S05-008). The deliverable consult writes each section's outline by its state. Invalid: it handles completed and skipped, and has no else. Valid: it has an else for not_run.",
+  "valid": true,
+  "sentences": []
+}

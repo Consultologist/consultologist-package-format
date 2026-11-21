@@ -1,0 +1,7 @@
+{
+  "about": "date.to_string takes a pattern (chapter 5 § 5.2.2). The note writes the date it was run. Invalid: it pipes run.date into date.to_string with no pattern. Valid: with \"%d %B %Y\".",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'note' calls date.to_string at line 3 without a pattern; write the pattern, for example \"%d %B %Y\"."
+  ]
+}

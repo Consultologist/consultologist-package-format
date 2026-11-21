@@ -1,1 +1,1 @@
-{ "description": ["The standard sections of a consult note, in order."], "items": ["hpi"], "format": "plaintext" }
+{ "description": ["The standard sections of a consult note, in order."], "items": ["hpi"], "format": { "type": "object", "required": ["title"], "additionalProperties": false, "properties": { "title": { "$ref": "plaintext" } } } }

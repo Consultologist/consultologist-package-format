@@ -1,0 +1,7 @@
+{
+  "about": "Nothing follows a block placement on its line (chapter 5 § 5.2.6). The plan's prompt places the snippet tone. Invalid: text after it on its line. Valid: alone.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' has text after {{~ snippet.tone.content }} at line 4; a block placement stands alone on its line."
+  ]
+}

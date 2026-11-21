@@ -1,0 +1,7 @@
+{
+  "about": "A template places a macro once (chapter 5 § 5.8.3). The agent closing places the macro follow_up. Invalid: twice. Valid: once.",
+  "valid": false,
+  "sentences": [
+    "Node 'closing' places macro.follow_up twice, counting its parts' text; place a macro once in a template."
+  ]
+}

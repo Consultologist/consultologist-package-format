@@ -1,0 +1,5 @@
+{
+  "about": "A prompt never reads the profile (chapter 5 § 5.3.1): it is sent to a model. The plan's prompt writes the draft. Invalid: it also writes profile.signature. Valid: the draft alone.",
+  "valid": true,
+  "sentences": []
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A template reads a list by looping over it, never by position (chapter 5 § 5.2.1). The plan's prompt lists the input sections' titles. Invalid: it also reads input.sections.value[0].title. Valid: the loop alone.",
+  "valid": true,
+  "sentences": []
+}

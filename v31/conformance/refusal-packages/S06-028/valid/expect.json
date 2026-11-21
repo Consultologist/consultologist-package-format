@@ -1,0 +1,5 @@
+{
+  "about": "A template reads only the profile's five fields (chapter 6 § 6.10.1). The note writes the plan. Invalid: it also writes profile.nickname. Valid: the plan alone.",
+  "valid": true,
+  "sentences": []
+}

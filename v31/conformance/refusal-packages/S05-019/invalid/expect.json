@@ -1,0 +1,7 @@
+{
+  "about": "A template keeps its whitespace with ~, never with - (chapter 5 § 5.2.6). The plan's prompt writes the draft. Invalid: its tag opens with {{-. Valid: with {{.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' uses - at line 3; it removes blank lines between paragraphs. Use ~."
+  ]
+}

@@ -4,3 +4,6 @@
 Say what the summary below still needs; write nothing when it is good.
 
 {{ node.draft_summary.content }}
+
+{{ node.brief.content }}
+{{ node.detailed.content }}

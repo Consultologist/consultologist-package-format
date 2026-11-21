@@ -1,0 +1,5 @@
+{
+  "about": "A template presents text: no assignment, capture, func, include and the rest (chapter 5 § 5.2.1). The plan's prompt writes the draft. Invalid: it captures the draft first. Valid: it writes it.",
+  "valid": true,
+  "sentences": []
+}

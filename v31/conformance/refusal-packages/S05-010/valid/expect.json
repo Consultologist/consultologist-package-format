@@ -1,0 +1,5 @@
+{
+  "about": "A state is compared with completed, skipped or not_run (chapter 5 § 5.2.5). The deliverable consult writes each section's outline by its state. Invalid: it compares part.state with done. Valid: with skipped.",
+  "valid": true,
+  "sentences": []
+}

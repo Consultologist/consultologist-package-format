@@ -1,0 +1,5 @@
+{
+  "about": "A template nests if and for at most 15 deep (chapter 5 § 5.2.3). The note lists the sections through nested loops. Invalid: 16 loops deep. Valid: 15, the limit.",
+  "valid": true,
+  "sentences": []
+}
