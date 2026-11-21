@@ -75,7 +75,9 @@ The exporting area fixes the exact files in the release that carries the cases
   `markdown-escape-vectors`): a case holds an input and the bytes a generator produced for it.
   Chapter 3's six families (`operation-goldens`, `printer-goldens`, `null-vectors`,
   `text-vectors`, `number-vectors`, `date-vectors`) are described in
-  [The goldens and vectors of JSON Logic (area 04)](#the-goldens-and-vectors-of-json-logic-area-04).
+  [The goldens and vectors of JSON Logic (area 04)](#the-goldens-and-vectors-of-json-logic-area-04),
+  and the dialect's three (`dialect-goldens`, `renderer-goldens`, `markdown-escape-vectors`) in
+  [The dialect's goldens (area 07)](#the-dialects-goldens-area-07).
 - **`compiled-documents`:** a fixture package with its expected `resolve.json` and `lock.json`
   bytes and hashes, its `requires` and `needs`, and its publish report. Area 05 exports the
   first four; each case is a folder holding the package under `source/`, the `toolchain.json` it is
@@ -631,6 +633,68 @@ stands for it in the run-neutral render). A built-in renderer a package pipes in
 ones the exporter had stated, so the three cases changed in `names` and `placements` alone (each `{}`
 and `[]` but the nested note's judge, whose `node.draft_summary` names `node.refine.draft_summary`),
 and so in their `resolve.json` hash and `lock.json`'s `resolve.hash`.
+
+## The dialect's goldens (area 07)
+
+Area 07 exports three families for [chapter 5](../../package-format-v31.md#5-templates-and-macros)
+and the escape of [chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats): 40 dialect
+cases, 26 renderer cases and one file of 42 escape vectors. Each holds its inputs and the bytes
+this implementation's code gave for them; every text file is UTF-8 with no byte-order mark, and
+every JSON file is written with 2-space indentation, `\n` line ends and a final newline, every
+character outside ASCII as itself.
+
+| Family | Cases | Holds |
+|---|---|---|
+| `dialect-goldens` | one folder per allowed feature of [`scriban-dialect.md`](../scriban-dialect.md) § 10 (40) | an output (`output-text`, `output-values`); each built-in with and without `null` (`string-upcase`, `string-upcase-null`, …, `date-to-string-null`); a `for` with each position variable (`for-first`, `for-last`, `for-index`, `for-even`, `for-odd`); a body `if` over states and a check's pass (`if-state`, `if-check-pass`); `~` on statements (`tilde-statements`); each placement form of [§ 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace), placed and absent (`placement-block-placed`, `placement-block-absent`, `placement-inline-…`, `placement-alone-…`); a part, a snippet placing a snippet, a folder item read in its loop (`part`, `snippet`, `folder-item`); a macro's instruction with each marker form and the reply it is finished with (`macro-block`, `macro-inline`); a raw block, a comment (`raw-block`, `comment`); a pipe into renderers and an `if` in a renderer's body (`pipe-renderer`, `renderer-if-value`); and two run spots (`run-spot`) |
+| `renderer-goldens` | `<renderer>/<case>`, each built-in renderer over 13 concept lists (26) | `concept_bullets` and `concept_context` over an empty list, one active, inactive or not SNOMED concept, a `support` present, absent, empty, of spaces and tabs, or of a tab and a line break, another or an empty `source`, three mixed concepts, and Markdown characters in every member |
+| `markdown-escape-vectors` | `vectors.json` (42 vectors) | each of the 32 ASCII punctuation characters alone, then ten sentences of fictional clinical text |
+
+**A dialect case** is a folder:
+
+```
+dialect-goldens/<case>/about.txt
+dialect-goldens/<case>/template.md          or   package/manifest.json, nodes/index.json, … and entry.txt
+dialect-goldens/<case>/scope.json
+dialect-goldens/<case>/placed.json
+dialect-goldens/<case>/expected.txt
+dialect-goldens/<case>/expected.neutral.txt      (a case with a run spot)
+dialect-goldens/<case>/reply.txt, expected.reply.txt   (a macro case)
+```
+
+`template.md` is a case whose feature is one body: the prompt of an agent node, in a package whose
+reads are typed as `scope.json`'s values are (`about.txt` names them). A case that needs headers
+(a snippet, a part, a macro, a folder, a renderer) holds the whole upload under `package/`, byte for
+byte, and `entry.txt` names the entry composed, its rooted key on one line (`node.golden`,
+`node.standards.section`). `scope.json` is the data the body is given, keys rooted as the run holds
+them (`input.<id>.content`, `node.<id>.value`, `item.value`, `run.date`); `placed.json` maps each
+decided site of the entry's `placements` (`snippet.<id>`, `part.<id>`, `macro.<id>`,
+`macro-folder.<id>`) to its decision, and a site it does not name is not placed. Composing the body
+over `scope.json` with those decisions gives `expected.txt`, the text sent, byte for byte;
+`expected.neutral.txt` is the run-neutral text of the same render, each run spot the marker
+`{{run:<n>}}` ([chapter 5 § 5.4](../../package-format-v31.md#54-run-spots-and-the-two-hashes)). In a
+macro case `reply.txt` is the model's reply and `expected.reply.txt` that reply with each offered
+marker replaced ([chapter 5 § 5.8.6](../../package-format-v31.md#586-processing-the-reply)); the
+reply is never rendered. **A renderer case** holds `value.json`, the `concept_list` value piped in,
+and `expected.txt`, what a prompt piping it into the renderer gives; the C# renderers of version 30
+give the same bytes, which the library's tests hold. **The escape vectors** are a list of
+`{ "plain", "escaped" }`: escaping `plain` gives `escaped`. The index lists a dialect case by its
+folder, a renderer case as `<renderer>/<case>`, and the escape family as `vectors.json`. **The cases
+are exported by the library's composer, its reply step and its escape, and are never written by
+hand;** the library's tests hold the same bytes as goldens. `python3 scripts/check-v31.py` (groups
+`dialect-goldens`, `renderer-goldens`, `markdown-escape-vectors`) holds each family to the index
+and each case to its files; the escape group also recomputes each vector.
+
+**What the cases pin that the text leaves open.** An outside implementation that chooses otherwise
+gives other bytes:
+
+| Decision | What the cases pin |
+|---|---|
+| D7, the escape | `markdown_escape` 1.0.0 writes a backslash before each of the 32 ASCII punctuation characters and changes nothing else: letters, digits, white space, line breaks and every character outside ASCII stay. A line's leading four spaces are not protected |
+| D13, values | an output writes a number in its canonical JSON form (`7.5`), a boolean as `true` or `false`, a date as `%Y-%m-%d`, and `null` as nothing; a built-in given `null` gives `null`; `string.upcase` and `string.downcase` are the invariant culture's simple case mapping (`ß` and `ﬁ` stay, `İ` stays, `Σ` lowers to `σ`); `string.capitalize` upper-cases the first character only; `for.index` counts from 0 |
+| D17, the marker | inside its instruction the macro's own marker tag renders as its source text, its `~` included, and a block marker keeps the indentation before it on its line |
+| a macro's body | is rendered in the prompt's scope, less its file's final line ending (one `\n`), then substituted; a snippet it places is decided after the macro. In the reply a block marker's line loses the indentation before the marker and the spaces after it and keeps its newline |
+| a snippet's and a folder item's body | are the author's to the byte, a file's final newline included: a block placement of a snippet ending in a newline leaves an empty line after it. A folder item's body read as `item.content` is rendered in its loop's scope |
+| the built-in renderers | write booleans as `True` and `False` and end with no newline, as the C# renderers of version 30 do ([chapter 5 § 5.5.3](../../package-format-v31.md#553-built-in-renderers)) |
 
 ## The schemas' examples
 

@@ -666,14 +666,24 @@ def check_dialect_document(known_sentences):
         if marker in text:
             failures.append(f"{where}: a link contains {marker}")
     failures += unescaped_tags(text, str(where))
-    known = {plain(sentence) for sentence in known_sentences}
+    known = {plain(sentence) for sentence in known_sentences} | {plain(sentence) for sentence in area_sentences()}
     quoted = re.findall(r'\*"(.*?)"\*', text)
     if not quoted:
         failures.append(f"{where}: quotes no sentence")
     for sentence in quoted:
         if plain(sentence) not in known:
-            failures.append(f"{where}: quotes a sentence that is not in sentences.json: {sentence[:70]}")
+            failures.append(f"{where}: quotes a sentence that is not in sentences.json or the suite's area sentences: {sentence[:70]}")
     return failures
+
+
+AREA_SENTENCE_ROW = re.compile(r'^\| `A\d{2}-\d{3}` \| \*"(.*?)"\* \|')
+
+
+def area_sentences():
+    """This implementation's area sentences (A<area>-<n>), as the conformance README's tables quote them."""
+    readme = V31 / "conformance" / "README.md"
+    return [match.group(1) for line in readme.read_text(encoding="utf-8").splitlines()
+            if (match := AREA_SENTENCE_ROW.match(line))]
 
 
 def conformance_table_rows(chapter):
@@ -939,6 +949,148 @@ def check_compiled_documents():
     return failures
 
 
+DIALECT_GOLDENS = V31 / "conformance" / "dialect-goldens"
+DIALECT_CASE_FILES = {"about.txt", "scope.json", "placed.json", "expected.txt"}
+DIALECT_CASE_OPTIONAL = {"expected.neutral.txt", "reply.txt", "expected.reply.txt"}
+
+
+def family_cases(index, id_, failures):
+    family = next((f for f in index.get("families", []) if f.get("id") == id_), None)
+    if family is None:
+        failures.append(f"the index has no {id_} family")
+        return []
+    return sorted(family.get("cases", []))
+
+
+def text_file(path, where, failures):
+    try:
+        return path.read_bytes().decode("utf-8")
+    except FileNotFoundError:
+        failures.append(f"{where}: missing")
+    except UnicodeDecodeError:
+        failures.append(f"{where}: not UTF-8")
+    return None
+
+
+def check_dialect_goldens():
+    """Chapter 5's dialect goldens (area 07): the family lists exactly the case folders on disk; each case holds
+    about.txt, scope.json (an object), placed.json (an object of booleans) and expected.txt, and either template.md or
+    package/ (with its manifest.json) and entry.txt (one line, the entry composed); expected.neutral.txt, and
+    reply.txt with expected.reply.txt, only together and nothing else."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    listed = family_cases(index, "dialect-goldens", failures)
+    on_disk = sorted(case.name for case in DIALECT_GOLDENS.iterdir() if case.is_dir()) if DIALECT_GOLDENS.is_dir() else []
+    expect(failures, "the dialect-goldens family's cases (the case folders on disk)", listed, on_disk)
+    for case in on_disk:
+        folder = DIALECT_GOLDENS / case
+        where = f"dialect-goldens/{case}"
+        files = {path.name for path in folder.iterdir() if path.is_file()}
+        folders = {path.name for path in folder.iterdir() if path.is_dir()}
+        if "template.md" in files:
+            inputs = {"template.md"}
+            expect(failures, f"{where}: its folders", sorted(folders), [])
+        else:
+            inputs = {"entry.txt"}
+            expect(failures, f"{where}: its folders", sorted(folders), ["package"])
+            if not (folder / "package" / "manifest.json").is_file():
+                failures.append(f"{where}: neither template.md nor package/manifest.json")
+            entry = text_file(folder / "entry.txt", f"{where}/entry.txt", failures)
+            if entry is not None and not re.fullmatch(r"node(\.[a-z][a-z0-9_]*)+\n", entry):
+                failures.append(f"{where}/entry.txt: not one line naming a node's rooted key")
+        missing = sorted((DIALECT_CASE_FILES | inputs) - files)
+        extra = sorted(files - DIALECT_CASE_FILES - inputs - DIALECT_CASE_OPTIONAL)
+        if missing or extra:
+            failures.append(f"{where}: missing {missing}, unexpected {extra}")
+        if ("reply.txt" in files) != ("expected.reply.txt" in files):
+            failures.append(f"{where}: reply.txt and expected.reply.txt go together")
+        for name in sorted(files - {"scope.json", "placed.json"}):
+            text = text_file(folder / name, f"{where}/{name}", failures)
+            if name == "about.txt" and text is not None and not text.strip():
+                failures.append(f"{where}/about.txt: empty")
+        scope, errors = load(folder / "scope.json")
+        failures += errors
+        if scope is not None and not isinstance(scope, dict):
+            failures.append(f"{where}/scope.json: not an object")
+        placed, errors = load(folder / "placed.json")
+        failures += errors
+        if placed is not None and not (isinstance(placed, dict) and all(isinstance(v, bool) for v in placed.values())):
+            failures.append(f"{where}/placed.json: not an object of booleans")
+    return failures
+
+
+RENDERER_GOLDENS = V31 / "conformance" / "renderer-goldens"
+RENDERER_CASE_FILES = ["about.txt", "expected.txt", "value.json"]
+
+
+def check_renderer_goldens():
+    """Chapter 5's built-in renderers (area 07): the family lists exactly the <renderer>/<case> folders on disk, each
+    renderer a built-in of v31/renderers/index.json; each case holds exactly about.txt, value.json (an object) and
+    expected.txt."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    listed = family_cases(index, "renderer-goldens", failures)
+    renderers, errors = load(V31 / "renderers" / "index.json")
+    failures += errors
+    built_in = set((renderers or {}).get("items", []))
+    on_disk = sorted(f"{renderer.name}/{case.name}" for renderer in RENDERER_GOLDENS.iterdir() if renderer.is_dir()
+                     for case in renderer.iterdir() if case.is_dir()) if RENDERER_GOLDENS.is_dir() else []
+    expect(failures, "the renderer-goldens family's cases (the case folders on disk)", listed, on_disk)
+    for case in on_disk:
+        folder = RENDERER_GOLDENS / case
+        where = f"renderer-goldens/{case}"
+        if case.split("/")[0] not in built_in:
+            failures.append(f"{where}: {case.split('/')[0]} is no built-in renderer")
+        expect(failures, f"{where}: its files", sorted(path.name for path in folder.iterdir()), RENDERER_CASE_FILES)
+        value, errors = load(folder / "value.json")
+        failures += errors
+        if value is not None and not isinstance(value, dict):
+            failures.append(f"{where}/value.json: not an object")
+        for name in ("about.txt", "expected.txt"):
+            text_file(folder / name, f"{where}/{name}", failures)
+    return failures
+
+
+ESCAPE_VECTORS = V31 / "conformance" / "markdown-escape-vectors"
+ASCII_PUNCTUATION = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+
+
+def check_markdown_escape_vectors():
+    """Chapter 6's escape (area 07): the family lists exactly the one file on disk, vectors.json, a list of
+    { plain, escaped } in that order; it holds each of the 32 ASCII punctuation characters alone, and each escaped is
+    its plain with a backslash before each ASCII punctuation character and nothing else changed."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    listed = family_cases(index, "markdown-escape-vectors", failures)
+    on_disk = sorted(path.name for path in ESCAPE_VECTORS.iterdir()) if ESCAPE_VECTORS.is_dir() else []
+    expect(failures, "the markdown-escape-vectors family's cases (the files on disk)", listed, on_disk)
+    expect(failures, "the markdown-escape-vectors family's files", on_disk, ["vectors.json"])
+    vectors, errors = load(ESCAPE_VECTORS / "vectors.json")
+    failures += errors
+    if vectors is None:
+        return failures
+    if not isinstance(vectors, list):
+        return failures + ["markdown-escape-vectors/vectors.json: not a list"]
+    plains = []
+    for number, vector in enumerate(vectors, 1):
+        where = f"markdown-escape-vectors/vectors.json vector {number}"
+        if not isinstance(vector, dict) or list(vector) != ["plain", "escaped"] \
+                or not all(isinstance(v, str) for v in vector.values()):
+            failures.append(f"{where}: expected exactly ['plain', 'escaped'], two strings")
+            continue
+        plains.append(vector["plain"])
+        escaped = "".join("\\" + c if c in ASCII_PUNCTUATION else c for c in vector["plain"])
+        if vector["escaped"] != escaped:
+            failures.append(f"{where}: escaped is not plain with a backslash before each ASCII punctuation character")
+    missing = [c for c in ASCII_PUNCTUATION if c not in plains]
+    if missing:
+        failures.append(f"markdown-escape-vectors/vectors.json: no vector of {missing} alone")
+    return failures
+
+
 def parses_as_json(text):
     try:
         json.loads(text)
@@ -969,6 +1121,8 @@ CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("renderers", check_renderers), ("self", check_self),
           ("conformance", check_conformance_index), ("refusal-packages", check_refusal_packages),
           ("vectors", check_vectors), ("compiled-documents", check_compiled_documents),
+          ("dialect-goldens", check_dialect_goldens), ("renderer-goldens", check_renderer_goldens),
+          ("markdown-escape-vectors", check_markdown_escape_vectors),
           ("document", check_document), ("citations", check_citations)]
 
 

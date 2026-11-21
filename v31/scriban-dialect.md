@@ -12,8 +12,13 @@ compiled package's `lock.json` and listed in its `requires` ([chapter 7](../pack
 **Anything not listed as allowed is refused at publish, with a sentence.** Each rule below names
 the design's label for its sentence (`R-D1` and so on) beside the sentence's id in
 [`sentences.json`](sentences.json) (`S05-001` and so on), and the sentence itself, used as written.
-`<…>` marks a placeholder. The last section is the whole dialect as one table: feature, allowed or
-refused, sentence.
+`<…>` marks a placeholder. A rule the design gives no sentence of its own, decided while building
+this implementation, says one of this implementation's area sentences (`A07-004` and so on), listed
+with its rule in the conformance suite's [README](conformance/README.md#the-dialect-area-07) and not
+in `sentences.json`. The last section is the whole dialect as one table: feature, allowed or
+refused, sentence. The conformance suite's `dialect-goldens` hold one composed case per allowed
+feature, and `renderer-goldens` the built-in renderers' bytes
+([README](conformance/README.md#the-dialects-goldens-area-07)).
 
 ## 1. The engine
 
@@ -55,8 +60,13 @@ refused, sentence.
 - A `for` over anything but a list (a range `1..3`, an object).
   - R-D6 (S05-006): *"\<Subject\> runs a for over \<expr\> at line \<n\>; a for runs over a list."*
 - The `for` options `limit:`, `offset:` and `reversed` (they choose which elements appear, which
-  is a decision), and `for.rindex`, `for.length` and `for.changed`. These forms have no sentence
-  of their own: they are refused by the rule that anything not listed as allowed is refused.
+  is a decision), a `for`'s `else`, and `for.rindex`, `for.length` and `for.changed`. The design
+  gives these forms no sentence of their own (anything not listed as allowed is refused); this
+  implementation says:
+  - A07-004: *"\<Subject> uses \<form> at line \<n>; a for runs over a whole list in order and reads only for.first, for.last, for.index, for.even and for.odd."*
+- A body Scriban cannot read: a tag never closed, an `if` or a `for` with no `end`. The sentence
+  never quotes Scriban's own message.
+  - A07-005: *"\<Subject> can't be read as a template at line \<n>: close every tag and every if and for."*
 - **Index access** (`list[0]`, `node.plan.value.sections[2]`): a list is read whole, by a `for`, or
   by identity through `.items`.
   - R-D11 (S05-063): *"\<Subject\> reads \<path\>[\<n\>] at line \<n\>, a position in a list; lists are read whole, with a for, or by identity through .items."*
@@ -66,6 +76,14 @@ refused, sentence.
 
 These `for` forms are refused and no published package uses them; revisiting them is
 [#1475](https://github.com/Consultologist/Consultologist-Blazor/issues/1475) (Milestone 40).
+
+**Reads go through a member.** A node, an input, a check or a parameter is read through `.value`,
+`.content` or `.title` (an enum's title), and a loop's `item` through its members
+(`item.value.title`, `item.content`): never bare. A loop position is read as `for.first`,
+`for.last`, `for.index`, `for.even` or `for.odd`, in an output (`{{ for.index }}`, 0-based) or
+in a body `if` (§ 4).
+
+- A07-008: *"\<Subject> reads \<path> at line \<n>; read \<.value | .content | .title> of it."*
 
 **Equality in bodies.** Scriban has no `===`. A body `if` compares with Scriban's `==` and `!=`,
 only within the recorded facts of § 4. The `===`/`!==`-only rule is JSON Logic's
@@ -90,7 +108,14 @@ caret range and in `lock.json` at its exact version.
   example `"%d %B %Y"`). A date output without it renders as ISO `%Y-%m-%d`.
 - **Null:** a null value output directly renders as nothing, and **a built-in given null returns
   null**, matching JSON Logic's rule that operations on null give null. The one exception is
-  `array.join`: a list holding a `null` element fails the node.
+  `array.join`: a list holding a `null` element fails the node at run time, with no retry (a
+  `null` list gives `null`).
+  - A07-006: *"\<Subject> stopped rendering: array.join met a list with an empty element."*
+- **What an output writes.** Text as it is; a date as `%Y-%m-%d`; a boolean as `true` or `false`;
+  a number in its canonical JSON form (RFC 8785: `7.5`, never `7,5` or `7.50`); `null`
+  as nothing. An object or a list is never written directly: it is read through a member, looped
+  over, or piped into a renderer, and an output that writes one is refused at publish.
+  - A07-007: *"\<Subject> writes \<path> at line \<n>, which is \<an object | a list>; read a member, loop over it or pipe it into a renderer."*
 - **Refused:** `date.now`, random numbers and environment access (they break reproducibility);
   `truncate` (it cuts clinical text); `object.default` (it chooses text, which is a decision);
   every other built-in.
@@ -115,7 +140,13 @@ has already decided and recorded:
 | whether a check passed | `check.coverage.value.pass` | `true` or `false` |
 
 - The tests combine with `!`, `&&`, `||` and parentheses.
+- A loop position is tested bare (`for.first`) or compared with a literal (`for.index == 0`); a
+  check's pass bare or compared with `true` or `false`.
 - A `state` is compared only with a literal from the closed set.
+- **A pipe to an allowed built-in inside an `if`** (`(c.support | string.strip) != ""`) is
+  allowed wherever that `if` may test the piped value: in a renderer's body, on its own `value`
+  (ruled on [#1504](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)). In
+  every other body a piped test tests a value, not a recorded fact, and is refused (R-D7).
 - **Testing anything else is refused:** a data value, an input, a node's text, a run fact. The one
   exception is a renderer's body, which may test its own `value`: a renderer decides nothing that
   is recorded, since its whole output is a function of `value`. In that test it may read a list's
@@ -161,6 +192,19 @@ A render failure fails the node (or the deliverable) as a definition error: no r
 fails to render is never sent. The failure follows the node's normal failure path, not `onInvalid`,
 which is about replies.
 
+**How the limits count at run time.** One composition, the body with every unit and renderer it
+runs (its parts, its snippets, a folder item's body read as `item.content`, an offered macro's
+instruction and body, each pipe into a renderer), is one render: its steps (each iteration of any
+`for` in any of them) count together against the step limit; each `for`, wherever it stands,
+stops at 1,000 iterations each time it runs; and the output limit is of the whole sent text, in
+UTF-8 bytes. **Nesting** counts the `if`s and `for`s of one body; a snippet placed inside a
+snippet starts its own count, and a chain of snippets each placing the next is refused at publish
+past 15, said with R-L2's wording on the chain's last snippet. **A template places at most 1,000
+units**, counting what its parts and snippets place in turn, so publish never expands without
+bound:
+
+- A07-011: *"\<Subject> places more than \<limit> parts, snippets and macros, counting what its parts and snippets place; place fewer."*
+
 - R-L1 (S05-012): *"\<Subject\> stopped rendering: the for at line \<n\> reached 1,000 iterations."*
 
 - R-L2 (S05-013): *"\<Subject\> nests if and for \<n\> deep at line \<m\>; the limit is 15."*
@@ -174,6 +218,13 @@ which is about replies.
 The one call form is the pipe to the root `renderer.`: `{{ node.x.value | renderer.concept_bullets }}`.
 Chaining is allowed where a template uses renderers, and each step is checked against the next
 renderer's `input`. A renderer's own body may not pipe into another renderer.
+
+**Each pipe step is numbered per entry** (`…/render:<n>`), in order of appearance across the
+body and every unit it places, each unit's text walked where it is placed (a macro's instruction
+and the snippets placed there included). A number stands whether its unit is placed or not, so a
+unit not placed leaves a gap; a step inside a `for` gives one sub-row per iteration, all with its
+number. An offered macro's body, rendered for the reply, numbers its steps after the entry's own,
+each offered macro in prompt order.
 
 - R-N4 (S05-030): *"\<Subject\> calls renderer.\<id\> at line \<n\>; pipe into it: \<value\> \| renderer.\<id\>."*
 
@@ -213,9 +264,39 @@ tag,** not only placements, because it removes blank lines no preview explains (
 
 - R-W5 (S05-019): *"\<Subject\> uses - at line \<n\>; it removes blank lines between paragraphs. Use ~."*
 
+**A placement stands at the top level of its template,** never inside an `if` or a `for`: its
+header `if` is decided and recorded once, so it may not stand for a text that varies. (A loop body
+reads a folder item's text as `item.content`, below, which is no placement.)
+
+- A07-009: *"\<Subject> places \<unit> at line \<n> inside \<an if | a for>; a part, a snippet or a macro is placed at the top level of its template, and its own if decides it."*
+
 **A snippet is read as `snippet.<id>.content`;** a bare `snippet.<id>` is refused.
 
 - R-S3 (S05-037): *"\<Subject\> reads snippet.\<id\> at line \<n\>; read its text as snippet.\<id\>.content."*
+
+**A single snippet's text is a text format:** its `format` is `plaintext`, `markdown_block` or
+`markdown_inline`.
+
+- A07-010: *"Snippet '\<id>' declares format \<format>; a snippet's text is plaintext, markdown_block or markdown_inline."*
+
+**A placed unit renders in the placing template's scope** (its data, its loop's `item`), at the
+place of its tag, and a snippet it places is decided after it, in order of appearance. A snippet's
+text is the author's to the byte, its file's final newline included; a part's lines are joined
+with `\n`, with no newline after the last.
+
+**A folder item's body, read as `item.content`** in a loop over a snippet folder, is rendered
+where it is read, in the loop's scope: one tag stands for a different body per item, so each
+item's body is checked as a snippet body at every place that reads it, and its reads are that
+place's. It only presents: it places no part, macro or snippet, pipes into no renderer and holds
+no run spot.
+
+- A07-012: *"Snippet '\<id>' \<places \<unit> | pipes into \<renderer> | reads \<path>>, and \<subject> reads it as \<path> at line \<n>; a folder item's body read in a loop places no part, macro or snippet, pipes into no renderer and reads no run.\* or run-dependent value."*
+
+Carried out of its loop as text, by a `call`'s `with` (the item, a folder item, a loop's `.items`)
+or a `computed` node's `expression`, a folder item's body is rendered nowhere, so there every body
+of that folder is plain text: no tag and no raw block.
+
+- A07-013: *"Snippet '\<id>' holds a tag at line \<n>, and \<subject> \<passes it to function '\<f>' as param.\<p> | reads it in its expression>, where it isn't rendered; keep a folder item's body plain text, or read it as item.content in its loop."*
 
 ## 8. The marker
 
@@ -232,6 +313,19 @@ When the instruction is rendered, **its marker renders as its own literal source
 (`macro.<id>.content` between its braces), so the model sees exactly the marker to write. The
 dialect treats the marker as literal inside an instruction. A macro body holds no marker. The
 model's reply is never rendered: the engine replaces exact marker strings literally.
+
+**Inside its instruction, the tag holding the macro's own marker is no placement and no read.**
+It renders as its source text from `{{` to `}}`, its whitespace marks included
+(`{{~ macro.<id>.content }}`), and for a block marker the indentation before it on its line is
+kept; the rest of the instruction renders as any template does, where the prompt places it.
+
+**The body is rendered for the reply,** in the placing prompt's scope (a `run.*` read filled
+directly, since the reply has no run-neutral form), less its file's final line ending (one `\n`):
+the body is what replaces the marker, and a line ending there would end a line in mid-sentence.
+That text is then escaped as plain text when a `plaintext` macro stands in a Markdown node, hashed
+(its content hash), and substituted. A snippet the body places is listed in the entry's
+placements after the macro, decided only when the macro is offered, and rendered when it is
+placed.
 
 - R-M3 (S05-044): *"Macro '\<id\>' has \<n\> markers in its instruction; it must hold {{~ macro.\<id\>.content }} or {{ macro.\<id\>.content }} exactly once."*
 
@@ -275,11 +369,15 @@ The advance warning, which is not a refusal:
 | Feature | Allowed or refused | Sentence |
 |---|---|---|
 | output `{{ x }}`, member access, literals | allowed | none |
+| a node, input, check or parameter read bare, not through a member | refused | A07-008 |
+| an output that writes an object or a list | refused | A07-007 |
+| a body Scriban cannot read (a tag, an `if` or a `for` not closed) | refused | A07-005 |
 | `for` over a list, with `for.first`, `for.last`, `for.index`, `for.even`, `for.odd` | allowed | none |
 | `for` over a range or an object | refused | R-D6 (S05-006) |
-| `for` options `limit:`, `offset:`, `reversed`; `for.rindex`, `for.length`, `for.changed` | refused | none of their own |
+| `for` options `limit:`, `offset:`, `reversed`; a `for`'s `else`; `for.rindex`, `for.length`, `for.changed` | refused | A07-004 |
 | `if`, `else if`, `else` on loop position, state and check pass | allowed | none |
-| `if` in a renderer's body on its own `value`, a list's `.size` included | allowed | none |
+| `if` in a renderer's body on its own `value`, a list's `.size` included, through a pipe to a built-in too | allowed | none |
+| a pipe to a built-in in a body `if` anywhere else | refused | R-D7 (S05-007) |
 | `if` on anything else | refused | R-D7 (S05-007) |
 | a state compared with a value outside `completed`, `skipped`, `not_run` | refused | R-D9 (S05-010) |
 | an `if` on a state that misses a state and has no `else` | refused | R-D8 (S05-009) |
@@ -292,6 +390,7 @@ The advance warning, which is not a refusal:
 | index access `list[0]` | refused | R-D11 (S05-063) |
 | reading a member the format or root does not have | refused | R-D10 (S05-011) |
 | `string.upcase`, `string.downcase`, `string.capitalize`, `string.strip`, `array.join`, `array.size`, `date.to_string` | allowed | none |
+| `array.join` over a list holding a `null` element | the render fails | A07-006 |
 | any other built-in, `date.now`, random numbers, environment access | refused | R-D2 (S05-002) |
 | `truncate` | refused | R-D3 (S05-003) |
 | `object.default` | refused | R-D4 (S05-004) |
@@ -300,6 +399,7 @@ The advance warning, which is not a refusal:
 | `if` and `for` nested deeper than 15 | refused | R-L2 (S05-013) |
 | output past 1 MiB | the render fails | R-L3 (S05-014) |
 | more than the step limit | the render fails | R-L4 (S05-062) |
+| a template placing more than 1,000 units, counting what its parts and snippets place | refused | A07-011 |
 | `{{~ x }}` alone on a line; `{{ x }}` inline or alone on a line | allowed | none |
 | `~}}` on a placement | refused | R-W1 (S05-015) |
 | `-` on a placement | refused | R-W2 (S05-016) |
@@ -308,7 +408,12 @@ The advance warning, which is not a refusal:
 | `-` on any other tag | refused | R-W5 (S05-019) |
 | `~` on a statement or an ordinary output | allowed | none |
 | bare `snippet.<id>` | refused | R-S3 (S05-037) |
-| the marker as literal text in an instruction, exactly once | allowed | none |
+| a placement inside an `if` or a `for` | refused | A07-009 |
+| a single snippet whose `format` is not a text format | refused | A07-010 |
+| a folder item's body read as `item.content` in its loop, rendered there | allowed | none |
+| that body placing a unit, piping into a renderer or holding a run spot | refused | A07-012 |
+| a folder item's body carried out of its loop as text (a `call`'s `with`, a `computed` expression) holding a tag or a raw block | refused | A07-013 |
+| the marker as literal text in an instruction, exactly once, rendered as its source text with its whitespace marks and indentation | allowed | none |
 | a macro instruction with other than one marker | refused | R-M3 (S05-044) |
 | another macro's marker in an instruction | refused | R-M4 (S05-045) |
 | a marker in a macro body | refused | R-M9 (S05-051) |
