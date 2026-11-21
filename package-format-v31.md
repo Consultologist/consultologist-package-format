@@ -1276,6 +1276,7 @@ it its media type, so the typed operations, escaping and plain-text conversion t
 **Field names follow the id pattern** of chapter 1 § 6, **with no reserved names**. A field never sits at the same level as a member: it is always read after
 `.value` (`item.value.title`), and `.title` as a label applies only to an enumerated string, which
 has no fields. So a field may be called `title`, `label` or `value`; ids keep their reserved list.
+**Registry and catalogue formats are exempt** from the pattern ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)): `concept_list` has `isSnomedConcept` and `isActive`. The pattern holds for a package's own formats. Making the names consistent is #1523 (Milestone 40).
 
 `example-nested-note`'s `formats/verdict.json` at 31:
 
@@ -1461,6 +1462,7 @@ order. Every member is present.
   field is shown by its bare id.
 - **Field names follow the id pattern, with no reserved names** (§ 2.5.3): a field is always read
   after `.value` (`item.value.title`), so a field called `title` never collides with the `.title`
+  Registry and catalogue formats are exempt from the pattern (chapter 2 § 5.3; [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)); making the names consistent is #1523 (Milestone 40).
   read of an enumerated string.
 - **Any format may be an input's,** since formats are pure shape (§ 2.1.3), **except**
   `markdown_inline` (no widget, and an inline fragment is not something a clinician submits); a
@@ -6287,7 +6289,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | built-in renderers in C# (`concept_bullets`, `concept_context`) | **built-in Scriban renderers in the registry**, versioned and locked, their ids reserved; piped as `\| renderer.concept_bullets` | [5](#5-templates-and-macros) |
 | whitespace forms version 31 refuses, `-` on a tag | rewritten to the accepted forms | [5](#5-templates-and-macros) |
 | simple `{{ if }}…{{ end }}` blocks in prompts | lifted into parts | [5](#5-templates-and-macros) |
-| `failIfEmpty` on agent nodes | carried over unchanged, written `true`, `false` or `null` | [5](#5-templates-and-macros) |
+| `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
 | optional macros: per-run choices with a `default` | **boolean inputs** (§ 10.3) | [2](#2-types-and-inputs), [5](#5-templates-and-macros) |
 | no tests | one snapshot test (§ 10.12) | [7](#7-the-compiled-documents) |
 
