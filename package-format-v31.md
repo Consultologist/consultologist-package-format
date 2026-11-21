@@ -1076,7 +1076,7 @@ formats. **The dialect's id is `urn:consultologist:spec:31:dialect`.**
 | `properties`, `required` | on an object | `required` lists **every** declared property, and nothing else (§ 2.3.3) |
 | `additionalProperties` | on every object | must be `false` |
 | `items` | on an array | one schema |
-| `enum` | on a string | the plain enum (§ 2.9) |
+| `enum` | on a string, an integer or a number | the plain enum (§ 2.9); its values are all of that one kind (a nullable type may list `null`) |
 | `oneOf`, `const` | on a string, only in the labelled-enum form (§ 2.9) | every branch is exactly `{ "const": …, "title": … }` |
 | `anyOf` | unions and nullable references | not at the root of a format sent to a model (§ 2.3.3) |
 | `$ref` | anywhere | a bare format id, or `#/$defs/<name>` within the file (§ 2.6.3); beside it, only `title` and `description` |

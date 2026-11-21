@@ -1,5 +1,5 @@
 {
-  "about": "enum is on a string.",
+  "about": "An enum's values are of the type's kind: strings on a number are refused.",
   "instance": {
     "$schema": "urn:consultologist:spec:31:dialect",
     "type": "number",

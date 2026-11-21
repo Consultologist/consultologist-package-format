@@ -128,11 +128,15 @@
           "items": {
             "type": [
               "string",
+              "number",
               "null"
             ]
           },
           "contains": {
-            "type": "string"
+            "type": [
+              "string",
+              "number"
+            ]
           },
           "minContains": 2
         },
@@ -229,11 +233,62 @@
           "required": [
             "type"
           ],
-          "properties": {
-            "type": {
-              "$ref": "#/$defs/stringType"
+          "anyOf": [
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/stringType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/numberType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "#/$defs/integerType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "integer"
+                  }
+                }
+              }
             }
-          }
+          ]
         },
         "oneOf": {
           "required": [
@@ -269,6 +324,46 @@
           "const": [
             "null",
             "string"
+          ]
+        }
+      ]
+    },
+    "numberType": {
+      "description": "number, or a number that may be null.",
+      "anyOf": [
+        {
+          "const": "number"
+        },
+        {
+          "const": [
+            "number",
+            "null"
+          ]
+        },
+        {
+          "const": [
+            "null",
+            "number"
+          ]
+        }
+      ]
+    },
+    "integerType": {
+      "description": "integer, or an integer that may be null.",
+      "anyOf": [
+        {
+          "const": "integer"
+        },
+        {
+          "const": [
+            "integer",
+            "null"
+          ]
+        },
+        {
+          "const": [
+            "null",
+            "integer"
           ]
         }
       ]

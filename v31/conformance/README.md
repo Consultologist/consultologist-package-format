@@ -578,8 +578,9 @@ and have no invalid example here:
 - strict mode's size limits and an `anyOf` at the root of a format sent to a model
   ([§ 2.3.3](../../package-format-v31.md#233-required-additionalproperties-and-the-root)).
 
-Two readings the text makes: an `enum` or a labelled `oneOf` must sit beside an explicit string
-`type` (the text says "on a string" and always writes the type), and a `$defs` name is any name
+Two readings the text makes: an `enum` must sit beside an explicit `string`, `integer` or `number`
+`type` (values of that one kind; mixed kinds are refused) and a labelled `oneOf` beside an explicit
+string `type` (the text says "on a string" and always writes the type), and a `$defs` name is any name
 without a `/`, not bound by the id pattern.
 
 The `formats` check group does enforce the first of these on the built-in formats.

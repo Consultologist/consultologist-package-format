@@ -1,0 +1,20 @@
+{
+  "about": "An enum's values are all of one kind: a number beside strings is refused.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "score"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "score": {
+        "type": "string",
+        "enum": [
+          "a",
+          1
+        ]
+      }
+    }
+  }
+}

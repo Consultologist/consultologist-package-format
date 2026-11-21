@@ -1,0 +1,25 @@
+{
+  "about": "An enum is on a string, an integer or a number; a nullable type lists null.",
+  "instance": {
+    "$schema": "urn:consultologist:spec:31:dialect",
+    "type": "object",
+    "required": [
+      "score"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "score": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "enum": [
+          1,
+          2,
+          3,
+          null
+        ]
+      }
+    }
+  }
+}
