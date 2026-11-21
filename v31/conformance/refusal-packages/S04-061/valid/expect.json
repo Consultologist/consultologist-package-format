@@ -1,0 +1,5 @@
+{
+  "about": "A function's format is its ret's (chapter 4 § 4.7.6). The function draft_section returns patient_draft and declares plaintext. Invalid: patient_draft returns markdown_block. Valid: plaintext.",
+  "valid": true,
+  "sentences": []
+}

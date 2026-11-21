@@ -1,0 +1,3 @@
+---
+{ "kind": "call", "producer": "computed", "label": "Drafting the section", "description": null, "format": "markdown_block", "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": null, "function": "draft_section", "with": { "draft": "input.consult_draft.content" } }
+---

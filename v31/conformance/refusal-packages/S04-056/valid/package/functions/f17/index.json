@@ -1,0 +1,1 @@
+{ "label": "Drafting", "description": null, "inputs": { "draft": { "label": "Consult draft", "description": null, "format": "markdown_block" } }, "uses": { "snippets": [], "macros": [], "formats": [], "renderers": [] }, "nodes": ["write"], "ret": "node.write", "format": "plaintext" }

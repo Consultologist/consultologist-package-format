@@ -1,0 +1,5 @@
+{
+  "about": "A function's ret always has a value (chapter 4 § 4.7.6). The function draft_section holds the case route, whose branch for skipped and not_run is empty. Invalid: it returns route. Valid: it returns patient_draft.",
+  "valid": true,
+  "sentences": []
+}

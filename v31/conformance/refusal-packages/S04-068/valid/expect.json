@@ -1,0 +1,5 @@
+{
+  "about": "Each argument is typed against its parameter (chapter 4 § 4.7.7). The call section passes draft_section's draft, a markdown_block. Invalid: it passes node.plan, a plaintext. Valid: input.consult_draft.content.",
+  "valid": true,
+  "sentences": []
+}

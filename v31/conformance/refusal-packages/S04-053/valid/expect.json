@@ -1,0 +1,5 @@
+{
+  "about": "A function's own definition does not share an id with one it uses (chapter 4 § 4.7.3). The package and the function draft_section each have a snippet tone. Invalid: the function also lists the package's tone in uses. Valid: it lists none.",
+  "valid": true,
+  "sentences": []
+}

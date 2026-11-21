@@ -1,0 +1,7 @@
+{
+  "about": "A call passes every parameter (chapter 4 § 4.7.7). The call section runs draft_section, whose parameter is draft. Invalid: its with is {}. Valid: it passes draft.",
+  "valid": false,
+  "sentences": [
+    "Call 'section' passes no draft; function 'draft_section' takes draft."
+  ]
+}

@@ -299,6 +299,34 @@ that is not one of the subject's), `S04-046` (a value in two branches), `S04-047
 lists, with no `else`) and `S04-075` (a subject that can be null, with no `else`). An `A05-001` or
 `S04-017` written in a `case` is said as it is for an `in`, and has no case of its own.
 
+The resolver then binds every `call` to its function, types each argument against its parameter,
+holds each function's `ret` and `uses`, refuses recursion and measures call depth
+([chapter 4 § 4.7.3](../../package-format-v31.md#473-uses-declared-definitions),
+[§ 4.7.6](../../package-format-v31.md#476-one-ret-always-valued-one-format),
+[§ 4.7.7](../../package-format-v31.md#477-the-call-node),
+[§ 4.7.8](../../package-format-v31.md#478-depth-and-recursion)). Two earlier cases changed, and only in
+which node reads: the valid and invalid packages of `S04-050` and `S04-051` gave the function's `ret`,
+`patient_draft`, an `if`, which may skip it (`S04-058`); the `if` is now on a second node of the
+function, `draft_note`. Their sentences are unchanged but for the node they name.
+
+It adds 18 cases, 36 packages: `S04-064` to `S04-066`, `S04-068` and `S04-070` (a call naming no
+function, leaving out a parameter or passing one the function does not take, an argument of another
+type, a call's format that is not its function's), `S04-069` (a parameter bound to `profile.signature`
+read by a condition inside the function), `S04-057` to `S04-061` (a function's `ret` that is an `if`
+with no `else`, that may be skipped inside an `if`, that is a `case` with an empty branch, whose
+branches return two formats, or whose format is not the function's), `S04-052` and `S04-053` (a
+package snippet a function reads without listing it in `uses`, and an own snippet that shares its id
+with a listed one), `S04-054` to `S04-056` (a ring of functions, a function calling itself, and a chain
+of calls sixteen deep), and one for this implementation's `A05-005`:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A05-005` | *"Call '\<id>' with \<param> is \<what it is>; an argument is a reference, written as text, or null."* | each argument of a `call` is a reference string or the literal `null` ([chapter 4 § 4.7.7](../../package-format-v31.md#477-the-call-node)) |
+
+A `with` value written as an object or a list is `S04-017`, said in place of `A02-001` as for an `in`;
+a call's body stays the reader's `S01-020`. `S04-074` (a format a function lists in `uses` and never
+names) is a warning, and a package that gets it is accepted, so it has no case.
+
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):

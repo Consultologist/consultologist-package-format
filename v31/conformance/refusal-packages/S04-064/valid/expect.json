@@ -1,0 +1,5 @@
+{
+  "about": "A call names a function the package defines (chapter 4 § 4.7.7). The call section runs draft_section. Invalid: it names draft_sections. Valid: draft_section.",
+  "valid": true,
+  "sentences": []
+}

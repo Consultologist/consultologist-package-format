@@ -1,0 +1,1 @@
+{ "label": "Draft a section", "description": null, "inputs": { "draft": { "label": "Consult draft", "description": null, "format": "markdown_block" } }, "uses": { "snippets": [], "macros": [], "formats": [], "renderers": [] }, "nodes": ["patient_draft", "checked"], "ret": "node.checked", "format": "plaintext" }

@@ -1,0 +1,7 @@
+{
+  "about": "An argument is a reference string, or null (chapter 4 § 4.7.7). The call section passes draft_section's draft. Invalid: it passes the number 5. Valid: input.consult_draft.content.",
+  "valid": false,
+  "sentences": [
+    "Call 'section' with draft is a whole number; an argument is a reference, written as text, or null."
+  ]
+}

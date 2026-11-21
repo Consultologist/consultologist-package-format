@@ -1,0 +1,7 @@
+{
+  "about": "A function's ret always has a value (chapter 4 § 4.7.6). The function draft_section holds the if checked, whose then returns final, which has an if of its own. Invalid: it returns checked. Valid: it returns patient_draft.",
+  "valid": false,
+  "sentences": [
+    "Function 'draft_section' returns node.checked.final, which runs inside if 'checked' and may be skipped: return a node that always runs."
+  ]
+}

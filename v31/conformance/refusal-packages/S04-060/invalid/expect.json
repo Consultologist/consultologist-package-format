@@ -1,0 +1,7 @@
+{
+  "about": "A function returns one format (chapter 4 § 4.7.6). The function draft_section holds the if checked, whose then returns plaintext and whose else markdown_block. Invalid: it returns checked. Valid: it returns patient_draft.",
+  "valid": false,
+  "sentences": [
+    "Function 'draft_section' returns node.checked, whose branches return plaintext and markdown_block: a function returns one format. Wrap them in an object format."
+  ]
+}

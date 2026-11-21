@@ -1,0 +1,7 @@
+{
+  "about": "Functions may not call themselves (chapter 4 § 4.7.8). The call start runs f01, which calls f02. Invalid: f01 calls f01. Valid: f02.",
+  "valid": false,
+  "sentences": [
+    "Function 'f01' calls 'f01': functions may not call themselves."
+  ]
+}

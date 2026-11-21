@@ -1,7 +1,7 @@
 {
-  "about": "A function reads only its parameters, never a node outside it (chapter 4 § 4.7.4). The function draft_section drafts from the parameter draft, when it has text. Invalid: its node patient_draft's if reads node.plan, a top-level node. Valid: the parameter draft.",
+  "about": "A function reads only its parameters, never a node outside it (chapter 4 § 4.7.4). The function draft_section notes the parameter draft, when it has text. Invalid: its node draft_note's if reads node.plan, a top-level node. Valid: the parameter draft.",
   "valid": false,
   "sentences": [
-    "Node 'patient_draft' in function 'draft_section' reads node.plan.content; a function reads only its parameters: add a parameter and pass it in with."
+    "Node 'draft_note' in function 'draft_section' reads node.plan.content; a function reads only its parameters: add a parameter and pass it in with."
   ]
 }

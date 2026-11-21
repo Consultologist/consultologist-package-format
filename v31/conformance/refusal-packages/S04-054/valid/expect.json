@@ -1,0 +1,5 @@
+{
+  "about": "Functions may not call each other in a ring (chapter 4 § 4.7.8). The call start runs f01, which calls f02, which calls f03. Invalid: f02 calls f01. Valid: f03.",
+  "valid": true,
+  "sentences": []
+}

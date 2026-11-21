@@ -1,0 +1,5 @@
+{
+  "about": "A function returns one format (chapter 4 § 4.7.6). The function draft_section holds the if checked, whose then returns plaintext and whose else markdown_block. Invalid: it returns checked. Valid: it returns patient_draft.",
+  "valid": true,
+  "sentences": []
+}

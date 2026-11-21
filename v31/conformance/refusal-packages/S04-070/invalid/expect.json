@@ -1,0 +1,7 @@
+{
+  "about": "A call's format is its function's (chapter 4 § 4.7.7). The call section runs draft_section, which returns plaintext. Invalid: the call declares markdown_block. Valid: plaintext.",
+  "valid": false,
+  "sentences": [
+    "Call 'section' declares format markdown_block; function 'draft_section' returns plaintext."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A parameter bound to the profile carries it, and no condition reads it (chapter 4 § 4.7.7). The call section passes draft_section's draft, which its node draft_note's if reads. Invalid: the call passes profile.signature. Valid: node.plan.content.",
+  "valid": true,
+  "sentences": []
+}

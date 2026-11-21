@@ -1,0 +1,5 @@
+{
+  "about": "Calls nest at most FormatBounds.depth (15) deep (chapter 4 § 4.7.8). The functions f01 to f17 each call the next. Invalid: the call start runs f01, sixteen calls deep. Valid: it runs f02, fifteen deep.",
+  "valid": true,
+  "sentences": []
+}

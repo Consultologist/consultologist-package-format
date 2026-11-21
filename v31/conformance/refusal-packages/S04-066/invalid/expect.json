@@ -1,0 +1,7 @@
+{
+  "about": "A call passes only the function's parameters (chapter 4 § 4.7.7). The call section runs draft_section, whose parameter is draft. Invalid: it also passes tone. Valid: draft only.",
+  "valid": false,
+  "sentences": [
+    "Call 'section' passes tone, which function 'draft_section' doesn't take (draft)."
+  ]
+}

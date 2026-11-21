@@ -1,0 +1,5 @@
+{
+  "about": "A function uses a package snippet only if it lists it in uses (chapter 4 § 4.7.3). The function draft_section notes each standard of the package's snippet folder standards. Invalid: its uses lists no snippet. Valid: it lists standards.",
+  "valid": true,
+  "sentences": []
+}
