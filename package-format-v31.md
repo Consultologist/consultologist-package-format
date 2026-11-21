@@ -621,6 +621,7 @@ An id names a file or folder, or a member of a keyed object.
   read after `.value` (`item.value.title`), never beside a member, and `.title` as a label applies
   only to an enumerated string, which has no fields. So a field may be called `title`
   ([chapter 2 § 5.3](#253-object-schemas-are-fully-typed-nested-text-references-a-text-format)).
+  Registry and catalogue formats are exempt from the pattern (chapter 2 § 5.3; [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)); making the names consistent is #1523 (Milestone 40).
 - **`parts` and `part.<id>` keep their names:** `parts` is an agent node's header member and
   `part.` a root, neither of them an id (chapter 5).
 - **A package whose ids collide with a reserved word is renamed by the migration** ([chapter 10 § 10.6](#106-reserved-ids-are-renamed)):
