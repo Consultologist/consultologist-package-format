@@ -2,7 +2,7 @@ example-conditional-sections: a required list input of sections, each with a tit
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
 
-resolve.json: sha256:18d4712301c46d57952f5e5aab0f790fa4da80f8e5c7d45801a6cefbdbc481d6
-lock.json: sha256:7e574f64c6274d683d3627be333154904f8f2215a6e48e0ad6ef4d7ff1ed6ff9
+resolve.json: sha256:542fcf49c92978d4ebbe377986a1e9bbf4431410fc3f98201eded1c11126d8ff
+lock.json: sha256:1f86a7504a1ff5a7d2ec7a97e418ca9332d5d250782c5a0e53748ada1faec88c
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

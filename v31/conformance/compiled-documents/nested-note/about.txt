@@ -2,7 +2,7 @@ example-nested-note: an agent planning the sections, a computed count, the loop 
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
 
-resolve.json: sha256:6659e4d081d3f7eaca53d817b0cfa29bb55bd304456eef9de4a5ea549ed325a2
-lock.json: sha256:d4ca3dad6c9cf2e1041c0a9efd09e69742b97fe6ec226ac5534d19b0655da978
+resolve.json: sha256:fc3b6725be558d2b6cee7b7769927a1478c83b00f631fdf41f66f3cc698f5dc5
+lock.json: sha256:685c4b62c46379ae2ba36f04becee5cb7f3e803490f33daaa9f4933bc9ffb289
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.
