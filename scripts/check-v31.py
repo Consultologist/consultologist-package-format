@@ -3,6 +3,7 @@
 
 Each group is a function check_<group>() -> list[str] of failures, registered in CHECKS.
 """
+import hashlib
 import importlib.util
 import json
 import re
@@ -875,6 +876,54 @@ def check_vectors():
     return failures
 
 
+COMPILED_DOCUMENTS = V31 / "conformance" / "compiled-documents"
+COMPILED_CASE_FILES = ["about.txt", "lock.json", "resolve.json", "toolchain.json"]
+
+
+def check_compiled_documents():
+    """Chapter 7's compiled documents (area 05): the family lists exactly the case folders on disk; each case holds
+    source/ (with its manifest.json), toolchain.json, resolve.json, lock.json and about.txt; resolve.json validates
+    against resolve.schema.json and lock.json against lock.schema.json; and lock.json's resolve.hash is the SHA-256
+    of resolve.json's bytes."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    family = next((f for f in index.get("families", []) if f.get("id") == "compiled-documents"), None)
+    if family is None:
+        return failures + ["the index has no compiled-documents family"]
+    on_disk = sorted(case.name for case in COMPILED_DOCUMENTS.iterdir() if case.is_dir()) \
+        if COMPILED_DOCUMENTS.is_dir() else []
+    expect(failures, "the compiled-documents family's cases (the case folders on disk)",
+           sorted(family.get("cases", [])), on_disk)
+
+    registry, errors = build_registry()
+    failures += errors
+    validators = {name: validator_for(schema_for(name), registry, failures) for name in ("resolve", "lock")}
+    for case in on_disk:
+        folder = COMPILED_DOCUMENTS / case
+        where = f"compiled-documents/{case}"
+        files = sorted(path.name for path in folder.iterdir() if path.is_file())
+        expect(failures, f"{where}: its files", files, COMPILED_CASE_FILES)
+        if not (folder / "source" / "manifest.json").is_file():
+            failures.append(f"{where}: no source/manifest.json")
+        documents = {}
+        for name in ("resolve", "lock"):
+            document, errors = load(folder / f"{name}.json")
+            failures += errors
+            if document is None:
+                continue
+            documents[name] = document
+            validator = validators[name]
+            if validator is not None:
+                for error in sorted(validator.iter_errors(document), key=lambda e: list(e.absolute_path)):
+                    failures.append(f"{where}/{name}.json: {error.message[:100]} at {list(error.absolute_path)}")
+        if "lock" in documents and (folder / "resolve.json").is_file():
+            digest = "sha256:" + hashlib.sha256((folder / "resolve.json").read_bytes()).hexdigest()
+            expect(failures, f"{where}/lock.json: resolve.hash (the SHA-256 of resolve.json's bytes)",
+                   (documents["lock"].get("resolve") or {}).get("hash"), digest)
+    return failures
+
+
 def parses_as_json(text):
     try:
         json.loads(text)
@@ -904,7 +953,8 @@ CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("examples", check_examples), ("formats", check_formats),
           ("renderers", check_renderers), ("self", check_self),
           ("conformance", check_conformance_index), ("refusal-packages", check_refusal_packages),
-          ("vectors", check_vectors), ("document", check_document), ("citations", check_citations)]
+          ("vectors", check_vectors), ("compiled-documents", check_compiled_documents),
+          ("document", check_document), ("citations", check_citations)]
 
 
 def main():
