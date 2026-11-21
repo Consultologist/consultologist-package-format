@@ -1,0 +1,13 @@
+{
+  "name": "example-minimal",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Minimal note demo",
+  "description": ["A fictional package for tests.", "Not intended for clinical use."],
+  "tags": ["demo", "fictional"],
+  "inputs": {
+    "consult_draft": { "label": "Consult draft", "description": null, "format": "markdown_block", "required": true, "channel": null },
+    "sections": { "label": "Sections", "description": null, "format": { "type": "array", "items": { "type": "object", "required": ["title", "points"], "additionalProperties": false, "properties": { "title": { "type": ["string", "null"], "title": "Title" }, "points": { "type": "array", "items": { "$ref": "plaintext" }, "title": "Points" } } } }, "required": true, "channel": null }
+  }
+}

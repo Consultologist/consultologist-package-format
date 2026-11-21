@@ -1,0 +1,7 @@
+{
+  "about": "itemLabel names a field every element has, never null (chapter 4 § 4.2.7). The for sections names each section by its title. Invalid: the input sections' title may be null. Valid: it may not.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' itemLabel 'title' may be missing or null; itemLabel names a field every element has as a string."
+  ]
+}

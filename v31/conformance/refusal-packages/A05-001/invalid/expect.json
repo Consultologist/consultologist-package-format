@@ -1,0 +1,7 @@
+{
+  "about": "A loop's in is a reference: a root, then names joined by dots (chapter 4 § 4.2.2). The for sections outlines each section of the input sections. Invalid: its in is input..sections.value. Valid: input.sections.value.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' in 'input..sections.value' is not a reference; a reference is a root, then names joined by dots."
+  ]
+}

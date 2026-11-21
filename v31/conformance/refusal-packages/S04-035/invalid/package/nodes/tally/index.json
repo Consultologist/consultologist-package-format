@@ -1,0 +1,1 @@
+{ "kind": "while", "producer": "computed", "label": "Counting the passes", "description": null, "format": "number", "reproducible": true, "modelDerived": false, "runDependent": false, "profileCarrying": false, "while": { "<": [{ "var": "node.count.value" }, 3] }, "max": 3, "until": null, "checkFirst": false, "nodes": ["count", "double"], "ret": "node.tally.count" }

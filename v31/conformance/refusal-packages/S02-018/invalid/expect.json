@@ -1,0 +1,7 @@
+{
+  "about": "An input is read through .value or .content, never bare (chapter 2 § 2.2.1), in a loop's in too. The for sections outlines each section of the input sections. Invalid: its in is input.sections. Valid: input.sections.value.",
+  "valid": false,
+  "sentences": [
+    "'input.sections' is read bare; read input.sections.value, or input.sections.content for text."
+  ]
+}

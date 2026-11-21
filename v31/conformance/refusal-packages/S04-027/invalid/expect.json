@@ -1,0 +1,7 @@
+{
+  "about": "A loop iterates a node outside it, or in an enclosing loop's body (chapter 4 § 4.2.2). Beside the for sections, the for recap writes one line per section. Invalid: recap iterates node.outline.value.points, but outline runs inside sections. Valid: input.sections.value.",
+  "valid": false,
+  "sentences": [
+    "Loop 'recap' iterates node.outline.value.points; outline runs inside loop 'sections' — a loop iterates a node outside it, or in an enclosing loop's body."
+  ]
+}

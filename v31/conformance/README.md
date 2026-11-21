@@ -265,6 +265,28 @@ reads across levels a package can reach, `S04-036` to `S04-040` (what a pass rea
 loop read from outside it, `item.parent` in an outermost loop) and `S04-050` and `S04-051` (a
 function reads only its parameters). Each invalid package gives its one sentence.
 
+The resolver then types each loop's source and its `itemLabel`
+([chapter 4 § 4.2.2](../../package-format-v31.md#422-what-a-loop-iterates),
+[§ 4.2.7](../../package-format-v31.md#427-itemlabel-naming-items)). Ten earlier cases changed, and only
+in what their loop iterates: the valid and invalid packages of `S01-002`, `S01-005`, `S01-011`,
+`S04-018`, `S04-019` and `S04-021` to `S04-024` hold the for `sections`, and those of `S01-040` two
+nested loops, which iterated `node.plan.value.sections` (and the inner one `item.value.points`), which
+the smallest package's `plaintext` plan does not have (`S03-014`). They now iterate a new required
+input, `sections`, a list of sections each with a `title` and its `points`; `S04-023`'s `until`, which
+read the section's `kind`, reads its `title`. Their sentences are unchanged.
+
+It adds 10 cases, 20 packages: `S04-025` to `S04-030` (a source that is not a list, `item.value` with
+no loop around it, a node inside another loop, and an `itemLabel` that is not a field, may be null, or
+is not a string), `S04-017` (an `in` written as an expression, said in place of `A02-001`), `S02-018`
+(an input read bare, which no case reached before), `S04-035` (a while's body node that is neither
+returned nor read; judged only when no node in the while is an agent or a rendered node, whose
+templates' reads are this implementation's area 07's), and one for this implementation's `A05-001`,
+which, like the `A04-…` ones, is not in `sentences.json`:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A05-001` | *"\<Kind> '\<id>' \<member> '\<text>' is not a reference; a reference is a root, then names joined by dots."* | a loop's `in` is a reference string, a root then names joined by dots, with no position ([chapter 4 § 4.2.2](../../package-format-v31.md#422-what-a-loop-iterates)) |
+
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):

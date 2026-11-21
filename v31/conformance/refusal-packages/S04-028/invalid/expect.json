@@ -1,0 +1,7 @@
+{
+  "about": "itemLabel names a field of the elements (chapter 4 § 4.2.7). The for sections names each section by its title. Invalid: its itemLabel is heading, which the sections do not have. Valid: title.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' itemLabel 'heading' is not a field of the elements of input.sections.value (fields: title, points)."
+  ]
+}

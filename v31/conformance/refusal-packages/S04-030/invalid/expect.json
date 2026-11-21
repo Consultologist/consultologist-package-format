@@ -1,0 +1,7 @@
+{
+  "about": "itemLabel names a string field (chapter 4 § 4.2.7). The for sections names each section by its title. Invalid: its itemLabel is points, a list. Valid: title.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' itemLabel 'points' is list<plaintext>; itemLabel names a string field."
+  ]
+}

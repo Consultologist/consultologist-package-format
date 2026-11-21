@@ -1,0 +1,5 @@
+{
+  "about": "Only a list can be iterated (chapter 4 § 4.2.2). The for sections outlines each section of the input sections. Invalid: it iterates input.consult_draft.value, a markdown_block. Valid: input.sections.value, a list.",
+  "valid": true,
+  "sentences": []
+}

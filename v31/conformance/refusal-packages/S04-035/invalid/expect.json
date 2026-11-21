@@ -1,0 +1,7 @@
+{
+  "about": "Every node in a while is returned or read (chapter 4 § 4.10.1). The while tally of two computed nodes runs while count is below 3. Invalid: it returns count, and nothing reads double. Valid: it returns double.",
+  "valid": false,
+  "sentences": [
+    "Node 'double' in while 'tally' is neither returned nor read; name it with ret, read it from a body node or from the check."
+  ]
+}

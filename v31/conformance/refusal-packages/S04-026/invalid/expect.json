@@ -1,0 +1,7 @@
+{
+  "about": "item.value names the enclosing loop's item (chapter 4 § 4.2.2). The for sections outlines each section of the input sections. Invalid: it iterates item.value.points, but it runs inside no loop. Valid: input.sections.value.",
+  "valid": false,
+  "sentences": [
+    "Loop 'sections' iterates item.value.points, but it runs inside no loop; item.value names the enclosing loop's item."
+  ]
+}
