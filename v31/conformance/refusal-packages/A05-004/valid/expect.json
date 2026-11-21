@@ -1,0 +1,5 @@
+{
+  "about": "A function's own format is bundled as <function>__<format>, a key no format the package uses may have (chapter 7 § 7.2.4). The function sign has its own format excerpt; the plan returns the package format sign__excerpt. Invalid: sign's node draft returns excerpt. Valid: draft returns plaintext, and excerpt is not bundled.",
+  "valid": true,
+  "sentences": []
+}

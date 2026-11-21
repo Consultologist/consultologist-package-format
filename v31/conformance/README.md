@@ -351,6 +351,18 @@ rules of `S04-035`, `S04-052`, `S04-069` and `S04-074` for what bodies read, nee
 and reads, so no package reaches them through the checker yet; `S04-035`, `S04-052` and `S04-069`
 have their cases from what headers read.
 
+The formats bundle of `resolve.json` adds one case, 2 packages, for this implementation's `A05-004`:
+a function's own format is bundled under `<function>__<format>`, and the resolver refuses a function
+whose own format would take a key the package already uses:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A05-004` | *"Function '\<f>' format '\<id>' is compiled as '\<f>__\<id>', which the package already uses: rename one."* | a function's own format is bundled as `<function>__<format>`, a key no other format the package uses may have ([chapter 7 § 7.2.4](../../package-format-v31.md#724-formats-and-bindings)) |
+
+The notes of [chapter 4 § 4.10.2](../../package-format-v31.md#4102-notes-and-warnings-at-publish)
+(`S04-072`, `S04-073`, `S04-079`, `S04-080`) are measured against an engine's limits and never
+refuse, so they have no package.
+
 ## The goldens and vectors of JSON Logic (area 04)
 
 Area 04, JSON Logic, exports six families for [chapter 3](../../package-format-v31.md#3-expressions):
