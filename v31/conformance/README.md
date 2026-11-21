@@ -334,7 +334,7 @@ passes along what a value is made from (a computed node's expression, a body's r
 arguments and its function's result, a flow node's `ret`, a loop's source), never through a condition
 or from an earlier pass. What a Scriban body reads is this implementation's area 07's: until it is
 known a body's reads are unknown, not empty, and a flag that depends on one is not judged, so an
-agent's `runDependent` and `profileCarrying` are taken as written. No earlier case changed.
+agent's `runDependent` and `profileCarrying` are taken as written.
 
 It adds 5 cases, 10 packages: `S03-036` (a computed node that declares `modelDerived` false but reads
 an agent's output), `S04-015` (a while of computed nodes that declares `reproducible` false),
