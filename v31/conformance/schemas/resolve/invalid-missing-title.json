@@ -23,7 +23,7 @@
       ],
       "features": [],
       "agents": {
-        "consult-prose": "4"
+        "consult-prose": 4
       }
     },
     "needs": {

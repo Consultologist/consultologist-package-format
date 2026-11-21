@@ -56,7 +56,7 @@
     },
     "title": {
       "type": "string",
-      "description": "The manifest's title."
+      "description": "The manifest's title; the package's name when the manifest's title is null."
     },
     "description": {
       "type": [
@@ -469,9 +469,9 @@
         "agents": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "type": "integer"
           },
-          "description": "The attested agents the bindings name, agent name to version; {} for none."
+          "description": "The attested agents the bindings name, agent name to its integer version, one version per agent; {} for none."
         }
       },
       "description": "What the package needs from the engine: derived, never authored, and minimal."

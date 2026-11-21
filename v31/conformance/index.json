@@ -636,6 +636,7 @@
         "resolve/invalid-node-key-wrong-root.json",
         "resolve/invalid-node-missing-modelDerived.json",
         "resolve/invalid-node-missing-parent.json",
+        "resolve/invalid-requires-agent-version.json",
         "resolve/invalid-requires-operation.json",
         "resolve/invalid-requires-range.json",
         "resolve/invalid-short-hash.json",

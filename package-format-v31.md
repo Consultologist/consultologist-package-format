@@ -5038,7 +5038,7 @@ The members of `resolve.json`, as [`resolve.schema.json`](v31/schemas/resolve.sc
 | `documentVersion` | integer | never | the shape of `resolve.json` itself; `1` at 31 |
 | `specVersion` | integer | never | `31`. It alone identifies the rules (null handling, whitespace, escaping, culture); there is **no `semantics` block** ([#1455](https://github.com/Consultologist/Consultologist-Blazor/issues/1455)) and **no `resolvedBy`** (the toolchain is `lock.json`'s) |
 | `package` | object `{ name: string, version: string }` | never | the package name and its version tag, for example `{ "name": "example-nested-note", "version": "v2026.12.1" }` |
-| `title` | string | never | the manifest's title, at the top level |
+| `title` | string | never | the manifest's title, at the top level; the package's `name` (not `name@version`) when the manifest's `title` is `null` ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)) |
 | `description` | string | allowed | the manifest's description; `null` when it has none |
 | `tags` | array of string | never | the manifest's tags; `[]` for none |
 | `sourceHash` | string (`sha256:…`) | never | the hash of the source as published (§ 7.2.6) |
@@ -5223,7 +5223,7 @@ conversion hints are all here.
     "operations": { "size": "^1.0.0" },
     "kinds": ["agent", "computed", "for", "while"],
     "features": ["parallel"],
-    "agents": { "consult-prose": "4", "custom-json": "1" }
+    "agents": { "consult-prose": 4, "custom-json": 1 }
   },
   "needs": { "profile": [] },
   "inputs": {
@@ -5336,7 +5336,7 @@ without `call` runs on an engine without functions.
 | `operations` | object, operation name → caret range | never | each built-in custom operation **used**: from `size`, `blank`, `words`, `lines`, `lower`, `trim`, `starts_with`, `ends_with`, `plain`, `object`, `matches`, `has_word`, `terms_subset`, `all_pass`, `count_pass`, `days_between`, `years_between`, `add_days` ([chapter 3](#3-expressions)); `{}` for none |
 | `kinds` | array of string | never | the node kinds used, from `agent`, `rendered`, `computed`, `for`, `while`, `if`, `case`, `call` |
 | `features` | array of string | never | behaviours not tied to one kind: `parallel` (a loop with `parallel: true`), `macro-markers`, `parts`, `run-spots`, `check-loops`; `[]` for none |
-| `agents` | object, agent name → version string | never | the attested agents (name and exact version) the `bindings` name; `{}` for none |
+| `agents` | object, agent name → integer version | never | the attested agents (name and exact version, the integer `bindings` carries) the `bindings` name; `{}` for none. One version per agent: a package whose bindings name two versions of one agent is refused at publish ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)) |
 
 **Not listed:** package content (prompts, snippets, renderers, formats, functions), which is
 embedded and covered by the hash; catalogue versions, which are in `lock.json`; delivery kinds, since
