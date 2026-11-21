@@ -750,6 +750,21 @@ def sentence_pattern(id_, row):
     return pattern
 
 
+def expand_fragments(rows):
+    """Two rows of chapter 5 are written as fragments of another's ("the rest unchanged"): S05-025 is
+    S05-024's with the run-dependent <value> in place of run.<fact> (R-R5), and S05-043 is S05-042's with
+    part.<name> in place of its macro (R-M1). Each is matched as the whole sentence it stands for, as the
+    library's tests read it."""
+    rows = dict(rows)
+    if rows.get("S05-025", "").startswith("\u2026") and "S05-024" in rows:
+        rows["S05-025"] = rows["S05-024"].replace(
+            " and run.<fact> in one output ", " and the run-dependent <value> in one output ")
+    if rows.get("S05-043", "").endswith("\u2026") and "; " in rows.get("S05-042", ""):
+        full = rows["S05-042"]
+        rows["S05-043"] = rows["S05-043"][:-1] + full[full.index("; ") + 2:]
+    return rows
+
+
 def check_refusal_packages():
     """Chapter 12 § 12.3's refusal packages: the family lists exactly the case folders on disk; each
     expect.json is { about, valid, sentences }, valid as its folder says; in an invalid case whose id
@@ -761,7 +776,7 @@ def check_refusal_packages():
     failures += errors
     if index is None or document is None:
         return failures
-    rows = {entry["id"]: entry["sentence"] for entry in document.get("sentences", [])}
+    rows = expand_fragments({entry["id"]: entry["sentence"] for entry in document.get("sentences", [])})
     patterns = {row_id: sentence_pattern(row_id, row) for row_id, row in rows.items()}
     family = next((f for f in index.get("families", []) if f.get("id") == "refusal-packages"), None)
     if family is None:
