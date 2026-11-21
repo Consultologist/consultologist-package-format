@@ -786,6 +786,8 @@
         "A05-004/valid",
         "A05-005/invalid",
         "A05-005/valid",
+        "A06-002/invalid",
+        "A06-002/valid",
         "S01-002/invalid",
         "S01-002/valid",
         "S01-003/invalid",

@@ -517,6 +517,34 @@ gives other bytes:
 - **`lock.json`'s `operations`** are those `requires.operations` names; `builtins` the four pieces of
   machinery, and each built-in renderer an entry renders through.
 
+## The engine's rules at publish (area 06)
+
+Area 06, the engine's loading and scheduling, adds one rule at publish, ruled by the project's owner
+([Consultologist-Blazor#1507](https://github.com/Consultologist/Consultologist-Blazor/issues/1507), item 4):
+a `while` with `checkFirst: true` whose check reads one of the loop's own body nodes, as this pass's
+(`node.<id>` or `pass.node.<id>`), is refused, since such a check has no value before the first pass.
+One pass back (`pass.previous.node.<id>`, `null` on the first pass,
+[chapter 4 § 4.3.3](../../package-format-v31.md#433-what-a-pass-reads)) is allowed. It adds 1 case, 2
+packages, built as the earlier areas' are: the while `refine` of the resolver's cases, whose check reads
+its judge, declared `checkFirst` false (valid) and `true` (invalid). Its sentence is this
+implementation's `A06-002`; with it, the area's sentences are:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A06-001` | *"\<site> \<member> could not be decided: \<matches \| has_word> took longer than \<n> seconds on this text. Use a simpler pattern."* | each evaluation of `matches` and `has_word` has a time limit, the engine's setting; past it the condition or computed value fails ([chapter 3 § 3.5.3](../../package-format-v31.md#353-matches-and-has_word)). Said at run time, never at publish, so it has no package |
+| `A06-002` | *"While '\<id>' declares checkFirst true, but its check reads node '\<n>' of its own body, which has no value before the first pass: declare "checkFirst": false, or read something that runs before the while."* | a `while` checked before each pass reads nothing of its own body but one pass back ([chapter 4 § 4.3.1](../../package-format-v31.md#431-members), [§ 4.3.3](../../package-format-v31.md#433-what-a-pass-reads)) |
+
+The compiled documents are exported again: every entry of `nodes`, `checks`, `deliverables` and of a
+function's `nodes` gains `plainConverts`, which keeps in `resolve.json` what publish knew of each `plain`
+([chapter 3 § 3.5.2](../../package-format-v31.md#352-custom-text-operations): a plain-text operand is
+returned unchanged, and at run time a value has no format to tell). It maps each of the entry's `if`,
+`expression`, `while` and `until` that is not `null` to a list of booleans, one for each `plain` of that
+rule in the order the evaluator numbers them (a `plain` before those inside its operand, operands left
+to right): `true` where the operand is Markdown or of a type not known, `false` where it is plain text
+or a string; `[]` for a rule with no `plain`, and `{}` for an entry with none of the four. The three
+cases changed in that member alone, and so in their `resolve.json` hash and `lock.json`'s
+`resolve.hash`.
+
 ## The schemas' examples
 
 `schemas/<name>/` holds hand-written instance files for the schema `<name>` (`dialect` is

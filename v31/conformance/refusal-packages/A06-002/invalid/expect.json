@@ -1,0 +1,7 @@
+{
+  "about": "A while checked before each pass cannot read its own body, which has no value before the first pass (#1507, item 4; chapter 4 § 4.3.1, § 4.3.3). The while refine drafts a summary while judge still has something to say. Invalid: it declares checkFirst true, and its check reads node.judge. Valid: checkFirst false, the check run after each pass.",
+  "valid": false,
+  "sentences": [
+    "While 'refine' declares checkFirst true, but its check reads node 'judge' of its own body, which has no value before the first pass: declare \"checkFirst\": false, or read something that runs before the while."
+  ]
+}
