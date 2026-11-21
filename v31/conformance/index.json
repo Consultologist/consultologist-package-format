@@ -810,6 +810,8 @@
         "A07-010/valid",
         "A07-011/invalid",
         "A07-011/valid",
+        "A07-012/invalid",
+        "A07-012/valid",
         "S01-002/invalid",
         "S01-002/valid",
         "S01-003/invalid",

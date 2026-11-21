@@ -1,0 +1,5 @@
+{
+  "about": "A loop over a snippet folder reads each item's body as item.content, rendered where it is read; one tag stands for a different body per item, so that body only presents (chapter 5 § 5.6.2; this implementation's sentence). The loop standards' agent section reads item.content. Invalid: hpi's body writes run.date. Valid: it writes only text.",
+  "valid": true,
+  "sentences": []
+}
