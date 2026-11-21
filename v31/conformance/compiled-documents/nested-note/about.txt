@@ -1,0 +1,8 @@
+example-nested-note: an agent planning the sections, a computed count, the loop sections over the plan's sections holding an outline and the loop paragraphs over its points, and the while refine of a summary and its judge (chapter 4 § 4.2.8, § 4.3.5), with three package formats (chapter 7 § 7.2.9).
+
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+
+resolve.json: sha256:ad92c8bab0a80178616670fba8d429aa88ef494db0ac0d1b7846aa702e0b804a
+lock.json: sha256:2a993349373f832e2a7faf4d6203f0978cd250ea606d3b701d11ce540eb69840
+
+What each Scriban body reads is stated by a stub, as the bodies are written, until this implementation's dialect (area 07) says it; area 07 regenerates these documents.

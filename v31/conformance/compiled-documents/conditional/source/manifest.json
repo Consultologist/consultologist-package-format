@@ -1,0 +1,43 @@
+{
+  "name": "example-conditional-sections",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Conditional sections demo",
+  "description": [
+    "A fictional package for tests.",
+    "Not intended for clinical use."
+  ],
+  "tags": [
+    "demo",
+    "fictional"
+  ],
+  "inputs": {
+    "consult_draft": {
+      "label": "Consult draft",
+      "description": null,
+      "format": "markdown_block",
+      "required": true,
+      "channel": null
+    },
+    "sections": {
+      "label": "Sections",
+      "description": null,
+      "format": {
+        "type": "array",
+        "items": {
+          "$ref": "section_request"
+        }
+      },
+      "required": true,
+      "channel": null
+    },
+    "include_billing": {
+      "label": "Include the billing section",
+      "description": null,
+      "format": "boolean",
+      "required": false,
+      "channel": null
+    }
+  }
+}

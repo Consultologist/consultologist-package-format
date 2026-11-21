@@ -1250,7 +1250,11 @@
       "path": "v31/conformance/compiled-documents",
       "about": "Fixture packages with their expected resolve.json and lock.json bytes and hashes, requires and needs, and the publish report.",
       "exportedBy": "area 05, resolver and lock, and area 11, registry and publish",
-      "cases": []
+      "cases": [
+        "conditional",
+        "functions",
+        "nested-note"
+      ]
     },
     {
       "id": "migration-vectors",

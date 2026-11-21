@@ -77,7 +77,11 @@ The exporting area fixes the exact files in the release that carries the cases
   `text-vectors`, `number-vectors`, `date-vectors`) are described in
   [The goldens and vectors of JSON Logic (area 04)](#the-goldens-and-vectors-of-json-logic-area-04).
 - **`compiled-documents`:** a fixture package with its expected `resolve.json` and `lock.json`
-  bytes and hashes, its `requires` and `needs`, and its publish report.
+  bytes and hashes, its `requires` and `needs`, and its publish report. Area 05 exports the
+  first four; each case is a folder holding the package under `source/`, the `toolchain.json` it is
+  compiled with, `resolve.json`, `lock.json` and an `about.txt`
+  ([The compiled documents (area 05)](#the-compiled-documents-area-05)). The publish report is
+  area 11's.
 - **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices.
 - **`schemas`:** a hand-written instance of one schema, valid or invalid by its file name (next
   section). These are examples, not goldens.
@@ -286,6 +290,10 @@ which, like the `A04-…` ones, is not in `sentences.json`:
 |---|---|---|
 | `A05-001` | *"\<Kind> '\<id>' \<member> '\<text>' is not a reference; a reference is a root, then names joined by dots."* | a loop's `in` is a reference string, a root then names joined by dots, with no position ([chapter 4 § 4.2.2](../../package-format-v31.md#422-what-a-loop-iterates)) |
 
+There is no `A05-002`: a reference naming a member its thing does not have is `S03-014`, as it is in
+an expression, so one fault has one sentence wherever it is written. The area's sentences are
+`A05-001` and `A05-003` to `A05-005`, each in a table of this section.
+
 The resolver then types each `case`'s subject as a loop's source is, and holds the branches' values to
 it ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)). Four earlier cases changed, and only in
 what their case switches on: the valid and invalid packages of `S04-042`, `S04-043`, `S04-048` and
@@ -428,6 +436,71 @@ run-time failures, said as sentences ([§ 3.11.3](../../package-format-v31.md#31
 holds a value, so neither has one; nor has this implementation's `A04-011` (a rule the evaluator
 declines). The typing of [§ 3.7](../../package-format-v31.md#37-typing) is judged at publish, and its refusals are
 `refusal-packages` cases, above.
+
+## The compiled documents (area 05)
+
+Area 05, the resolver and the lock, exports 3 cases of the `compiled-documents` family
+([chapter 7](../../package-format-v31.md#7-the-compiled-documents)): `nested-note` (two nested loops
+and a while, [chapter 4 § 4.2.8](../../package-format-v31.md#428-examples-migrated) and
+[§ 4.3.5](../../package-format-v31.md#435-example-migrated)), `conditional` (a `case` with an empty
+branch and two `if`s inside loops, [§ 4.5.4](../../package-format-v31.md#454-examples-migrated)) and
+`functions` (a function called in a loop over a snippet folder, and a check loop over the loop's
+`.items`, [§ 4.7.11](../../package-format-v31.md#4711-example-a-made-up-package)). A case is a folder:
+
+```
+compiled-documents/<case>/source/manifest.json, nodes/index.json, …
+compiled-documents/<case>/toolchain.json
+compiled-documents/<case>/resolve.json
+compiled-documents/<case>/lock.json
+compiled-documents/<case>/about.txt
+```
+
+`source/` holds the package's files byte for byte, as an upload gives them. `toolchain.json` is the
+toolchain that publishes it, in `lock.json`'s names (`packageFormat`, `dialect`, `libraries`,
+`evaluator`, `runtime`, `catalogues`), written by hand so that no machine's patch level moves a case:
+Scriban 7.2.5, Markdig 0.41.3, both Corvus libraries 5.8.12, .NET 10.0.0 and Unicode 16.0.
+`resolve.json` and `lock.json` are the bytes publish gives for that source with that toolchain and
+no publish limits (so no ceiling note): canonical by RFC 8785, UTF-8, one line, no final newline.
+`about.txt` says what the package holds and gives the two documents' hashes. The index lists a case by
+its folder's name. **The cases are exported by the library's publish step and are never written by
+hand;** the library's tests hold the same bytes as goldens. `python3 scripts/check-v31.py` (group
+`compiled-documents`) holds the folders to the index, each folder to its five entries, `resolve.json`
+to [`resolve.schema.json`](../schemas/resolve.schema.json) and `lock.json` to
+[`lock.schema.json`](../schemas/lock.schema.json), and recomputes `lock.json`'s `resolve.hash` from
+`resolve.json`'s bytes.
+
+**What the cases pin that the text leaves open.** An outside implementation that chooses otherwise
+gives other bytes:
+
+- **What a Scriban body reads** is this implementation's area 07's (the dialect). Until it is built,
+  the reads of each body are stated by the exporter as the body is written (`{{ item.value.title }}`
+  reads `item.value.title`), so every body is known and the documents are complete; area 07 exports
+  the cases again from its own reading.
+- **`reads`** of a read through `node`, `check`, `input` or `param` is the key and its first member
+  (`node.plan.value`, `input.consult_draft.content`); one through `item`, `pass`, `run`, `profile` or
+  a snippet is the path as written (`item.value.title`, `snippet.standards`); distinct, sorted. A flow
+  node's `reads` are its header's (its source, its conditions), not its `ret`'s.
+- **Keys.** A `node.<id>` or `check.<id>` at the start of a reference or a `var` path is written with
+  the key it resolves to where it is read (`node.judge.value.verdict` in the while `refine` is
+  `node.refine.judge.value.verdict`); inside a function keys are the function's own
+  (`node.apply_instructions`). A flow node's `nodes` lists its children's keys; an `if`'s `then` and
+  `else` and a `case`'s `branches` keep their written shape with keys inside, and the node's own `ret`
+  is `null`.
+- **Functions** are entries of `functions` with their index's members as written, `inputOrder`,
+  `ret`, `body` (the top-level keys), their own `nodes`, `renderers`, `snippets` and `macros` maps,
+  `reproducible`, `formatHash` and `typeHash`. A function's own format would be bundled as
+  `<function>__<format>`.
+- **`graph`.** `order` is level by level: a flow node comes before its body, each level in a
+  topological order of the edges lifted to it, ties by source order (inputs, `nodes/`, `checks/`,
+  deliverables). There are no edges between a function's own nodes, only `calls` from
+  `function.<id>` to each call; a loop over another loop's `.items` has a `for` and an `aligned`
+  edge from it.
+- **Deliverables** carry their folder's `delivery` and `bundle`, as the `index.json` of the folder
+  that holds them writes them: delivery is declared on folders only, with no inheritance
+  ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)), and the engine loads nothing but
+  `resolve.json`.
+- **`lock.json`'s `operations`** are those `requires.operations` names; `builtins` the four pieces of
+  machinery, and each built-in renderer an entry renders through.
 
 ## The schemas' examples
 

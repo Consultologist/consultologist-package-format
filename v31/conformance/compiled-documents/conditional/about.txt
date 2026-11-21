@@ -1,0 +1,8 @@
+example-conditional-sections: a required list input of sections, each with a title and a kind; a loop routing each section by a case on its kind (the omit branch empty), a loop holding an if on the kind, and a loop holding an if on the section's id and a boolean input (chapter 4 § 4.5.4).
+
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+
+resolve.json: sha256:518985fc3c363aeab7f55e4d447820a8d3d44514bdb5aef8d710b07bc3c85b8a
+lock.json: sha256:4fc3d9ad04caa8837a79abf7fc55dd3993fca4e6870166302c79c6803d101d95
+
+What each Scriban body reads is stated by a stub, as the bodies are written, until this implementation's dialect (area 07) says it; area 07 regenerates these documents.
