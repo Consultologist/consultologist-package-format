@@ -269,10 +269,23 @@
                     "description": "The composed text's hash."
                   }
                 }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "state"
+                ],
+                "properties": {
+                  "state": {
+                    "const": "skipped",
+                    "description": "A deliverable skipped by its if has no composed text, so its state stands alone."
+                  }
+                }
               }
             ]
           },
-          "description": "Deliverable key to { state, text } or { state, hash }: the deliverable's state and its composed text or hash."
+          "description": "Deliverable key to { state, text } or { state, hash }: the deliverable's state and its composed text or hash; or { state: \"skipped\" } alone, since a skipped deliverable has no text."
         }
       },
       "description": "What the run is checked against. Every member is optional: an omitted expectation is not checked, and {} checks only that the run completes."

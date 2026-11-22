@@ -3,6 +3,7 @@
   "instance": {
     "oldVersion": "v2026.11.2",
     "newVersion": "v2026.12.1",
+    "notices": [],
     "texts": [
       {
         "site": "nodes/plan.md",

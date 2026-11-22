@@ -2,12 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:consultologist:spec:31:schema:migration-report",
   "title": "migration-report.json",
-  "description": "The report of a migration to 31: the old and new versions, the hand edits made and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
+  "description": "The report of a migration to 31: the old and new versions, the hand edits made, the notices that need no edit and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
   "type": "object",
   "required": [
     "oldVersion",
     "newVersion",
     "handEdits",
+    "notices",
     "texts"
   ],
   "additionalProperties": false,
@@ -26,6 +27,13 @@
         "type": "string"
       },
       "description": "The hand edits made; [] for none."
+    },
+    "notices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Every notice that needs no edit: a renamed id, a _macro suffix, a !x converted to blank(x), a suggestion, a reproducible claim that differed, the worst-case note; [] for none."
     },
     "texts": {
       "type": "array",

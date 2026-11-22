@@ -1,0 +1,12 @@
+{
+  "about": "notices is an array of strings.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [],
+    "notices": [
+      1
+    ],
+    "texts": []
+  }
+}

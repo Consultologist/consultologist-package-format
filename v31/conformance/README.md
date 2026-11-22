@@ -1087,7 +1087,9 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
 - **`migration-report.json`'s top level.**
   [Chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report) names four things (the
   old and new versions, the hand edits, the compared texts) and fixes only the entry's members. The
-  members `oldVersion`, `newVersion`, `handEdits` and `texts` are this repository's names; the two
+  members `oldVersion`, `newVersion`, `handEdits` and `texts` are this repository's names, and
+  `notices` (an array of strings, required) is the fifth: what the rewrite notes and no hand edit follows
+  ([#1507](https://github.com/Consultologist/Consultologist-Blazor/issues/1507), D9); the two
   versions are strings with no pattern, since the design does not say whether they are package
   versions or spec versions.
 - **The registry's own files.** The schemas of `bounds.json`, `constants.json`, `profile.json`,
@@ -1150,11 +1152,6 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   "the manifest's title", a string that is never `null`. A package with `title: null` is valid as
   source but cannot compile to a valid `resolve.json`; neither chapter says what the compiled title
   is then.
-- **A skipped deliverable's state cannot be expected alone.**
-  [Chapter 7 § 7.8.3](../../package-format-v31.md#783-expectations)'s `deliverables` expectation is
-  `{ state, text }` or `{ state, hash }`, so every expected deliverable names its composed text or its
-  hash. A deliverable skipped by its condition composes nothing, and the text does not say what its
-  `text` or `hash` is, so a test cannot expect the state `skipped` on its own.
 - **Whether a `markdown_block` renderer escapes what it reads.**
   [Chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats) escapes plain text and `string`
   data read into a Markdown deliverable, and

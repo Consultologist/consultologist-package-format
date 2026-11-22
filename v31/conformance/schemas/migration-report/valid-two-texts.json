@@ -6,6 +6,10 @@
     "handEdits": [
       "Renamed the loop parts to sections."
     ],
+    "notices": [
+      "Renamed loop 'parts' to 'sections': 'parts' is reserved at 31.",
+      "nodes/plan.md: '!input.letter' became blank(input.letter.content); it now also holds for empty and white-space-only text."
+    ],
     "texts": [
       {
         "site": "nodes/plan.md",
