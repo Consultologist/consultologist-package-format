@@ -772,11 +772,11 @@ function's name.
 | a deliverable in the `emr` folder | `deliverable.emr.note` |
 
 - **`.` separates scopes;** `:` separates the key from the instance's item path; `/` separates the
-  path's item ids. No id or item id contains any of them.
+  path's item ids; `#<n>` marks a pass of a `while`. No id or item id contains any of them.
 - **Sub-rows** extend an instance's key with `/`: `…/render:<n>`, `…/macro:<id>`, `…/spot:<n>` and
   `…/if:<site>`, for example
   `node.standards.assessment:7/if:macro.letrozole_prescription_text`
-  ([chapter 9](#9-the-record)). Item paths never contain `:`.
+  ([chapter 9](#9-the-record)). Item paths never contain `:` or `#`.
 - **Mermaid ids replace `.` with `__`:** `node__sections__paragraphs__draft_paragraph`
   ([chapter 8 § 8.14](#814-what-belongs-to-the-app)).
 - **Keys are used everywhere at 31,** never only where an id repeats: one key form, no
@@ -2471,8 +2471,8 @@ A list that has to be computed is a `computed` node, which `in` then names (comp
 - **Any loop may iterate `.items`**, a production loop as well as a check loop (chapter 6),
   with the same rules: for example to write one line per section, skipped sections included,
   each naming its state.
-- The source must be typed as a list (a JSON Schema array). Item ids keep their source's form: array
-  inputs 0-based, a node's list 1-based, folder items their file stems. No id holds `/` or `:`.
+- The source must be typed as a list (a JSON Schema array). Item ids are 1-based wherever a person
+  sees them, array inputs included (they were 0-based at 30), and folder items keep their file stems. No id or item id holds `.`, `/`, `:` or `#`.
 - **An item path** is the item ids from the outermost loop inward, joined by `/`. At one level a
   path is the item id; deeper, an item is `2/1` (`node.sections.paragraphs.draft_paragraph:2/1`).
 - **One count per loop instance.** A loop instance is an inner loop under one outer path. Each
@@ -5624,9 +5624,9 @@ matter. Every member is present.
 #### 7.8.2 Stub keys
 
 A stub key is the node's **rooted key**, then, for an instance inside a loop or a `while`, `:` and
-its path: item ids and pass numbers from the outermost inward, joined by `/`, exactly the record's
+its path: item ids from the outermost inward, joined by `/`, and `#<n>` for a pass of a `while` where it sits, exactly the record's
 row key ([chapter 9](#9-the-record)): `node.plan`, `node.sections.outline:2`,
-`node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge:3`. Inside a function the key
+`node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge#3`. Inside a function the key
 goes through the call node: `node.hpi_section.standard_draft`.
 
 - A text format's stub is a JSON string; a data or object format's stub is the JSON value.
