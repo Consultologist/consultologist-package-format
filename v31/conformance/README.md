@@ -785,10 +785,11 @@ A deliverable composes with its plain reads escaped ([chapter 6 § 6.6.4](../../
 [§ 6.9](../../package-format-v31.md#69-deliverables-in-the-record-and-history)): each output its entry's `escapes` lists
 (matched by its `unit` and its `at`, as `runSpots` are) is written through `markdown_escape` where it is written, so each
 pass of a `for` escapes its own item, a `null` still writes nothing, and a line end in a value stays a line end; a
-placed plain-text snippet listed at its placement is escaped whole, once. The composed hash and each substitution's are
-taken after escaping, so replay holds; a run spot it escapes is recorded escaped, in the sent text and in the run-neutral
+placed plain-text snippet listed at its placement is escaped whole, once, and its unit is recorded by the hash of its
+text as spliced, escaped. The composed hash and each substitution's are taken after escaping, so replay holds, and the
+1 MiB output limit is held after escaping too; a run spot it escapes is recorded escaped, in the sent text and in the run-neutral
 text, whose `{{run:<n>}}` markers stay as they are. An object deliverable's text is its one value's RFC 8785 JSON, with no
-final line end (the template's own is not written), and a `null` value composes `null`. It adds three `dialect-goldens`
+final line end (the template's own is not written), held to the same 1 MiB limit, and a `null` value composes `null`. It adds three `dialect-goldens`
 cases, each a `package/` and an `entry.txt` naming `deliverable.note`: `deliverable-escaped` (a `markdown_block` note
 reading a plain-text summary, a list of plain lines holding `# 1`, `*bold*`, a line end and a `null`, a Markdown
 assessment, a renderer's output and a placed plain-text snippet), `deliverable-plaintext` (a `plaintext` note, which
