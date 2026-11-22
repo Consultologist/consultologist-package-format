@@ -1,0 +1,5 @@
+{
+  "about": "A deliverable's check names a check.* (chapter 6 § 6.1.2; this implementation's sentence). The consult note is gated. Invalid: its check names the production node extract_note_terms. Valid: the check all_sections.",
+  "valid": true,
+  "sentences": []
+}

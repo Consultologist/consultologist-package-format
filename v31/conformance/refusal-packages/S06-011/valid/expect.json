@@ -1,0 +1,5 @@
+{
+  "about": "checks/ holds checks and the loops over them: a for, an if or a case (chapter 6 § 6.3.1). The package has a second check loop, recheck, over the production loop's .items. Invalid: it is a while. Valid: a for.",
+  "valid": true,
+  "sentences": []
+}

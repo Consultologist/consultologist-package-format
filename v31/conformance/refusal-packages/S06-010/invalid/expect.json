@@ -1,0 +1,7 @@
+{
+  "about": "A check is computed (chapter 6 § 6.1). The package has a second check, notes_covered. Invalid: it is an agent asked to judge the note. Valid: a computed check of the same terms.",
+  "valid": false,
+  "sentences": [
+    "Check 'notes_covered' has kind agent; a check is computed."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "about": "A check returns check_result (chapter 6 § 6.1.1). The check all_sections gates the consult note. Invalid: its format is boolean. Valid: check_result.",
+  "valid": false,
+  "sentences": [
+    "Check 'all_sections' has format boolean; a check returns check_result."
+  ]
+}

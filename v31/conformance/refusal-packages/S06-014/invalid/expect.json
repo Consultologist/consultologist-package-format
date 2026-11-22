@@ -1,0 +1,7 @@
+{
+  "about": "A check loop runs over a production loop's .items (chapter 6 § 6.3.1). Invalid: the check loop section_coverage runs over node.standards.value, the sections' text (and names its items by nothing, as a list of text has no labels). Valid: node.standards.items, each named by its label.",
+  "valid": false,
+  "sentences": [
+    "Check loop 'section_coverage' runs over node.standards.value; a check loop runs over a production loop's .items."
+  ]
+}

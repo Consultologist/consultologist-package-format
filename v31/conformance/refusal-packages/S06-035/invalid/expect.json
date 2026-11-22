@@ -1,0 +1,7 @@
+{
+  "about": "A gate check's if reads values that are always set (chapter 6 § 6.1.1). The check all_sections gates the consult note, and runs when a boolean input is true. Invalid: it reads include_billing, an input that is not required. Valid: final_copy, one that is.",
+  "valid": false,
+  "sentences": [
+    "Check 'all_sections' gates deliverable 'consult', and its if reads input.include_billing.value, which can be null; a gate check's if reads values that are always set."
+  ]
+}

@@ -696,6 +696,37 @@ gives other bytes:
 | a snippet's and a folder item's body | are the author's to the byte, a file's final newline included: a block placement of a snippet ending in a newline leaves an empty line after it. A folder item's body read as `item.content` is rendered in its loop's scope |
 | the built-in renderers | write booleans as `True` and `False` and end with no newline, as the C# renderers of version 30 do ([chapter 5 § 5.5.3](../../package-format-v31.md#553-built-in-renderers)) |
 
+## The checks (area 08)
+
+Area 08, checks, deliverables and the profile, holds `checks/` to its rules at publish
+([chapter 6 § 6.1](../../package-format-v31.md#61-checks-the-folder-and-the-root),
+[§ 6.3](../../package-format-v31.md#63-check-loops), [§ 6.4](../../package-format-v31.md#64-aggregates-and-the-gate)).
+What `checks/` holds is judged with the type rules, before them: a leaf there is `kind: computed` with
+`format: check_result`, and a flow node is a `for`, an `if` or a `case`; a `while` or a `call` there is
+refused. Once the resolver has read the package's references, a `for` in `checks/` runs over a loop's
+`.items` (`node.<loop>.items` or `check.<loop>.items`), a deliverable's `check` names a check at the top
+of `checks/`, and that check's `if` reads nothing that can be `null` (a node that may be skipped, an
+input that is not required, a nullable field).
+
+One earlier case changed, so that its check loop runs over a production loop's `.items`: the packages of
+`S03-030` hold the loop `notes`, which takes each prior note as it is, and the check loop
+`notes_checked` now runs over `node.notes.items` and judges `item.item.value`, the prior note, in place
+of running over the input itself.
+
+It adds 6 cases, 12 packages, built on the resolver's `example-functions` package (its production loop
+`standards`, the check loop `section_coverage` over its `.items`, the check `all_sections` and the
+deliverable `consult` it gates): `S06-009`, `S06-010`, `S06-011`, `S06-014`, `S06-035` and `A08-001`.
+Where a check's kind changes, and the members of the kind with it (`S06-010`, `S06-011`), the invalid
+side writes that one file again. Part 06's other rules of checks are said under the ids of the parts
+that already say them, so they have no case here: a `failWith` that is no literal is `S03-029`
+(`A04-010`), a `min` that is no whole number of at least 0 `S03-029` or `S03-030`, a check in a
+function `S04-062`, and a read of `deliverable.*` outside `checks/` `S03-019` (`S05-020` in a template).
+The area's own sentence, which is not in `sentences.json`, is:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A08-001` | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
+
 ## The schemas' examples
 
 `schemas/<name>/` holds hand-written instance files for the schema `<name>` (`dialect` is
