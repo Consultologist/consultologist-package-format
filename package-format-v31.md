@@ -6204,6 +6204,28 @@ record's JSON form (camelCase).
   (the provenance contract, § 6.1.1).
 - **Rows don't record a build:** every deploy is preceded by a drain ([chapter 8 § 8.9](#89-every-deploy-is-preceded-by-a-drain)),
   so the header's `engineCommit` and `engineRelease` hold for every row.
+- **Sealing is one idempotent operation,** reached whichever way a job ends: its orchestration's
+  last step, a cancel, the retention sweep before it drops text, or the first read of a terminal job
+  that has no `recordHash`. Sealing twice gives the same document and the same hash, and the first
+  hash written is the one kept.
+- **A row key too long, or holding a character a table refuses, is kept whole as the `key`
+  property;** two different keys never share a stored row key.
+- **The canonical record document** is one RFC 8785 JSON document in UTF-8: the job header (noting
+  the end state with `status`, `completedAtUtc` and `error`), then `decisions` (an array by `id`),
+  `nodeOutputs` and `checks` (objects by row key) and `deliverables` (an array by `key`, each with
+  `deliveries`, the delivery rows of that deliverable). It leaves out `recordHash`,
+  `textDroppedAtUtc` and History's event log, and holds no retained text. **`recordHash`** is
+  `sha256:` and the hex of the SHA-256 over its UTF-8 bytes, written once on the header and valid for
+  the record's whole life, before and after the text drop. Its full layout and the header's own
+  members (`schemaVersion`, `jobId`, `status`, `error`, `createdAtUtc`, `completedAtUtc`,
+  `effectiveInputHash`, `effectiveInputHashVersion`, `inputs`, `tokens`) are the provenance
+  contract's.
+- **Rows as built:** a node row also records its `itemId`, `positionName`, `function` and `depth`;
+  a loop, a `while` and a pass of a `while` their own members (`parallel`, `maxParallel`,
+  `itemLabel`, `count`, `max`, `checkFirst`, `passes`, `stopped`, `pass`, `reason`); a check row the
+  `check_result`'s `passed` and `total` and the hashes and sizes of its `uncovered` and `untested`
+  lists; a deliverable row its `hashVersion` 4; a delivery row its `key` and `deliverable`. A
+  decision's `reads` and a check's `checked` and `reads` are `path`, `ref` and `hash`, never a value.
 
 ### 9.2 Keys, with their roots
 
