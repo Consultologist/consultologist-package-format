@@ -721,11 +721,25 @@ side writes that one file again. Part 06's other rules of checks are said under 
 that already say them, so they have no case here: a `failWith` that is no literal is `S03-029`
 (`A04-010`), a `min` that is no whole number of at least 0 `S03-029` or `S03-030`, a check in a
 function `S04-062`, and a read of `deliverable.*` outside `checks/` `S03-019` (`S05-020` in a template).
-The area's own sentence, which is not in `sentences.json`, is:
+
+It also holds a deliverable's header and its delivery folder to their rules at publish
+([chapter 6 § 6.6.1](../../package-format-v31.md#661-the-file),
+[§ 6.6.3](../../package-format-v31.md#663-what-a-deliverable-reads), [§ 6.8](../../package-format-v31.md#68-delivery)).
+With the type rules, once every format name is known: a deliverable's `format` is `markdown_block`,
+`plaintext` or a format whose shape is an object (`markdown_inline`, a list, a string or any other scalar is
+refused; a name that is no format stays `S02-017`), its `whenEmpty` is `release`, `hold` or `fail`, and
+each delivery folder's `delivery` lists only `email`, `pdf`, `emr` and `zip`, and its `bundle` is
+`"zip"` or `null`. Once the dialect has typed the bodies: a deliverable reads no `check.<id>` that its own
+`check` names, in its body or in a snippet it places (a placed snippet's reads are the deliverable's).
+It adds 5 cases, 10 packages, on the same package: `S06-018`, `S06-020`, `S06-025`, `S06-026` and
+`A08-002`; each invalid side is one text replacement.
+
+The area's own sentences, which are not in `sentences.json`, are:
 
 | Id | Sentence | Rule |
 |---|---|---|
 | `A08-001` | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
+| `A08-002` | *"Deliverables folder '\<path>' has bundle \<value>; write "zip" or null."* | a delivery folder's `bundle` is `"zip"` or `null` ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)) |
 
 ## The schemas' examples
 

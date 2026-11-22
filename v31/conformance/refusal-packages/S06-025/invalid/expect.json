@@ -1,0 +1,7 @@
+{
+  "about": "A deliverable's whenEmpty is release, hold or fail (chapter 6 § 6.6.1). Invalid: the consult note's is skip. Valid: hold.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'consult' has whenEmpty skip; write release, hold or fail."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "about": "A deliverable is markdown_block, plaintext or an object format (chapter 6 § 6.6.1). Invalid: the consult note is markdown_inline. Valid: markdown_block.",
+  "valid": true,
+  "sentences": []
+}

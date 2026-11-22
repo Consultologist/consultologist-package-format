@@ -1,0 +1,5 @@
+{
+  "about": "A deliverable can't read its own check (chapter 6 § 6.6.3). The consult note is gated by the check all_sections, and the package has a second check, notes_covered, gating nothing. Invalid: the note writes all_sections' message. Valid: notes_covered's.",
+  "valid": true,
+  "sentences": []
+}

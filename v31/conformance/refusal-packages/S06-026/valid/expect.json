@@ -1,0 +1,5 @@
+{
+  "about": "A delivery folder's kinds are email, pdf, emr and zip (chapter 6 § 6.8). Invalid: the folder emr is delivered by emr and fax. Valid: emr and email.",
+  "valid": true,
+  "sentences": []
+}

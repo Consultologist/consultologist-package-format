@@ -1,0 +1,7 @@
+{
+  "about": "A delivery folder's bundle is \"zip\" or null (chapter 6 § 6.8; this implementation's sentence). Invalid: the folder emr's bundle is tar. Valid: zip.",
+  "valid": false,
+  "sentences": [
+    "Deliverables folder 'deliverables/emr' has bundle tar; write \"zip\" or null."
+  ]
+}
