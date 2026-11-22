@@ -1,0 +1,5 @@
+{
+  "about": "A deliverable's reads fit its format: a Markdown one writes no object (chapter 6 § 6.6.4). The consult note is markdown_block. Invalid: it writes the draft's terms, a concept_list. Valid: the sections' text.",
+  "valid": true,
+  "sentences": []
+}

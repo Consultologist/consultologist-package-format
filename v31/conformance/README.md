@@ -763,6 +763,24 @@ note gated instead by the check `proofread`, which reads the note and the check 
 invalid side `consult_words` reading the note's state, its valid side counting the note's words; and the
 `compiled-documents` case `checked-note`.
 
+A deliverable's reads fit its format ([chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats)), held
+once the dialect has typed each output: a `markdown_block` deliverable writes no object or list (`S06-021`, *Use a
+renderer or a node*); a `plaintext` one writes no Markdown, read (`S06-021`, *Convert it in a node*: a Markdown
+node, a renderer's Markdown, a Markdown snippet it places) or in its own text (`S06-022`: a line whose first
+non-space character outside a tag is `#`, `-`, `*` or `>`, or that holds two `**`, quoted trimmed and cut to 40
+characters), and no object or list (`S06-021`); an object one is exactly one tag writing `node.<x>.value` of its
+format by type equality, with nothing before it and at most a final line end after it (`S06-023`, its sentence
+keeping `<x>` as written). For a deliverable these stand where `A07-007` stands for every other template. Each
+`deliverables` entry of `resolve.json` gains `escapes`, the output tags composition escapes: in a `markdown_block`
+deliverable, each output of a plain-text format, a string, an enum, a date, a number or a boolean, in its body or
+in a Markdown snippet it places (with that snippet's site as `unit`), and a plain-text snippet it places, once, at
+its placement; never a renderer's output; `[]` for a `plaintext` or object deliverable. It adds 3 cases, 6
+packages, on the same package: `S06-021` (the consult note writing the draft's terms), `S06-022` (the note made
+`plaintext`, its heading written `## Sections`) and `S06-023` (the note a `concept_list`, the terms written with
+text before them); each invalid side is one text replacement. Two earlier cases changed so that a plain-text
+note does not also read the Markdown draft: the invalid sides of `S05-024` and `S05-025` pipe the plan, not the
+draft, into `string.upcase`. The four `compiled-documents` cases gain `escapes` on every deliverable.
+
 The area's own sentences, which are not in `sentences.json`, are:
 
 | Id | Sentence | Rule |

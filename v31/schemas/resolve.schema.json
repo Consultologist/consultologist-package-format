@@ -598,7 +598,8 @@
           "type": "object",
           "required": [
             "delivery",
-            "bundle"
+            "bundle",
+            "escapes"
           ],
           "properties": {
             "delivery": {
@@ -619,11 +620,36 @@
                 null
               ],
               "description": "The folder's bundle as its index.json writes it: \"zip\", or null when it writes none."
+            },
+            "escapes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "unit",
+                  "at"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "unit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The unit whose text holds the output (a placed snippet, snippet.<id>), or null for the deliverable's own body: as a runSpots entry's unit."
+                  },
+                  "at": {
+                    "type": "string",
+                    "description": "<line>:<column> of the output tag's {{ in that text, as a runSpots entry's at."
+                  }
+                }
+              },
+              "description": "Each output tag whose value composition escapes (chapter 6 § 6.6.4), in order of appearance with placed snippets expanded: in a markdown_block deliverable, an output of plain text, a string, a number or a boolean, and a placed plain-text snippet once, whole. [] for a plaintext or object deliverable."
             }
           }
         }
       ],
-      "description": "A deliverable entry: a flat-map entry that also carries delivery and bundle, as its delivery folder's index.json writes them (the engine loads only resolve.json)."
+      "description": "A deliverable entry: a flat-map entry that also carries delivery and bundle, as its delivery folder's index.json writes them (the engine loads only resolve.json), and escapes, the outputs composition escapes."
     },
     "entry": {
       "type": "object",

@@ -125,6 +125,7 @@
         "check": null,
         "whenEmpty": "fail",
         "delivery": [],
+        "escapes": [],
         "reads": [
           "node.plan.value"
         ],

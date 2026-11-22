@@ -3,4 +3,4 @@
 ---
 {{ node.plan.content }}
 
-Run {{ input.consult_draft.content | string.upcase run.id }}
+Run {{ node.plan.content | string.upcase run.id }}

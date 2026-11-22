@@ -5170,10 +5170,15 @@ and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the
 `renderers`, `snippets`, `macros` and `deliverables` entries carry their header members the same
 way, with `body`, `bodyHash`, `reads`, `runDependent`, `modelDerived`, `renders` and `runSpots`. A
 deliverable's `reads` are its sources: the retired `sources` member is derived from them.
- Each `deliverables` entry also carries `delivery` and `bundle`, as its delivery folder's `index.json` writes
-them ([chapter 6](#6-checks-deliverables-and-the-profile) § 8): `delivery` an array of `email`, `pdf`, `emr` and `zip`, `bundle` `"zip"` or `null`, and `[]` and
-`null` when the folder writes none. They are on the entry because the engine loads only `resolve.json`
-(§ 7.1); the schema requires both (#1505).
+
+Each `deliverables` entry also carries `delivery` and `bundle`, as its delivery folder's `index.json`
+writes them ([chapter 6](#6-checks-deliverables-and-the-profile) § 6.8): `delivery` an array of `email`,
+`pdf`, `emr` and `zip`, `bundle` `"zip"` or `null`, and `[]` and `null` when the folder writes none. It
+also carries `escapes`: `{ "unit": <site or null>, "at": "<line>:<column>" }` for each output tag whose
+value composition escapes ([chapter 6](#6-checks-deliverables-and-the-profile) § 6.6.4), in order of
+appearance with placed snippets expanded, `unit` and `at` as in `runSpots`; `[]` for a `plaintext` or
+object deliverable. They are on the entry because the engine loads only `resolve.json` (§ 7.1); the
+schema requires all three (#1505).
 
 #### 7.2.6 `sourceHash`
 

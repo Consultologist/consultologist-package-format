@@ -3,4 +3,4 @@
 ---
 {{ node.plan.content }}
 
-Dated {{ input.consult_draft.content | string.upcase node.today.value }}
+Dated {{ node.plan.content | string.upcase node.today.value }}

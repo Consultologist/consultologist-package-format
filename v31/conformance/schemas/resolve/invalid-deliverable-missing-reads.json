@@ -126,6 +126,7 @@
         "whenEmpty": "fail",
         "delivery": [],
         "bundle": null,
+        "escapes": [],
         "runDependent": false,
         "profileCarrying": false,
         "modelDerived": true,

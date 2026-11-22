@@ -1,5 +1,5 @@
 {
-  "about": "An output that reads a run fact reads nothing else (chapter 5 § 5.4). The note writes the run's id. Invalid: it pipes the draft into string.upcase with run.id. Valid: run.id alone.",
+  "about": "An output that reads a run fact reads nothing else (chapter 5 § 5.4). The note writes the run's id. Invalid: it pipes the plan into string.upcase with run.id. Valid: run.id alone.",
   "valid": true,
   "sentences": []
 }

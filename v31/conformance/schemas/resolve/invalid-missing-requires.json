@@ -112,6 +112,7 @@
         "whenEmpty": "fail",
         "delivery": [],
         "bundle": null,
+        "escapes": [],
         "reads": [
           "node.plan.value"
         ],

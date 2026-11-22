@@ -1,0 +1,7 @@
+{
+  "about": "An object deliverable's template is one node's value of its format and nothing else (chapter 6 § 6.6.4). The consult note is a concept_list. Invalid: it writes 'The terms: ' before the draft's terms. Valid: the terms alone.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'consult' is concept_list; its template is {{ node.<x>.value }} and nothing else."
+  ]
+}

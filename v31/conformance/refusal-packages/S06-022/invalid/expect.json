@@ -1,0 +1,7 @@
+{
+  "about": "A plain-text deliverable writes no Markdown syntax (chapter 6 § 6.6.4). The consult note is plaintext. Invalid: its first line is the heading '## Sections'. Valid: the line 'Sections'.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'consult' is plaintext, and line 1 writes Markdown ('## Sections')."
+  ]
+}
