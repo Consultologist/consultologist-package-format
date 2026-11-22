@@ -3988,7 +3988,7 @@ record shows which was false. The folder is a namespace: `macro.<folder>.<id>`.
 - **A per-run choice input takes the macro's id and label**, and is joined
   with `and` to any existing `if`. The Create page shows three states (unset, yes, no), and unset
   is sent as `null`. A migrated choice whose id is already an input's id gets the suffix
-  `_macro` (`letrozole` → `letrozole_macro`), reported by the migration.
+  `_macro` (`letrozole` → `letrozole_macro`), reported by the migration. A `MacroChoices` entry keyed by a macro's id sets the one boolean input that macro's `if` reads ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647); [chapter 10 § 10.3](#103-per-run-macro-choices-become-boolean-inputs)).
 - One classifier per macro, per node, per item. A classifier answering several questions is
   [#1416](https://github.com/Consultologist/Consultologist-Blazor/issues/1416) (Milestone 40).
 
@@ -6464,7 +6464,7 @@ otherwise** ([decided](https://github.com/Consultologist/Consultologist-Blazor/i
 the entry is mapped through the macro's `if`, not through the id. For `letrozole`, renamed `letrozole_macro` because an input
 `letrozole` exists (§ 10.6), a rerun's `{ "letrozole": true }` sets `letrozole_macro`, the input the macro's `if` reads, and
 leaves the input `letrozole` alone. When the macro's `if` reads no single boolean input (or the id names no macro), the entry is
-refused (A07-015), and an input also given in `Inputs` with another value is refused (A07-016).
+refused with a sentence.
 
 ### 10.4 Hand edits, with notices
 
