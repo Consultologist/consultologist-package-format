@@ -515,8 +515,9 @@ gives other bytes:
   no `reproducible`: a call's is held against its `ret`'s, which is in `nodes`.
 - **`graph`.** `order` is level by level: a flow node comes before its body, each level in a
   topological order of the edges lifted to it, ties by source order (inputs, `nodes/`, `checks/`,
-  deliverables). A `gates` edge orders nothing: a deliverable is composed before its gate runs, so a gate
-  that reads it comes after it, by the `reads` edge from the deliverable. There are no edges between a function's own nodes, only `calls` from
+  deliverables). The order is topological over every edge but `gates`, since a gate check may read the
+  deliverable it gates ([chapter 6 § 6.7](../../package-format-v31.md#67-gating-and-outcomes)): a gate that reads it
+  comes after it, by the `reads` edge from the deliverable, and a gate that reads only nodes keeps its place. There are no edges between a function's own nodes, only `calls` from
   `function.<id>` to each call; a loop over another loop's `.items` has a `for` and an `aligned`
   edge from it.
 - **Deliverables** carry their folder's `delivery` and `bundle`, as the `index.json` of the folder
@@ -754,8 +755,10 @@ every check that check depends on, through checks only (their reads and conditio
 `ret` and its body): a check in the gate set reads the deliverable as soon as it is composed, and may not read its
 `.state`, which it decides (`A08-003`); every other check reading it waits for its outcome, so waits for its gate.
 Circles are searched over the nodes, the checks and the deliverables together with those waits, and said as
-`A05-003`, which names each by its bare id (a deliverable by its key without the root): two gates that each read
-the other's deliverable wait for each other. It adds 1 case, 2 packages, on the same package with the consult
+`A05-003`, which names each by its bare id (a deliverable by its key without the root) and passes through the
+deliverable a check waits for: two gates that each read the other's deliverable wait for each other, said as
+*"Node 'gate_a' reads node 'emr.summary', which reads node 'gate_b', which reads node 'emr.consult', which reads
+node 'gate_a': …"* (the row's words name every step a node). It adds 1 case, 2 packages, on the same package with the consult
 note gated instead by the check `proofread`, which reads the note and the check `consult_words`: `A08-003`, its
 invalid side `consult_words` reading the note's state, its valid side counting the note's words; and the
 `compiled-documents` case `checked-note`.
