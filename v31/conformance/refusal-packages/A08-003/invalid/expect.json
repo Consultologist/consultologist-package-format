@@ -1,0 +1,7 @@
+{
+  "about": "A check the deliverable waits for reads its .content, not its .state (chapter 6 §§ 6.1.2, 6.7; this implementation's sentence). The consult note is gated by the check proofread, which reads the note and the check consult_words. Invalid: consult_words reads the note's state, which proofread decides. Valid: it counts the note's words.",
+  "valid": false,
+  "sentences": [
+    "Check 'consult_words' reads deliverable.emr.consult.state, and deliverable 'emr.consult' waits for check 'consult_words' through its check 'proofread': read its .content, or read the state in a check it doesn't wait for."
+  ]
+}

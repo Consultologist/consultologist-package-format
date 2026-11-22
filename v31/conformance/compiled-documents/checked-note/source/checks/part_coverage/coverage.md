@@ -1,0 +1,3 @@
+---
+{ "kind": "computed", "producer": "computed", "label": "Section covers its planned terms", "description": null, "format": "check_result", "reproducible": true, "modelDerived": true, "runDependent": false, "profileCarrying": false, "if": { "===": [{ "var": "item.state" }, "completed"] }, "expression": { "terms_subset": [{ "var": "item.nodes.planned_terms.value" }, { "var": "item.nodes.section_terms.value" }, "The section does not cover every term its plan names."] } }
+---

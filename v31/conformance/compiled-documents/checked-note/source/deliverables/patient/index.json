@@ -1,0 +1,1 @@
+{ "description": null, "items": ["patient_letter"], "delivery": ["email", "pdf"], "bundle": null }

@@ -821,6 +821,8 @@
         "A08-001/valid",
         "A08-002/invalid",
         "A08-002/valid",
+        "A08-003/invalid",
+        "A08-003/valid",
         "S01-002/invalid",
         "S01-002/valid",
         "S01-003/invalid",
@@ -1476,6 +1478,7 @@
       "about": "Fixture packages with their expected resolve.json and lock.json bytes and hashes, requires and needs, and the publish report.",
       "exportedBy": "area 05, resolver and lock, and area 11, registry and publish",
       "cases": [
+        "checked-note",
         "conditional",
         "functions",
         "nested-note"

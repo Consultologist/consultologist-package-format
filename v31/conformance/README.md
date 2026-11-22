@@ -457,7 +457,11 @@ branch and two `if`s inside loops, after [§ 4.5.4](../../package-format-v31.md#
 and `functions` (a function called in a loop over a snippet folder, a check loop over the loop's
 `.items`, and the deliverable `deliverable.emr.consult` gated by a check, in a delivery folder that
 delivers to two kinds as one zip, after [§ 4.7.11](../../package-format-v31.md#4711-example-a-made-up-package),
-with two agents the example does not have). A case is a folder:
+with two agents the example does not have). Area 08 adds a fourth, `checked-note` (a check loop over a
+production loop's `.items`, an aggregate over it, and a gate check that reads the composed note's
+`.content`, beside an ungated patient letter in a delivery folder delivered by email and PDF, after
+[chapter 6 § 6.3.4](../../package-format-v31.md#634-example-a-made-up-package), cut down; see
+[The checks (area 08)](#the-checks-area-08)). A case is a folder:
 
 ```
 compiled-documents/<case>/source/manifest.json, nodes/index.json, …
@@ -491,7 +495,8 @@ gives other bytes:
   every body is known and the documents are complete (area 07; see
   [The dialect (area 07)](#the-dialect-area-07)).
 - **`reads`** of a read through `node`, `check`, `input` or `param` is the key and its first member
-  (`node.plan.value`, `input.consult_draft.content`); one through `item`, `pass`, `run`, `profile` or
+  (`node.plan.value`, `input.consult_draft.content`), and so is a check's read of a deliverable
+  (`deliverable.note.content`, the key the longest that names one); one through `item`, `pass`, `run`, `profile` or
   a snippet is the path as written (`item.value.title`, `snippet.standards`); distinct, sorted. A flow
   node's `reads` are its header's (its source, its conditions), not its `ret`'s.
 - **Keys.** A `node.<id>` or `check.<id>` at the start of a reference or a `var` path is written with
@@ -510,7 +515,8 @@ gives other bytes:
   no `reproducible`: a call's is held against its `ret`'s, which is in `nodes`.
 - **`graph`.** `order` is level by level: a flow node comes before its body, each level in a
   topological order of the edges lifted to it, ties by source order (inputs, `nodes/`, `checks/`,
-  deliverables). There are no edges between a function's own nodes, only `calls` from
+  deliverables). A `gates` edge orders nothing: a deliverable is composed before its gate runs, so a gate
+  that reads it comes after it, by the `reads` edge from the deliverable. There are no edges between a function's own nodes, only `calls` from
   `function.<id>` to each call; a loop over another loop's `.items` has a `for` and an `aligned`
   edge from it.
 - **Deliverables** carry their folder's `delivery` and `bundle`, as the `index.json` of the folder
@@ -734,12 +740,33 @@ each delivery folder's `delivery` lists only `email`, `pdf`, `emr` and `zip`, an
 It adds 5 cases, 10 packages, on the same package: `S06-018`, `S06-020`, `S06-025`, `S06-026` and
 `A08-002`; each invalid side is one text replacement.
 
+A check reads a deliverable ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read),
+[§ 6.6.7](../../package-format-v31.md#667-deliverables-are-terminal), [§ 6.7](../../package-format-v31.md#67-gating-and-outcomes)):
+a rule of a node under `checks/` reads `deliverable.<id>.content` (the composed text, a `string` that can be
+`null`), `.value` (an object format's value, else the text; can be `null`) and `.state` (`released`, `held`,
+`skipped` or `blocked`), the id the longest key path that names a deliverable (`deliverable.emr.note`).
+[Chapter 3 § 3.4.1](../../package-format-v31.md#341-the-roots) lists `deliverable` among the roots JSON Logic never
+reads; chapter 6, which owns checks, says three times that checks read one, so this implementation reads it
+under `checks/` only: everywhere else (a node in `nodes/`, a function, a deliverable's `if`, a macro's `if`) it
+stays `S03-019`, and in a template `S05-020`. The read is a `reads` edge from the deliverable to the check, and the
+check takes the deliverable's three flags as it takes any value's. A deliverable's *gate set* is its `check` and
+every check that check depends on, through checks only (their reads and conditions, a check loop's source, its
+`ret` and its body): a check in the gate set reads the deliverable as soon as it is composed, and may not read its
+`.state`, which it decides (`A08-003`); every other check reading it waits for its outcome, so waits for its gate.
+Circles are searched over the nodes, the checks and the deliverables together with those waits, and said as
+`A05-003`, which names each by its bare id (a deliverable by its key without the root): two gates that each read
+the other's deliverable wait for each other. It adds 1 case, 2 packages, on the same package with the consult
+note gated instead by the check `proofread`, which reads the note and the check `consult_words`: `A08-003`, its
+invalid side `consult_words` reading the note's state, its valid side counting the note's words; and the
+`compiled-documents` case `checked-note`.
+
 The area's own sentences, which are not in `sentences.json`, are:
 
 | Id | Sentence | Rule |
 |---|---|---|
 | `A08-001` | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
 | `A08-002` | *"Deliverables folder '\<path>' has bundle \<value>; write "zip" or null."* | a delivery folder's `bundle` is `"zip"` or `null` ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)) |
+| `A08-003` | *"Check '\<id>' reads deliverable.\<deliverable>.state, and deliverable '\<deliverable>' waits for check '\<id>' through its check '\<gate>': read its .content, or read the state in a check it doesn't wait for."* | a check in a deliverable's gate set (its `check` and every check that check depends on) reads the composed deliverable, never its `.state`, which waits for that check ([chapter 6 § 6.7](../../package-format-v31.md#67-gating-and-outcomes); this implementation's rule, from the chapter's "a deliverable is readable by checks only" and its outcomes) |
 
 ## The schemas' examples
 

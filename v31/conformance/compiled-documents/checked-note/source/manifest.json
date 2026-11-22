@@ -1,0 +1,24 @@
+{
+  "name": "example-checked-note",
+  "version": "v2026.12.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Checked note demo",
+  "description": [
+    "A fictional package for tests.",
+    "Not intended for clinical use."
+  ],
+  "tags": [
+    "demo",
+    "fictional"
+  ],
+  "inputs": {
+    "consult_draft": {
+      "label": "Consult draft",
+      "description": null,
+      "format": "markdown_block",
+      "required": true,
+      "channel": null
+    }
+  }
+}
