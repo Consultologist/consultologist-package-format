@@ -802,6 +802,18 @@ assessment, a renderer's output and a placed plain-text snippet), `deliverable-p
 escapes nothing) and `deliverable-object` (a `section_plan` note, its value's members sorted). Area 07's 40 cases are
 unchanged, byte for byte; `entry.txt` may now name a deliverable.
 
+Three rulings of the owner on area 07's dialect ([#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505)) are
+held too, and add no case. A folder item's `.content` is `markdown_block`, whatever the folder's `format`, which types
+its header only ([chapter 5 § 5.6.2](../../package-format-v31.md#562-snippet-folders)): a `markdown_block` deliverable
+writes `snippet.<folder>.<id>.content` as it is, never in its `escapes`, and a `plaintext` one refuses it (`S06-021`).
+`A07-013` holds at every depth: in a loop over a loop's `.items`, however many loops below the folder's, the `item` and
+every read along the chain to the folder item (`item.item` one loop down, `item.item.value.item` two, and so on)
+carries its body, so a `call`'s `with` or a `computed` node's `expression` reading one is refused when a body holds a
+tag; a read that leaves the chain (an element's `content`, the folder item's `value`) carries none. Its case stays
+area 07's, one per sentence. And a template the engine fails to read in a way no text explains (an exception other
+than Scriban's own for unreadable text) is `A08-006`, the engine's fault, not `A07-005`, the author's; no package
+produces it, so it has no case.
+
 The area's own sentences, which are not in `sentences.json`, are:
 
 | Id | Sentence | Rule |
@@ -809,6 +821,7 @@ The area's own sentences, which are not in `sentences.json`, are:
 | `A08-001` | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
 | `A08-002` | *"Deliverables folder '\<path>' has bundle \<value>; write "zip" or null."* | a delivery folder's `bundle` is `"zip"` or `null` ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)) |
 | `A08-003` | *"Check '\<id>' reads deliverable.\<deliverable>.state, and deliverable '\<deliverable>' waits for check '\<id>' through its check '\<gate>': read its .content, or read the state in a check it doesn't wait for."* | a check in a deliverable's gate set (its `check` and every check that check depends on) reads the composed deliverable, never its `.state`, which waits for that check ([chapter 6 § 6.7](../../package-format-v31.md#67-gating-and-outcomes); this implementation's rule, from the chapter's "a deliverable is readable by checks only" and its outcomes) |
+| `A08-006` | *"\<Subject> couldn't be checked: the engine failed reading its template. This is a fault in the engine, not in the package; report it."* | reading a template failed in a way no text explains: a fault of the engine, never said as the author's `A07-005` ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect); ruled by the owner on [#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505); no package produces it, so it has no case) |
 
 ## The schemas' examples
 
