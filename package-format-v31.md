@@ -6024,7 +6024,10 @@ The record moves out of the Durable entity:
 
 - **Each record row is written once, to a table, when it finishes,** keyed by the job id and the
   escaped rooted key, and never rewritten. **The write is insert-if-absent:** an identical second
-  write (a Durable replay) is a no-op; a differing one is refused and recorded as an engine fault.
+  write (a Durable replay) is a no-op; a differing one is refused and recorded as an engine fault:
+  the first row stays, the job fails, and its record is sealed with the first row. A row larger
+  than the table holds is not written; the job fails with its own sentence (`A09-002`), naming the
+  row's key.
 - **The entity keeps only the job header and progress.** Events carry keys, not row contents; the
   browser fetches a finished row by its key.
 - **A job that finishes producing and has deliveries to make is `delivering`** (§ 8.11); its
@@ -6179,7 +6182,8 @@ record's JSON form (camelCase).
 
 - **Unchanged and still recorded:** `packageSpecVersion` (31), `workflowPackage`, `packageFormatRef`,
   `provenanceRef`, `formatsRef`, `catalogRef`, `engineCommit`, `engineRelease`, `apiHost`, the
-  terminology snapshot. `formatsRef` and the agents catalogue version now also appear in `lockHash`'s
+  terminology snapshot (`terminology`, `null` at 31: a 31 job's start reads no terminology server).
+  `formatsRef` and the agents catalogue version now also appear in `lockHash`'s
   document; the header keeps them for readers of older records.
 - **Retired at 12** (never written by a 31 job; older records are read exactly as today):
   `macroChoices` and `excludedMacros`, since per-run macro choices are boolean inputs at 31 and their
@@ -6219,8 +6223,13 @@ record's JSON form (camelCase).
   the record's whole life, before and after the text drop. Its full layout and the header's own
   members (`schemaVersion`, `jobId`, `status`, `error`, `createdAtUtc`, `completedAtUtc`,
   `effectiveInputHash`, `effectiveInputHashVersion`, `inputs`, `tokens`) are the provenance
-  contract's.
-- **Rows as built:** a node row also records its `itemId`, `positionName`, `function` and `depth`;
+  contract's; `tokens` is the job's sums `{ input, output, total }` over its agent rows, `null` when
+  it made no model call, and a document input keeps its `extractor`. **Once the job is terminal its
+  header never changes,** so the document assembled again from the rows hashes to `recordHash`.
+- **Rows as built:** every node, check and deliverable row keeps storage 11's clock members,
+  `startedAtUtc`, `completedAtUtc` and `durationMs`, from the orchestration's replay-safe clock
+  (`null` all three for a row that never started: skipped, not run, or refused by a limit), and
+  storage 11's `validation` is `invalid` at 12. A node row also records its `itemId`, `positionName`, `function` and `depth`;
   a loop, a `while` and a pass of a `while` their own members (`parallel`, `maxParallel`,
   `itemLabel`, `count`, `max`, `checkFirst`, `passes`, `stopped`, `pass`, `reason`); a check row the
   `check_result`'s `passed` and `total` and the hashes and sizes of its `uncovered` and `untested`
