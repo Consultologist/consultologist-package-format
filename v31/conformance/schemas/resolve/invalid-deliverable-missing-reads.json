@@ -124,6 +124,8 @@
         "if": null,
         "check": null,
         "whenEmpty": "fail",
+        "delivery": [],
+        "bundle": null,
         "runDependent": false,
         "profileCarrying": false,
         "modelDerived": true,

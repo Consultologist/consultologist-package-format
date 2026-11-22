@@ -236,7 +236,7 @@
         "pattern": "^deliverable\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
       },
       "additionalProperties": {
-        "$ref": "#/$defs/entry"
+        "$ref": "#/$defs/deliverable"
       },
       "description": "Every deliverable, keyed by its path (deliverable.emr.note)."
     },
@@ -588,6 +588,42 @@
         }
       },
       "description": "A function: the derived members of every entry (chapter 7 § 7.2.5), its own flat nodes map; its remaining members are the source schemas' (chapter 4)."
+    },
+    "deliverable": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/entry"
+        },
+        {
+          "type": "object",
+          "required": [
+            "delivery",
+            "bundle"
+          ],
+          "properties": {
+            "delivery": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "email",
+                  "pdf",
+                  "emr",
+                  "zip"
+                ]
+              },
+              "description": "The delivery kinds its delivery folder's index.json writes, in order; [] when the folder writes none."
+            },
+            "bundle": {
+              "enum": [
+                "zip",
+                null
+              ],
+              "description": "The folder's bundle as its index.json writes it: \"zip\", or null when it writes none."
+            }
+          }
+        }
+      ],
+      "description": "A deliverable entry: a flat-map entry that also carries delivery and bundle, as its delivery folder's index.json writes them (the engine loads only resolve.json)."
     },
     "entry": {
       "type": "object",

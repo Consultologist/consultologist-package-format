@@ -121,6 +121,8 @@
         "if": null,
         "check": null,
         "whenEmpty": "fail",
+        "delivery": [],
+        "bundle": null,
         "reads": [
           "node.plan.value"
         ],

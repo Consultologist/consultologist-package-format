@@ -5170,6 +5170,10 @@ and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the
 `renderers`, `snippets`, `macros` and `deliverables` entries carry their header members the same
 way, with `body`, `bodyHash`, `reads`, `runDependent`, `modelDerived`, `renders` and `runSpots`. A
 deliverable's `reads` are its sources: the retired `sources` member is derived from them.
+ Each `deliverables` entry also carries `delivery` and `bundle`, as its delivery folder's `index.json` writes
+them ([chapter 6](#6-checks-deliverables-and-the-profile) § 8): `delivery` an array of `email`, `pdf`, `emr` and `zip`, `bundle` `"zip"` or `null`, and `[]` and
+`null` when the folder writes none. They are on the entry because the engine loads only `resolve.json`
+(§ 7.1); the schema requires both (#1505).
 
 #### 7.2.6 `sourceHash`
 
