@@ -1944,7 +1944,7 @@
       "id": "S05-056",
       "part": "05",
       "section": "Refusals",
-      "sentence": "The reply has a marker for '<id>', which isn't a macro.",
+      "sentence": "The reply has a marker that names no macro.",
       "audience": "author"
     },
     {

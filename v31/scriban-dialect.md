@@ -342,7 +342,7 @@ The reply is checked against the markers it was asked for; each of these goes to
 
 - V-3 (S05-055): *"The reply has a marker for macro '\<id\>', which wasn't offered."*
 
-- V-4 (S05-056): *"The reply has a marker for '\<id\>', which isn't a macro."*
+- V-4 (S05-056): *"The reply has a marker that names no macro."*
 
 - V-5 (S05-057): *"The reply writes the marker for macro '\<id\>' \<inside a sentence \| alone on a line\>, but it was asked for \<alone on a line \| inside a sentence\>."*
 

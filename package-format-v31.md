@@ -1155,11 +1155,13 @@ prepares a copy;
 5. `title`, `$id` and **the keywords strict mode rejects** (such as `format: "date"`) are removed.
    **The list of rejected keywords comes from the attested agent definition,** not from the
    format, so a provider that accepts more is a new agent version, not a format change;
-6. the result is sent inside the engine's envelope, which supplies the top-level object strict
-   mode requires, so a text or list format can be sent too.
+6. a format whose root is an object is sent **as it is**; any other root (a text, a list, a
+   number) is sent inside the engine's envelope, `{ "value": … }`, which supplies the top-level
+   object strict mode requires, so a text or list format can be sent too. The envelope is
+   identified by the engine version, not by a hash of its own.
 
 **The sent format is recorded:** the row holds `formatHash` (the full format), `sentFormatHash`
-(what the model received) and the removed keywords as JSON pointers
+(the hash of the stripped format of steps 1 to 5, **taken before the envelope wraps it**) and the removed keywords as JSON pointers
 ([chapter 9](#9-the-record)). History shows them as *"Not sent to the model: …"*. The reply is still
 validated against the full format (§ 2.3.4).
 
@@ -3681,8 +3683,15 @@ real values, so a template reading it is run-specific through that read.
 **A body with no run spot** has one hash. The record's `runNeutralHash` is written only when the
 body has a run spot, and is `null` otherwise ([chapter 9](#9-the-record)).
 
+**A macro body's `run.*` is filled in directly,** with no spot in the placing body: the body is
+written into the reply after the model has answered, so it is never part of a sent text, and the
+macro's row carries its own `runNeutralHash` and `runSpots` ([chapter 9](#9-the-record)), so macro
+rows compare across runs.
+
 **The advance warning.** The Editor and publish say when a package reads `run.*` or a
-run-dependent value, naming each spot. The warning text is W-1 (§ Refusals). The record side
+run-dependent value, naming each spot. The warning text is W-1 (§ Refusals); for a macro body the
+subject is the macro, and "its main hash" is its row's `contentHash`, compared on the macro row's
+run-neutral hash. The record side
 (each spot's output and hash, the run facts kept once per run) is in [chapter 9](#9-the-record).
 
 ### 5.5 Renderers
@@ -4074,6 +4083,10 @@ naming the macro):
 Trailing spaces after a block marker are removed, never a failure: in Markdown two spaces make a
 hard line break, and in plain text they'd still be in the hashed bytes.
 
+**A macro body drops exactly one final line ending:** the one that ends the file, taken off the
+source before it renders, so a line ending a value writes at the end stays and the marker's line
+does not break mid-sentence. The macro row's `contentHash` is taken of the body after that.
+
 **4. The body** is rendered by the engine, in the placing scope, **before** substitution
 (§ 5.3.2). It's the package's own text, checked at publish. **A body that reads `profile.*`
 makes the node's value profile-carrying** ([chapter 3 § 4.6](#346-profile-carrying-is-contagious)): a prompt, a part or a
@@ -4211,13 +4224,13 @@ marks a placeholder.
 - V-1: *"The reply has no marker for macro '\<id\>'."*
 - V-2: *"The reply has the marker for macro '\<id\>' \<n\> times."*
 - V-3: *"The reply has a marker for macro '\<id\>', which wasn't offered."*
-- V-4: *"The reply has a marker for '\<id\>', which isn't a macro."*
+- V-4: *"The reply has a marker that names no macro."* (fixed text: it quotes nothing from the reply, since a recorded sentence is kept outside text retention and an id the model wrote, like `smith_john`, passes the id pattern)
 - V-5: *"The reply writes the marker for macro '\<id\>' \<inside a sentence | alone on a line\>, but it was asked for \<alone on a line | inside a sentence\>."*
 - V-6: *"The reply has text after the marker for macro '\<id\>' on its line."*
 - V-7: *"The reply has the markers out of order: '\<id\>' before '\<other\>'."*
 
 **Warnings** (publish and the Editor; not refusals)
-- W-1: *"\<Subject\> reads \<run.fact or run-dependent value\> at line \<n\>. Its main hash differs between runs; runs are compared on the run-neutral hash."*
+- W-1: *"\<Subject\> reads \<run.fact or run-dependent value\> at line \<n\>. Its main hash differs between runs; runs are compared on the run-neutral hash."* (For a macro body the subject is the macro; its row's `runNeutralHash` is the one runs are compared on.)
 - W-2: *"\<Subject\> pipes renderer.\<id\>, a markdown_block, inside a line at line \<n\>."*
 
 ## 6. Checks, deliverables and the profile
@@ -5928,9 +5941,14 @@ limits pass.
   over 30 days). **Activities still running at the limit** are recorded with the row state
   `cancelled`, and their late results are ignored.
 - **Total-work limits,** starting at: **200 items per loop instance**, **500 agent calls per job**
-  (a retry is part of its call), and **100,000 steps per render**. Each is checked at run time and
-  fails the node or the job with a sentence (§ 8.13), and is noted at publish when the package's
-  worst case can exceed it (§ 8.8).
+  (a retry is part of its call), **10,000 instances per job** and **100,000 steps per render**.
+  The instances limit is the tenth limit: nested loops can otherwise open 200³ frames before any
+  agent call counts. **An instance is anything the runner opens with a row key:** a node, check or
+  deliverable instance, a loop item, a pass, a call. It is checked where the runner opens one; past
+  it the job fails with *"The job reached \<n\> steps, the most this engine runs for one job."*
+  and the instance is not opened. The other limits are each checked at run time and fail the node
+  or the job with a sentence (§ 8.13), and each is noted at publish when the package's worst case
+  can exceed it (§ 8.8).
 - **Delivering has its own window:** **`deliveryMinutes` (15)**, outside the 30-minute production
   limit. Production's 30 minutes ends when the last node finishes; the job then enters
   `delivering` (§ 8.11), so slow deliveries never fail the job for time.
@@ -5947,6 +5965,7 @@ limits pass.
   | `deliveryAttempts` | 3 | the attempts each destination gets |
   | `loopItems` | 200 | items per loop instance |
   | `jobAgentCalls` | 500 | agent calls per job |
+  | `jobInstances` | 10,000 | instances one job may open (setting `ConsultGeneration__JobInstances`) |
   | `renderSteps` | 100,000 | steps per render |
 
 - **Every retry is recorded on the node's row** ([chapter 9](#9-the-record)): its time, the wait
@@ -6074,7 +6093,9 @@ every sentence of this format with its audience. `<…>` marks a placeholder.
   running is recorded *"cancelled: the job didn't finish within \<n\> minutes"*.
 - The total-work limits (§ 8.7), recorded and shown in History:
   *"Loop '\<id\>' was given \<n\> items; this engine runs at most \<limit\> per loop."*,
-  *"The job reached \<limit\> agent calls, the most this engine runs for one job."* and
+  *"The job reached \<limit\> agent calls, the most this engine runs for one job."*,
+  *"The job reached \<n\> steps, the most this engine runs for one job."* (`<n>` written as the
+  other limits are, `10,000`) and
   *"\<Subject\> stopped rendering: it took more than \<limit\> steps."*
 - A destination whose delivery failed after its retries (§ 8.11), shown in History; the job stays
   completed:
@@ -6147,9 +6168,9 @@ record's JSON form (camelCase).
   |---|---|---|---|
   | `resolveHash` | string (`sha256:…`) | null below 31 | the SHA-256 of the canonical `resolve.json` bytes the job ran |
   | `lockHash` | string (`sha256:…`) | null below 31 | the SHA-256 of the canonical `lock.json` bytes |
-  | `versionsRan` | object | null below 31 | **the exact versions that actually ran,** which can differ from the lock within its range. It takes **exactly `lock.json`'s shape,** so the two compare member by member: `resolver` (`packageFormat`, `dialect`), `libraries` (`Scriban`, `Markdig`, `Corvus.Text.Json.JsonLogic`, `Corvus.JsonSchema`), `evaluator`, `operations` (those the package uses), `builtins`, `culture` (`"invariant"`) and `runtime` (`dotnet`, the .NET runtime, and `unicode`, its Unicode version), each as `lock.json` defines it ([chapter 7 § 7.4.1](#741-members)). Whether `lock.json`'s `documentVersion`, `package`, `resolve` and `catalogues` appear in it is not yet stated. The member's shape is the provenance contract's (`provenance-record.md` § 6.3, [§ 9.5](#95-the-provenance-contract)) |
+  | `versionsRan` | object | null below 31 | **the exact versions that actually ran,** which can differ from the lock within its range. It is `lock.json`'s **nested shape minus `documentVersion`, `package` and `resolve`** (the record already holds their hashes), so the two compare member by member: `{ resolver: { packageFormat, dialect }, libraries, evaluator, operations, builtins, culture, runtime: { dotnet, unicode }, catalogues: { agents, formats, outputContracts } }`. `libraries` holds `Scriban`, `Markdig`, `Corvus.Text.Json.JsonLogic` and `Corvus.JsonSchema`; `operations` those the package uses; `culture` is `"invariant"`; `runtime` the .NET runtime and its Unicode version; `catalogues` the three catalogue versions the job ran, `outputContracts` `null` when the package uses none; each as `lock.json` defines it ([chapter 7 § 7.4.1](#741-members)). The member's shape is the provenance contract's (`provenance-record.md` § 6.3, [§ 9.5](#95-the-provenance-contract)) |
   | `recordHash` | string (`sha256:…`) | allowed | the hash of the canonical record document, sealed when delivery ends ([chapter 8 § 8.10](#810-where-the-record-is-written)); `null` until then, and below 31 |
-  | `limits` | object `{ maxAgentCalls, capacityWaitMinutes, serviceAttempts, jobMinutes, deliveryMinutes, deliveryAttempts, loopItems, jobAgentCalls, renderSteps }`, each an integer | null below 31 | every engine limit in force at job start, recorded once ([chapter 8 § 8.7](#87-retries-and-limits)): the per-job ceiling on agent calls in flight, the minutes a node may wait on 429s in all, the attempts allowed for another service failure, the minutes a job may run from orchestration start, the minutes delivery may take and the attempts each destination gets, and the total-work limits: items per loop instance, agent calls per job, and steps per render |
+  | `limits` | object `{ maxAgentCalls, capacityWaitMinutes, serviceAttempts, jobMinutes, deliveryMinutes, deliveryAttempts, loopItems, jobAgentCalls, jobInstances, renderSteps }`, each an integer | null below 31 | every engine limit in force at job start, recorded once ([chapter 8 § 8.7](#87-retries-and-limits)): the per-job ceiling on agent calls in flight, the minutes a node may wait on 429s in all, the attempts allowed for another service failure, the minutes a job may run from orchestration start, the minutes delivery may take and the attempts each destination gets, and the total-work limits: items per loop instance, agent calls per job, the instances one job may open, and steps per render |
   | `runFacts` | object | null below 31 | the raw value of each run fact the package reads, once per run; `{}` when it reads none |
   | `startedAtUtc` | string | never | when the job's orchestration started; the job limit is timed from here, not from creation or scheduling, so time queued or waiting behind a drain doesn't count |
   | `signatureBlockId` | string | allowed | the profile signature block the job used, by **id**, never its text; `null` when the package doesn't read `profile.signature` |
@@ -6172,8 +6193,15 @@ record's JSON form (camelCase).
   as written and checked ([chapter 2 § 2.1.3](#213-producer), [chapter 3](#3-expressions)); every row
   records its `producer`.
 - **The record holds hashes, ids, counts, reasons and names, never element values,** with the
-  exceptions the provenance contract lists: an item name drawn from a field, run facts and run spot
-  outputs, and printed conditions, which are package text.
+  exceptions the provenance contract lists: an item name that comes from package text, run facts
+  and the outputs of run spots that read raw `run.*` facts, and printed conditions, which are
+  package text.
+- **Retained text is never in a row.** Every text the retention rules delete after 7 days lives in
+  the job's text blobs, beside the record; a row member that would hold it holds `null` and its
+  hash. The sweep deletes blobs and never rewrites a row, so `recordHash` holds for the record's
+  life. Rows are in the table `ConsultGenerationRecordRows`, retained text in
+  `{appUserId}/{jobId}/text/…` blobs, and the canonical record in `{appUserId}/{jobId}/record.json`
+  (the provenance contract, § 6.1.1).
 - **Rows don't record a build:** every deploy is preceded by a drain ([chapter 8 § 8.9](#89-every-deploy-is-preceded-by-a-drain)),
   so the header's `engineCommit` and `engineRelease` hold for every row.
 
@@ -6193,11 +6221,15 @@ check.part_coverage.coverage                  a check inside a check loop
 deliverable.emr.note                          deliverables/emr/note.md
 ```
 
-- **A row key** is the rooted key, then `:` and the item path for an instance inside a loop or a
-  `while`: `node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge:3`,
-  `node.standards.section.standard_draft:3`, `check.part_coverage.coverage:2`. `.` separates
-  scopes, `/` separates path segments and `:` separates the key from the path; no id or item id
-  contains any of the three, and item paths never contain `:`.
+- **A row key** is the rooted key, then `:` and the ids of the items the instance sits in, from the
+  outermost loop inward, joined by `/`; and `#<n>` for a pass of a `while`, written where the
+  `while` sits in that path: `node.sections.paragraphs.draft_paragraph:2/1`,
+  `node.refine.judge#3` (the third pass of `refine`), `node.refine.sections#2:3` (item 3 of the
+  second pass), `node.standards.section.standard_draft:3`, `check.part_coverage.coverage:2`. `.`
+  separates scopes, `/` separates item ids, `:` separates the key from the path and `#` marks a
+  pass; **no id or item id contains any of the four,** and item paths never contain `:` or `#`.
+- **Item ids are 1-based everywhere a person sees them:** a loop's items by position, array
+  inputs included.
 - **Function calls:** inner rows are keyed through the call node's rooted key, never the function's
   name. The function's name is on the call's row. Two calls to the same function get different keys
   from their call nodes.
@@ -6222,10 +6254,14 @@ contain `:`.
 
 | Sub-row | Id |
 |---|---|
-| a renderer use | `<row key>/render:<n>`, `n` its 1-based position in the body: `node.identify_problem/render:1`, `node.sections.paragraphs.draft_paragraph:2/1/render:1` |
+| a renderer use | `<row key>/render:<n>`, `n` its 1-based number among the renderer uses of the whole entry, counted across every unit its text could place, placed or not, so the ids of one row may have gaps: `node.identify_problem/render:1`, `node.sections.paragraphs.draft_paragraph:2/1/render:1` |
 | a macro row | `<row key>/macro:<macro id>`: `node.assessment/macro:letrozole_prescription_text` |
-| a run spot | `<row key>/spot:<n>` |
+| a run spot | `<row key>/spot:<n>`, `n` its 1-based order of filling |
 | a decision | `<owner key>/if:<site>`: `node.standards.assessment:7/if:macro.letrozole_prescription_text` |
+
+A renderer use or a run spot inside a template `for` repeats per iteration, and each such sub-row
+carries `pass`, one 1-based number per enclosing template loop (or `null`): an id and its `pass`
+name one sub-row.
 
 A chain of renderers gives one sub-row per step (`…/render:1`, `…/render:2`). A decision's `site`
 is one of `self`, `case`, `pass.<n>`, `until.<i>`, `macro.<id>`, `macro-folder.<folder id>`,
@@ -6871,7 +6907,7 @@ running a workflow).
 | S05-053 | 5 · Refusals | *"The reply has no marker for macro '\<id\>'."* | author |
 | S05-054 | 5 · Refusals | *"The reply has the marker for macro '\<id\>' \<n\> times."* | author |
 | S05-055 | 5 · Refusals | *"The reply has a marker for macro '\<id\>', which wasn't offered."* | author |
-| S05-056 | 5 · Refusals | *"The reply has a marker for '\<id\>', which isn't a macro."* | author |
+| S05-056 | 5 · Refusals | *"The reply has a marker that names no macro."* | author |
 | S05-057 | 5 · Refusals | *"The reply writes the marker for macro '\<id\>' \<inside a sentence \| alone on a line\>, but it was asked for \<alone on a line \| inside a sentence\>."* | author |
 | S05-058 | 5 · Refusals | *"The reply has text after the marker for macro '\<id\>' on its line."* | author |
 | S05-059 | 5 · Refusals | *"The reply has the markers out of order: '\<id\>' before '\<other\>'."* | author |

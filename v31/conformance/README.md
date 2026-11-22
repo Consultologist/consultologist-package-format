@@ -857,6 +857,7 @@ sentence said only after publish has none.
 | Sentences | Why no case |
 |---|---|
 | `A08-006` | publish says it only when the engine's own reader fails; no package produces it (`ChecksNotShipped`) |
+| `A09-001` | said at run time, when the runner would open one instance more than `jobInstances` allows; the engine's run tests pin it, not a conformance family |
 | `A08-004`, `S06-008`, `S06-031`, `S06-032` | said at job start, from the account's settings and the request, not from a package |
 | `A08-005`, `S08-003`, `S08-006`, `S08-007`, `S08-008` | said at run time, as the reason a deliverable's or a delivery's row records. The engine's run goldens pin them (`checked-note`, `checked-note-outcomes`), not a conformance family |
 | `S06-001` to `S06-007`, `S06-033`, `S06-034`, `S06-037`, `S06-038` | History's (area 12), built from the reasons above (`S06-006` and `S06-038` are also the words the run records for a skipped gate and a failed job) and the `check_result` the record keeps |
@@ -871,6 +872,7 @@ The area's own sentences, which are not in `sentences.json`, are:
 | `A08-004` | job start only | *"The signature chosen for this job isn't in your profile. Choose one in Profile."* | a job whose package reads `profile.signature` and whose start names a signature block, by id, that is not one of the account's is refused before it starts; naming none, the job signs with the account's chosen block ([chapter 6 § 6.10.3](../../package-format-v31.md#6103-the-signature); this implementation's sentence, which has no row in `sentences.json`; said at job start only, so it has no case) |
 | `A08-005` | run time only | *"Deliverable '\<id>' was empty, and the workflow fails an empty \<label>."* | a deliverable whose composed text is empty (white space only; an object-format deliverable never is) under `whenEmpty: fail` fails the job, naming it ([chapter 6 § 6.6.6](../../package-format-v31.md#666-when-a-deliverable-comes-out-empty); part 08's recorded sentence, which has no row in `sentences.json`; said at run time only, so it has no case) |
 | `A08-006` | publish; no package produces it | *"\<Subject> couldn't be checked: the engine failed reading its template. This is a fault in the engine, not in the package; report it."* | reading a template failed in a way no text explains: a fault of the engine, never said as the author's `A07-005` ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect); ruled by the owner on [#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505); no package produces it, so it has no case) |
+| `A09-001` | run time only | *"The job reached \<n> steps, the most this engine runs for one job."* | the job would open more instances than `jobInstances` (10,000) allows: a node, check or deliverable instance, a loop item, a pass or a call; the job fails and the instance is not opened ([chapter 8 § 8.7](../../package-format-v31.md#87-retries-and-limits); ruled by the owner on [#1506](https://github.com/Consultologist/Consultologist-Blazor/issues/1506); `<n>` is written as the other limits are, `10,000`; said at run time only, so it has no case) |
 
 ## The schemas' examples
 
@@ -1134,16 +1136,6 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   [chapter 8 § 8.8](../../package-format-v31.md#88-the-publish-note) says "\<ceiling\>" and "since
   \<loop key\> has no maxParallel and reads a list of unknown length". Both are published, each under
   its own id. Which wording is the sentence an engine writes is not settled.
-- **`versionsRan` is given three shapes.** The design's record part says `versionsRan` takes
-  "exactly `lock.json`'s shape" and lists its members flat (`packageFormat`, `dialect`, …,
-  `runtime` "(the .NET runtime)" and `unicode` "(its Unicode version)"); its record example writes
-  `packageFormat` and `dialect` flat and has no `runtime`; and `lock.json`'s member table
-  ([chapter 7 § 7.4.1](../../package-format-v31.md#741-members)) nests them as
-  `resolver: { packageFormat, dialect }` and `runtime: { dotnet, unicode }`.
-  [Chapter 9 § 9.1](../../package-format-v31.md#91-what-a-31-jobs-record-pins) and the provenance
-  contract (`provenance-record.md` §§ 6.3 and 6.14) follow "exactly `lock.json`'s shape", with
-  `resolver` and `runtime` nested as the lock nests them. Whether `lock.json`'s `documentVersion`,
-  `package`, `resolve` and `catalogues` appear in `versionsRan` is not stated.
 - **`publishedBy`'s "`ci` with the tag".**
   [Chapter 7 § 7.9](../../package-format-v31.md#79-the-publish-report)'s member table gives
   `publishedBy` as "`ci` with the tag, `editor`, `api` or `operator-migration`" and does not say how
