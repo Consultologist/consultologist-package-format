@@ -4287,8 +4287,13 @@ checks/coverage.md
 - **Nodes may read checks:** a prompt, a `rendered` node, a `computed` node or a condition may
   read `check.x.value`, as a dependency edge like any read.
 - **Deliverables may read checks,** except a check on that deliverable (§ 6.6.3).
-- **Checks may read** nodes, inputs, other checks, and **a deliverable's `.content`** (that's
-  how a document is proofread before release, § 6.7). A deliverable is readable by checks only.
+- **Checks may read** nodes, inputs, other checks, and **a deliverable** (that's how a document
+  is proofread before release, § 6.7): its `.content` (the composed text, a `string` that can be
+  `null`), its `.value` (an object format's value, else the text; can be `null`) and its `.state`
+  (`released`, `held`, `skipped` or `blocked`). A deliverable is readable by checks only, which
+  makes `deliverable.*` the one root of [chapter 3 § 3.4.1](#341-the-roots)'s list of roots
+  JSON Logic never reads that a rule reads, and only in a rule under `checks/`. Which form a
+  check reads, composed or by outcome, is § 6.7.
 - **A deliverable's `check` names only a `check.*`,** never a production node.
 - **`check_result` as data:** a `computed` node in `nodes/` (or inside a function) may return a
   `check_result` as data only. It gates nothing: **only a `check.*` can gate a deliverable**.
@@ -4578,7 +4583,7 @@ node with `plain`, or a renderer); the only automatic step is escaping.
 
 | Deliverable `format` | May read | Refused |
 |---|---|---|
-| `markdown_block` | `markdown_block`; `markdown_inline` inside a line; plain-text formats (escaped); `string` and `number` data (escaped) | objects (use a renderer or a node) |
+| `markdown_block` | `markdown_block`; `markdown_inline` inside a line; plain-text formats (escaped); `string`, `number` and `boolean` data (escaped) | objects (use a renderer or a node) |
 | `plaintext` | plain-text formats; `string` and `number` data | any Markdown (convert in a node) |
 | an object format | exactly that format, as `{{ node.x.value }}` and nothing else | everything else |
 
@@ -4589,7 +4594,10 @@ node with `plain`, or a renderer); the only automatic step is escaping.
   conformance suite. **Leading indentation is protected too:** the first space or tab of each
   line of the plain text is written as its character reference (`&#32;`, `&#9;`), so a line led
   by four spaces or a tab is not a code block; the rest of the line is escaped as above, and a
-  line break stays a hard break. A line of white space only is escaped so too, and Markdown text that is
+  line break stays a hard break. **`resolve.json` lists the escaped reads:** each `deliverables`
+  entry has `escapes`, one `{ "unit", "at" }` for every output tag whose value is escaped
+  (chapter 7 § 7.2.5), and a renderer's output is never in it, since it is the renderer's own
+  format. A line of white space only is escaped so too, and Markdown text that is
   only white space and these two references is still empty (`failIfEmpty`, `whenEmpty`).
 - **The template's own literal text is typed too:** a `plaintext` deliverable may not write
   Markdown syntax (a line starting `#`, `-`, `*` or `>`, or a `**` pair). A Markdown
@@ -4705,7 +4713,7 @@ blank, so `whenEmpty` has no effect there, but is still written.
 #### 6.6.7 Deliverables are terminal
 
 - **Nodes may not read deliverables,** and other deliverables may not either.
-- **Checks may** read a deliverable's `.content`.
+- **Checks may** read a deliverable's `.content`, `.value` and `.state` (§ 6.1.2, § 6.7).
 - Text a later node wants to reuse is made by a `rendered` node, which both read.
 - **The graph:** nodes, then deliverables, then their checks, then release.
 
@@ -4715,6 +4723,17 @@ blank, so `whenEmpty` has no effect there, but is still written.
 read the composed deliverable (`deliverable.<id>.content`, for example
 `deliverable.emr.note.content`) or only nodes. It runs after
 everything it reads, and release waits for it.
+
+**Who reads the composed text.** A deliverable's *gate set* is its `check` and every check that
+check depends on, through checks only. A check in the gate set reads the deliverable as soon as it
+is composed (`.content` and `.value` are the text and the value, `.state` is not readable: it is
+what the gate decides, and publish refuses the read). Every other check waits for the outcome and
+reads it: a deliverable that is skipped or blocked reads `null` at `.content` and `.value`, and
+its `.state` and its check's result stay readable. A job whose every deliverable is blocked is
+completed. A blocked deliverable keeps its composed text and hash for the record and is never
+delivered. A check some deliverable names as its `check` that fails to run blocks each
+deliverable it gates, and reads `null` with `.state` `failed`; any other check that fails to run
+fails the job.
 
 **The outcomes, in order of evaluation:**
 

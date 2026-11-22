@@ -814,16 +814,60 @@ area 07's, one per sentence. And a template the engine fails to read in a way no
 than Scriban's own for unreadable text) is `A08-006`, the engine's fault, not `A07-005`, the author's; no package
 produces it, so it has no case.
 
+**The cases this area added.** In `refusal-packages`, 15 cases (30 packages): `S06-009`, `S06-010`, `S06-011`,
+`S06-014`, `S06-018`, `S06-020`, `S06-021`, `S06-022`, `S06-023`, `S06-025`, `S06-026`, `S06-035`, `A08-001`,
+`A08-002` and `A08-003`. Three earlier cases changed: `S03-030` (its check loop runs over `node.notes.items`),
+`S05-024` and `S05-025` (a plain-text note no longer also reads the Markdown draft). In `compiled-documents`,
+`checked-note` (the fourth), and `escapes` on every deliverable of the other three. In `dialect-goldens`,
+`deliverable-escaped`, `deliverable-plaintext` and `deliverable-object` (43 in all). In `markdown-escape-vectors`,
+five vectors (47 in all). The families shared with area 07 are added to, never rewritten: a case or a vector area 07
+pinned is still there, byte for byte. The schemas' examples gain `delivery`, `bundle` and `escapes` on every
+deliverable entry, and two instances for `escapes`.
+
+**Rules already said.** One rule, one sentence: where part 06 states a rule another part already says under its id,
+no `A08` or `S06` sentence repeats it, and the case is that part's.
+
+| Rule of part 06 | Said as |
+|---|---|
+| R-C5, a `failWith` that is no literal | `S03-029` (`A04-010`) |
+| R-C6, a `min` that is no whole number of at least 0 | `S03-029`, `S03-030` |
+| R-C8, a check in a function | `S04-062` |
+| R-C9 and R-D1, a read of `deliverable.*` | `S03-019` (a rule outside `checks/`), `S05-020` (a template) |
+| R-D3, a deliverable reading another deliverable | `S05-020` |
+| R-D8, a deliverable's `if` | `S03-020`, `S03-021`, `S03-018`, `S03-019` |
+| R-D9, `macro.*` and `part.*` in a deliverable | `S05-047`, `S05-020` |
+| R-D12, the root `deliverables/index.json` | `S01-007`, `S01-008` |
+| delivery folders one level deep | `S01-013` |
+| R-D13, an item's state | `S05-009` |
+| R-F1, a profile field that is none | `S06-028` (templates), `S03-018` (rules) |
+| R-F2, a condition reading the profile | `S03-018` |
+| R-F3, a function parameter carrying profile text | `S04-069` |
+| R-F4 | `S05-021` |
+| R-F5, a prompt or condition reading profile text | `S03-044`, `S05-064` |
+
+So `S06-012`, `S06-013`, `S06-015`, `S06-016`, `S06-017`, `S06-019`, `S06-024`, `S06-027`, `S06-029`, `S06-030` and
+`S06-036` are never said as such: each is a row for a rule the table maps to an earlier id.
+
+**Sentences with no case, and why.** A case here is a source package and the refusal an implementation gives it, so a
+sentence said only after publish has none.
+
+| Sentences | Why no case |
+|---|---|
+| `A08-006` | publish says it only when the engine's own reader fails; no package produces it (`ChecksNotShipped`) |
+| `A08-004`, `S06-008`, `S06-031`, `S06-032` | said at job start, from the account's settings and the request, not from a package |
+| `A08-005`, `S08-003`, `S08-006`, `S08-007`, `S08-008` | said at run time, as the reason a deliverable's or a delivery's row records. The engine's run goldens pin them (`checked-note`, `checked-note-outcomes`), not a conformance family |
+| `S06-001` to `S06-007`, `S06-033`, `S06-034`, `S06-037`, `S06-038` | History's (area 12), built from the reasons above (`S06-006` and `S06-038` are also the words the run records for a skipped gate and a failed job) and the `check_result` the record keeps |
+
 The area's own sentences, which are not in `sentences.json`, are:
 
-| Id | Sentence | Rule |
-|---|---|---|
-| `A08-001` | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
-| `A08-002` | *"Deliverables folder '\<path>' has bundle \<value>; write "zip" or null."* | a delivery folder's `bundle` is `"zip"` or `null` ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)) |
-| `A08-003` | *"Check '\<id>' reads deliverable.\<deliverable>.state, and deliverable '\<deliverable>' waits for check '\<id>' through its check '\<gate>': read its .content, or read the state in a check it doesn't wait for."* | a check in a deliverable's gate set (its `check` and every check that check depends on) reads the composed deliverable, never its `.state`, which waits for that check ([chapter 6 § 6.7](../../package-format-v31.md#67-gating-and-outcomes); this implementation's rule, from the chapter's "a deliverable is readable by checks only" and its outcomes) |
-| `A08-004` | *"The signature chosen for this job isn't in your profile. Choose one in Profile."* | a job whose package reads `profile.signature` and whose start names a signature block, by id, that is not one of the account's is refused before it starts; naming none, the job signs with the account's chosen block ([chapter 6 § 6.10.3](../../package-format-v31.md#6103-the-signature); this implementation's sentence, which has no row in `sentences.json`; said at job start only, so it has no case) |
-| `A08-005` | *"Deliverable '\<id>' was empty, and the workflow fails an empty \<label>."* | a deliverable whose composed text is empty (white space only; an object-format deliverable never is) under `whenEmpty: fail` fails the job, naming it ([chapter 6 § 6.6.6](../../package-format-v31.md#666-when-a-deliverable-comes-out-empty); part 08's recorded sentence, which has no row in `sentences.json`; said at run time only, so it has no case) |
-| `A08-006` | *"\<Subject> couldn't be checked: the engine failed reading its template. This is a fault in the engine, not in the package; report it."* | reading a template failed in a way no text explains: a fault of the engine, never said as the author's `A07-005` ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect); ruled by the owner on [#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505); no package produces it, so it has no case) |
+| Id | Said | Sentence | Rule |
+|---|---|---|---|
+| `A08-001` | publish | *"Deliverable '\<id>' is checked by \<reference>; a deliverable's check names a check.\*."* | a deliverable's `check` is `check.<id>` of a check at the top of `checks/`: never a production node, nothing at all, a check inside a check loop or a check loop itself ([chapter 6 § 6.1.2](../../package-format-v31.md#612-who-reads-checks-and-what-checks-read); the chapter's own wording, which has no row in `sentences.json`) |
+| `A08-002` | publish | *"Deliverables folder '\<path>' has bundle \<value>; write "zip" or null."* | a delivery folder's `bundle` is `"zip"` or `null` ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)) |
+| `A08-003` | publish | *"Check '\<id>' reads deliverable.\<deliverable>.state, and deliverable '\<deliverable>' waits for check '\<id>' through its check '\<gate>': read its .content, or read the state in a check it doesn't wait for."* | a check in a deliverable's gate set (its `check` and every check that check depends on) reads the composed deliverable, never its `.state`, which waits for that check ([chapter 6 § 6.7](../../package-format-v31.md#67-gating-and-outcomes); this implementation's rule, from the chapter's "a deliverable is readable by checks only" and its outcomes) |
+| `A08-004` | job start only | *"The signature chosen for this job isn't in your profile. Choose one in Profile."* | a job whose package reads `profile.signature` and whose start names a signature block, by id, that is not one of the account's is refused before it starts; naming none, the job signs with the account's chosen block ([chapter 6 § 6.10.3](../../package-format-v31.md#6103-the-signature); this implementation's sentence, which has no row in `sentences.json`; said at job start only, so it has no case) |
+| `A08-005` | run time only | *"Deliverable '\<id>' was empty, and the workflow fails an empty \<label>."* | a deliverable whose composed text is empty (white space only; an object-format deliverable never is) under `whenEmpty: fail` fails the job, naming it ([chapter 6 § 6.6.6](../../package-format-v31.md#666-when-a-deliverable-comes-out-empty); part 08's recorded sentence, which has no row in `sentences.json`; said at run time only, so it has no case) |
+| `A08-006` | publish; no package produces it | *"\<Subject> couldn't be checked: the engine failed reading its template. This is a fault in the engine, not in the package; report it."* | reading a template failed in a way no text explains: a fault of the engine, never said as the author's `A07-005` ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect); ruled by the owner on [#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505); no package produces it, so it has no case) |
 
 ## The schemas' examples
 
