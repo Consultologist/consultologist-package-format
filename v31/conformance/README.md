@@ -645,14 +645,14 @@ and so in their `resolve.json` hash and `lock.json`'s `resolve.hash`.
 
 Area 07 exports three families for [chapter 5](../../package-format-v31.md#5-templates-and-macros)
 and the escape of [chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats): 40 dialect
-cases, 26 renderer cases and one file of 42 escape vectors. Each holds its inputs and the bytes
+cases (43 with area 08's three deliverables), 26 renderer cases and one file of 42 escape vectors. Each holds its inputs and the bytes
 this implementation's code gave for them; every text file is UTF-8 with no byte-order mark, and
 every JSON file is written with 2-space indentation, `\n` line ends and a final newline, every
 character outside ASCII as itself.
 
 | Family | Cases | Holds |
 |---|---|---|
-| `dialect-goldens` | one folder per allowed feature of [`scriban-dialect.md`](../scriban-dialect.md) § 10 (40) | an output (`output-text`, `output-values`); each built-in with and without `null` (`string-upcase`, `string-upcase-null`, …, `date-to-string-null`); a `for` with each position variable (`for-first`, `for-last`, `for-index`, `for-even`, `for-odd`); a body `if` over states and a check's pass (`if-state`, `if-check-pass`); `~` on statements (`tilde-statements`); each placement form of [§ 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace), placed and absent (`placement-block-placed`, `placement-block-absent`, `placement-inline-…`, `placement-alone-…`); a part, a snippet placing a snippet, a folder item read in its loop (`part`, `snippet`, `folder-item`); a macro's instruction with each marker form and the reply it is finished with (`macro-block`, `macro-inline`); a raw block, a comment (`raw-block`, `comment`); a pipe into renderers and an `if` in a renderer's body (`pipe-renderer`, `renderer-if-value`); and two run spots (`run-spot`) |
+| `dialect-goldens` | one folder per allowed feature of [`scriban-dialect.md`](../scriban-dialect.md) § 10 (40), and area 08's three deliverables (43) | an output (`output-text`, `output-values`); each built-in with and without `null` (`string-upcase`, `string-upcase-null`, …, `date-to-string-null`); a `for` with each position variable (`for-first`, `for-last`, `for-index`, `for-even`, `for-odd`); a body `if` over states and a check's pass (`if-state`, `if-check-pass`); `~` on statements (`tilde-statements`); each placement form of [§ 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace), placed and absent (`placement-block-placed`, `placement-block-absent`, `placement-inline-…`, `placement-alone-…`); a part, a snippet placing a snippet, a folder item read in its loop (`part`, `snippet`, `folder-item`); a macro's instruction with each marker form and the reply it is finished with (`macro-block`, `macro-inline`); a raw block, a comment (`raw-block`, `comment`); a pipe into renderers and an `if` in a renderer's body (`pipe-renderer`, `renderer-if-value`); two run spots (`run-spot`); and, from area 08, a deliverable of each kind of format composed as the run composes it (`deliverable-escaped`, `deliverable-plaintext`, `deliverable-object`) |
 | `renderer-goldens` | `<renderer>/<case>`, each built-in renderer over 13 concept lists (26) | `concept_bullets` and `concept_context` over an empty list, one active, inactive or not SNOMED concept, a `support` present, absent, empty, of spaces and tabs, or of a tab and a line break, another or an empty `source`, three mixed concepts, and Markdown characters in every member |
 | `markdown-escape-vectors` | `vectors.json` (42 vectors) | each of the 32 ASCII punctuation characters alone, then ten sentences of fictional clinical text |
 
@@ -672,7 +672,7 @@ dialect-goldens/<case>/reply.txt, expected.reply.txt   (a macro case)
 reads are typed as `scope.json`'s values are (`about.txt` names them). A case that needs headers
 (a snippet, a part, a macro, a folder, a renderer) holds the whole upload under `package/`, byte for
 byte, and `entry.txt` names the entry composed, its rooted key on one line (`node.golden`,
-`node.standards.section`). `scope.json` is the data the body is given, keys rooted as the run holds
+`node.standards.section`, `deliverable.note`). `scope.json` is the data the body is given, keys rooted as the run holds
 them (`input.<id>.content`, `node.<id>.value`, `item.value`, `run.date`); `placed.json` maps each
 decided site of the entry's `placements` (`snippet.<id>`, `part.<id>`, `macro.<id>`,
 `macro-folder.<id>`) to its decision, and a site it does not name is not placed. Composing the body
@@ -780,6 +780,20 @@ packages, on the same package: `S06-021` (the consult note writing the draft's t
 text before them); each invalid side is one text replacement. Two earlier cases changed so that a plain-text
 note does not also read the Markdown draft: the invalid sides of `S05-024` and `S05-025` pipe the plan, not the
 draft, into `string.upcase`. The four `compiled-documents` cases gain `escapes` on every deliverable.
+
+A deliverable composes with its plain reads escaped ([chapter 6 § 6.6.4](../../package-format-v31.md#664-strict-formats),
+[§ 6.9](../../package-format-v31.md#69-deliverables-in-the-record-and-history)): each output its entry's `escapes` lists
+(matched by its `unit` and its `at`, as `runSpots` are) is written through `markdown_escape` where it is written, so each
+pass of a `for` escapes its own item, a `null` still writes nothing, and a line end in a value stays a line end; a
+placed plain-text snippet listed at its placement is escaped whole, once. The composed hash and each substitution's are
+taken after escaping, so replay holds; a run spot it escapes is recorded escaped, in the sent text and in the run-neutral
+text, whose `{{run:<n>}}` markers stay as they are. An object deliverable's text is its one value's RFC 8785 JSON, with no
+final line end (the template's own is not written), and a `null` value composes `null`. It adds three `dialect-goldens`
+cases, each a `package/` and an `entry.txt` naming `deliverable.note`: `deliverable-escaped` (a `markdown_block` note
+reading a plain-text summary, a list of plain lines holding `# 1`, `*bold*`, a line end and a `null`, a Markdown
+assessment, a renderer's output and a placed plain-text snippet), `deliverable-plaintext` (a `plaintext` note, which
+escapes nothing) and `deliverable-object` (a `section_plan` note, its value's members sorted). Area 07's 40 cases are
+unchanged, byte for byte; `entry.txt` may now name a deliverable.
 
 The area's own sentences, which are not in `sentences.json`, are:
 

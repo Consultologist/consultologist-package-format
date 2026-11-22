@@ -997,8 +997,8 @@ def check_dialect_goldens():
             if not (folder / "package" / "manifest.json").is_file():
                 failures.append(f"{where}: neither template.md nor package/manifest.json")
             entry = text_file(folder / "entry.txt", f"{where}/entry.txt", failures)
-            if entry is not None and not re.fullmatch(r"node(\.[a-z][a-z0-9_]*)+\n", entry):
-                failures.append(f"{where}/entry.txt: not one line naming a node's rooted key")
+            if entry is not None and not re.fullmatch(r"(node|deliverable)(\.[a-z][a-z0-9_]*)+\n", entry):
+                failures.append(f"{where}/entry.txt: not one line naming a node's or a deliverable's rooted key")
         missing = sorted((DIALECT_CASE_FILES | inputs) - files)
         extra = sorted(files - DIALECT_CASE_FILES - inputs - DIALECT_CASE_OPTIONAL)
         if missing or extra:
