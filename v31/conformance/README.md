@@ -695,7 +695,10 @@ shared by areas 07 and 08, so the export adds to them and never rewrites them**
 that it does not produce is kept with its index entry, and an escape vector is kept unless the
 export writes one with the same `plain`. The library's tests fail when a case of
 `renderer-goldens` or a vector of `markdown-escape-vectors` present before area 08's escape change
-(bdc1ee6), or one of area 07's 40 dialect cases, is no longer exported.
+(bdc1ee6), or one of area 07's 40 dialect cases, is no longer exported. One kept vector predates the
+leading-indentation rule (R9): the one whose `plain` says *the four spaces before this line stay as
+written*. Its `plain` is kept as it was, so no vector disappears; its `escaped` follows the rule, so
+the first of the four spaces is written `&#32;` and the sentence no longer describes the output.
 
 **What the cases pin that the text leaves open.** An outside implementation that chooses otherwise
 gives other bytes:
