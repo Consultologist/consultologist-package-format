@@ -654,7 +654,7 @@ character outside ASCII as itself.
 |---|---|---|
 | `dialect-goldens` | one folder per allowed feature of [`scriban-dialect.md`](../scriban-dialect.md) § 10 (40), and area 08's three deliverables (43) | an output (`output-text`, `output-values`); each built-in with and without `null` (`string-upcase`, `string-upcase-null`, …, `date-to-string-null`); a `for` with each position variable (`for-first`, `for-last`, `for-index`, `for-even`, `for-odd`); a body `if` over states and a check's pass (`if-state`, `if-check-pass`); `~` on statements (`tilde-statements`); each placement form of [§ 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace), placed and absent (`placement-block-placed`, `placement-block-absent`, `placement-inline-…`, `placement-alone-…`); a part, a snippet placing a snippet, a folder item read in its loop (`part`, `snippet`, `folder-item`); a macro's instruction with each marker form and the reply it is finished with (`macro-block`, `macro-inline`); a raw block, a comment (`raw-block`, `comment`); a pipe into renderers and an `if` in a renderer's body (`pipe-renderer`, `renderer-if-value`); two run spots (`run-spot`); and, from area 08, a deliverable of each kind of format composed as the run composes it (`deliverable-escaped`, `deliverable-plaintext`, `deliverable-object`) |
 | `renderer-goldens` | `<renderer>/<case>`, each built-in renderer over 13 concept lists (26) | `concept_bullets` and `concept_context` over an empty list, one active, inactive or not SNOMED concept, a `support` present, absent, empty, of spaces and tabs, or of a tab and a line break, another or an empty `source`, three mixed concepts, and Markdown characters in every member |
-| `markdown-escape-vectors` | `vectors.json` (42 vectors) | each of the 32 ASCII punctuation characters alone, then ten sentences of fictional clinical text |
+| `markdown-escape-vectors` | `vectors.json` (45 vectors) | each of the 32 ASCII punctuation characters alone, then ten sentences of fictional clinical text, then area 08's three: a line led by one space, lines led by a tab, and a run of spaces mid-line |
 
 **A dialect case** is a folder:
 
@@ -689,14 +689,20 @@ folder, a renderer case as `<renderer>/<case>`, and the escape family as `vector
 are exported by the library's composer, its reply step and its escape, and are never written by
 hand;** the library's tests hold the same bytes as goldens. `python3 scripts/check-v31.py` (groups
 `dialect-goldens`, `renderer-goldens`, `markdown-escape-vectors`) holds each family to the index
-and each case to its files; the escape group also recomputes each vector.
+and each case to its files; the escape group also recomputes each vector. **The three families are
+shared by areas 07 and 08, so the export adds to them and never rewrites them**
+(Consultologist-Blazor#1505, ruling R11): a case it produces is written afresh, a case already here
+that it does not produce is kept with its index entry, and an escape vector is kept unless the
+export writes one with the same `plain`. The library's tests fail when a case of
+`renderer-goldens` or a vector of `markdown-escape-vectors` present before area 08's escape change
+(bdc1ee6), or one of area 07's 40 dialect cases, is no longer exported.
 
 **What the cases pin that the text leaves open.** An outside implementation that chooses otherwise
 gives other bytes:
 
 | Decision | What the cases pin |
 |---|---|
-| D7, the escape | `markdown_escape` 1.0.0 writes a backslash before each of the 32 ASCII punctuation characters and changes nothing else: letters, digits, white space, line breaks and every character outside ASCII stay. A line's leading four spaces are not protected |
+| D7, the escape | `markdown_escape` 1.0.0 writes a backslash before each of the 32 ASCII punctuation characters and changes nothing else: letters, digits, white space, line breaks and every character outside ASCII stay. Since Consultologist-Blazor#1505's ruling R9 (the owner, 2026-11-22), the first space or tab leading each line (at the text's start and after each `\n` or `\r`) is written `&#32;` or `&#9;`, so a line led by four spaces or a tab is not a code block; the version stays 1.0.0, as it is not yet frozen |
 | D13, values | an output writes a number in its canonical JSON form (`7.5`), a boolean as `true` or `false`, a date as `%Y-%m-%d`, and `null` as nothing; a built-in given `null` gives `null`; `string.upcase` and `string.downcase` are the invariant culture's simple case mapping (`ß` and `ﬁ` stay, `İ` stays, `Σ` lowers to `σ`); `string.capitalize` upper-cases the first character only; `for.index` counts from 0 |
 | D17, the marker | inside its instruction the macro's own marker tag renders as its source text, its `~` included, and a block marker keeps the indentation before it on its line |
 | a macro's body | is rendered in the prompt's scope, less its file's final line ending (one `\n`), then substituted; a snippet it places is decided after the macro. In the reply a block marker's line loses the indentation before the marker and the spaces after it and keeps its newline |

@@ -4573,7 +4573,10 @@ node with `plain`, or a renderer); the only automatic step is escaping.
   characters Markdown would misread (`*`, `#`, `_`, `[`, …), so the displayed text is exactly
   the plain text. The substitution's hash is taken **after** escaping. **The escape set is
   CommonMark's backslash escapes for ASCII punctuation,** published with test vectors in the
-  conformance suite.
+  conformance suite. **Leading indentation is protected too:** the first space or tab of each
+  line of the plain text is written as its character reference (`&#32;`, `&#9;`), so a line led
+  by four spaces or a tab is not a code block; the rest of the line is escaped as above, and a
+  line break stays a hard break.
 - **The template's own literal text is typed too:** a `plaintext` deliverable may not write
   Markdown syntax (a line starting `#`, `-`, `*` or `>`, or a `**` pair). A Markdown
   deliverable's literal text is the author's Markdown. An object deliverable allows nothing
@@ -6987,7 +6990,7 @@ Each item of the suite, where it lives under `v31/`, and the build area that exp
 | **Text-handling vectors** for `lower`, `trim`, `words` and `has_word`, pinned to the .NET runtime and Unicode version `lock.json` records ([chapter 7 § 7.4.1](#741-members)), so a runtime change that moves case mapping or word characters is caught | `text-vectors` | `v31/conformance/text-vectors/` | area 04, JSON Logic |
 | **Number vectors:** IEEE doubles, non-finite results giving `null`, and `integer` as a kind of `number` ([chapter 3 § 3.7](#37-typing)) | `number-vectors` | `v31/conformance/number-vectors/` | area 04, JSON Logic |
 | **Date vectors** for the date operations ([chapter 3 § 3.5.5](#355-date-operations)) | `date-vectors` | `v31/conformance/date-vectors/` | area 04, JSON Logic |
-| **Markdown escape vectors:** CommonMark's backslash escapes for ASCII punctuation ([chapter 6](#6-checks-deliverables-and-the-profile)) | `markdown-escape-vectors` | `v31/conformance/markdown-escape-vectors/` | area 07, prompts and macros, and area 08, checks, deliverables and the profile |
+| **Markdown escape vectors:** CommonMark's backslash escapes for ASCII punctuation, and the first space or tab of each line as its character reference ([chapter 6](#6-checks-deliverables-and-the-profile)) | `markdown-escape-vectors` | `v31/conformance/markdown-escape-vectors/` | area 07, prompts and macros, and area 08, checks, deliverables and the profile |
 | **Fixtures for the compiled documents:** fixture packages with their expected `resolve.json` and `lock.json` bytes and hashes, `requires` and `needs`, and the publish report (including the ceiling note and test results) | `compiled-documents` | `v31/conformance/compiled-documents/` | area 05, resolver and lock, and area 11, registry and publish |
 | **Migration vectors:** 30 packages with their expected 31 output and notices, so an outside implementation of the migration ([chapter 10](#10-migration-30--31)) can be checked too | `migration-vectors` | `v31/conformance/migration-vectors/` | area 10, migration |
 
