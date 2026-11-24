@@ -2,7 +2,7 @@ example-functions, after chapter 4 § 4.7.11 (with an agent plan and a second ag
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
 
-resolve.json: sha256:741f6892a03fd9f254f16589cd417497b0d366bd0ef3b75f3e256b5537d1132c
-lock.json: sha256:4ebcf5e7167f46020706c7b6f512d74d96d85695179557bd03f3be7b483bd7d3
+resolve.json: sha256:012dff82656ab66e2b1e45f6a8ef15b9651b1e21389a13cd8fadf2df738487e9
+lock.json: sha256:b7404986ddaac9cc5a8a031415713261e0efaf08af6846378dc22c5ec9cb499c
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

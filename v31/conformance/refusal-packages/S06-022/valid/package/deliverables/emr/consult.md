@@ -3,4 +3,6 @@
 ---
 Sections
 
-{{ node.standards.content }}
+{{ for s in node.standards.value }}{{ s }}
+
+{{ end }}

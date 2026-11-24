@@ -5,6 +5,6 @@ Dear Margaret Okafor,
 
 This is what we talked about at your visit.
 
-{{ node.sections.content }}
+{{ for s in node.sections.value }}{{ s }}
 
-Dr A. Sample
+{{ end }}Dr A. Sample
