@@ -82,9 +82,9 @@
     "outputs": {
       "type": "object",
       "propertyNames": {
-        "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+        "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(#[1-9][0-9]*)*(:[a-z0-9_]+(#[1-9][0-9]*)*(/[a-z0-9_]+(#[1-9][0-9]*)*)*)?$"
       },
-      "description": "A stubbed value for every agent node instance that runs, keyed by the node's rooted key and, inside a loop or while, : and its item or pass path."
+      "description": "A stubbed value for every agent node instance that runs, keyed by the node's rooted key and, inside a loop or while, : and its item path, #<n> where a while's pass sits (chapter 7 § 7.8.2)."
     },
     "expect": {
       "type": "object",
@@ -202,7 +202,7 @@
         "checks": {
           "type": "object",
           "propertyNames": {
-            "pattern": "^check\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+            "pattern": "^check\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(#[1-9][0-9]*)*(:[a-z0-9_]+(#[1-9][0-9]*)*(/[a-z0-9_]+(#[1-9][0-9]*)*)*)?$"
           },
           "additionalProperties": {
             "type": "object",
@@ -294,7 +294,7 @@
   "$defs": {
     "rowKey": {
       "type": "string",
-      "pattern": "^(node|check|deliverable)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(:[a-z0-9_]+(/[a-z0-9_]+)*)?$"
+      "pattern": "^(node|check|deliverable)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(#[1-9][0-9]*)*(:[a-z0-9_]+(#[1-9][0-9]*)*(/[a-z0-9_]+(#[1-9][0-9]*)*)*)?$"
     }
   }
 }

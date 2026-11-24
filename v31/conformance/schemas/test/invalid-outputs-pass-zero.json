@@ -1,0 +1,13 @@
+{
+  "about": "A pass is numbered from 1: #0 is not a pass.",
+  "instance": {
+    "description": null,
+    "inputs": {},
+    "profile": {},
+    "run": {},
+    "outputs": {
+      "node.refine.judge#0": {}
+    },
+    "expect": {}
+  }
+}
