@@ -852,6 +852,8 @@
         "A11-002/valid",
         "A11-003/invalid",
         "A11-003/valid",
+        "A11-005/invalid",
+        "A11-005/valid",
         "S01-002/invalid",
         "S01-002/valid",
         "S01-003/invalid",
@@ -1327,7 +1329,19 @@
         "S06-028/invalid",
         "S06-028/valid",
         "S06-035/invalid",
-        "S06-035/valid"
+        "S06-035/valid",
+        "S07-007/invalid",
+        "S07-007/valid",
+        "S07-008/invalid",
+        "S07-008/valid",
+        "S07-009/invalid",
+        "S07-009/valid",
+        "S07-010/invalid",
+        "S07-010/valid",
+        "S07-011/invalid",
+        "S07-011/valid",
+        "S07-012/invalid",
+        "S07-012/valid"
       ]
     },
     {

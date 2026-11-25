@@ -1,0 +1,1 @@
+{ "description": ["The plan of Margaret Okafor's note runs (fictional)."], "inputs": {}, "profile": {}, "run": {}, "outputs": { "node.plan": "History, then the plan (fictional)." }, "expect": { "ran": ["node.plan"] } }

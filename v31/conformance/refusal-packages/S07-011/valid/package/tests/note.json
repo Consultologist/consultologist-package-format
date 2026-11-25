@@ -1,0 +1,1 @@
+{ "description": ["The plan of Margaret Okafor's note runs (fictional)."], "inputs": { "consult_draft": "Margaret Okafor, 58, seen by Dr A. Sample at Sample Oncology Clinic (fictional)." }, "profile": {}, "run": {}, "outputs": { "node.plan": "History, then the plan (fictional)." }, "expect": { "ran": ["node.plan"] } }

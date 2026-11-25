@@ -1,0 +1,5 @@
+{
+  "about": "A package's test (tests/note.json, chapter 7 § 7.8) is run offline at publish, step 3, on its stubs, and a test that is not as the grammar says, or does not hold, stops publish. Valid: the test gives Margaret Okafor's draft (fictional), no profile field and no run fact (the workflow reads none), the plan's stub, and expects the plan to run; it passes. Invalid: profile gives a signature, a field the workflow does not read.",
+  "valid": true,
+  "sentences": []
+}
