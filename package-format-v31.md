@@ -1481,8 +1481,10 @@ earlier run's deliverable, in the order sent ([chapter 8 § 8.14](#814-what-belo
 except an object filled from a `form`. An element from an earlier run's deliverable starts out
 model-derived (§ 2.1.2), and its record links to the job it came from.
 
-- **A document uploaded to a Markdown input is converted to Markdown:** headings, lists and tables
-  preserved from docx; best effort from PDF and OCR.
+- **A document uploaded to a Markdown input gives its extracted text, as at 30.** The
+  document-to-Markdown converter (headings, lists and tables kept from docx; best effort from PDF
+  and OCR) is Milestone 40 (#1442): when it arrives it is a new definition of `effectiveInputHash`,
+  not a change to 7.
 - A document uploaded to a `plaintext` input gives its extracted text.
 
 #### 2.8.3 `channel`
@@ -1808,7 +1810,8 @@ Printed (§ 3.8): `item.id ≠ "billing" or input.include_billing.value = true`.
 
 **Never readable by JSON Logic:** `profile.*` (no condition and no computed expression reads the
 profile),
-`snippet.*`, `part.*`, `macro.*`, `renderer.*` and `deliverable.*`. A snippet folder's item data
+`snippet.*`, `part.*`, `macro.*` and `renderer.*`, and `deliverable.*` except in a rule under
+`checks/`, which may read a deliverable's `.content`, `.value` and `.state` (chapter 6 § 6.1.2). A snippet folder's item data
 is read through the loop that iterates it (`item.value.title`).
 
 **`.title` may be compared** in conditions and computed expressions, as a `string`: publish
@@ -2308,7 +2311,7 @@ Every sentence below is used as written; [chapter 11](#11-every-sentence) lists 
 
 Placeholders: `<site>` names the declaration as its sentences do elsewhere: `Node 'x'`,
 `Loop 'x'`, `While 'x'`, `Check 'x'`, `Deliverable 'x'`, `Macro 'x'`, `Part 'p' of node 'x'`,
-`Computed node 'x'`, and inside a function
+`Computed node 'x'` (`Check 'x'` for an entry under `checks/`, which is computed too), and inside a function
 `Node 'x' in function 'f'`. `<member>` is `if`, `while`, `until` or `expression`. `<path>` is a
 `var` path; `<format>` a format's type string (chapter 2).
 
@@ -2338,9 +2341,9 @@ Placeholders: `<site>` names the declaration as its sentences do elsewhere: `Nod
 | *"\<site\> compares \<path\> with "\<value\>", which is not one of its values (\<values\>)."* |
 | *"\<site\> reads \<path\>.value.\<field\>, which not every member of \<format\> declares."* |
 | *"\<site\> \<member\> yields \<format\>; a condition yields a boolean."* |
-| *"Computed node '\<id\>' yields \<format\>; it declares \<format\>."* |
-| *"Computed node '\<id\>' builds \<format\> without \<field\>; object must give every property of the format."* |
-| *"Computed node '\<id\>' builds \<format\> with \<field\>, which the format doesn't declare."* |
+| *"\<site\> yields \<format\>; it declares \<format\>."* |
+| *"\<site\> builds \<format\> without \<field\>; object must give every property of the format."* |
+| *"\<site\> builds \<format\> with \<field\>, which the format doesn't declare."* |
 | *"\<site\> gives \<operation\> a computed \<operand\>; \<operand\> must be written as a literal."* |
 | *"\<site\> gives count_pass a min of \<n\>; min is a whole number, 0 or more."* |
 | *"\<site\> pattern "\<pattern\>" is not I-Regexp (RFC 9485): \<reason\>."* |
@@ -2360,7 +2363,7 @@ In the sentence about a computed operand, `<operand>` is `pattern`, `word`, `fai
 - **Run-dependence**,
   one line per value or decision:
   *"\<site\> \<member\> reads run.\<fact\>; its decision can differ between runs with the same inputs."*
-  and *"Computed node '\<id\>' reads \<run.fact or path\>, which is run-dependent; its value can differ between runs with the same inputs."*
+  and *"\<site\> reads \<run.fact or path\>, which is run-dependent; its value can differ between runs with the same inputs."*
 - **Model-derived** is shown, not warned: History, the diagram and the Editor mark each
   model-derived value and decision (§ 3.4.5); the Editor shows:
   *"computed from model text: node.\<id\>"*.
@@ -4729,7 +4732,8 @@ blank, so `whenEmpty` has no effect there, but is still written.
 - **Nodes may not read deliverables,** and other deliverables may not either.
 - **Checks may** read a deliverable's `.content`, `.value` and `.state` (§ 6.1.2, § 6.7).
 - Text a later node wants to reuse is made by a `rendered` node, which both read.
-- **The graph:** nodes, then deliverables, then their checks, then release.
+- **The graph:** nodes, then deliverables, then their checks, then release. A gate comes after
+  the deliverables it gates, so `graph.order` leaves `gates` edges out (chapter 7 § 7.2.7).
 
 ### 6.7 Gating and outcomes
 
@@ -5805,8 +5809,8 @@ close the chapter (§ 8.15).
 2. **Read `resolve.json`** and **`lock.json`** from the version's folder.
 3. **Check integrity.** The SHA-256 of `resolve.json`'s bytes (canonical, RFC 8785) must equal the
    hash published for that version; `lock.json`'s hash must equal its published hash; and the link
-   between them must hold (`resolve.json`'s pointer to its lock names that `lockHash`,
-   [chapter 7](#7-the-compiled-documents)). A mismatch of any of the three refuses the load. The
+   between them must hold (`resolve.json`'s pointer names the lock by file name, `lock.json`, and the
+   stamp carries `lockHash`, [chapter 7](#7-the-compiled-documents)). A mismatch of any of the three refuses the load. The
    published hashes are in the version's stamp ([chapter 7 § 7.5](#75-the-publish-pipeline)), and
    **a version without the "published" stamp doesn't exist** for the engine: publish writes the
    stamp last, so a publish that died partway is never loaded, and stamped folders are never
@@ -6829,9 +6833,9 @@ running a workflow).
 | S03-023 | 3 · Refusals at publish | *"\<site\> compares \<path\> with "\<value\>", which is not one of its values (\<values\>)."* | author |
 | S03-024 | 3 · Refusals at publish | *"\<site\> reads \<path\>.value.\<field\>, which not every member of \<format\> declares."* | author |
 | S03-025 | 3 · Refusals at publish | *"\<site\> \<member\> yields \<format\>; a condition yields a boolean."* | author |
-| S03-026 | 3 · Refusals at publish | *"Computed node '\<id\>' yields \<format\>; it declares \<format\>."* | author |
-| S03-027 | 3 · Refusals at publish | *"Computed node '\<id\>' builds \<format\> without \<field\>; object must give every property of the format."* | author |
-| S03-028 | 3 · Refusals at publish | *"Computed node '\<id\>' builds \<format\> with \<field\>, which the format doesn't declare."* | author |
+| S03-026 | 3 · Refusals at publish | *"\<site\> yields \<format\>; it declares \<format\>."* | author |
+| S03-027 | 3 · Refusals at publish | *"\<site\> builds \<format\> without \<field\>; object must give every property of the format."* | author |
+| S03-028 | 3 · Refusals at publish | *"\<site\> builds \<format\> with \<field\>, which the format doesn't declare."* | author |
 | S03-029 | 3 · Refusals at publish | *"\<site\> gives \<operation\> a computed \<operand\>; \<operand\> must be written as a literal."* | author |
 | S03-030 | 3 · Refusals at publish | *"\<site\> gives count_pass a min of \<n\>; min is a whole number, 0 or more."* | author |
 | S03-031 | 3 · Refusals at publish | *"\<site\> pattern "\<pattern\>" is not I-Regexp (RFC 9485): \<reason\>."* | author |
@@ -6841,7 +6845,7 @@ running a workflow).
 | S03-035 | 3 · Refusals at publish | *"\<site\> cats \<path\> (\<format\>); convert Markdown with plain first."* | author |
 | S03-036 | 3 · Refusals at publish | *"Node '\<id\>' declares \<modelDerived \| runDependent \| profileCarrying\> \<value\>, but its reads make it \<derived\>: \<the read that does, or none\>."* | author |
 | S03-037 | 3 · Warnings at publish and in the Editor | *"\<site\> \<member\> reads run.\<fact\>; its decision can differ between runs with the same inputs."* | author |
-| S03-038 | 3 · Warnings at publish and in the Editor | *"Computed node '\<id\>' reads \<run.fact or path\>, which is run-dependent; its value can differ between runs with the same inputs."* | author |
+| S03-038 | 3 · Warnings at publish and in the Editor | *"\<site\> reads \<run.fact or path\>, which is run-dependent; its value can differ between runs with the same inputs."* | author |
 | S03-039 | 3 · Warnings at publish and in the Editor | *"computed from model text: node.\<id\>"* | author |
 | S03-040 | 3 · Failures at run time | *"\<site\> \<member\> could not be decided: matches was given \<n\> MiB of text; the most is 1 MiB."* | author |
 | S03-041 | 3 · Failures at run time | *"\<site\> \<member\> yields \<a value kind\>; a condition yields a boolean."* | author |

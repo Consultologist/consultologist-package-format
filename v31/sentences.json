@@ -866,21 +866,21 @@
       "id": "S03-026",
       "part": "03",
       "section": "11.1 Refusals at publish",
-      "sentence": "Computed node '<id>' yields <format>; it declares <format>.",
+      "sentence": "<site> yields <format>; it declares <format>.",
       "audience": "author"
     },
     {
       "id": "S03-027",
       "part": "03",
       "section": "11.1 Refusals at publish",
-      "sentence": "Computed node '<id>' builds <format> without <field>; object must give every property of the format.",
+      "sentence": "<site> builds <format> without <field>; object must give every property of the format.",
       "audience": "author"
     },
     {
       "id": "S03-028",
       "part": "03",
       "section": "11.1 Refusals at publish",
-      "sentence": "Computed node '<id>' builds <format> with <field>, which the format doesn't declare.",
+      "sentence": "<site> builds <format> with <field>, which the format doesn't declare.",
       "audience": "author"
     },
     {
@@ -950,7 +950,7 @@
       "id": "S03-038",
       "part": "03",
       "section": "11.2 Warnings at publish and in the Editor",
-      "sentence": "Computed node '<id>' reads <run.fact or path>, which is run-dependent; its value can differ between runs with the same inputs.",
+      "sentence": "<site> reads <run.fact or path>, which is run-dependent; its value can differ between runs with the same inputs.",
       "audience": "author"
     },
     {
