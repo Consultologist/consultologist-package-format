@@ -4821,6 +4821,19 @@ deliverables/
   The job doesn't fail, and the document stays in History.
 - **A bundle holds released deliverables only**: a held, skipped, failed or
   blocked one is left out, and History lists what was left out and why.
+- **`pdf` keeps 30's promise:** it sends the message with each document as a password-protected PDF;
+  with no document password, or attachments over the message budget (2 MiB, the set dropped whole), it
+  sends the link-only email instead, as 30's reply did. That destination is `sent`, its attempt
+  *sent link-only* and its reason *no document password* or *attachments over the budget*
+  ([chapter 9 § 9.6](#96-sentences-the-record-holds)). The delivery address and the account's choice to
+  be emailed are read once, when the job starts; the password is read at the attempt.
+- **A job that released nothing still sends the link-only email,** as 30's reply did: a job that
+  completes with no deliverable released, and a deliverable blocked or held that `email` or `pdf`
+  delivers, sends one link-only message with the History link, saying after its opening
+  *"No document could be sent: \<labels> \<was | were> not released."* It holds no clinical text, the
+  documents' labels only (package text). Each `email` or `pdf` destination those deliverables list is
+  recorded from that one message: `sent`, its attempt *sent link-only* and its reason *every deliverable
+  blocked*.
 - `description` and `items` follow every folder's `index.json` ([chapter 1](#1-files-and-scopes)).
 
 ### 6.9 Deliverables in the record and History
@@ -6341,6 +6354,9 @@ sentence in `stateReason`, and a deliverable's row does the same; the sentences 
   nothing is delivered until the job has succeeded).
 - *"failed: \<kind\>"* (a destination whose delivery was retried and still didn't go, with each
   attempt on the result; the job stays completed).
+- *no document password*, *attachments over the budget* and *every deliverable blocked* (the reason of
+  a destination sent as the link-only email, which is `sent` with its attempt *sent link-only*,
+  [chapter 6 § 6.8](#68-delivery)).
 - *"blocked: check '\<id\>' failed (\<detail\>)"* and *"blocked: check '\<id\>' could not run (\<error\>)"*
   (a deliverable whose gate check failed or errored).
 - *"cancelled: the job didn't finish within \<n\> minutes"* (a row still running at the job limit;
@@ -7121,7 +7137,7 @@ Each item of the suite, where it lives under `v31/`, and the build area that exp
 | **Date vectors** for the date operations ([chapter 3 § 3.5.5](#355-date-operations)) | `date-vectors` | `v31/conformance/date-vectors/` | area 04, JSON Logic |
 | **Markdown escape vectors:** CommonMark's backslash escapes for ASCII punctuation, and the first space or tab of each line as its character reference ([chapter 6](#6-checks-deliverables-and-the-profile)) | `markdown-escape-vectors` | `v31/conformance/markdown-escape-vectors/` | area 07, prompts and macros, and area 08, checks, deliverables and the profile |
 | **Fixtures for the compiled documents:** fixture packages with their expected `resolve.json` and `lock.json` bytes and hashes, `requires` and `needs`, and the publish report (including the ceiling note and test results) | `compiled-documents` | `v31/conformance/compiled-documents/` | area 05, resolver and lock, and area 11, registry and publish |
-| **Migration vectors:** 30 packages with their expected 31 output and notices, so an outside implementation of the migration ([chapter 10](#10-migration-30--31)) can be checked too | `migration-vectors` | `v31/conformance/migration-vectors/` | area 10, migration |
+| **Migration vectors:** 30 packages with their expected 31 output and notices, and the options each is migrated with, so an outside implementation of the migration ([chapter 10](#10-migration-30--31)) can be checked too | `migration-vectors` | `v31/conformance/migration-vectors/` | area 10, migration |
 
 ### 12.3 A case
 
