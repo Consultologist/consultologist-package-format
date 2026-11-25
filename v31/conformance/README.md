@@ -1377,10 +1377,15 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   \<loop key\> has no maxParallel and reads a list of unknown length". Both are published, each under
   its own id. Which wording is the sentence an engine writes is not settled.
 - **`publishedBy`'s "`ci` with the tag".**
-  [Chapter 7 § 7.9](../../package-format-v31.md#79-the-publish-report)'s member table gives
-  `publishedBy` as "`ci` with the tag, `editor`, `api` or `operator-migration`" and does not say how
-  the tag is written (inside the string, or beside it). `publish-report.schema.json` admits the four
-  bare values, `"ci"` among them, and holds no tag; the shape of a CI publish's value is not settled.
+  [Chapter 7 § 7.9](../../package-format-v31.md#79-the-publish-report)'s member table gave
+  `publishedBy` as "`ci` with the tag, `editor`, `api` or `operator-migration`" without saying how
+  the tag is written. Settled on
+  [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508): the tag is inside
+  the string, after `ci` and one space (`"ci v2026.12.1"`), as the engine's CI script writes it.
+  `publish-report.schema.json` admits the four bare values (a bare `"ci"` among them) or that form
+  (`anyOf` the enum and the pattern `^ci \S.*$`);
+  `schemas/publish-report/valid-published-by-ci-tag.json` and
+  `schemas/publish-report/invalid-published-by-ci-no-tag.json` are the examples.
 - **A manifest `title` of `null` has no compiled form.**
   [Chapter 1 § 1.3](../../package-format-v31.md#13-the-manifest) lets the manifest's `title` be `null`
   ("`null` shows the ref"), while

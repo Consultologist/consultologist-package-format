@@ -48,13 +48,21 @@
       "description": "When it was written, RFC 3339; null when refused."
     },
     "publishedBy": {
-      "enum": [
-        "ci",
-        "editor",
-        "api",
-        "operator-migration"
+      "anyOf": [
+        {
+          "enum": [
+            "ci",
+            "editor",
+            "api",
+            "operator-migration"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^ci \\S.*$"
+        }
       ],
-      "description": "What started the publish."
+      "description": "What started the publish: ci, editor, api or operator-migration, or ci with the release tag after one space (ci v2026.12.1)."
     },
     "sourceHash": {
       "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",

@@ -1,5 +1,5 @@
 {
-  "about": "publishedBy is ci, editor, api or operator-migration.",
+  "about": "publishedBy is ci, editor, api or operator-migration, or ci with the release tag after one space.",
   "instance": {
     "documentVersion": 1,
     "package": {

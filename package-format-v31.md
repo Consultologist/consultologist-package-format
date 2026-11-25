@@ -5769,7 +5769,7 @@ normalisation, the warnings, and the per-job ceiling note. Its schema is
 | `package` | object `{ name, version }` | never | the version published |
 | `outcome` | `"published"` or `"refused"` | never | a written report always says `published`; a refused publish returns the report without writing it |
 | `publishedAtUtc` | string (RFC 3339) | allowed | when it was written; `null` when refused |
-| `publishedBy` | string | never | `ci` with the tag, `editor`, `api` or `operator-migration` |
+| `publishedBy` | string | never | `ci` with the tag (`ci`, one space and the release tag, as `ci v2026.12.1`), `editor`, `api` or `operator-migration`; a bare `ci` is also accepted |
 | `sourceHash` | string | never | as in `resolve.json` |
 | `resolveHash` | string | allowed | `null` when publish stopped before step 4 |
 | `lockHash` | string | allowed | `null` when publish stopped before step 4 |
