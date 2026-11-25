@@ -120,10 +120,10 @@
           "propertyNames": {
             "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
           },
-          "description": "Every format the package uses, keyed by format id, each a JSON Schema keeping its $id, $schema and annotations."
+          "description": "Every format the package uses, keyed by format id, each a JSON Schema keeping its $id, $schema and annotations; a reference inside one to another is that format's $id (a JSON Schema 2020-12 compound document), and #/$defs/<name> inside one is its own file's definition (chapter 7 § 7.2.4)."
         }
       },
-      "description": "The formats bundle: one self-contained JSON Schema."
+      "description": "The formats bundle: one self-contained JSON Schema, a 2020-12 compound document."
     },
     "formatHashes": {
       "type": "object",

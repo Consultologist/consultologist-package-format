@@ -1027,7 +1027,7 @@ There are two comparisons, each with its own hash:
 
 | Comparison | How | Used for | Hash |
 |---|---|---|---|
-| **type equality** | references compared by name (never dereferenced), `anyOf` members and `properties` sorted by name, annotations (`title`, `description`) dropped | type checks: a written `format` against the derived one (a flow node's, a `computed` node's), `with` against a function's parameters, branch results against each other, a piped value against a renderer's `input` | `typeHash` |
+| **type equality** | references compared by name (the format's id, never the `$id` a reference in `resolve.json`'s bundle is written as; never dereferenced), `anyOf` members and `properties` sorted by name, annotations (`title`, `description`) dropped | type checks: a written `format` against the derived one (a flow node's, a `computed` node's), `with` against a function's parameters, branch results against each other, a piped value against a renderer's `input` | `typeHash` |
 | **full equality** | everything dereferenced, every keyword kept | hashes, and what a model receives | `formatHash` |
 
 - **`formatHash` leaves out `$id`**, so the same shape published under two ids hashes
@@ -1340,7 +1340,9 @@ Every published format has a `$id`, a URN that doesn't depend on where anything 
 
 - **In source, a format is named by its bare id:** `"format": "plaintext"`,
   `{ "$ref": "plaintext" }`. The resolver looks it up **package-local first, then catalogue,
-  then built-in**, and rewrites it to `#/$defs/<id>` in `resolve.json`'s single inline bundle.
+  then built-in**, and rewrites it in `resolve.json`: to `#/$defs/<id>`, the key of its entry in the
+  single inline bundle, where a `format` names it, and to the entry's `$id` where a format in the
+  bundle refers to it ([chapter 7 § 7.2.4](#724-formats-and-bindings)).
 - **No shadowing:** a package format may not reuse a catalogue or built-in name. So the lookup order never changes which format a name means.
 - **Inside a format file,** `#/$defs/<name>` refers to that file's own `$defs`.
 - **In a function,** a name resolves to the function's own formats, then the package formats its
@@ -5141,14 +5143,14 @@ The manifest's inputs object, keyed by id, with each entry's five members as wri
 ([chapter 2](#2-types-and-inputs)): `label` (string), `description` (lines or `null`), `format`
 (a `$ref` into the bundle, `{ "$ref": "#/$defs/<id>" }`, or the inline schema), `required`
 (boolean) and `channel`. Bare format ids are rewritten to `#/$defs/<id>`, as everywhere in the
-document.
+document outside the bundle (inside it, a reference is the target's `$id`, § 7.2.4).
 
 **The order is explicit** in `inputOrder`, since RFC 8785 sorts an object's members and the written
 order is the Create page's.
 
 #### 7.2.4 `formats` and `bindings`
 
-**`formats` is one self-contained JSON Schema bundle:** `{ "$defs": { "<id>": <schema>, … } }`,
+**`formats` is one self-contained JSON Schema bundle,** a JSON Schema 2020-12 compound document: `{ "$defs": { "<id>": <schema>, … } }`,
 holding every format the package uses, from its three homes, with no shadowing between them:
 - **built-ins** (`string`, `number`, `boolean`, `date`, `plaintext`, `markdown_block`,
   `markdown_inline`, `check_result`, …) from the package-format registry's definitions file;
@@ -5164,6 +5166,17 @@ source. Each entry keeps its `$schema` (`urn:consultologist:spec:31:dialect`, ch
 Inline schemas written on an input or a node stay inline where they're written; they carry no
 `contentMediaType` or `x-markdown`.
 
+**Inside the bundle, a format refers to another by its `$id`**
+([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7064144841)):
+a name written in a bundled format (`{ "$ref": "plaintext" }`, `{ "$ref": "section_plan" }`) is
+rewritten to the target's `$id` URN (`{ "$ref": "urn:consultologist:spec:31:format:plaintext" }`,
+`{ "$ref": "urn:consultologist:package:example-nested-note@v2026.12.1:format:section_plan" }`), so a
+standard validator given the bundle resolves every reference in it as written. A `#/$defs/<name>`
+inside a format is that format file's own definition, as in source. **Outside the bundle,** an
+input's, a node's or any entry's `format` names the bundle's key: `{ "$ref": "#/$defs/<id>" }`.
+Only those references are rewritten: every other byte of a published format is kept, and neither
+hash below depends on how a reference is written.
+
 **Formats are pure shape**: one `plaintext`, one `markdown_block`, one `boolean`,
 with no producer families or prefixes. **Every node entry carries its `producer`**, as written
 and checked against its kind: `"generated"` for an agent node, `"computed"` for every other
@@ -5175,7 +5188,8 @@ runs; the producer says how its output can be verified.
 **Two hashes per format**:
 - **`formatHashes`**, the **full** hash: everything dereferenced, every keyword kept. It's what
   a model's reply is validated against.
-- **`typeHashes`**, the **type** hash: references by name, sorted, annotations dropped. Type checks
+- **`typeHashes`**, the **type** hash: references by name (the format's id, never the `$id` a
+  reference in the bundle is written as), sorted, annotations dropped. Type checks
   compare these: a written `format` against the derived one, `with` against parameters, branch
   results against each other.
 
