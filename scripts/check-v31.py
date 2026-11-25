@@ -1204,6 +1204,20 @@ RULED_DELIVERABLE_MEMBERS = ["delivery", "bundle", "escapes"]
 RULED_PLACEMENT_MEMBERS = ["site", "within", "if", "plainConverts", "form"]
 RULED_RUN_SPOT_MEMBERS = ["site", "at", "reads", "unit", "neutral"]
 RULED_STAMP_MEMBERS = ["specVersion", "resolveHash", "lockHash", "migratedFrom"]
+RULED_ENTRY_MEMBERS += ["nodes", "then", "else", "branches"]
+# The record members areas 08 and 09 added at 31 (the provenance repository holds the contract; this guards the names).
+RULED_RECORD_MEMBERS = [
+    # the job header
+    "resolveHash", "lockHash", "versionsRan", "recordHash", "runFacts", "limits", "startedAtUtc",
+    "signatureBlockId", "signatureChosen", "decisions", "schemaVersion", "effectiveInputHash",
+    "effectiveInputHashVersion", "tokens",
+    # limits' members
+    "maxAgentCalls", "capacityWaitMinutes", "serviceAttempts", "jobMinutes", "deliveryMinutes",
+    "deliveryAttempts", "loopItems", "jobAgentCalls", "jobInstances", "renderSteps",
+    # rows
+    "producer", "modelDerived", "runDependent", "profileCarrying", "sentFormatHash", "failWith",
+    "itemId", "positionName", "hashVersion", "deliveries", "textDroppedAtUtc",
+]
 
 
 def named(name, text):
@@ -1216,7 +1230,8 @@ def check_compiled_members():
     members, a placement, a run spot, a render site) is named in chapter 7 § 7.2.5's text, and every member of
     publish.json's stamp in § 7.5's; the ruled members are in the schemas. This repository holds no
     machine-readable list of the record's members (chapter 9 is prose, and no schema describes the record), so the
-    record's member names are not guarded here; the provenance repository's contract is where they are listed."""
+    record's member names can only be guarded by name: RULED_RECORD_MEMBERS lists those areas 08 and 09 added at 31 and
+    chapter 9 must name each. The provenance repository holds the contract and its layout."""
     failures = []
     resolve, errors = load(SCHEMAS / "resolve.schema.json")
     failures += errors
@@ -1257,8 +1272,18 @@ def check_compiled_members():
     for name in stamp.get("properties", {}):
         if not named(name, pipeline):
             failures.append(f"chapter 7 § 7.5 does not name the member `{name}` of the publish stamp")
+    # The other way: every member of § 7.2.5's derived-member table has a property in `entry`.
+    for row in flat.splitlines():
+        cell = row.split("|")[1] if row.startswith("| `") else ""
+        for name in re.findall(r"`(\w+)`", cell):
+            if name not in groups["entry"]:
+                failures.append(f"chapter 7 § 7.2.5's table names the member `{name}`, which resolve.schema.json's entry does not")
     if "`publish.json`" not in pipeline:
         failures.append("chapter 7 § 7.5 does not name the stamp's file, `publish.json`")
+    record = chapter_bodies(DOCUMENT.read_text(encoding="utf-8")).get(9, "")
+    for name in RULED_RECORD_MEMBERS:
+        if not re.search(rf"\b{name}\b", record):
+            failures.append(f"chapter 9 does not name the record member {name}")
     return failures
 
 

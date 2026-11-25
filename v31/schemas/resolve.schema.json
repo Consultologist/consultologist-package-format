@@ -829,6 +829,35 @@
             }
           ],
           "description": "The format's type hash, as in typeHashes; null with formatHash."
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "On for, while, if and case entries: the children's rooted keys, in order. (A function's nodes is its own map.)"
+        },
+        "then": {
+          "$ref": "#/$defs/branch",
+          "description": "On an if: the body that runs when the condition holds."
+        },
+        "else": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/branch"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "On an if and a case: the body that runs otherwise; null for none."
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/caseBranch"
+          },
+          "description": "On a case: each branch, in order."
         }
       },
       "description": "A flat-map entry. It holds every header member as written, canonicalised, and the derived members (chapter 7 § 7.2.5), every one named here; the header's shape is the source schemas', applied by the resolver."
@@ -943,6 +972,66 @@
         }
       },
       "description": "One pipe step into a renderer."
+    },
+    "branch": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "ret"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The rooted keys of the branch's nodes, in order."
+        },
+        "ret": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The rooted key of the node the branch returns; null for an empty branch."
+        }
+      },
+      "description": "A body of an if or a case as compiled: { nodes, ret }, with keys."
+    },
+    "caseBranch": {
+      "type": "object",
+      "required": [
+        "when",
+        "nodes",
+        "ret"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "when": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "The subject's values this branch takes."
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The rooted keys of the branch's nodes, in order."
+        },
+        "ret": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The rooted key of the node the branch returns; null for an empty branch."
+        }
+      },
+      "description": "A case branch as compiled: { when, nodes, ret }."
     }
   }
 }

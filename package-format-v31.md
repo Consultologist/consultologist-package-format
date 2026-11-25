@@ -5220,7 +5220,9 @@ and refused a mismatch ([chapter 1](#1-files-and-scopes)). Publish then adds the
 |---|---|---|---|---|
 | `id` | string | never | every entry | the bare id (the file or folder name) |
 | `parent` | string | allowed | every entry | the enclosing flow node's rooted key; `null` at the top level (of the package, or of a function). Not `in`, which a loop's header uses for its source |
-| `nodes` | array of string | never | `for`, `while`, branches | the children's rooted keys, in order |
+| `nodes` | array of string | never | `for`, `while`, `if`, `case` | the children's rooted keys, in order |
+| `then`, `else` | object `{ nodes, ret }` | `else` allowed | `if` (`then`, `else`), `case` (`else`) | each body as compiled: `nodes` the body's rooted keys in order and `ret` the rooted key it returns (`null` for an empty body); `else` is `null` when there is none |
+| `branches` | array of `{ when, nodes, ret }` | never | `case` | each branch in order: `when` the subject's values it takes (an array of text), then `nodes` and `ret` as above |
 | `ret` | string | allowed | `for`, `while`, `if`, `case`, functions | the returned node's rooted key; `null` on an `if` and a `case`, whose `then`, `else` and `branches` each hold their own `{ nodes, ret }` |
 | `reads` | array of string | never | every entry | every path the entry reads (header and body), canonical and sorted: `node.plan.value`, `input.consult_draft.content`, `item.value.point`, `run.date`, `profile.signature`, … Snippet and macro body reads count as the placing node's ([chapter 5](#5-templates-and-macros)) |
 | `runDependent` | boolean | never | every entry | `true` when anything the entry reads is a `run.*` fact or a run-dependent value, transitively ([chapter 3](#3-expressions)). On a node or check entry it is the value the header declared, checked against this derivation; on other entries it is derived only |
@@ -5572,8 +5574,7 @@ In order:
       `{ "specVersion": 31, "resolveHash": "sha256:…", "lockHash": "sha256:…" }`, the two hashes `resolve.json` and
       `lock.json` must have. It is canonical, holds no time, and gains one member, `migratedFrom` (a string:
       the old version), when the operator's migration publishes the package ([chapter 10 § 10.8](#108-a-package-that-stays-at-30-and-what-its-owner-is-told)). Its schema,
-      [`publish-stamp.schema.json`](v31/schemas/publish-stamp.schema.json), refuses any other member; the reader ignores
-      them.
+      [`publish-stamp.schema.json`](v31/schemas/publish-stamp.schema.json), refuses any other member; the reader ignores any other member.
 
    Every hash is taken from final bytes. **A version exists only once stamped:** the engine and
    the registry ignore a folder without the stamp, so a publish that dies partway can be retried
@@ -6223,6 +6224,10 @@ record's JSON form (camelCase).
   rows with `passes` and `stopped`, the not-run state, item progress per loop, the 120-character item
   name. The `let` row of storage 11 is the `computed` row at 12, with `producer: computed` as before.
   At 12 **every row records the node's `producer`.**
+- **Row members added at 31:** an agent row's `formatHash`, `typeHash` and `sentFormatHash` (the hash of
+  the stripped format, taken **before** it is wrapped; `null` on other rows) and a check row's `failWith`
+  (the `check_result`'s `message`, the operation's literal sentence, when it failed; package text, kept;
+  `null` when it passed).
 - **A row's `producer`, `modelDerived`, `runDependent` and `profileCarrying`** are the node's own,
   as written and checked ([chapter 2 § 2.1.3](#213-producer), [chapter 3](#3-expressions)); every row
   records its `producer`.
