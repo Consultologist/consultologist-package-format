@@ -902,14 +902,17 @@ def check_vectors():
 
 
 COMPILED_DOCUMENTS = V31 / "conformance" / "compiled-documents"
-COMPILED_CASE_FILES = ["about.txt", "lock.json", "resolve.json", "toolchain.json"]
+COMPILED_CASE_FILES = ["about.txt", "lock.json", "publish-report.json", "publish.json", "resolve.json", "toolchain.json"]
 
 
 def check_compiled_documents():
     """Chapter 7's compiled documents (area 05): the family lists exactly the case folders on disk; each case holds
-    source/ (with its manifest.json), toolchain.json, resolve.json, lock.json and about.txt; resolve.json validates
-    against resolve.schema.json and lock.json against lock.schema.json; and lock.json's resolve.hash is the SHA-256
-    of resolve.json's bytes."""
+    source/ (with its manifest.json), toolchain.json, resolve.json, lock.json, (area 11) publish-report.json and
+    publish.json, and about.txt; resolve.json validates against resolve.schema.json, lock.json against lock.schema.json,
+    publish-report.json against publish-report.schema.json and publish.json against publish-stamp.schema.json;
+    lock.json's resolve.hash is the SHA-256 of resolve.json's bytes; and the report (published, of resolve.json's package
+    and sourceHash) and the stamp each name the SHA-256 of resolve.json's bytes and of lock.json's as resolveHash and
+    lockHash."""
     index, failures = load(V31 / "conformance" / "index.json")
     if index is None:
         return failures
@@ -923,7 +926,9 @@ def check_compiled_documents():
 
     registry, errors = build_registry()
     failures += errors
-    validators = {name: validator_for(schema_for(name), registry, failures) for name in ("resolve", "lock")}
+    validators = {name: validator_for(schema_for(schema), registry, failures)
+                  for name, schema in (("resolve", "resolve"), ("lock", "lock"),
+                                       ("publish-report", "publish-report"), ("publish", "publish-stamp"))}
     for case in on_disk:
         folder = COMPILED_DOCUMENTS / case
         where = f"compiled-documents/{case}"
@@ -932,7 +937,7 @@ def check_compiled_documents():
         if not (folder / "source" / "manifest.json").is_file():
             failures.append(f"{where}: no source/manifest.json")
         documents = {}
-        for name in ("resolve", "lock"):
+        for name in ("resolve", "lock", "publish-report", "publish"):
             document, errors = load(folder / f"{name}.json")
             failures += errors
             if document is None:
@@ -946,6 +951,25 @@ def check_compiled_documents():
             digest = "sha256:" + hashlib.sha256((folder / "resolve.json").read_bytes()).hexdigest()
             expect(failures, f"{where}/lock.json: resolve.hash (the SHA-256 of resolve.json's bytes)",
                    (documents["lock"].get("resolve") or {}).get("hash"), digest)
+        # Area 11: the report and the stamp publish writes beside the pair name it by its bytes' hashes.
+        hashes = {name: "sha256:" + hashlib.sha256((folder / f"{name}.json").read_bytes()).hexdigest()
+                  for name in ("resolve", "lock") if (folder / f"{name}.json").is_file()}
+        for name in ("publish-report", "publish"):
+            document = documents.get(name)
+            if not isinstance(document, dict):
+                continue
+            for member, of in (("resolveHash", "resolve"), ("lockHash", "lock")):
+                if of in hashes:
+                    expect(failures, f"{where}/{name}.json: {member} (the SHA-256 of {of}.json's bytes)",
+                           document.get(member), hashes[of])
+        report, resolve = documents.get("publish-report"), documents.get("resolve")
+        if isinstance(report, dict):
+            expect(failures, f"{where}/publish-report.json: outcome", report.get("outcome"), "published")
+            if isinstance(resolve, dict):
+                expect(failures, f"{where}/publish-report.json: package (resolve.json's)",
+                       report.get("package"), resolve.get("package"))
+                expect(failures, f"{where}/publish-report.json: sourceHash (resolve.json's)",
+                       report.get("sourceHash"), resolve.get("sourceHash"))
     return failures
 
 

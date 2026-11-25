@@ -1,8 +1,10 @@
 example-conditional-sections: a required list input of sections, each with a title and a kind; a loop routing each section by a case on its kind (the omit branch empty), a loop holding an if on the kind, and a loop holding an if on the section's id and a boolean input, after chapter 4 § 4.5.4.
 
-Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:fd7d7ad7f588d0a76114f3305f0a0ccbcf8b5c6c6843cf3fb4da3148bb5083e2
-lock.json: sha256:02beda25ec78f3125d64e33459ad1261c99f25fefefded7f2bdce732f7ce1a6a
+resolve.json: sha256:b3597dd09b9f9d6f59b4d962d13e83a3f4d78206459fa7eb48ab7bfc09f2aac4
+lock.json: sha256:747e721794610aa081345e4a6a2ec94c72380790dcfc85e2329115e9f3a6bc71
+
+publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The package has no tests, so the report's tests are []. publish.json is the stamp written last, holding the two hashes above.
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

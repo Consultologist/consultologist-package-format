@@ -1,8 +1,10 @@
-example-nested-note: an agent planning the sections, a computed count, the loop sections over the plan's sections holding an outline and the loop paragraphs over its points, and the while refine of a summary and its judge, after chapter 4 § 4.2.8 and § 4.3.5, with the package formats of chapter 7 § 7.2.9.
+example-nested-note: an agent planning the sections, a computed count, the loop sections over the plan's sections holding an outline and the loop paragraphs over its points, and the while refine of a summary and its judge, after chapter 4 § 4.2.8 and § 4.3.5, with the package formats of chapter 7 § 7.2.9. #1508 (area 11): the test two_sections plans two sections of three points in all and refines the summary twice; it also stubs node.sections.outline:3, a third section that is not planned, so the report warns that the stub is not used.
 
-Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 100,000 instances a job and 30 minutes a job (the engine's defaults but the instances, raised so that the package publishes: at 10,000 it is refused, its worst case opening more). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:3da8ddccdc7f2710e6a8be8cd233a631666af2c5e39c7396d9ea055379965028
-lock.json: sha256:06da027afe34f49b8bc5d7c8985c74bda2093acf3c33590fae946e554a001996
+resolve.json: sha256:cb077bdd6512837ca2eb9afbcdba204460fedbaa6056ae41e160ca16ec9b6517
+lock.json: sha256:4559b8290bb172a199354b6d7915e7ad37f1a6cb56eb13ce55d3265a020442d7
+
+publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The report's tests are two_sections (pass), run offline on their stubs. publish.json is the stamp written last, holding the two hashes above.
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

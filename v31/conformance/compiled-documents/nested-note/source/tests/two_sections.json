@@ -1,0 +1,24 @@
+{
+  "description": ["Two planned sections of three points in all; the summary is refined once; a third section's outline is stubbed and never runs."],
+  "inputs": { "consult_draft": "Margaret Okafor, 58, seen by Dr A. Sample at Sample Oncology Clinic after treatment; tired for three months (fictional)." },
+  "profile": {},
+  "run": {},
+  "outputs": {
+    "node.plan": { "sections": [{ "title": "History", "kind": "narrative" }, { "title": "Plan", "kind": "narrative" }] },
+    "node.sections.outline:1": { "points": ["Tired for three months.", "No weight change."] },
+    "node.sections.outline:2": { "points": ["Review in six weeks."] },
+    "node.sections.outline:3": { "points": ["Never planned."] },
+    "node.sections.paragraphs.draft_paragraph:1/1": "Ms Okafor has been tired for three months (fictional).",
+    "node.sections.paragraphs.draft_paragraph:1/2": "Her weight has not changed (fictional).",
+    "node.sections.paragraphs.draft_paragraph:2/1": "Dr A. Sample will review her in six weeks (fictional).",
+    "node.refine.draft_summary#1": "Tired; review planned.",
+    "node.refine.judge#1": { "verdict": "revise" },
+    "node.refine.draft_summary#2": "Tired for three months; review at Sample Oncology Clinic in six weeks (fictional).",
+    "node.refine.judge#2": { "verdict": "good" }
+  },
+  "expect": {
+    "loops": { "node.sections": { "count": 2 }, "node.refine": { "passes": 2, "stopped": "check" } },
+    "values": { "node.section_count": 2 },
+    "deliverables": { "deliverable.note": { "state": "released", "hash": "sha256:e2ad3b9ec9aa1f147b19d1b2462d20c1b2c323e05f6be93a2ee16ac7fd4caa64" } }
+  }
+}

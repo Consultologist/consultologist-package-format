@@ -1,0 +1,16 @@
+{
+  "description": ["The classifier answers yes, so the closing history line is placed; the run date is fixed."],
+  "inputs": { "consult_draft": "Margaret Okafor, 58, seen by Dr A. Sample at Sample Oncology Clinic for a routine review (fictional)." },
+  "profile": {},
+  "run": { "date": { "value": "2026-11-16", "timeZone": "America/Toronto" } },
+  "outputs": {
+    "node.plan": { "sections": [{ "title": "History", "kind": "narrative" }] },
+    "node.classify": { "answer": true, "reason": "The plan has a history section (fictional)." },
+    "node.terms": { "concepts": [{ "id": "fictional-1", "term": "Fatigue", "type": "finding", "source": "consult_draft", "support": "tired for three months", "isActive": true, "isSnomedConcept": false }] },
+    "node.draft": "Ms Okafor was seen for a routine review (fictional)."
+  },
+  "expect": {
+    "ran": ["node.classify", "node.draft", "node.stamp"],
+    "deliverables": { "deliverable.note": { "state": "released", "hash": "sha256:8dcf6c28610231fc2b1b69d1f2c2b50e155b57630353c179cfea42758164e5c0" } }
+  }
+}

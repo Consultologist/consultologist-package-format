@@ -1,8 +1,10 @@
 example-checked-note, chapter 6 § 6.3.4's package cut down: an agent planning the sections, the loop sections drafting each with its planned terms and the terms it covers; the check loop part_coverage over the loop's .items, the aggregate all_sections_covered over its .items, and the check proofread, which reads the composed note's .content and gates it; the note (markdown_block, delivered to emr, failing when empty) and an ungated patient letter (plaintext) in the delivery folder patient, delivered by email and pdf and held when empty.
 
-Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:aa32348c7210f56ac31fb34d1f4db5001efd05dfa507c1d2957805a428015c66
-lock.json: sha256:318aee7e5ae89dd7a1389dcee0eb840a987fdfd44ffbabe4b45f59ea97f6c94f
+resolve.json: sha256:7178e68b3a84b1467f2fe3f65bcc162df55b13880732497f47c68a7a519a683c
+lock.json: sha256:c88316a27cbf433fa9038d6d565890d6873f8f8e235a15a7ecc5bf6e1a41a563
+
+publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The package has no tests, so the report's tests are []. publish.json is the stamp written last, holding the two hashes above.
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

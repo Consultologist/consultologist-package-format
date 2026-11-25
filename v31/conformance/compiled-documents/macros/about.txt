@@ -1,8 +1,10 @@
-example-macros (#1508): an agent planning the sections; the classifier classify, a judgement on the plan; the run-dependent rendered node stamp, a run spot on run.date; the agent draft, reading stamp and placing the part close, whose text places the macro hpi of the folder section_notes (the folder and the macro each decided on the classifier's answer); and the deliverable, reading the draft. The agent terms returns a concept_list, which the rendered node terms_text reads through the built-in renderer renderer.concept_bullets.
+example-macros (#1508): an agent planning the sections; the classifier classify, a judgement on the plan; the run-dependent rendered node stamp, a run spot on run.date; the agent draft, reading stamp and placing the part close, whose text places the macro hpi of the folder section_notes (the folder and the macro each decided on the classifier's answer); and the deliverable, reading the draft. The agent terms returns a concept_list, which the rendered node terms_text reads through the built-in renderer renderer.concept_bullets. #1508 (area 11): the test close_line answers the classifier yes, so the closing line is placed, on a fixed run date.
 
-Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:09d8288c6d9edabe3351bcf7b1d988dbd64a922d3f2ea501bedec7fa8d09636e
-lock.json: sha256:8715e7c959dbc21a59cec413f00e55ab79d757905097465fdd02b4b73c0fc7ca
+resolve.json: sha256:b7d8d5e44eb6af888238a166a5700b2137422821ebec204d808fc8898f4809ac
+lock.json: sha256:fbea98601c4760ffacfb34c2826cc646ea8328c52e86b4491178722d6b78c7be
+
+publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The report's tests are close_line (pass), run offline on their stubs. publish.json is the stamp written last, holding the two hashes above.
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

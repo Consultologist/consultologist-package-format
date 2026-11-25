@@ -1,8 +1,10 @@
 example-functions, after chapter 4 § 4.7.11 (with an agent plan and a second agent extracting terms, which the example does not have): the function draft_section of three agents, called in a loop over the snippet folder standards; the check loop section_coverage over the loop's .items and the check all_sections; and the deliverable deliverable.emr.consult, gated by all_sections, in the delivery folder emr, which delivers to emr and email as one zip.
 
-Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
 resolve.json: sha256:7ca8b2b3181249a4318337c57bfcd6e8d12f43cb573269ea9c34887fc73326dc
 lock.json: sha256:049d15616c5953e8b452742e78c057c13e3f130a78ccc76c5bf4e5543fe463b2
+
+publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The package has no tests, so the report's tests are []. publish.json is the stamp written last, holding the two hashes above.
 
 What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.
