@@ -213,10 +213,16 @@
         "type": "string",
         "pattern": "^snippet\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/snippet"
+      "patternProperties": {
+        "^snippet\\.[a-z][a-z0-9_]*$": {
+          "$ref": "#/$defs/snippet"
+        },
+        "^snippet\\.[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$": {
+          "$ref": "#/$defs/snippetItem"
+        }
       },
-      "description": "Every snippet and snippet folder, keyed by rooted key; {} for none."
+      "additionalProperties": false,
+      "description": "Every snippet and snippet folder, keyed by rooted key; {} for none. A key of one segment is a snippet or a folder (closed); a key of two is a folder's item (open to its format's members)."
     },
     "macros": {
       "type": "object",
@@ -568,7 +574,7 @@
         "modelDerived",
         "nodes"
       ],
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "id": {
           "$ref": "#/$defs/entry/properties/id"
@@ -608,9 +614,75 @@
             "$ref": "#/$defs/entry"
           },
           "description": "The function's own flat nodes map, keyed by rooted keys local to the function."
+        },
+        "label": {
+          "$ref": "#/$defs/entry/properties/label"
+        },
+        "description": {
+          "$ref": "#/$defs/entry/properties/description"
+        },
+        "format": {
+          "$ref": "#/$defs/entry/properties/format",
+          "description": "The function's result type (its ret's format), written as an entry's format is."
+        },
+        "formatHash": {
+          "$ref": "#/$defs/entry/properties/formatHash"
+        },
+        "typeHash": {
+          "$ref": "#/$defs/entry/properties/typeHash"
+        },
+        "inputs": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "description",
+              "format"
+            ],
+            "properties": {
+              "label": {
+                "$ref": "#/$defs/entry/properties/label"
+              },
+              "description": {
+                "$ref": "#/$defs/entry/properties/description"
+              },
+              "format": {
+                "$ref": "#/$defs/entry/properties/format"
+              }
+            }
+          },
+          "description": "The function's inputs by id, each with its label, description and format."
+        },
+        "inputOrder": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "The input ids in written order."
+        },
+        "uses": {
+          "$ref": "urn:consultologist:spec:31:schema:function-index#/properties/uses",
+          "description": "What the function reaches, by id: its snippets, macros, formats and renderers."
+        },
+        "snippets": {
+          "$ref": "#/properties/snippets",
+          "description": "The function's own snippets, as the package's."
+        },
+        "macros": {
+          "$ref": "#/properties/macros",
+          "description": "The function's own macros, as the package's."
+        },
+        "renderers": {
+          "$ref": "#/properties/renderers",
+          "description": "The function's own renderers, as the package's."
         }
       },
-      "description": "A function: the derived members every entry carries (chapter 7 § 7.2.5), except that its body is a list of node keys and it holds a flat nodes map of its own; its remaining members are the source schemas' (chapter 4)."
+      "description": "A function, closed: the derived members every entry carries (chapter 7 § 7.2.5), except that its body is a list of node keys and it holds a flat nodes map of its own; its own members are its header's (label, description, format, inputs, inputOrder, uses) and the derived formatHash, typeHash, snippets, macros and renderers."
     },
     "deliverable": {
       "allOf": [
@@ -1175,6 +1247,72 @@
         "profileCarrying",
         "modelDerived"
       ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entry/properties/id"
+        },
+        "parent": {
+          "$ref": "#/$defs/entry/properties/parent"
+        },
+        "reads": {
+          "$ref": "#/$defs/entry/properties/reads"
+        },
+        "runDependent": {
+          "$ref": "#/$defs/entry/properties/runDependent"
+        },
+        "profileCarrying": {
+          "$ref": "#/$defs/entry/properties/profileCarrying"
+        },
+        "modelDerived": {
+          "$ref": "#/$defs/entry/properties/modelDerived"
+        },
+        "body": {
+          "$ref": "#/$defs/entry/properties/body"
+        },
+        "bodyHash": {
+          "$ref": "#/$defs/entry/properties/bodyHash"
+        },
+        "renders": {
+          "$ref": "#/$defs/entry/properties/renders"
+        },
+        "runSpots": {
+          "$ref": "#/$defs/entry/properties/runSpots"
+        },
+        "formatHash": {
+          "$ref": "#/$defs/entry/properties/formatHash"
+        },
+        "typeHash": {
+          "$ref": "#/$defs/entry/properties/typeHash"
+        },
+        "label": {
+          "$ref": "#/$defs/entry/properties/label"
+        },
+        "description": {
+          "$ref": "#/$defs/entry/properties/description"
+        },
+        "if": {
+          "$ref": "#/$defs/entry/properties/if"
+        },
+        "format": {
+          "$ref": "#/$defs/entry/properties/format"
+        },
+        "items": {
+          "$ref": "#/$defs/entry/properties/items"
+        }
+      },
+      "description": "A snippet or a snippet folder's own entry (snippet.<id>), closed: the members entry names that a snippet or a folder holds."
+    },
+    "snippetItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "parent",
+        "reads",
+        "runDependent",
+        "profileCarrying",
+        "modelDerived"
+      ],
       "additionalProperties": true,
       "properties": {
         "id": {
@@ -1229,7 +1367,7 @@
           "$ref": "#/$defs/entry/properties/items"
         }
       },
-      "description": "A snippet or a snippet folder's entry: the members entry names, and any other member an item's header holds, as the folder's format gives it (chapter 4 § 4.4), so this definition is open."
+      "description": "An item of a snippet folder (snippet.<folder>.<id>): the members entry names, and any other member the item's header holds, as the folder's format gives it (chapter 4 § 4.4), so this is the one open entry."
     }
   }
 }
