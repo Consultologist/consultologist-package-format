@@ -1,0 +1,8 @@
+example-macros (#1508): an agent planning the sections; the classifier classify, a judgement on the plan; the run-dependent rendered node stamp, a run spot on run.date; the agent draft, reading stamp and placing the part close, whose text places the macro hpi of the folder section_notes (the folder and the macro each decided on the classifier's answer); and the deliverable, reading the draft. The agent terms returns a concept_list, which the rendered node terms_text reads through the built-in renderer renderer.concept_bullets.
+
+Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), with no publish limits, so no ceiling note.
+
+resolve.json: sha256:09d8288c6d9edabe3351bcf7b1d988dbd64a922d3f2ea501bedec7fa8d09636e
+lock.json: sha256:8715e7c959dbc21a59cec413f00e55ab79d757905097465fdd02b4b73c0fc7ca
+
+What each Scriban body reads, places, renders and where its run spots are is what the dialect (scriban-dialect.md) finds in the bodies as written.

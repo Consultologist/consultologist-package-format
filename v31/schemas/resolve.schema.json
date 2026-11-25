@@ -214,7 +214,7 @@
         "pattern": "^snippet\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
       },
       "additionalProperties": {
-        "$ref": "#/$defs/entry"
+        "$ref": "#/$defs/snippet"
       },
       "description": "Every snippet and snippet folder, keyed by rooted key; {} for none."
     },
@@ -684,7 +684,7 @@
         "profileCarrying",
         "modelDerived"
       ],
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "id": {
           "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
@@ -858,9 +858,141 @@
             "$ref": "#/$defs/caseBranch"
           },
           "description": "On a case: each branch, in order."
+        },
+        "kind": {
+          "enum": [
+            "agent",
+            "rendered",
+            "computed",
+            "call",
+            "for",
+            "while",
+            "if",
+            "case"
+          ],
+          "description": "The header's kind, as written."
+        },
+        "producer": {
+          "enum": [
+            "generated",
+            "computed"
+          ],
+          "description": "The header's producer, as written."
+        },
+        "label": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/label",
+          "description": "The header's label, as written."
+        },
+        "description": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/description",
+          "description": "The header's description, as written; null for none."
+        },
+        "format": {
+          "$ref": "#/$defs/input/properties/format",
+          "description": "The header's format with a bare format id rewritten to { \"$ref\": \"#/$defs/<id>\" } (chapter 7 § 7.2.3), or its inline schema."
+        },
+        "reproducible": {
+          "type": "boolean",
+          "description": "The header's reproducible, as written."
+        },
+        "if": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+          "description": "The header's if, canonicalised and with its keys rooted; null for always. On a flow node of kind if it is the decision."
+        },
+        "onInvalid": {
+          "$ref": "urn:consultologist:spec:31:schema:node-agent#/properties/onInvalid",
+          "description": "On agent nodes: the header's onInvalid."
+        },
+        "failIfEmpty": {
+          "$ref": "urn:consultologist:spec:31:schema:node-agent#/properties/failIfEmpty",
+          "description": "On agent nodes: the header's failIfEmpty."
+        },
+        "ordered": {
+          "$ref": "urn:consultologist:spec:31:schema:node-agent#/properties/ordered",
+          "description": "On agent nodes: the header's ordered."
+        },
+        "expression": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/jsonLogic",
+          "description": "On computed nodes and checks: the header's expression, canonicalised and with its keys rooted."
+        },
+        "while": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/jsonLogic",
+          "description": "On a while: the header's while, canonicalised and with its keys rooted."
+        },
+        "function": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id",
+          "description": "On a call: the id of the function it runs."
+        },
+        "with": {
+          "$ref": "urn:consultologist:spec:31:schema:node-call#/properties/with",
+          "description": "On a call: the header's with, its reference strings rooted."
+        },
+        "in": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/referenceString",
+          "description": "On a for: the list it iterates, rooted."
+        },
+        "parallel": {
+          "$ref": "urn:consultologist:spec:31:schema:flow-for#/properties/parallel",
+          "description": "On a for: the header's parallel."
+        },
+        "maxParallel": {
+          "$ref": "urn:consultologist:spec:31:schema:flow-for#/properties/maxParallel",
+          "description": "On a for: the header's maxParallel."
+        },
+        "until": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/condition",
+          "description": "On a for and a while: the header's until, canonicalised and rooted; null for none."
+        },
+        "max": {
+          "$ref": "urn:consultologist:spec:31:schema:flow-for#/properties/max",
+          "description": "On a for and a while: the header's max (an integer on a while, null or an integer on a for)."
+        },
+        "itemLabel": {
+          "$ref": "urn:consultologist:spec:31:schema:flow-for#/properties/itemLabel",
+          "description": "On a for: the header's itemLabel."
+        },
+        "checkFirst": {
+          "$ref": "urn:consultologist:spec:31:schema:flow-while#/properties/checkFirst",
+          "description": "On a while: the header's checkFirst."
+        },
+        "case": {
+          "$ref": "urn:consultologist:spec:31:schema:common#/$defs/referenceString",
+          "description": "On a case: its subject, rooted."
+        },
+        "check": {
+          "$ref": "urn:consultologist:spec:31:schema:deliverable#/properties/check",
+          "description": "On a deliverable: the check that gates its release, or null."
+        },
+        "whenEmpty": {
+          "$ref": "urn:consultologist:spec:31:schema:deliverable#/properties/whenEmpty",
+          "description": "On a deliverable: what happens when its composed text is empty."
+        },
+        "input": {
+          "$ref": "#/$defs/input/properties/format",
+          "description": "On a renderer: the format it accepts, as a format is written here."
+        },
+        "instruction": {
+          "$ref": "urn:consultologist:spec:31:schema:macro#/properties/instruction",
+          "description": "On a macro: where to place it."
+        },
+        "items": {
+          "$ref": "urn:consultologist:spec:31:schema:snippet-folder-index#/properties/items",
+          "description": "On a snippet folder and a macro folder: its members by bare id, in order."
+        },
+        "delivery": {
+          "$ref": "#/$defs/deliverable/allOf/1/properties/delivery",
+          "description": "On deliverables only; defined with the deliverable."
+        },
+        "bundle": {
+          "$ref": "#/$defs/deliverable/allOf/1/properties/bundle",
+          "description": "On deliverables only; defined with the deliverable."
+        },
+        "escapes": {
+          "$ref": "#/$defs/deliverable/allOf/1/properties/escapes",
+          "description": "On deliverables only; defined with the deliverable."
         }
       },
-      "description": "A flat-map entry. It holds every header member as written, canonicalised, and the derived members (chapter 7 § 7.2.5), every one named here; the header's shape is the source schemas', applied by the resolver."
+      "description": "A flat-map entry of a node, a check, a deliverable, a renderer, a macro or a macro folder, closed to unknown members: it holds every header member as written (canonicalised, rooted, a format as a $ref into formats) and the derived members (chapter 7 § 7.2.5), every one named here once. A snippet folder's items are not this definition: their members are the folder's format's (snippet)."
     },
     "placement": {
       "type": "object",
@@ -1032,6 +1164,72 @@
         }
       },
       "description": "A case branch as compiled: { when, nodes, ret }."
+    },
+    "snippet": {
+      "type": "object",
+      "required": [
+        "id",
+        "parent",
+        "reads",
+        "runDependent",
+        "profileCarrying",
+        "modelDerived"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/entry/properties/id"
+        },
+        "parent": {
+          "$ref": "#/$defs/entry/properties/parent"
+        },
+        "reads": {
+          "$ref": "#/$defs/entry/properties/reads"
+        },
+        "runDependent": {
+          "$ref": "#/$defs/entry/properties/runDependent"
+        },
+        "profileCarrying": {
+          "$ref": "#/$defs/entry/properties/profileCarrying"
+        },
+        "modelDerived": {
+          "$ref": "#/$defs/entry/properties/modelDerived"
+        },
+        "body": {
+          "$ref": "#/$defs/entry/properties/body"
+        },
+        "bodyHash": {
+          "$ref": "#/$defs/entry/properties/bodyHash"
+        },
+        "renders": {
+          "$ref": "#/$defs/entry/properties/renders"
+        },
+        "runSpots": {
+          "$ref": "#/$defs/entry/properties/runSpots"
+        },
+        "formatHash": {
+          "$ref": "#/$defs/entry/properties/formatHash"
+        },
+        "typeHash": {
+          "$ref": "#/$defs/entry/properties/typeHash"
+        },
+        "label": {
+          "$ref": "#/$defs/entry/properties/label"
+        },
+        "description": {
+          "$ref": "#/$defs/entry/properties/description"
+        },
+        "if": {
+          "$ref": "#/$defs/entry/properties/if"
+        },
+        "format": {
+          "$ref": "#/$defs/entry/properties/format"
+        },
+        "items": {
+          "$ref": "#/$defs/entry/properties/items"
+        }
+      },
+      "description": "A snippet or a snippet folder's entry: the members entry names, and any other member an item's header holds, as the folder's format gives it (chapter 4 § 4.4), so this definition is open."
     }
   }
 }

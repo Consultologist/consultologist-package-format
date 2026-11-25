@@ -1228,9 +1228,14 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   strings (written as version strings, `"4"`), `lock.libraries` and `lock.runtime` values are
   strings, `lock.catalogues` entries are strings (`outputContracts` also `null`), `warnings` and
   `refusals` entries are `{ sentence, at }`. The entries of `nodes`, `checks`, `renderers`,
-  `snippets`, `macros` and `deliverables` fix only the derived members § 7.2.5 marks "every entry"
-  (`id`, `parent`, `reads`, `runDependent`, `profileCarrying`, `modelDerived`) and stay open to the
-  header members, whose shape is the source schemas', applied by the resolver; `formats.$defs`
+  `macros` and `deliverables` are closed (#1508): each names the derived members of § 7.2.5 and the
+  header members of every kind (`resolve.schema.json`'s `entry`, each defined once, most by reference to
+  the source schemas'), and refuses any other (`resolve/invalid-node-unknown-member.json`,
+  `resolve/invalid-deliverable-unknown-member.json`, `resolve/invalid-function-node-unknown-member.json`);
+  the shape of a header member that compilation changes (a `format` as a `$ref` into `formats`, rooted
+  reference strings, canonical conditions) is the compiled form's, and which kind may hold which member is
+  the resolver's. The `snippets` map stays open to the members of a snippet folder's items, which the
+  folder's `format` gives (`resolve/valid-snippet-folder-item.json`); `formats.$defs`
   entries are any object (the dialect is checked on the registry's formats, not on the bundle).
   The table of [§ 7.2.2](../../package-format-v31.md#722-top-level-members) has no `derivedFrom` row,
   but its text carries the manifest's members that only steer publish "under the same names when
