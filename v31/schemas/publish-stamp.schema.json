@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:consultologist:spec:31:schema:publish-stamp",
+  "title": "publish.json",
+  "description": "The \"published\" stamp of a version, written last: a version exists only once it is stamped. It holds the hashes resolve.json and lock.json must have, and no time. The reader ignores members it does not know; this schema refuses them.",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "resolveHash",
+    "lockHash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "specVersion": {
+      "const": 31,
+      "description": "31. It chooses the load path."
+    },
+    "resolveHash": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+      "description": "The hash resolve.json must have."
+    },
+    "lockHash": {
+      "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256",
+      "description": "The hash lock.json must have."
+    },
+    "migratedFrom": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The old version, when the operator's migration published this package from it; absent otherwise."
+    }
+  }
+}

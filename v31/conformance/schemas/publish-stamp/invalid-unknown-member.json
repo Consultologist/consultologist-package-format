@@ -1,0 +1,9 @@
+{
+  "about": "A member the stamp does not have (the reader ignores it; the schema refuses it).",
+  "instance": {
+    "specVersion": 31,
+    "resolveHash": "sha256:111111111111111111111111111111111111111111111111111111111111111a",
+    "lockHash": "sha256:222222222222222222222222222222222222222222222222222222222222222b",
+    "publishedAtUtc": "2026-11-25T10:00:00Z"
+  }
+}

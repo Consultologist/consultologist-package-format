@@ -1198,6 +1198,70 @@ def parses_as_json(text):
         return False
 
 
+# #1508 (ruling 3 of 2026-11-21, and of 2026-11-22 on area 07): every member written into the compiled documents is named.
+RULED_ENTRY_MEMBERS = ["plainConverts", "names", "placements", "places", "runSpots", "ret", "renders"]
+RULED_DELIVERABLE_MEMBERS = ["delivery", "bundle", "escapes"]
+RULED_PLACEMENT_MEMBERS = ["site", "within", "if", "plainConverts", "form"]
+RULED_RUN_SPOT_MEMBERS = ["site", "at", "reads", "unit", "neutral"]
+RULED_STAMP_MEMBERS = ["specVersion", "resolveHash", "lockHash", "migratedFrom"]
+
+
+def named(name, text):
+    """Whether text names the member `name`, as `name` or as "name": inside a written example."""
+    return f"`{name}`" in text or f'"{name}":' in text
+
+
+def check_compiled_members():
+    """Every member the schemas name in resolve.json's entries (a flat-map entry, a function, a deliverable's own
+    members, a placement, a run spot, a render site) is named in chapter 7 § 7.2.5's text, and every member of
+    publish.json's stamp in § 7.5's; the ruled members are in the schemas. This repository holds no
+    machine-readable list of the record's members (chapter 9 is prose, and no schema describes the record), so the
+    record's member names are not guarded here; the provenance repository's contract is where they are listed."""
+    failures = []
+    resolve, errors = load(SCHEMAS / "resolve.schema.json")
+    failures += errors
+    stamp, errors = load(SCHEMAS / "publish-stamp.schema.json")
+    failures += errors
+    if resolve is None or stamp is None:
+        return failures
+    definitions = resolve.get("$defs", {})
+    deliverable = next((part.get("properties", {}) for part in definitions.get("deliverable", {}).get("allOf", [])
+                        if "properties" in part), {})
+    groups = {
+        "entry": definitions.get("entry", {}).get("properties", {}),
+        "function": definitions.get("function", {}).get("properties", {}),
+        "deliverable": deliverable,
+        "placement": definitions.get("placement", {}).get("properties", {}),
+        "runSpot": definitions.get("runSpot", {}).get("properties", {}),
+        "renderSite": definitions.get("renderSite", {}).get("properties", {}),
+    }
+    for group, ruled in [("entry", RULED_ENTRY_MEMBERS), ("deliverable", RULED_DELIVERABLE_MEMBERS),
+                         ("placement", RULED_PLACEMENT_MEMBERS), ("runSpot", RULED_RUN_SPOT_MEMBERS)]:
+        for name in ruled:
+            if name not in groups[group]:
+                failures.append(f"resolve.schema.json $defs.{group}: the ruled member '{name}' is not named")
+    expect(failures, "publish-stamp.schema.json's members", sorted(stamp.get("properties", {})), sorted(RULED_STAMP_MEMBERS))
+    if "derivedFrom" not in resolve.get("properties", {}):
+        failures.append("resolve.schema.json: the ruled member 'derivedFrom' is not named")
+
+    sections = [section for section in heading_sections(DOCUMENT.read_text(encoding="utf-8")) if section[0] == 7]
+    texts = {title: text for _, title, text in sections}
+    flat = next((text for title, text in texts.items() if title.startswith("The flat maps")), None)
+    pipeline = texts.get("The publish pipeline")
+    if flat is None or pipeline is None:
+        return failures + ["chapter 7 has no 'The flat maps' or no 'The publish pipeline' section"]
+    for group, properties in groups.items():
+        for name in properties:
+            if not named(name, flat):
+                failures.append(f"chapter 7 § 7.2.5 does not name the member `{name}` of resolve.schema.json's {group}")
+    for name in stamp.get("properties", {}):
+        if not named(name, pipeline):
+            failures.append(f"chapter 7 § 7.5 does not name the member `{name}` of the publish stamp")
+    if "`publish.json`" not in pipeline:
+        failures.append("chapter 7 § 7.5 does not name the stamp's file, `publish.json`")
+    return failures
+
+
 PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 
 
@@ -1223,6 +1287,7 @@ CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("migration-vectors", check_migration_vectors),
           ("dialect-goldens", check_dialect_goldens), ("renderer-goldens", check_renderer_goldens),
           ("markdown-escape-vectors", check_markdown_escape_vectors),
+          ("compiled-members", check_compiled_members),
           ("document", check_document), ("citations", check_citations)]
 
 

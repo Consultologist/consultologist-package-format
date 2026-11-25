@@ -1,0 +1,9 @@
+{
+  "about": "migratedFrom is the old version as text.",
+  "instance": {
+    "specVersion": 31,
+    "resolveHash": "sha256:111111111111111111111111111111111111111111111111111111111111111a",
+    "lockHash": "sha256:222222222222222222222222222222222222222222222222222222222222222b",
+    "migratedFrom": 30
+  }
+}

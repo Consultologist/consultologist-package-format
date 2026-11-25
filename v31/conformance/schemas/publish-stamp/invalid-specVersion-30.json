@@ -1,0 +1,8 @@
+{
+  "about": "A stamp of specVersion 30 is not this schema's.",
+  "instance": {
+    "specVersion": 30,
+    "resolveHash": "sha256:111111111111111111111111111111111111111111111111111111111111111a",
+    "lockHash": "sha256:222222222222222222222222222222222222222222222222222222222222222b"
+  }
+}

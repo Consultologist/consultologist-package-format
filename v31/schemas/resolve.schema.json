@@ -205,7 +205,7 @@
       "additionalProperties": {
         "$ref": "#/$defs/entry"
       },
-      "description": "The package's renderers, keyed by rooted key; {} for none."
+      "description": "The package's renderers, and each built-in renderer the package uses embedded under renderer.<id> with the registry's header and body, keyed by rooted key; {} for none."
     },
     "snippets": {
       "type": "object",
@@ -559,11 +559,6 @@
     },
     "function": {
       "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/$defs/entry"
-        }
-      ],
       "required": [
         "id",
         "parent",
@@ -575,6 +570,34 @@
       ],
       "additionalProperties": true,
       "properties": {
+        "id": {
+          "$ref": "#/$defs/entry/properties/id"
+        },
+        "parent": {
+          "$ref": "#/$defs/entry/properties/parent"
+        },
+        "reads": {
+          "$ref": "#/$defs/entry/properties/reads"
+        },
+        "runDependent": {
+          "$ref": "#/$defs/entry/properties/runDependent"
+        },
+        "profileCarrying": {
+          "$ref": "#/$defs/entry/properties/profileCarrying"
+        },
+        "modelDerived": {
+          "$ref": "#/$defs/entry/properties/modelDerived"
+        },
+        "ret": {
+          "$ref": "#/$defs/entry/properties/ret"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The function's body as written: the rooted keys, local to the function, of the nodes it runs."
+        },
         "nodes": {
           "type": "object",
           "propertyNames": {
@@ -587,7 +610,7 @@
           "description": "The function's own flat nodes map, keyed by rooted keys local to the function."
         }
       },
-      "description": "A function: the derived members of every entry (chapter 7 § 7.2.5), its own flat nodes map; its remaining members are the source schemas' (chapter 4)."
+      "description": "A function: the derived members every entry carries (chapter 7 § 7.2.5), except that its body is a list of node keys and it holds a flat nodes map of its own; its remaining members are the source schemas' (chapter 4)."
     },
     "deliverable": {
       "allOf": [
@@ -696,9 +719,230 @@
         "modelDerived": {
           "type": "boolean",
           "description": "True when the entry's value is computed from a model's output, directly or through other values."
+        },
+        "ret": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The returned node's rooted key; null on an if and a case, whose branches hold their own ret. On for, while, if, case and function entries."
+        },
+        "body": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The Scriban body inline, \\n line endings; null for kinds with no body."
+        },
+        "bodyHash": {
+          "anyOf": [
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "sha256: over the body's UTF-8 bytes; null when body is null."
+        },
+        "parts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "propertyNames": {
+            "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
+          },
+          "description": "On agent nodes: the node's parts keyed by part id, each with its if and its text (an array of lines); {} for none."
+        },
+        "places": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "On agent nodes: the rooted ids of the macros its prompt places, its parts' text included, in order of appearance."
+        },
+        "names": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "On agent nodes, rendered nodes and deliverables: each head a body writes (node.<...> or check.<...>) to the rooted key it names, only where the two differ; {} otherwise."
+        },
+        "placements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/placement"
+          },
+          "description": "On agent nodes, rendered nodes and deliverables: every unit the body places, in order of appearance, placed units expanded in place."
+        },
+        "renders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/renderSite"
+          },
+          "description": "Each pipe step into a renderer, in order of appearance."
+        },
+        "runSpots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runSpot"
+          },
+          "description": "Each run spot in the body, the {{run:<n>}} marker's n."
+        },
+        "plainConverts": {
+          "type": "object",
+          "propertyNames": {
+            "enum": [
+              "if",
+              "expression",
+              "while",
+              "until"
+            ]
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "description": "On nodes, checks and deliverables: for each of if, expression, while and until the entry has non-null, whether each plain in its rule converts, in the evaluator's order; {} for an entry with none."
+        },
+        "formatHash": {
+          "anyOf": [
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The resolved format's full hash, as in formatHashes; null for entries with no format."
+        },
+        "typeHash": {
+          "anyOf": [
+            {
+              "$ref": "urn:consultologist:spec:31:schema:common#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The format's type hash, as in typeHashes; null with formatHash."
         }
       },
-      "description": "A flat-map entry. It holds every header member as written, canonicalised, and the derived members; only the derived members every entry carries are fixed here, the header's shape is the source schemas', applied by the resolver."
+      "description": "A flat-map entry. It holds every header member as written, canonicalised, and the derived members (chapter 7 § 7.2.5), every one named here; the header's shape is the source schemas', applied by the resolver."
+    },
+    "placement": {
+      "type": "object",
+      "required": [
+        "site",
+        "within",
+        "if",
+        "plainConverts",
+        "form"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "site": {
+          "type": "string",
+          "pattern": "^(part|snippet|macro|macro-folder)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$",
+          "description": "The unit placed: part.<id>, snippet.<id>, macro.<id> or macro-folder.<id>. A macro in a folder is preceded, once per entry, by its macro-folder."
+        },
+        "within": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The site whose text places it; null for the body itself."
+        },
+        "if": {
+          "description": "The unit's rule with keys rooted for this entry's place; null for none."
+        },
+        "plainConverts": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "description": "Whether each plain in that rule converts, in the evaluator's order."
+        },
+        "form": {
+          "enum": [
+            "block",
+            "inline",
+            null
+          ],
+          "description": "A macro's marker form; null for the other kinds."
+        }
+      },
+      "description": "One unit a body places."
+    },
+    "runSpot": {
+      "type": "object",
+      "required": [
+        "site",
+        "at",
+        "reads",
+        "unit",
+        "neutral"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "site": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The 1-based position, per entry, in order of appearance with placed units expanded in place."
+        },
+        "at": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*:[1-9][0-9]*$",
+          "description": "<line>:<column> in the text of unit."
+        },
+        "reads": {
+          "type": "string",
+          "description": "The path the spot reads."
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The site whose text holds the spot; null for the body itself."
+        },
+        "neutral": {
+          "enum": [
+            "marker",
+            "text"
+          ],
+          "description": "What stands for the spot in the run-neutral render: marker for a raw run.* fact, a run-dependent computed value or for loop's value; text for a run-dependent rendered node, or a while, if, case or call whose ret is one."
+        }
+      },
+      "description": "A run spot."
+    },
+    "renderSite": {
+      "type": "object",
+      "required": [
+        "n",
+        "source",
+        "renderer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The 1-based position; the record's render:<n>."
+        },
+        "source": {
+          "type": "string",
+          "description": "The path piped; a later step's source is the step before it."
+        },
+        "renderer": {
+          "type": "string",
+          "description": "The renderer's id."
+        }
+      },
+      "description": "One pipe step into a renderer."
     }
   }
 }

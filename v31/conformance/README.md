@@ -1244,6 +1244,13 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   input's `description` is the manifest's written form (lines or `null`), where
   [§ 7.2.3](../../package-format-v31.md#723-inputs) says "lines or `null`" and the abridged example
   shows only `null`.
+- **Every derived member of an entry is named, and `entry` is not yet closed.** `resolve.schema.json`
+  names `names`, `placements`, `runSpots` (with `unit` and `neutral`), `plainConverts`, `ret` (null on an
+  `if` and a `case`) and the rest of § 7.2.5's table in `entry`'s properties, and a built-in renderer
+  embedded under `renderers` is an ordinary entry. A function's `body` is a list of node keys, so its
+  definition names the derived members itself and not through `entry`. `publish-stamp.schema.json`
+  refuses a member the stamp does not have, where the engine's reader ignores one (`migratedFrom` is the
+  only optional member, any non-empty text).
 - **Readings the design's tables do not list.** `publish-report.schema.json` gives a test's
   `durationMs` `"minimum": 0` (a duration is not negative; the member table says only
   "milliseconds"). `resolve.schema.json` gives `needs.profile` `"uniqueItems": true` (a field is

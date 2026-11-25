@@ -1,0 +1,7 @@
+{
+  "about": "No lockHash.",
+  "instance": {
+    "specVersion": 31,
+    "resolveHash": "sha256:111111111111111111111111111111111111111111111111111111111111111a"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "about": "The stamp of a package the operator migrated: the three members and migratedFrom.",
+  "instance": {
+    "specVersion": 31,
+    "resolveHash": "sha256:111111111111111111111111111111111111111111111111111111111111111a",
+    "lockHash": "sha256:222222222222222222222222222222222222222222222222222222222222222b",
+    "migratedFrom": "v2026.11.3"
+  }
+}
