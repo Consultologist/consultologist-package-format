@@ -949,6 +949,86 @@ def check_compiled_documents():
     return failures
 
 
+MIGRATION_VECTORS = V31 / "conformance" / "migration-vectors"
+MIGRATION_CASE_FILES = ["about.txt", "notices.json", "options.json"]
+MIGRATION_CASE_FOLDERS = ["expected", "source"]
+MIGRATION_OPTIONS_KEYS = ["renames", "whenEmpty", "folderFormats", "toolchain"]
+MIGRATION_TOOLCHAIN_KEYS = ["packageFormat", "dialect", "libraries", "evaluator", "runtime", "catalogues"]
+MIGRATION_NOTICES_KEYS = ["notices", "handEdits", "refusals"]
+SNAPSHOT_TEST = "tests/migration_snapshot.json"
+
+
+def check_migration_vectors():
+    """Chapter 10's migration vectors (area 10): the family lists exactly the case folders on disk; each case holds
+    source/, expected/, options.json, notices.json and about.txt, and nothing else; source/manifest.json declares
+    specVersion 30 and expected/manifest.json 31; options.json has its four members in order, each hand choice null or
+    an object of strings and the toolchain in lock.json's names; notices.json has its three members in order, each a
+    list of strings, its hand edits among its notices in their order, and no refusal; a case with a hand edit has no
+    snapshot test, and every expected/tests/migration_snapshot.json validates against test.schema.json."""
+    index, failures = load(V31 / "conformance" / "index.json")
+    if index is None:
+        return failures
+    on_disk = sorted(case.name for case in MIGRATION_VECTORS.iterdir() if case.is_dir()) \
+        if MIGRATION_VECTORS.is_dir() else []
+    expect(failures, "the migration-vectors family's cases (the case folders on disk)",
+           family_cases(index, "migration-vectors", failures), on_disk)
+
+    registry, errors = build_registry()
+    failures += errors
+    validator = validator_for(schema_for("test"), registry, failures)
+    for case in on_disk:
+        folder = MIGRATION_VECTORS / case
+        where = f"migration-vectors/{case}"
+        expect(failures, f"{where}: its files", sorted(p.name for p in folder.iterdir() if p.is_file()), MIGRATION_CASE_FILES)
+        expect(failures, f"{where}: its folders", sorted(p.name for p in folder.iterdir() if p.is_dir()), MIGRATION_CASE_FOLDERS)
+        for side, version in (("source", 30), ("expected", 31)):
+            manifest, errors = load(folder / side / "manifest.json")
+            failures += errors
+            if manifest is not None:
+                expect(failures, f"{where}/{side}/manifest.json: specVersion", manifest.get("specVersion"), version)
+
+        options, errors = load(folder / "options.json")
+        failures += errors
+        if options is not None:
+            expect(failures, f"{where}/options.json: its members", list(options), MIGRATION_OPTIONS_KEYS)
+            for member in MIGRATION_OPTIONS_KEYS[:3]:
+                choice = options.get(member)
+                if choice is not None and not (isinstance(choice, dict)
+                                               and all(isinstance(v, str) for v in choice.values())):
+                    failures.append(f"{where}/options.json: {member} is neither null nor an object of strings")
+            toolchain = options.get("toolchain")
+            expect(failures, f"{where}/options.json: the toolchain's members",
+                   list(toolchain) if isinstance(toolchain, dict) else toolchain, MIGRATION_TOOLCHAIN_KEYS)
+
+        notices, errors = load(folder / "notices.json")
+        failures += errors
+        hand_edits = []
+        if notices is not None:
+            expect(failures, f"{where}/notices.json: its members", list(notices), MIGRATION_NOTICES_KEYS)
+            lists = {key: notices.get(key) for key in MIGRATION_NOTICES_KEYS}
+            if not all(isinstance(v, list) and all(isinstance(s, str) for s in v) for v in lists.values()):
+                failures.append(f"{where}/notices.json: a member is not a list of strings")
+            else:
+                hand_edits = lists["handEdits"]
+                expect(failures, f"{where}/notices.json: handEdits (the notices that are hand edits, in order)",
+                       hand_edits, [n for n in lists["notices"] if n in hand_edits])
+                if not set(hand_edits) <= set(lists["notices"]):
+                    failures.append(f"{where}/notices.json: a hand edit is not among the notices")
+                expect(failures, f"{where}/notices.json: refusals (a vector is a package the migration writes)",
+                       lists["refusals"], [])
+
+        snapshot = folder / "expected" / SNAPSHOT_TEST
+        if hand_edits and snapshot.exists():
+            failures.append(f"{where}: has a hand edit and a snapshot test")
+        if snapshot.exists():
+            document, errors = load(snapshot)
+            failures += errors
+            if document is not None and validator is not None:
+                for error in sorted(validator.iter_errors(document), key=lambda e: list(e.absolute_path)):
+                    failures.append(f"{where}/expected/{SNAPSHOT_TEST}: {error.message[:100]} at {list(error.absolute_path)}")
+    return failures
+
+
 DIALECT_GOLDENS = V31 / "conformance" / "dialect-goldens"
 DIALECT_CASE_FILES = {"about.txt", "scope.json", "placed.json", "expected.txt"}
 DIALECT_CASE_OPTIONAL = {"expected.neutral.txt", "reply.txt", "expected.reply.txt"}
@@ -1124,11 +1204,16 @@ PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 def check_citations():
     """A reader has the document's chapters, not the design's parts: no JSON under v31/ cites a part.
     The refusal packages' package/ folders are skipped: they are uploads as a reader receives them,
-    and may hold bytes that are not UTF-8 or JSON on purpose."""
+    and may hold bytes that are not UTF-8 or JSON on purpose. So are the migration vectors' source/ and
+    expected/ folders: they are packages, a 30 upload and the 31 package the migration writes, whose text
+    is the package's (a snapshot test's description is the migration's words)."""
     failures = []
     for path in sorted(V31.rglob("*.json")):
         relative = path.relative_to(REFUSAL_PACKAGES).parts if path.is_relative_to(REFUSAL_PACKAGES) else ()
         if "package" in relative[2:3]:
+            continue
+        vector = path.relative_to(MIGRATION_VECTORS).parts if path.is_relative_to(MIGRATION_VECTORS) else ()
+        if vector[1:2] in (("source",), ("expected",)):
             continue
         for match in PART_CITATION.finditer(path.read_text(encoding="utf-8")):
             failures.append(f"{path.relative_to(ROOT)}: cites '{match.group(0)}'; cite the chapter")
@@ -1140,6 +1225,7 @@ CHECKS = [("constants", check_constants), ("sentences", check_sentences),
           ("renderers", check_renderers), ("self", check_self),
           ("conformance", check_conformance_index), ("refusal-packages", check_refusal_packages),
           ("vectors", check_vectors), ("compiled-documents", check_compiled_documents),
+          ("migration-vectors", check_migration_vectors),
           ("dialect-goldens", check_dialect_goldens), ("renderer-goldens", check_renderer_goldens),
           ("markdown-escape-vectors", check_markdown_escape_vectors),
           ("document", check_document), ("citations", check_citations)]
