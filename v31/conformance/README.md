@@ -82,8 +82,9 @@ The exporting area fixes the exact files in the release that carries the cases
   bytes and hashes, its `requires` and `needs`, and its publish report. Area 05 exports the
   first four; each case is a folder holding the package under `source/`, the `toolchain.json` it is
   compiled with, `resolve.json`, `lock.json` and an `about.txt`
-  ([The compiled documents (area 05)](#the-compiled-documents-area-05)). The publish report is
-  area 11's.
+  ([The compiled documents (area 05)](#the-compiled-documents-area-05)). Area 11 adds the
+  `publish-report.json` and the stamp `publish.json` publish writes beside them
+  ([Publish (area 11)](#publish-area-11)).
 - **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices. Area 10
   exports 8; each case is a folder holding the package under `source/`, the `options.json` it is
   migrated with, the package the migration writes under `expected/`, `notices.json` and an `about.txt`
@@ -471,6 +472,8 @@ compiled-documents/<case>/source/manifest.json, nodes/index.json, …
 compiled-documents/<case>/toolchain.json
 compiled-documents/<case>/resolve.json
 compiled-documents/<case>/lock.json
+compiled-documents/<case>/publish-report.json
+compiled-documents/<case>/publish.json
 compiled-documents/<case>/about.txt
 ```
 
@@ -479,11 +482,16 @@ toolchain that publishes it, in `lock.json`'s names (`packageFormat`, `dialect`,
 `evaluator`, `runtime`, `catalogues`), written by hand so that no machine's patch level moves a case:
 Scriban 7.2.5, Markdig 0.41.3, both Corvus libraries 5.8.12, .NET 10.0.0 and Unicode 16.0.
 `resolve.json` and `lock.json` are the bytes publish gives for that source with that toolchain and
-no publish limits (so no ceiling note): canonical by RFC 8785, UTF-8, one line, no final newline.
-`about.txt` says what the package holds and gives the two documents' hashes. The index lists a case by
+the publish limits `about.txt` states (area 11: the engine's defaults, 16 agent calls at once, 200
+items a loop, 500 agent calls, 10,000 instances and 30 minutes a job; `nested-note` raises the
+instances to 100,000, since its worst case opens 80,614 and is refused at 10,000): canonical by RFC
+8785, UTF-8, one line, no final newline. The notes those limits give, the per-job ceiling note among
+them, are `resolve.json`'s `warnings`. `publish-report.json` and `publish.json` are area 11's
+([Publish (area 11)](#publish-area-11)).
+`about.txt` says what the package holds, the limits, and gives the two documents' hashes. The index lists a case by
 its folder's name. **The cases are exported by the library's publish step and are never written by
 hand;** the library's tests hold the same bytes as goldens. `python3 scripts/check-v31.py` (group
-`compiled-documents`) holds the folders to the index, each folder to its five entries, `resolve.json`
+`compiled-documents`) holds the folders to the index, each folder to its seven entries, `resolve.json`
 to [`resolve.schema.json`](../schemas/resolve.schema.json) and `lock.json` to
 [`lock.schema.json`](../schemas/lock.schema.json), and recomputes `lock.json`'s `resolve.hash` from
 `resolve.json`'s bytes.
@@ -1058,6 +1066,39 @@ each case's `about` states. `A11-008` is said at run time only, so it has no cas
 | `A11-006` | publish | *"Version \<version> of \<package> is already published. Publish a new version."* | the version's folder already holds a stamp; a stamped version is never written again |
 | `A11-007` | publish | *"The workflow couldn't be published because the engine failed. Tell the operator."* | the engine met a fault of its own at publish (as `A08-006` says for a template); the fault is logged by the operator, and this is said to the caller |
 | `A11-008` | run time only | *"\<Subject> couldn't be rendered because the engine failed. Tell the operator."* | a body the engine itself failed rendering (the run-time sibling of `A08-006`, which says it at publish) fails its node, deliverable or check with this sentence, never `A06-008`, which is for a body that fails on what it reads; the engine logs the fault ([ruled by the owner on #1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508); the sentence is shown to the clinician, who is told to tell the operator; said at run time only, so it has no case) |
+
+**The publish report and the stamp (Task 22).** Each `compiled-documents` case also holds what publish
+writes beside the pair in a version's folder: `publish-report.json`
+([chapter 7 § 7.9](../../package-format-v31.md#79-the-publish-report)), canonical with no final
+newline, and the stamp `publish.json`, written last. The case is published by `ci` at
+`2026-12-01T09:00:00Z` on a clock that does not move, so **every test's `durationMs` is 0**: a real
+publish measures the time, which no two machines share, so the fixture writes 0 and an implementation
+compares a report with `durationMs` set to 0 (and its own `publishedAtUtc`). `nested-note` and `macros`
+each have a test under `source/tests/`, run offline on its stubs at step 3: `nested-note`'s
+`two_sections` also stubs `node.sections.outline:3`, a section that is not planned, so its report
+warns *"Test 'two_sections' stubs node.sections.outline:3, which doesn't run."* (`S07-014`) beside the
+ceiling note (`S04-073`); `macros`' `close_line` fixes the run date its stamp reads. The other three
+have no test, so their reports' `tests` are `[]`. `python3 scripts/check-v31.py` (group
+`compiled-documents`) holds `publish-report.json` to
+[`publish-report.schema.json`](../schemas/publish-report.schema.json) and `publish.json` to
+[`publish-stamp.schema.json`](../schemas/publish-stamp.schema.json), and checks that the report says
+`published`, has `resolve.json`'s `package` and `sourceHash`, and that the report and the stamp each
+give the SHA-256 of `resolve.json`'s bytes as `resolveHash` and of `lock.json`'s as `lockHash`.
+
+**The tests' sentences (Task 22).** A package's own test (`tests/<id>.json`,
+[chapter 7 § 7.8](../../package-format-v31.md#78-in-package-tests-tests)) is run at publish, step 3,
+so `refusal-packages` gains 7 cases, 14 packages: `S07-007` (a test that fails on its first mismatch),
+`S07-008` (an agent that runs with no stub), `S07-009` (a stub that is not of its node's format; the
+sentence names the format, the path and the keyword, never the value), `S07-010` (an input with no
+value), `S07-011` (a profile field the workflow does not read), `S07-012` (a run fact the workflow does
+not read) and `A11-005` (a member of the test not as the grammar says). A runner judges these cases as
+it judges an `A11-` case: the check, the compiler against the engine's default limits, then the
+package's tests, offline. Each valid package is the minimal one with the test `note`, which passes; the
+invalid one changes one member of it, and gives its sentence alone. `S07-013` (the tests together
+past 60 seconds) has no case: the time is the engine's clock, which no package can state. `S07-014` is
+a warning (the `nested-note` report above holds one), and `A11-004`, `A11-006` and `A11-007` have no
+case: a manifest whose `name` is not text is also refused by the source check's member sentence, a
+version already stamped is a fact of the registry, and an engine fault is not the package's.
 
 ## The schemas' examples
 
