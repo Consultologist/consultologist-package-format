@@ -84,7 +84,10 @@ The exporting area fixes the exact files in the release that carries the cases
   compiled with, `resolve.json`, `lock.json` and an `about.txt`
   ([The compiled documents (area 05)](#the-compiled-documents-area-05)). The publish report is
   area 11's.
-- **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices.
+- **`migration-vectors`:** a package at 30 with its expected package at 31 and its notices. Area 10
+  exports 8; each case is a folder holding the package under `source/`, the `options.json` it is
+  migrated with, the package the migration writes under `expected/`, `notices.json` and an `about.txt`
+  ([The migration vectors (area 10)](#the-migration-vectors-area-10)).
 - **`schemas`:** a hand-written instance of one schema, valid or invalid by its file name (next
   section). These are examples, not goldens.
 
@@ -875,6 +878,159 @@ The area's own sentences, which are not in `sentences.json`, are:
 | `A08-006` | publish; no package produces it | *"\<Subject> couldn't be checked: the engine failed reading its template. This is a fault in the engine, not in the package; report it."* | reading a template failed in a way no text explains: a fault of the engine, never said as the author's `A07-005` ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect); ruled by the owner on [#1505](https://github.com/Consultologist/Consultologist-Blazor/issues/1505); no package produces it, so it has no case) |
 | `A09-001` | run time only | *"The job reached \<n> steps, the most this engine runs for one job."* | the job would open more instances than `jobInstances` (10,000) allows: a node, check or deliverable instance, a loop item, a pass or a call; the job fails and the instance is not opened ([chapter 8 § 8.7](../../package-format-v31.md#87-retries-and-limits); ruled by the owner on [#1506](https://github.com/Consultologist/Consultologist-Blazor/issues/1506); `<n>` is written as the other limits are, `10,000`; said at run time only, so it has no case) |
 | `A09-002` | run time only | *"The job's record of '\<row key>' is larger than this engine stores. Tell the operator."* | one record row is larger than the record's row store holds (1 MiB): that row is not written, the others of its round are, and the job fails naming the row by its key (package ids and item ids, never a value) ([chapter 8 § 8.10](../../package-format-v31.md#810-where-the-record-is-written); decided in the build, [#1506](https://github.com/Consultologist/Consultologist-Blazor/issues/1506); said at run time only, so it has no case) |
+
+## The migration vectors (area 10)
+
+Area 10, the migration, exports 8 cases of the `migration-vectors` family
+([chapter 10](../../package-format-v31.md#10-migration-30--31)): a package at specVersion 30, the package
+at 31 the migration writes for it, and what the migration said. Seven are packages the library's tests
+migrate (area 01's three composer fixtures and four of the public packages it vendors; `test/general`'s
+case is `test-general`), and one, `hand-built`, was written for the family. Each case shows:
+
+- `composer-gates`: two deliverables composed from the same nodes, a deliverable's `if` converted to JSON
+  Logic, two `terms_subset` nodes written as checks that gate a deliverable each, and prompts that read a
+  deliverable's composed text, which a 31 prompt does not read (hand edits).
+- `composer-macros`: the deliverable composer's macros, one deliverable per rule (prepend, append, both, two
+  at one place), a macro's own `if` and a placement's `if`, optional macros and the boolean inputs that
+  offer them, node macros around a loop's item, and the hand edits for what 31 cannot place.
+- `composer-sources`: one deliverable per kind of source it composes (one node, two nodes, a `for` over an
+  input with an `if` inside, a `for` over a node's list with a `for` inside, a `while`, an `if`, a `case`
+  and a `let` of type text), the free-text fields 31 suggests a text format for, and a `let` whose
+  expression the converter refuses (a hand edit).
+- `example-conditional-sections`: a `case` on each section's kind inside a `for` over sections named by
+  their title (`labelField`), an `if` with no `else` inside a `for`, and an `if` over a snippet folder's
+  items. No hand edit, so it carries its snapshot test.
+- `example-macros`: macros, a macro folder and an optional macro; a loop over the macro folder unrolled
+  into one placement per macro, a body `if` around a placement hoisted into the placement's header `if`,
+  and the hand edits for a macro 31 cannot place.
+- `example-nested-note`: the hand-chosen rename of the reserved id `parts` to `sections`, a deliverable
+  whose hand-chosen `whenEmpty` is `fail`, a loop with an inner loop and a `while`, a `let` computing a
+  typed value, and the formats 31 writes for its nodes. No hand edit, so it carries its snapshot test.
+- `hand-built`: an optional macro whose id an input already has, so the boolean input that offers it is
+  `leaflet_macro` ([chapter 10 § 10.3](../../package-format-v31.md#103-per-run-macro-choices-become-boolean-inputs)),
+  an input that takes one of two types (`A10-023`), and a deliverable's `if` the converter refuses
+  (`string.upcase`, `S10-003`), each a hand edit but the first.
+- `test-general`: a snippet folder whose items' format is chosen by hand (`standards` takes
+  `standard_section`) and the loop over it, prompts that pipe into the concept renderers, the hand-chosen
+  `whenEmpty` `hold`, a macro appended on the deliverable whose reserved id `test` is renamed, and a macro
+  placed in a snippet folder's item (`A10-051`).
+
+A case is a folder:
+
+```
+migration-vectors/<case>/source/manifest.json, prompts/…, …
+migration-vectors/<case>/options.json
+migration-vectors/<case>/expected/manifest.json, nodes/index.json, …
+migration-vectors/<case>/notices.json
+migration-vectors/<case>/about.txt
+```
+
+`source/` holds the 30 package's files byte for byte, as the migration is given them (a 30 package's
+`dag.mmd`, which is derived, is not among them). **`options.json` holds every option the case was
+migrated with,** every member written, in this order: `renames` (each hand-chosen rename, 30 id to 31 id,
+[chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)), `whenEmpty` (each
+deliverable's hand-chosen `whenEmpty`, by its id, [§ 10.7](../../package-format-v31.md#107-whenempty-for-migrated-deliverables);
+a deliverable it does not name takes `release`), `folderFormats` (the format a snippet folder's items take,
+by the folder's id; a folder it does not name takes `<folder>_item`), each `null` when the case chooses
+none, and `toolchain`, the toolchain the migration publishes its result with to write the snapshot test,
+in `lock.json`'s names (the toolchain of `compiled-documents`). The types the case is migrated against are
+the published ones: `v31/formats/`, `v31/renderers/` and the agents catalogue `toolchain` names, whose
+formats are also the 30 catalogue the source is read against. `expected/` holds the 31 package the
+migration writes, byte for byte: its `manifest.json` and every other file, with the hand edits it asks
+for not made, so a case with a hand edit is a package publish refuses until they are made
+([§ 10.4](../../package-format-v31.md#104-hand-edits-with-notices)). **`expected/` holds the snapshot
+test, `tests/migration_snapshot.json`, where the migration writes one**
+([§ 10.12](../../package-format-v31.md#1012-the-snapshot-test)): in `example-conditional-sections` and
+`example-nested-note`, the two cases with no hand edit; every other case's last notice is `A10-011` and
+its `tests/index.json` lists no test. `notices.json` is `{ "notices", "handEdits", "refusals" }`: every
+notice in the migration's order, the hand edits among them (`S10-002`), and the refusals, `[]` in every
+case, since each case is a package the migration writes. It and `options.json` are written with 2-space
+indentation, `\n` line ends and a final newline. `about.txt` says what the case shows and counts the
+files written, the notices and the hand edits. The index lists a case by its folder's name; the family
+is 391 files, 186 KB.
+
+**The cases are exported by the library's migration and are never written by hand;** the library's tests
+hold the same bytes as goldens and migrate each pinned `source/` with its `options.json` to its
+`expected/` and `notices.json`. `python3 scripts/check-v31.py` (group `migration-vectors`) holds the
+folders to the index; each case to its five entries; `source/manifest.json` to specVersion 30 and
+`expected/manifest.json` to 31; `options.json` and `notices.json` to their members, in order, with the
+hand edits among the notices and no refusal; a case with a hand edit to having no snapshot test; and every
+`expected/tests/migration_snapshot.json` to [`test.schema.json`](../schemas/test.schema.json). The
+`citations` group does not read `source/` or `expected/`, which are packages: the snapshot test's
+`description` is the migration's own words.
+
+**The migration's own sentences.** A notice whose rule has no row in `sentences.json` is this
+implementation's `A10-` sentence. A reason fills `S10-002`'s `<reason>` (*"Hand edit needed in \<file>,
+\<member>: \<reason>."*); a notice stands alone; a refusal stops the migration (or, for `A10-043`,
+`A10-044`, `A10-052` and `A10-062`, a start). `A10-054` to `A10-057` are what a 31 job records and sends
+for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)).
+`A10-009` is not used. The area's sentences are:
+
+| Id | Sentence | Rule |
+|---|---|---|
+| `A10-001` | *"the body's if at line \<n> does more than choose text to show; write it as parts with their own if."* | a reason S10-002 gives: a body `if` that does more than choose text to show, which 31 asks to be written as parts with their own `if` ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-002` | *"macro '\<id>' is placed on this deliverable with a condition; place its text as a snippet with an if, or write the condition in the template."* | a reason S10-002 gives: a macro placed on a deliverable under a condition; a deliverable places snippets ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-003` | *"macro '\<id>' was placed \<before \| after \| before and after> the reply by the engine; say in its instruction where the model writes its marker."* | a reason S10-002 gives: a macro 30's engine placed before or after the reply, which 31 places by a marker the model writes ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-004` | *"macro '\<id>' is read both as fixed text and as an instruction; split it into a snippet and a macro."* | a reason S10-002 gives: a macro read both as `.content` and as `.prompt` ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-005` | *"the template uses \<construct> at line \<n>, which the 31 dialect doesn't have; rewrite it."* | a reason S10-002 gives: a template construct the 31 dialect does not have ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect)) |
+| `A10-006` | *"Renamed \<kind> '\<id>' to '\<new id>': '\<id>' is reserved at 31."* | a notice: a reserved id renamed with its kind as a suffix, or as the operator chose ([chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)) |
+| `A10-007` | *"Macro '\<id>' is now offered by the input '\<input id>'."* | a notice: an optional macro now offered by a boolean input, with S10-006's form beside it when the input took the suffix `_macro` ([chapter 10 § 10.3](../../package-format-v31.md#103-per-run-macro-choices-become-boolean-inputs)) |
+| `A10-008` | *"\<file>, \<member>: '!\<path>' became blank(\<path>); it now also holds for empty and white-space-only text."* | a notice: 30's `!x` on text written `blank(x)` ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
+| `A10-010` | *"Node '\<id>' declared reproducible \<true \| false> at 30; \<true \| false> is written, as its reads give it."* | a notice: a node's 30 `reproducible` claim that differs from what its reads give ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-011` | *"No snapshot test was written: hand edits remain."* | a notice: the last notice of a migration that says a hand edit; `tests/index.json` keeps no test ([chapter 10 § 10.12](../../package-format-v31.md#1012-the-snapshot-test)) |
+| `A10-012` | *"The package is at specVersion \<n>; migration starts at 5."* | a refusal: a package below specVersion 5, which no rung reads ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-013` | *"Node '\<id>' kept a reply that did not fit its format (onInvalid: flag); 31 fails it instead."* | a notice: a node whose 30 `onInvalid` was `flag` ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-014` | *"\<package> could run for about \<n> minutes in the worst case; this engine stops a job after \<limit> minutes."* | a notice: the migration report's worst-case note, a package whose worst case passes the engine's job limit ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-015` | *"The package is already at specVersion \<n>."* | a refusal: a package already at specVersion 31 or past it ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-016` | *"The manifest does not read as a package: it is not a JSON object with a whole-number specVersion."* | a refusal: a manifest that is not a JSON object with a whole-number `specVersion` ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-017` | *"At specVersion \<n>: \<refusal>"* | a refusal: an earlier rung's own refusal, unchanged, naming the rung ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-018` | *"At specVersion \<n>: the rung could not read this package; fix the manifest, then migrate."* | a refusal: a rung below 30 that could not read the package ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-019` | *"The file '\<file>' does not read: \<fault>; fix it, then migrate."* | a refusal: a 30 file or text header that is not strict JSON ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-020` | *"The package does not read at specVersion 30; fix it, then migrate."* | a refusal: a package the 30 reader cannot read ([chapter 10](../../package-format-v31.md#10-migration-30--31)) |
+| `A10-021` | *"Format '\<id>', field '\<field>' holds free text; consider a text format."* | a notice: a package format's free-text field, for which a text format is suggested ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-022` | *"a snippet folder's item has no if at 31; gate the item with an if node in the loop over the folder."* | a reason S10-002 gives: a snippet folder's item with an `if`, which 31 does not have ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-023` | *"the input takes one of several types, which a 31 input cannot; choose one format."* | a reason S10-002 gives: a 30 input of several types with no array form that holds them all ([chapter 2 § 2.8](../../package-format-v31.md#28-inputs)); the `hand-built` case says it |
+| `A10-024` | *"the field takes one of several types, which 31 writes as an anyOf; choose one."* | a reason S10-002 gives: a package format's field of several types, written as an `anyOf` ([chapter 10 § 10.5](../../package-format-v31.md#105-every-property-required)) |
+| `A10-025` | *"the format is nullable at its root, which a format a model writes cannot be at 31; make the root an object."* | a reason S10-002 gives: a format a model writes that is nullable at its root ([chapter 10 § 10.5](../../package-format-v31.md#105-every-property-required)) |
+| `A10-026` | *"\<file>: a carriage return that didn't end a line became a line end."* | a notice: a carriage return that did not end a line ([chapter 1 § 1.2.4](../../package-format-v31.md#124-encoding-and-line-endings)) |
+| `A10-027` | *"\<file>, \<member>: size(\<list>) is null when \<list> is null, where 30 counted 0."* | a notice: a converted `size` over a list that can be `null` ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
+| `A10-028` | *"the case switches on \<subject>, whose values 31 cannot list; switch on an enumerated string."* | a reason S10-002 gives: a `case` whose subject is neither an enum nor a classifier ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
+| `A10-029` | *"\<subject> can be null, which a 31 case sends to its else; add an else body."* | a reason S10-002 gives: a `case` with no `else` whose subject can be `null` ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
+| `A10-030` | *"Node '\<id>' declared \<member> at 30, which 31 has no member for; it was dropped."* | a notice: a node's 30 member 31 has no member for, dropped ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-031` | *"a package format's root is an object or a list at 31; make it one, or use a registry format."* | a reason S10-002 gives: a package format whose root is neither an object nor a list ([chapter 10 § 10.5](../../package-format-v31.md#105-every-property-required)) |
+| `A10-032` | *"the case switches on classifier '\<id>', whose answers are not typed at 31; give it a package format whose value is an enum of its answers."* | a reason S10-002 gives: a `case` on a 30 classifier, whose answers are not typed at 31 ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
+| `A10-033` | *"The chosen rename of '\<id>' to '\<new id>' cannot be made: '\<new id>' \<is already taken \| is not a 31 id>; choose another."* | a refusal: a hand-chosen rename (`options.json`'s `renames`) that cannot be made ([chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)) |
+| `A10-034` | *"Renamed \<kind> '\<id>' to '\<new id>': an id is at most 64 characters at 31."* | a notice: an id past 64 characters, renamed ([chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)) |
+| `A10-035` | *"the body's if at line \<n> decides what a \<snippet \| macro \| rendered node> body shows, which has no parts; write each text as a snippet with its own if, placed where the text was."* | a reason S10-002 gives: a body `if` testing a value in a snippet, macro or rendered body, which has no parts ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-036` | *"macro '\<id>' is placed under different conditions in \<files>; a macro has one if, so place it under one condition, or split it into one macro per condition."* | a reason S10-002 gives: a macro placed under different conditions; a macro has one `if` ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-037` | *"the template writes \<path> at line \<n>, which is \<an object \| a list> at 31; read a member, loop over it or pipe it into a renderer."* | a reason S10-002 gives: a bare read whose value is an object or a list at 31 ([chapter 5 § 5.3](../../package-format-v31.md#53-what-each-template-reads)) |
+| `A10-038` | *"the template can't be read at line \<n>; close every tag, if and for."* | a reason S10-002 gives: a template the dialect cannot read ([chapter 5 § 5.2](../../package-format-v31.md#52-the-dialect)) |
+| `A10-039` | *"the template reads \<path> at line \<n>, which a 31 \<prompt \| rendered node \| macro body \| deliverable> doesn't read; rewrite it."* | a reason S10-002 gives: a read a 31 body of that kind does not make ([chapter 5 § 5.3](../../package-format-v31.md#53-what-each-template-reads)) |
+| `A10-040` | *"macro '\<id>' is read as fixed text at line \<n>, but it is offered under a condition or placed by the engine; place its text as a snippet with an if."* | a reason S10-002 gives: a macro read as fixed text that 31 offers under a condition or places by a marker ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-041` | *"the body places macro '\<id>', which a 31 macro body cannot; place it in the prompt instead."* | a reason S10-002 gives: a macro body that places a macro ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-042` | *"the instruction is a template at 30, which a 31 instruction cannot be; write it as lines that say where the model writes the marker."* | a reason S10-002 gives: a 30 instruction that is a template ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-043` | *"MacroChoices names '\<id>', which is not a macro of the package."* | a refusal: at the 31 start, a `MacroChoices` entry that names no macro of the package ([chapter 10 § 10.3](../../package-format-v31.md#103-per-run-macro-choices-become-boolean-inputs)); said at job start, so it has no case |
+| `A10-044` | *"MacroChoices names macro '\<id>', whose if does not read exactly one boolean input; send the input in Inputs instead."* | a refusal: at the 31 start, a `MacroChoices` entry for a macro whose `if` does not read exactly one boolean input ([chapter 10 § 10.3](../../package-format-v31.md#103-per-run-macro-choices-become-boolean-inputs)); said at job start, so it has no case |
+| `A10-045` | *"macro '\<id>' is read as fixed text at line \<n>, but a macro folder's item is never fixed text at 31; place its text as a snippet."* | a reason S10-002 gives: a macro folder's item read as fixed text ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-046` | *"check '\<id>' ran inside the \<for \| while \| if \| case> node '\<flow>' at 30, but a 31 check is never inside a node flow; take it out of this list and gate checks/\<id>.md with an if, or make it a check loop over the loop's .items."* | a reason S10-002 gives: a 30 check inside a flow node, which a 31 check never is ([chapter 6 § 6.3](../../package-format-v31.md#63-check-loops)) |
+| `A10-047` | *"'\<id>' is placed on this deliverable but is not a single macro of the package; place a snippet here instead."* | a reason S10-002 gives: a deliverable placement that is not a single macro of the package ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-048` | *"Macro '\<id>' is read on deliverables as the snippet '\<new id>': a snippet '\<id>' already exists."* | a notice: a macro written as a snippet for a deliverable, under a new id because the snippet's id is taken ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-049` | *"\<file>: \<flags> \<is \| are> written false without the bodies that need a hand edit; check \<it \| them> once the edits are made."* | a notice: a header whose derived flags are written `false` because a body needs a hand edit ([chapter 10 § 10.4](../../package-format-v31.md#104-hand-edits-with-notices)) |
+| `A10-050` | *"\<file>, \<member>: '\<comparison>' became \<rule>; it now \<also holds \| no longer holds> when \<path> is null."* | a notice: a `trim(x) == ""` written `blank(x)` where the two answer otherwise for a `null` `x` ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
+| `A10-051` | *"macro '\<id>' is placed at line \<n>, but a snippet folder's item read in a loop places no macro at 31; place it in the prompt that loops over the folder."* | a reason S10-002 gives: a macro placed in a snippet folder's item read in a loop ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)); the `test-general` case says it |
+| `A10-052` | *"\<Node '\<id>' gave a reply \| Input '\<id>' was given a value> that isn't \<format>: markdown_inline text sits inside a line and holds no line ending."* | a refusal: at run time or the start, a `markdown_inline` value that holds a line ending; said at run time, so it has no case |
+| `A10-053` | *"the \<if \| case> '\<id>' that a deliverable composes returns Markdown from one branch and plain text from another, which the deliverable would escape as one string; give its branches one text format, then write that format here and on each flow that returns this one."* | a reason S10-002 gives: a composed `if` or `case` whose branches mix Markdown and plain text ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-054` | *"no document password"* | the `reason` of a `pdf` destination sent as the link-only email because there is no document password ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)); recorded at delivery, so it has no case |
+| `A10-055` | *"attachments over the budget"* | the `reason` of a `pdf` destination sent as the link-only email because its attachments pass the message budget ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)); recorded at delivery, so it has no case |
+| `A10-056` | *"every deliverable blocked"* | the `reason` of each destination of the link-only email a job that released nothing sends ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)); recorded at delivery, so it has no case |
+| `A10-057` | *"No document could be sent: \<labels> \<was \| were> not released."* | the line of that email after its opening, the documents by label ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)); sent at delivery, so it has no case |
+| `A10-058` | *"Outstanding migration hand edits: not counted; \<the type registry \| the accounts' active packages> could not be read."* | a notice: the operator's weekly summary when the hand edits could not be counted; the operator's, so it has no case |
+| `A10-059` | *"Outstanding migration hand edits: \<k> of the accounts' active packages could not be read and are not counted."* | a notice: the operator's weekly summary when some active packages could not be read; the operator's, so it has no case |
+| `A10-060` | *"No snapshot test was written: tests/migration_snapshot.json would take the package past SourceBounds.\<fileBytes \| totalBytes \| files>."* | a notice: a snapshot test that would pass a source bound ([chapter 7 § 7.8.4](../../package-format-v31.md#784-limits-and-the-migrations-snapshot-test)) |
+| `A10-061` | *"No snapshot test was written: the migrated package \<does not publish: \<sentences> \| is refused at its run's start \| fails its offline run \| times out in its offline run \| cannot be run offline>."* | a notice: a package with no hand edit whose snapshot run does not complete ([chapter 10 § 10.12](../../package-format-v31.md#1012-the-snapshot-test)) |
+| `A10-062` | *"No document applies to these inputs. \<documents>"* | a refusal: the offline run's start, in the 30 and 31 starts' words, when no deliverable applies to the inputs ([chapter 10 § 10.12](../../package-format-v31.md#1012-the-snapshot-test)) |
+| `A10-063` | *"Each deliverable is now delivered by pdf in a message of its own, where 30 sent one message for the job."* | a notice: a package with more than one deliverable, each now delivered in a message of its own ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
+| `A10-064` | *"Node '\<id>' declared with at 30, which 31 has no member for; its values are written at the end of its prompt, as 30's engine sent them."* | a notice: a classifier's 30 `with` values, written at the end of its prompt ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
 
 ## The schemas' examples
 
