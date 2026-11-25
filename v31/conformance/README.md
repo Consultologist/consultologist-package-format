@@ -912,8 +912,9 @@ case is `test-general`), and one, `hand-built`, was written for the family. Each
   (`string.upcase`, `S10-003`), each a hand edit but the first.
 - `test-general`: a snippet folder whose items' format is chosen by hand (`standards` takes
   `standard_section`) and the loop over it, prompts that pipe into the concept renderers, the hand-chosen
-  `whenEmpty` `hold`, a macro appended on the deliverable whose reserved id `test` is renamed, and a macro
-  placed in a snippet folder's item (`A10-051`).
+  `whenEmpty` `hold`, a macro appended on the deliverable whose id `test`, reserved at 31, the migration
+  renames itself (`A10-006`; `options.json` chooses no rename), and a macro placed in a snippet folder's
+  item (`A10-051`).
 
 A case is a folder:
 
@@ -956,8 +957,8 @@ folders to the index; each case to its five entries; `source/manifest.json` to s
 `expected/manifest.json` to 31; `options.json` and `notices.json` to their members, in order, with the
 hand edits among the notices and no refusal; a case with a hand edit to having no snapshot test; and every
 `expected/tests/migration_snapshot.json` to [`test.schema.json`](../schemas/test.schema.json). The
-`citations` group does not read `source/` or `expected/`, which are packages: the snapshot test's
-`description` is the migration's own words.
+`citations` group reads the cases as it reads every JSON file here: the snapshot test's `description`
+cites chapter 10 § 10.12.
 
 **The migration's own sentences.** A notice whose rule has no row in `sentences.json` is this
 implementation's `A10-` sentence. A reason fills `S10-002`'s `<reason>` (*"Hand edit needed in \<file>,

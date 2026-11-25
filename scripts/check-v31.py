@@ -1204,16 +1204,11 @@ PART_CITATION = re.compile(r"\b[Pp]arts? \d{2}\b")
 def check_citations():
     """A reader has the document's chapters, not the design's parts: no JSON under v31/ cites a part.
     The refusal packages' package/ folders are skipped: they are uploads as a reader receives them,
-    and may hold bytes that are not UTF-8 or JSON on purpose. So are the migration vectors' source/ and
-    expected/ folders: they are packages, a 30 upload and the 31 package the migration writes, whose text
-    is the package's (a snapshot test's description is the migration's words)."""
+    and may hold bytes that are not UTF-8 or JSON on purpose."""
     failures = []
     for path in sorted(V31.rglob("*.json")):
         relative = path.relative_to(REFUSAL_PACKAGES).parts if path.is_relative_to(REFUSAL_PACKAGES) else ()
         if "package" in relative[2:3]:
-            continue
-        vector = path.relative_to(MIGRATION_VECTORS).parts if path.is_relative_to(MIGRATION_VECTORS) else ()
-        if vector[1:2] in (("source",), ("expected",)):
             continue
         for match in PART_CITATION.finditer(path.read_text(encoding="utf-8")):
             failures.append(f"{path.relative_to(ROOT)}: cites '{match.group(0)}'; cite the chapter")
