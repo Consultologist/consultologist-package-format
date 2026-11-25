@@ -1,0 +1,1 @@
+{ "$schema": "urn:consultologist:spec:31:dialect", "type": "object", "required": ["slot"], "additionalProperties": false, "properties": { "slot": { "title": "Slot", "type": "string", "enum": ["morning", "afternoon"] } } }

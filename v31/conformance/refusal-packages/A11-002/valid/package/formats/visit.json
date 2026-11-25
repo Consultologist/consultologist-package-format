@@ -1,0 +1,1 @@
+{ "$schema": "urn:consultologist:spec:31:dialect", "type": "object", "required": ["when"], "additionalProperties": false, "properties": { "when": { "title": "When", "$ref": "timing" } }, "$defs": { "own_timing": { "type": "string", "enum": ["today", "next_visit"] } } }

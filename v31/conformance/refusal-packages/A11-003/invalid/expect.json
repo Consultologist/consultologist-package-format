@@ -1,0 +1,7 @@
+{
+  "about": "A format whose expansion passes the run's budget of 1,048,576 nodes (PlanFormats.NodeBudget, chapter 7 § 7.10; ruled by the owner on #1508): publish refuses what the run could not expand. The input chart is of the format chart, 600 fields each the format codes, whose field code refers to one of codes.json's own definitions. Invalid: code is the definition big, an enum of 2,000 values, so chart expands to more than 1.2 million nodes. Valid: code is the definition small, an enum of 2 values.",
+  "valid": false,
+  "sentences": [
+    "Format 'chart' expands to more than 1,048,576 parts, more than this engine can run. Make it smaller."
+  ]
+}

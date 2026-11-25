@@ -1,0 +1,5 @@
+{
+  "about": "A package's format file that names a format and also defines the same name in its own $defs (chapter 2 § 2.3; ruled by the owner on #1508). The format visit names the package format timing; the input visit is of it. Invalid: visit.json's own definition is named timing. Valid: it is named own_timing.",
+  "valid": true,
+  "sentences": []
+}

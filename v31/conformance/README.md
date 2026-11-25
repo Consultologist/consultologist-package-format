@@ -1041,11 +1041,18 @@ for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-forma
 ## Publish (area 11)
 
 Area 11, the registry and publish, adds sentences that are not rows of `sentences.json`; each is this
-implementation's `A11-` sentence, and a later task of the area appends its row here. Said at run time only,
-so it has no case. The area's sentences are:
+implementation's `A11-` sentence, and a later task of the area appends its row here. The three publish
+refusals the owner ruled on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508) add
+three cases, 6 packages, under `refusal-packages/`. `A11-002` is the type step's; `A11-001` and `A11-003`
+are said by publish's compiler, after the check, so a runner judges an `A11-` case by checking the package
+and then compiling it against the engine's default limits (`jobInstances` 10,000, `loopItems` 200), which
+each case's `about` states. `A11-008` is said at run time only, so it has no case. The area's sentences are:
 
 | Id | Said | Sentence | Rule |
 |---|---|---|---|
+| `A11-001` | publish | *"Up to \<n> steps could run in one job, through \<loop key>; this engine runs at most \<limit> for one job. Lower a loop's max or split the workflow."* | the instances the package's worst case could open pass the engine's `jobInstances`: every instance the runner opens counts (a node, check or deliverable instance, a loop item, a pass, a call's body), each body as often as it can run (a loop's items the least of its known length, `loopItems` and its `max`, so no loop is unbounded for this count; a while's `max` passes, and one more when it checks first; the larger branch of an `if` or a `case`; a call its function's body); the sentence names the outermost loop on the heaviest path and its file ([chapter 8 § 8.7](../../package-format-v31.md#87-retries-and-limits); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), the publish half of `A09-001`; `<n>` and `<limit>` are written as `A09-001` writes its limit, `10,000`) |
+| `A11-002` | publish | *"Format '\<id>' names format '\<name>' and also defines '\<name>' in its own $defs. Rename the definition or remove it."* | a package's format file names a format (`"$ref": "<name>"`) and also defines `<name>` in its own `$defs`, so a reader could take one for the other; said once for each such name ([chapter 2 § 2.3](../../package-format-v31.md#23-the-dialect); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508); a definition no reference names is as before) |
+| `A11-003` | publish | *"Format '\<id>' expands to more than \<limit> parts, more than this engine can run. Make it smaller."* | a bundled format whose expansion at run (every reference inlined) writes more than 1,048,576 JSON nodes, the run's own budget, which would hold it as `false` ([chapter 7 § 7.10](../../package-format-v31.md#710-refusals); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508); counted by the run's own counter, so publish and the run agree) |
 | `A11-008` | run time only | *"\<Subject> couldn't be rendered because the engine failed. Tell the operator."* | a body the engine itself failed rendering (the run-time sibling of `A08-006`, which says it at publish) fails its node, deliverable or check with this sentence, never `A06-008`, which is for a body that fails on what it reads; the engine logs the fault ([ruled by the owner on #1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508); the sentence is shown to the clinician, who is told to tell the operator; said at run time only, so it has no case) |
 
 ## The schemas' examples

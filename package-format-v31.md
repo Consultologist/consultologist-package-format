@@ -3375,6 +3375,9 @@ string (chapter 2).
 | *"Loop '\<id\>' iterates \<reference\>, which could hold more than \<limit\> items; this engine runs at most \<limit\> per loop, and fails the loop beyond that."* | note |
 | *"Up to \<n\> agent calls could run in one job; this engine runs at most \<limit\> per job, and fails the job beyond that."* | note |
 | *"Function '\<f\>' lists \<snippet \| macro \| format \| renderer\> '\<id\>' in uses but never uses it."* | warning |
+| *"Up to \<n\> steps could run in one job, through \<loop key\>; this engine runs at most \<limit\> for one job. Lower a loop's max or split the workflow."* | refusal ([chapter 8 § 8.8](#88-the-publish-note)) |
+| *"Format '\<id\>' names format '\<name\>' and also defines '\<name\>' in its own $defs. Rename the definition or remove it."* | refusal ([chapter 7 § 7.10](#710-refusals)) |
+| *"Format '\<id\>' expands to more than \<limit\> parts, more than this engine can run. Make it smaller."* | refusal ([chapter 7 § 7.10](#710-refusals)) |
 
 ## 5. Templates and macros
 
@@ -5798,6 +5801,11 @@ points (§ 7.4.4):
 - *"Test '\<test id\>' must give exactly the profile fields the workflow reads: \<fields\>."* and *"Test '\<test id\>' must give exactly the run facts the workflow reads: \<facts\>."*
 - *"Tests took longer than 60 seconds in all. Publish stopped."*
 
+**At publish, from the engine's limits** (after the check, before anything is written):
+- *"Up to \<n\> steps could run in one job, through \<loop key\>; this engine runs at most \<limit\> for one job. Lower a loop's max or split the workflow."* The package's worst case opens more instances than the engine's `jobInstances` ([chapter 8 § 8.8](#88-the-publish-note)).
+- *"Format '\<id\>' names format '\<name\>' and also defines '\<name\>' in its own $defs. Rename the definition or remove it."* A package's format file names a format and defines the same name for itself ([chapter 2 § 2.3](#23-the-dialect)); no byte of a published format changes.
+- *"Format '\<id\>' expands to more than \<limit\> parts, more than this engine can run. Make it smaller."* A bundled format whose expansion at run (every reference inlined, § 7.2.4) passes the run's own budget of 1,048,576 JSON nodes, so nothing publishes that cannot run.
+
 **Warnings** (never blocking):
 - *"Test '\<test id\>' stubs \<row key\>, which doesn't run."*
 - CI, in the examples repository: *"\<path\> is evidence written only by publish; it is ignored and shouldn't be committed."*
@@ -6043,6 +6051,18 @@ allows, and when its estimated worst case passes the job limit. Each is a note, 
 ([chapter 4 § 4.10](#410-refusals)). The note for the job limit reads:
 
 *"\<package\> could run for about \<n\> minutes in the worst case; this engine stops a job after \<limit\> minutes."*
+
+The estimate is one minute for every round of the ceiling's agent calls in the worst case, rounded up.
+
+**The instances limit refuses:** publish counts the instances the package's worst case could open,
+as the runner counts them (§ 8.7: a node, check or deliverable instance, a loop item, a pass, a
+call's body), each body as often as it can run: a loop's items the least of its known length, the
+items limit and its `max`; a while's `max` passes, and one more when it checks first; the larger
+branch of an `if` or a `case`; a call its function's body. A loop over a list known only at run
+time is bounded by the items limit, so no path is unbounded for this count. Past the engine's
+`jobInstances` publish refuses:
+
+*"Up to \<n\> steps could run in one job, through \<loop key\>; this engine runs at most \<limit\> for one job. Lower a loop's max or split the workflow."*
 
 ### 8.9 Every deploy is preceded by a drain
 
