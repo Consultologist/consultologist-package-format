@@ -2334,7 +2334,7 @@ Placeholders: `<site>` names the declaration as its sentences do elsewhere: `Nod
 | *"\<site\> reads \<path\>.title, but \<format\> is a plain enum with no titles; read .value, or give the format oneOf with const and title."* |
 | *"\<site\> compares \<path\>.title with "\<text\>", which is not one of its titles (\<titles\>)."* |
 | *"\<site\> reads profile.\<field\>; profile fields are read only in deliverable templates and macro bodies, never in conditions or computed expressions."* |
-| *"\<site\> reads \<root\>.\<rest\>; JSON Logic reads input, node, check, item, pass, param and run."* (for `snippet`, `part`, `macro`, `renderer`, `deliverable`) |
+| *"\<site\> reads \<root\>.\<rest\>; JSON Logic reads input, node, check, item, pass, param and run."* (for `snippet`, `part`, `macro`, `renderer`, and `deliverable` outside `checks/`) |
 | *"Deliverable '\<id\>' if reads node.\<id\>.content; a deliverable's if reads data (.value), not text."* |
 | *"Deliverable '\<id\>' if reads check.\<id\>; a deliverable's existence can't depend on a check."* |
 | *"Macro '\<id\>' if reads param.\<name\>; a macro's if is shared, so it can't depend on one function's parameter."* |
