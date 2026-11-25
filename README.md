@@ -138,8 +138,10 @@ specVersion 31 is written in full, as a preview:
 - [`v31/formats/`](v31/formats), the nine built-in formats;
 - [`v31/renderers/`](v31/renderers), the built-in renderers `concept_bullets` and
   `concept_context`;
-- [`v31/conformance/`](v31/conformance), the conformance suite's index and the
-  schemas' examples, with its [README](v31/conformance/README.md) and open points;
+- [`v31/conformance/`](v31/conformance), the conformance suite: its index, the
+  schemas' examples and the families the build areas export (refusal packages,
+  goldens and vectors, compiled documents, migration vectors), with its
+  [README](v31/conformance/README.md) and open points;
 - [`scripts/check-v31.py`](scripts/check-v31.py), the check, and
   [`scripts/render-sentences.py`](scripts/render-sentences.py), which prints
   chapter 11's table from `v31/sentences.json`.
