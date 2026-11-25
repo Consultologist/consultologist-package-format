@@ -1,0 +1,13 @@
+{
+  "notices": [
+    "Hand edit needed in manifest.json, inputs.seen_on.format: the input takes one of several types, which a 31 input cannot; choose one format.",
+    "Macro 'leaflet' is now offered by the input 'leaflet_macro'.",
+    "Hand edit needed in deliverables/urgent_copy.md, if: The condition '(input.consult_draft | string.upcase) == \"URGENT\"' uses string.upcase, which has no JSON Logic form at 31: rewrite it by hand.",
+    "No snapshot test was written: hand edits remain."
+  ],
+  "handEdits": [
+    "Hand edit needed in manifest.json, inputs.seen_on.format: the input takes one of several types, which a 31 input cannot; choose one format.",
+    "Hand edit needed in deliverables/urgent_copy.md, if: The condition '(input.consult_draft | string.upcase) == \"URGENT\"' uses string.upcase, which has no JSON Logic form at 31: rewrite it by hand."
+  ],
+  "refusals": []
+}

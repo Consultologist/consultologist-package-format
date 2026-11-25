@@ -1,0 +1,11 @@
+{
+  "description": null,
+  "items": [
+    "clinic_letter",
+    "urgent_copy"
+  ],
+  "delivery": [
+    "pdf"
+  ],
+  "bundle": null
+}

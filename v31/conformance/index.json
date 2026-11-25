@@ -1504,9 +1504,18 @@
     {
       "id": "migration-vectors",
       "path": "v31/conformance/migration-vectors",
-      "about": "30 packages with their expected 31 output and notices.",
+      "about": "30 packages with their expected 31 output and notices, and the options each is migrated with.",
       "exportedBy": "area 10, migration",
-      "cases": []
+      "cases": [
+        "composer-gates",
+        "composer-macros",
+        "composer-sources",
+        "example-conditional-sections",
+        "example-macros",
+        "example-nested-note",
+        "hand-built",
+        "test-general"
+      ]
     }
   ]
 }

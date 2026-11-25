@@ -1,0 +1,26 @@
+{
+  "kind": "for",
+  "label": "Problems",
+  "description": null,
+  "format": {
+    "type": "array",
+    "items": {
+      "$ref": "markdown_block"
+    }
+  },
+  "reproducible": false,
+  "producer": "computed",
+  "modelDerived": false,
+  "runDependent": false,
+  "profileCarrying": false,
+  "in": "input.problems.value",
+  "parallel": true,
+  "maxParallel": null,
+  "until": null,
+  "max": null,
+  "itemLabel": null,
+  "nodes": [
+    "problem_line"
+  ],
+  "ret": "node.problem_loop.problem_line"
+}

@@ -1,0 +1,5 @@
+The vendored example-nested-note: the hand-chosen rename of the reserved id parts to sections, a deliverable whose hand-chosen whenEmpty is fail, a loop with an inner loop and a while, a let computing a typed value, and the formats 31 writes for its nodes, with the free-text fields it suggests a text format for; no hand edit, so the migration writes its snapshot test.
+
+Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
+
+Files: 24 written. Notices: 7. Hand edits: 0. Snapshot test: tests/migration_snapshot.json.

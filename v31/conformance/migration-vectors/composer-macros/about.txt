@@ -1,0 +1,5 @@
+Area 01's fixture composer-macros: the deliverable composer's macros, one deliverable per rule (prepend, append, both, two at one place), a macro's own if and a placement's if, optional macros with their defaults (the boolean inputs that offer them), the profile and the run date, node macros around a loop's item, signed deliverables, and placed macros reading a node, a macro and a deliverable; the hand edits those that 31 cannot place need.
+
+Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
+
+Files: 40 written. Notices: 15. Hand edits: 11. Snapshot test: none.

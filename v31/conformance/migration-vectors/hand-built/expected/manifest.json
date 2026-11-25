@@ -1,0 +1,64 @@
+{
+  "name": "migration-vector",
+  "version": "v2026.11.1",
+  "specVersion": 31,
+  "derivedFrom": null,
+  "title": "Migration vector",
+  "description": [
+    "A migration vector (#1507): a macro choice whose id an input already has, an input of two types, and a deliverable's condition the converter refuses. Fictional; not intended for clinical use."
+  ],
+  "tags": [
+    "fixture"
+  ],
+  "inputs": {
+    "consult_draft": {
+      "label": "Consult draft",
+      "description": null,
+      "format": "markdown_block",
+      "required": true,
+      "channel": null
+    },
+    "problems": {
+      "label": "Problem list",
+      "description": null,
+      "format": {
+        "type": "array",
+        "items": {
+          "$ref": "markdown_block"
+        }
+      },
+      "required": true,
+      "channel": null
+    },
+    "leaflet": {
+      "label": "Leaflet title",
+      "description": null,
+      "format": "markdown_block",
+      "required": false,
+      "channel": null
+    },
+    "seen_on": {
+      "label": "Seen on",
+      "description": null,
+      "format": {
+        "anyOf": [
+          {
+            "$ref": "date"
+          },
+          {
+            "$ref": "markdown_block"
+          }
+        ]
+      },
+      "required": false,
+      "channel": null
+    },
+    "leaflet_macro": {
+      "label": "Leaflet given",
+      "description": null,
+      "format": "boolean",
+      "required": false,
+      "channel": null
+    }
+  }
+}

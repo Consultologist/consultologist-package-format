@@ -1,0 +1,5 @@
+The vendored example-macros: macros, a macro folder and an optional macro with a default; a loop over the macro folder unrolled into one placement per macro, a body if around a placement hoisted into the placement's header if, and the hand edits a macro 31 cannot place needs (placed by the engine before or after the reply, an instruction that is a template, placed on a deliverable under a condition).
+
+Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
+
+Files: 44 written. Notices: 15. Hand edits: 13. Snapshot test: none.

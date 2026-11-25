@@ -1,0 +1,85 @@
+{
+  "name": "migration-vector",
+  "version": "v2026.11.1",
+  "specVersion": 30,
+  "derivedFrom": null,
+  "title": "Migration vector",
+  "description": "A migration vector (#1507): a macro choice whose id an input already has, an input of two types, and a deliverable's condition the converter refuses. Fictional; not intended for clinical use.",
+  "tags": [
+    "fixture"
+  ],
+  "templating": {
+    "engine": "scriban",
+    "engineVersion": "7.2.5"
+  },
+  "inputs": [
+    {
+      "id": "consult_draft",
+      "label": "Consult draft",
+      "required": true
+    },
+    {
+      "id": "problems",
+      "label": "Problem list",
+      "required": true,
+      "type": "array",
+      "items": "text"
+    },
+    {
+      "id": "leaflet",
+      "label": "Leaflet title",
+      "required": false
+    },
+    {
+      "id": "seen_on",
+      "label": "Seen on",
+      "required": false,
+      "type": [
+        "date",
+        "text"
+      ]
+    }
+  ],
+  "macros": [
+    "leaflet"
+  ],
+  "nodes": [
+    {
+      "id": "problem_loop",
+      "label": "Problems",
+      "for": "item in input.problems",
+      "nodes": [
+        "problem_line"
+      ],
+      "ret": "node.problem_line"
+    },
+    {
+      "id": "problem_line",
+      "label": "Writing a problem's line",
+      "format": "prose"
+    },
+    {
+      "id": "letter",
+      "label": "Drafting the letter",
+      "format": "prose"
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "clinic_letter",
+      "label": "Clinic letter",
+      "sources": [
+        "node.problem_loop",
+        "node.letter"
+      ]
+    },
+    {
+      "id": "urgent_copy",
+      "label": "Urgent copy",
+      "sources": [
+        "node.problem_loop"
+      ],
+      "if": "(input.consult_draft | string.upcase) == \"URGENT\""
+    }
+  ]
+}
