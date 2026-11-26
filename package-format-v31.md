@@ -5188,7 +5188,7 @@ Members of the manifest that only steer publish are carried under the same names
 at 31; `derivedFrom` is the one there is.
 
 **Every schema object that has `properties` carries `propertyOrder` beside them**
-([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508)): the property names
+([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459)): the property names
 in the order the source writes them, each once, since RFC 8785 sorts an object's members and the
 written order would otherwise be lost (as `inputOrder` keeps the inputs'). It is written at every
 depth (under `properties`, `items`, `anyOf` and `$defs`) of a bundled format (a package format, a
@@ -5197,7 +5197,11 @@ at any site (an input's, a function parameter's, an entry's), and nowhere else. 
 copy's alone: it is never written in source (the dialect refuses it there), `formatHashes` and
 `typeHashes` are taken from the source without it, a model is never sent it (so the sent format's
 hash does not depend on it, § 7.2.4), and a value is validated as before, a validator ignoring it
-as JSON Schema ignores a keyword it does not know. A `resolve.json` written by an earlier 31 preview,
+as JSON Schema ignores a keyword it does not know. **A compiled format is its source format in the
+dialect plus `propertyOrder`**: its `$schema` names the dialect of its source, and a reader that checks
+a compiled format against the dialect removes `propertyOrder` first (the dialect does not admit it;
+`resolve.schema.json` judges an inline format as the dialect's inline schema plus `propertyOrder`,
+closed to anything else). A `resolve.json` written by an earlier 31 preview,
 before `propertyOrder`, does not fit `resolve.schema.json`: while 31 is in preview such a document is
 published again, not honoured.
 
@@ -5227,7 +5231,8 @@ Each entry keeps its `$id` URN ([chapter 2](#2-types-and-inputs)),
 which names its origin and version; a package format's `$id` is derived at publish
 (`urn:consultologist:package:example-nested-note@v2026.12.1:format:verdict`), never written in
 source. Each entry keeps its `$schema` (`urn:consultologist:spec:31:dialect`, checked against
-`specVersion` at publish) and its annotations (`contentMediaType`, `x-markdown`).
+`specVersion` at publish), which names the dialect of its source (the entry is that format plus
+`propertyOrder`, § 7.2.2), and its annotations (`contentMediaType`, `x-markdown`).
 Inline schemas written on an input or a node stay inline where they're written; they carry no
 `contentMediaType` or `x-markdown`.
 

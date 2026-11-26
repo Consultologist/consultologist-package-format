@@ -115,7 +115,7 @@
         "$defs": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/compiledSchema"
+            "$ref": "#/$defs/bundledFormat"
           },
           "propertyNames": {
             "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
@@ -541,10 +541,10 @@
               }
             },
             {
-              "$ref": "#/$defs/compiledSchema"
+              "$ref": "#/$defs/compiledInline"
             }
           ],
-          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema, which the dialect judged at publish, compiled: each object in it that has properties carries propertyOrder beside them; never a bare format id, which is rewritten to #/$defs/<id> (chapter 7 § 7.2.3)."
+          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema as compiled: the dialect's inline schema plus propertyOrder beside each properties (compiledInline); never a bare format id, which is rewritten to #/$defs/<id> (chapter 7 § 7.2.3)."
         },
         "required": {
           "type": "boolean",
@@ -563,8 +563,280 @@
       },
       "description": "An input as written, with bare format ids rewritten to #/$defs/<id>."
     },
-    "compiledSchema": {
-      "description": "A schema as resolve.json writes it (chapter 7 § 7.2.2): a bundled format, or an inline format at a site. Every object in it that has properties carries propertyOrder beside them, the property names in the order the source writes them, at every depth (under properties, items, anyOf and $defs), since canonical JSON sorts members; propertyOrder is written nowhere else.",
+    "compiledInline": {
+      "description": "An inline format at a site, as resolve.json writes it (chapter 7 § 7.2.2): the dialect's inline schema (its keywords, closed to any other) plus propertyOrder, which every object that has properties carries beside them, and only there, at every depth. A reader checking it against the dialect removes propertyOrder first.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "anyOf": [
+            {
+              "enum": [
+                "string",
+                "number",
+                "integer",
+                "boolean",
+                "object",
+                "array",
+                "null"
+              ]
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "enum": [
+                  "string",
+                  "number",
+                  "integer",
+                  "boolean",
+                  "object",
+                  "array",
+                  "null"
+                ]
+              },
+              "contains": {
+                "const": "null"
+              },
+              "not": {
+                "items": {
+                  "const": "null"
+                }
+              }
+            }
+          ]
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/compiledInline"
+          }
+        },
+        "propertyOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The names of properties, each once, in the order the source writes them."
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "additionalProperties": {
+          "const": false
+        },
+        "items": {
+          "$ref": "#/$defs/compiledInline"
+        },
+        "anyOf": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/compiledInline"
+          }
+        },
+        "enum": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": [
+              "string",
+              "number",
+              "null"
+            ]
+          },
+          "contains": {
+            "type": [
+              "string",
+              "number"
+            ]
+          },
+          "minContains": 2
+        },
+        "oneOf": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "urn:consultologist:spec:31:dialect#/$defs/labelledBranch"
+              },
+              {
+                "$ref": "urn:consultologist:spec:31:dialect#/$defs/nullBranch"
+              }
+            ]
+          },
+          "contains": {
+            "$ref": "urn:consultologist:spec:31:dialect#/$defs/labelledBranch"
+          },
+          "minContains": 2
+        },
+        "$ref": {
+          "type": "string",
+          "pattern": "^([a-z][a-z0-9_]*|#/\\$defs/[^/]+)$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "format": {
+          "const": "date"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "type": {
+                    "const": "object"
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "properties": {
+                  "type": {
+                    "type": "array",
+                    "contains": {
+                      "const": "object"
+                    }
+                  }
+                },
+                "required": [
+                  "type"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "additionalProperties",
+              "required"
+            ]
+          }
+        }
+      ],
+      "dependentSchemas": {
+        "format": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "string"
+            }
+          }
+        },
+        "$ref": {
+          "propertyNames": {
+            "enum": [
+              "$ref",
+              "title",
+              "description"
+            ]
+          }
+        },
+        "enum": {
+          "required": [
+            "type"
+          ],
+          "anyOf": [
+            {
+              "properties": {
+                "type": {
+                  "$ref": "urn:consultologist:spec:31:dialect#/$defs/stringType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "urn:consultologist:spec:31:dialect#/$defs/numberType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "type": {
+                  "$ref": "urn:consultologist:spec:31:dialect#/$defs/integerType"
+                },
+                "enum": {
+                  "items": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "contains": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "oneOf": {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "urn:consultologist:spec:31:dialect#/$defs/stringType"
+            }
+          }
+        }
+      },
+      "not": {
+        "required": [
+          "enum",
+          "oneOf"
+        ]
+      },
+      "dependentRequired": {
+        "properties": [
+          "propertyOrder"
+        ],
+        "propertyOrder": [
+          "properties"
+        ]
+      },
+      "unevaluatedProperties": false
+    },
+    "bundledFormat": {
+      "description": "A bundled format, as resolve.json writes it (chapter 7 §§ 7.2.2, 7.2.4): its source format, whose $schema names the dialect, plus propertyOrder, which every object in it that has properties carries beside them, and only there, at every depth. Its other keywords are not judged here (the dialect judged the source at publish; a reference in the bundle is an $id, which the dialect's $ref pattern does not admit).",
       "type": "object",
       "dependentRequired": {
         "properties": [
@@ -586,22 +858,22 @@
         "properties": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/compiledSchema"
+            "$ref": "#/$defs/bundledFormat"
           }
         },
         "items": {
-          "$ref": "#/$defs/compiledSchema"
+          "$ref": "#/$defs/bundledFormat"
         },
         "anyOf": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/compiledSchema"
+            "$ref": "#/$defs/bundledFormat"
           }
         },
         "$defs": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/compiledSchema"
+            "$ref": "#/$defs/bundledFormat"
           }
         }
       }
