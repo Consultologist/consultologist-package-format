@@ -1,0 +1,5 @@
+{
+  "about": "A classifier asks its question (chapter 5 § 5.8.2). The judgement agent applies decides whether a follow-up line is offered, from the draft. Invalid: its prompt gives the draft and asks nothing. Valid: it asks whether the draft plans a follow-up.",
+  "valid": true,
+  "sentences": []
+}

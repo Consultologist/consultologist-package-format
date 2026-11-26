@@ -2,6 +2,7 @@
   "description": null,
   "items": [
     "problem_loop",
+    "leaflet_applies",
     "letter"
   ]
 }

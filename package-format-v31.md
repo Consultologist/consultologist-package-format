@@ -4024,6 +4024,10 @@ record shows which was false. The folder is a namespace: `macro.<folder>.<id>`.
   `_macro` (`letrozole` → `letrozole_macro`), reported by the migration. A `MacroChoices` entry keyed by a macro's id sets the one boolean input that macro's `if` reads ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647); [chapter 10 § 10.3](#103-per-run-macro-choices-become-boolean-inputs)).
 - One classifier per macro, per node, per item. A classifier answering several questions is
   [#1416](https://github.com/Consultologist/Consultologist-Blazor/issues/1416) (Milestone 40).
+- **A classifier asks its question** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171840295), item 1): a `judgement` node
+  whose prompt, with its parts' text, holds nothing outside its tags but white space asks nothing, and is refused
+  (`A11-013`). The migration writes a classifier so, for a macro 30's model chose, and the operator writes the question
+  ([chapter 10 §§ 10.1, 10.4](#101-what-the-rewrite-does-mechanically)).
 
 #### 5.8.3 Where: placing the instruction
 
@@ -4135,6 +4139,7 @@ naming each macro and what was wrong, since the reply may hold patient text.
   marker; no `macro.*` or `part.*` placement; snippets only under the guard (§ 5.6.3); no
   `profile.*`.
 - **Each template:** a macro placed at most once, counting its parts' text.
+- **Each `judgement` node:** its prompt asks a question (§ 5.8.2, `A11-013`).
 - **Each body:** it suits `format` (no Markdown in a `plaintext` macro); no markers; no
   placement of `macro.*` or `part.*`; its reads within § 5.3.1's macro-body column; no cycles.
 
@@ -6547,6 +6552,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | `onInvalid: flag` (a reply that did not fit was kept) | **`retry`**: one more attempt with the validation error, then the node fails; a notice (`A10-013`) says so, and the owner's before-and-after notification lists it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3) | [5](#5-templates-and-macros) |
 | `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
 | optional macros: per-run choices with a `default` | **boolean inputs** (§ 10.3) | [2](#2-types-and-inputs), [5](#5-templates-and-macros) |
+| a macro the model chose: a macro a prompt places whose instruction left the choice to the model (30's mechanics sentence begins *"If so, write …"*, so every one was optional, where 31 requires an offered macro's marker exactly once, [chapter 5 § 5.8.6](#586-processing-the-reply)) | **a classifier gates it** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171840295), item 1): for each agent that places it (its prompt, or a snippet its prompt places), a `judgement` agent node `<macro id>_applies` (fitted to 64 characters; numbered `_applies_2`, … when a node has the id), written as that agent's sibling immediately before it (inside its loop or branch), its `if` the macro's offer condition (its own `if`, its placements', and a choice input's, § 10.3), its prompt the reads the placing prompt makes outside any `if` or `for` (an input, a node, the item, a snippet whose body places no macro; never a part or a macro), each on its own line, then an **empty question line**, a hand edit (§ 10.4) that publish refuses until it is written (`A11-013`). The macro's `if` gains `{ "===": [ { "var": "node.<classifier>.value.answer" }, true ] }`, joined by `and` after the rest (one per placing agent). The "otherwise nothing" clause of the instruction is not rewritten by code, which cannot find it reliably: the hand edit says to remove it. A macro with an empty instruction, one whose instruction is a template (`{{ "" }}`, another macro's text), one placed by the engine (`before`, `after`) and one whose placements disagree keep their hand edits and get no classifier. A `condition` member that compiles to this node at publish is [#1534](https://github.com/Consultologist/Consultologist-Blazor/issues/1534) (Milestone 40) | [5](#5-templates-and-macros) |
 | no tests | one snapshot test (§ 10.12) | [7](#7-the-compiled-documents) |
 
 ### 10.2 Pipes, body tests and the `test` macro
@@ -6612,6 +6618,9 @@ validation fails with sentences until each is made. The cases:
 - a body `if` too complex to lift into a part;
 - macros placed on deliverables with conditions or model judgement;
 - a condition or `let` the converter can't map (§ 10.10);
+- **the question of a classifier the migration wrote** for a macro 30's model chose (§ 10.1), on the prompt's last line,
+  with the "otherwise" clause taken out of the macro's instruction; until it is written, publish refuses the node
+  (`A11-013`);
 - **a 30 prompt that reads `profile.*`:** at 31 a prompt never reads the profile
   ([chapter 5](#5-templates-and-macros)), so the read is a hand edit, and the owner is told about
   it in the after-notice (§ 10.8), with what replaced it.
@@ -6813,6 +6822,12 @@ are listed as expected differences, never silently accepted.
     keeps; 31 sends the answers' format (§ 10.1) after it, as every `custom` binding is sent. The rule `sent-format`
     explains exactly that trailer: the custom trailer and a format of `value` alone, closed, an `enum` of the values 30's
     line lists in its order, with nothing else sent (no description, title or `$id`). The values are sent twice.
+  - **A macro the model chose, gated by its classifier** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171840295), items 1 and 2;
+    § 10.1): the classifier's prompt is 31's alone, and the comparison answers it from the capture, `answer: true`
+    exactly where 30's reply for the placing node held the macro's marker (`macro.<id>.content`); a captured reply is
+    replayed as written, no marker added. The rule `macro-choice-classifier` explains the classifier's prompt, and the
+    placing prompt only where it holds the macro's 31 instruction in place of its 30 one, that one or it with one
+    "otherwise" clause removed, where the classifier answered yes, and lacks that 30 instruction where it answered no.
 - **It notes a package whose estimated worst case passes the job limit** (30 minutes, or a
   total-work limit, [chapter 8 § 8.7](#87-retries-and-limits)), with the estimate, in the
   sentence of [chapter 8 § 8.8](#88-the-publish-note):
