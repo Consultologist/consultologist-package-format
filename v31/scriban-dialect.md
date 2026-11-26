@@ -150,7 +150,8 @@ has already decided and recorded:
   through such an object stands inside a branch whose condition asserts it, alone or joined by `&&`
   and parentheses alone, or under a header `if` that asserts it; else it is refused at publish
   ([chapter 5 § 5.2.5](../package-format-v31.md#525-a-body-if-tests-recorded-facts-only) gives the
-  forms). An `else` guards nothing.
+  forms). An `else` guards nothing, and neither does a guard under a `for` whose variable has the
+  guard's root as its name.
 - **A pipe to an allowed built-in inside an `if`** (`(c.support | string.strip) != ""`) is
   allowed wherever that `if` may test the piped value: in a renderer's body, on its own `value`
   (ruled on [#1504](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)). In
