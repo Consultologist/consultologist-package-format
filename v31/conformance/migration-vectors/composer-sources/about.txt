@@ -1,5 +1,5 @@
-Area 01's fixture composer-sources: one deliverable per kind of source it composes (one node, two nodes, a for over an input with an if inside, a for over a node's list with a for inside, a while, an if, a case and a let of type text), each written as the template 31 composes; the free-text fields 31 suggests a text format for; and a let whose expression the converter refuses (string.append), a hand edit.
+Area 01's fixture composer-sources: one deliverable per kind of source it composes (one node, two nodes, a for over an input with an if inside, a for over a node's list with a for inside, a while, an if, a case and a let of type text), each written as the template 31 composes, the if and the case that may run no branch each giving its deliverable the if that skips it as 30 did; the free-text fields 31 suggests a text format for; and a let whose expression the converter refuses (string.append), a hand edit.
 
 Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
 
-Files: 42 written. Notices: 12. Hand edits: 2. Snapshot test: none.
+Files: 42 written. Notices: 14. Hand edits: 2. Snapshot test: none.
