@@ -115,12 +115,12 @@
         "$defs": {
           "type": "object",
           "additionalProperties": {
-            "type": "object"
+            "$ref": "#/$defs/compiledSchema"
           },
           "propertyNames": {
             "$ref": "urn:consultologist:spec:31:schema:common#/$defs/id"
           },
-          "description": "Every format the package uses, keyed by format id, each a JSON Schema keeping its $id, $schema and annotations; a reference inside one to another is that format's $id (a JSON Schema 2020-12 compound document), and #/$defs/<name> inside one is its own file's definition (chapter 7 § 7.2.4)."
+          "description": "Every format the package uses, keyed by format id, each a JSON Schema keeping its $id, $schema and annotations; a reference inside one to another is that format's $id (a JSON Schema 2020-12 compound document), and #/$defs/<name> inside one is its own file's definition (chapter 7 § 7.2.4). Every object in one that has properties carries propertyOrder beside them (chapter 7 § 7.2.2)."
         }
       },
       "description": "The formats bundle: one self-contained JSON Schema, a 2020-12 compound document."
@@ -541,10 +541,10 @@
               }
             },
             {
-              "$ref": "urn:consultologist:spec:31:dialect#/$defs/inline"
+              "$ref": "#/$defs/compiledSchema"
             }
           ],
-          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema; never a bare format id, which is rewritten to #/$defs/<id> (chapter 7 § 7.2.3)."
+          "description": "A $ref into the formats bundle, { \"$ref\": \"#/$defs/<id>\" }, or the inline schema, which the dialect judged at publish, compiled: each object in it that has properties carries propertyOrder beside them; never a bare format id, which is rewritten to #/$defs/<id> (chapter 7 § 7.2.3)."
         },
         "required": {
           "type": "boolean",
@@ -562,6 +562,49 @@
         }
       },
       "description": "An input as written, with bare format ids rewritten to #/$defs/<id>."
+    },
+    "compiledSchema": {
+      "description": "A schema as resolve.json writes it (chapter 7 § 7.2.2): a bundled format, or an inline format at a site. Every object in it that has properties carries propertyOrder beside them, the property names in the order the source writes them, at every depth (under properties, items, anyOf and $defs), since canonical JSON sorts members; propertyOrder is written nowhere else.",
+      "type": "object",
+      "dependentRequired": {
+        "properties": [
+          "propertyOrder"
+        ],
+        "propertyOrder": [
+          "properties"
+        ]
+      },
+      "properties": {
+        "propertyOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The names of properties, each once, in written order."
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/compiledSchema"
+          }
+        },
+        "items": {
+          "$ref": "#/$defs/compiledSchema"
+        },
+        "anyOf": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/compiledSchema"
+          }
+        },
+        "$defs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/compiledSchema"
+          }
+        }
+      }
     },
     "function": {
       "type": "object",

@@ -910,9 +910,9 @@ def check_compiled_documents():
     source/ (with its manifest.json), toolchain.json, resolve.json, lock.json, (area 11) publish-report.json and
     publish.json, and about.txt; resolve.json validates against resolve.schema.json, lock.json against lock.schema.json,
     publish-report.json against publish-report.schema.json and publish.json against publish-stamp.schema.json;
-    lock.json's resolve.hash is the SHA-256 of resolve.json's bytes; and the report (published, of resolve.json's package
-    and sourceHash) and the stamp each name the SHA-256 of resolve.json's bytes and of lock.json's as resolveHash and
-    lockHash."""
+    lock.json's resolve.hash is the SHA-256 of resolve.json's bytes; (#1508, R10) each propertyOrder in resolve.json names
+    the properties beside it, each once; and the report (published, of resolve.json's package and sourceHash) and the
+    stamp each name the SHA-256 of resolve.json's bytes and of lock.json's as resolveHash and lockHash."""
     index, failures = load(V31 / "conformance" / "index.json")
     if index is None:
         return failures
@@ -947,6 +947,10 @@ def check_compiled_documents():
             if validator is not None:
                 for error in sorted(validator.iter_errors(document), key=lambda e: list(e.absolute_path)):
                     failures.append(f"{where}/{name}.json: {error.message[:100]} at {list(error.absolute_path)}")
+        if "resolve" in documents:
+            for path, order, names in property_orders(documents["resolve"], []):
+                expect(failures, f"{where}/resolve.json: propertyOrder at {path} (the names of the properties beside it)",
+                       sorted(order) if len(set(order)) == len(order) else order, sorted(names))
         if "lock" in documents and (folder / "resolve.json").is_file():
             digest = "sha256:" + hashlib.sha256((folder / "resolve.json").read_bytes()).hexdigest()
             expect(failures, f"{where}/lock.json: resolve.hash (the SHA-256 of resolve.json's bytes)",
@@ -971,6 +975,18 @@ def check_compiled_documents():
                 expect(failures, f"{where}/publish-report.json: sourceHash (resolve.json's)",
                        report.get("sourceHash"), resolve.get("sourceHash"))
     return failures
+
+
+def property_orders(node, path):
+    """Each object of node with both properties and propertyOrder (R10): its path, its propertyOrder, its property names."""
+    if isinstance(node, dict):
+        if isinstance(node.get("properties"), dict) and isinstance(node.get("propertyOrder"), list):
+            yield path, node["propertyOrder"], list(node["properties"])
+        for key, value in node.items():
+            yield from property_orders(value, path + [key])
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            yield from property_orders(value, path + [i])
 
 
 MIGRATION_VECTORS = V31 / "conformance" / "migration-vectors"

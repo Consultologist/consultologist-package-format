@@ -1,0 +1,237 @@
+{
+  "about": "A bundled format that has properties carries propertyOrder beside them; the package format verdict has none. An instance for the schema; not compiled output.",
+  "instance": {
+    "documentVersion": 1,
+    "specVersion": 31,
+    "package": {
+      "name": "example-minimal",
+      "version": "v2026.12.1"
+    },
+    "derivedFrom": null,
+    "title": "Minimal demo",
+    "description": null,
+    "tags": [],
+    "sourceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "lock": "lock.json",
+    "requires": {
+      "spec": "31",
+      "evaluator": "^1.0.0",
+      "scriban": "^7.2.5",
+      "operations": {},
+      "kinds": [
+        "agent",
+        "rendered"
+      ],
+      "features": [],
+      "agents": {
+        "consult-prose": 4
+      }
+    },
+    "needs": {
+      "profile": []
+    },
+    "inputs": {
+      "consult_draft": {
+        "label": "Consult draft",
+        "description": null,
+        "format": {
+          "$ref": "#/$defs/markdown_block"
+        },
+        "required": true,
+        "channel": null
+      },
+      "encounter": {
+        "label": "Encounter details",
+        "description": null,
+        "format": {
+          "type": "object",
+          "required": [
+            "seen",
+            "clinician"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "clinician": {
+              "type": "object",
+              "title": "Clinician",
+              "required": [
+                "name",
+                "role"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/plaintext",
+                  "title": "Name"
+                },
+                "role": {
+                  "type": "string",
+                  "title": "Role"
+                }
+              },
+              "propertyOrder": [
+                "role",
+                "name"
+              ]
+            },
+            "seen": {
+              "type": "string",
+              "format": "date",
+              "title": "Date seen"
+            }
+          },
+          "propertyOrder": [
+            "seen",
+            "clinician"
+          ]
+        },
+        "required": false,
+        "channel": null
+      }
+    },
+    "inputOrder": [
+      "consult_draft",
+      "encounter"
+    ],
+    "formats": {
+      "$defs": {
+        "markdown_block": {
+          "$schema": "urn:consultologist:spec:31:dialect",
+          "$id": "urn:consultologist:spec:31:format:markdown_block",
+          "type": "string",
+          "contentMediaType": "text/markdown",
+          "x-markdown": "block"
+        },
+        "plaintext": {
+          "$schema": "urn:consultologist:spec:31:dialect",
+          "$id": "urn:consultologist:spec:31:format:plaintext",
+          "type": "string",
+          "contentMediaType": "text/plain"
+        },
+        "verdict": {
+          "$schema": "urn:consultologist:spec:31:dialect",
+          "$id": "urn:consultologist:package:example-minimal@v2026.12.1:format:verdict",
+          "type": "object",
+          "required": [
+            "verdict",
+            "reason"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "$ref": "urn:consultologist:spec:31:format:plaintext"
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "good",
+                "again"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "formatHashes": {
+      "markdown_block": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "plaintext": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "verdict": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "typeHashes": {
+      "markdown_block": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "plaintext": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "verdict": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "bindings": {
+      "plaintext": {
+        "generated": {
+          "agentName": "consult-prose",
+          "agentVersion": 4,
+          "via": "format"
+        }
+      }
+    },
+    "nodes": {
+      "node.plan": {
+        "id": "plan",
+        "label": "Planning the note",
+        "kind": "agent",
+        "producer": "generated",
+        "parent": null,
+        "format": {
+          "$ref": "#/$defs/plaintext"
+        },
+        "reproducible": false,
+        "if": null,
+        "onInvalid": "fail",
+        "reads": [
+          "input.consult_draft.content"
+        ],
+        "runDependent": false,
+        "profileCarrying": false,
+        "modelDerived": true,
+        "body": "Summarise the consult draft.\n",
+        "bodyHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "parts": {},
+        "places": [],
+        "renders": [],
+        "runSpots": [],
+        "formatHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "typeHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "checks": {},
+    "functions": {},
+    "renderers": {},
+    "snippets": {},
+    "macros": {},
+    "deliverables": {
+      "deliverable.note": {
+        "id": "note",
+        "parent": null,
+        "label": "Consultation note",
+        "kind": "rendered",
+        "format": {
+          "$ref": "#/$defs/markdown_block"
+        },
+        "if": null,
+        "check": null,
+        "whenEmpty": "fail",
+        "delivery": [],
+        "bundle": null,
+        "escapes": [],
+        "reads": [
+          "node.plan.value"
+        ],
+        "runDependent": false,
+        "profileCarrying": false,
+        "modelDerived": true,
+        "body": "{{ node.plan.value }}\n",
+        "bodyHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "renders": [],
+        "runSpots": []
+      }
+    },
+    "graph": {
+      "edges": [
+        {
+          "from": "input.consult_draft",
+          "to": "node.plan",
+          "kind": "reads"
+        },
+        {
+          "from": "node.plan",
+          "to": "deliverable.note",
+          "kind": "reads"
+        }
+      ],
+      "order": [
+        "input.consult_draft",
+        "node.plan",
+        "deliverable.note"
+      ]
+    },
+    "run": [],
+    "warnings": []
+  }
+}
