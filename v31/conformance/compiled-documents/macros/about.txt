@@ -2,8 +2,8 @@ example-macros (#1508): an agent planning the sections; the classifier classify,
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:b7d8d5e44eb6af888238a166a5700b2137422821ebec204d808fc8898f4809ac
-lock.json: sha256:fbea98601c4760ffacfb34c2826cc646ea8328c52e86b4491178722d6b78c7be
+resolve.json: sha256:c795911fd765dc9a489f080e5f0510be34bd032e389871055415cd3b17194117
+lock.json: sha256:7e193ec94ccb8968f69c6d304ab81d7823bcc28a97b7f510e51147695443d155
 
 publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The report's tests are close_line (pass), run offline on their stubs. publish.json is the stamp written last, holding the two hashes above.
 
