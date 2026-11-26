@@ -1,0 +1,5 @@
+{
+  "about": "An agent's onInvalid is retry or fail (chapter 5 § 5.1.2); 30's flag, which kept a reply that did not fit its format, has no 31 form, and the migration writes retry (ruled by the owner on #1508, 2026-11-25, item 3; the edge-case package edge-flag, 2026-11-25T19:06Z, item 3). Valid: the plan's onInvalid is retry. Invalid: it is flag.",
+  "valid": true,
+  "sentences": []
+}

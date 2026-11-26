@@ -3435,7 +3435,7 @@ a `kind: agent` node's header holds the members that govern its prompt and reply
 
 | Member | Type | Null | Meaning |
 |---|---|---|---|
-| `onInvalid` | `"retry"` or `"fail"` | no | what an invalid reply does: a reply that fails its format, or a macro marker check (§ 5.8.6). `retry` asks once more; `fail` fails the job. As at version 30, but for 30's `flag`, which kept a reply that did not fit: the migration writes it `retry` (chapter 10 § 10.1). |
+| `onInvalid` | `"retry"` or `"fail"` | no | what an invalid reply does: a reply that fails its format, or a macro marker check (§ 5.8.6). `retry` asks once more; `fail` fails the job. As at version 30, but for 30's `flag`, which kept a reply that did not fit: the migration writes it `retry` (chapter 10 § 10.1). Any other value, `flag` among them, is refused (`A11-014`). |
 | `failIfEmpty` | string | yes: an empty value doesn't fail | the sentence the job fails with when the reply's value is empty. Carried over from version 30 unchanged, and always written (`null` when unused). |
 | `parts` | object | yes: none | the node's conditional prompt text (§ 5.7) |
 | `ordered` | boolean | no | whether triggered macro markers must come back in order (§ 5.8.5) |
@@ -4141,6 +4141,7 @@ naming each macro and what was wrong, since the reply may hold patient text.
   `profile.*`.
 - **Each template:** a macro placed at most once, counting its parts' text.
 - **Each `judgement` node:** its prompt asks a question (§ 5.8.2, `A11-013`).
+- **Each agent:** its `onInvalid` is `retry` or `fail` (§ 5.1.2, `A11-014`).
 - **Each body:** it suits `format` (no Markdown in a `plaintext` macro); no markers; no
   placement of `macro.*` or `part.*`; its reads within § 5.3.1's macro-body column; no cycles.
 
@@ -6855,8 +6856,12 @@ are listed as expected differences, never silently accepted.
     31's text holds an input's text value whole and 30's holds it with its trailing white space trimmed
     (`input-trailing-whitespace`).
   - **A failed job's prompts follow its dispatch order** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #9):
-    both jobs failed at the same empty reply, which the node's `failIfEmpty` refused at both, and each sent what its
-    dispatch order reached first; a text only one side has is explained (`failed-job-dispatch-order`).
+    both jobs failed at the same reply, refused at both (an empty one by the node's `failIfEmpty`, or one its format
+    refused under `onInvalid: fail`, as an answer outside a classifier's values), and each sent what its dispatch order
+    reached first; a text only one side has is explained (`failed-job-dispatch-order`).
+  - **`onInvalid: flag` is retried** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3; § 10.1):
+    30 kept a reply that did not fit its format and ran on; at 31 the node asks once more with the validation error, then
+    fails. The status, that node's prompt (the retry's) and each text only 30 has are explained (`flag-becomes-retry`).
   - **A `before`/`after` node macro is a marker** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #10; § 10.3):
     30's engine placed the macro's body before or after the node's reply, joined by a blank line; at 31 the model writes
     its marker where the hand-edited instruction says. 30's reply never held a marker for it, so the comparison writes
