@@ -6525,6 +6525,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | `prose` and `agent_*` formats; `x-generated` | **the plain format of the same shape:** `prose` and `agent_plaintext` → `plaintext`, `agent_markdown_block` → `markdown_block`, `agent_markdown_inline` → `markdown_inline`; object formats keep their names. **`prose` that a deliverable composes is `markdown_block`** (a node with no format is `prose`): a node a deliverable's `sources` name, and every leaf a source that is a flow reaches through its `ret`s, so the Markdown 30's composer kept is not escaped in the deliverable ([chapter 6 § 6.6.4](#664-strict-formats)); prose that only prompts read stays `plaintext`; `agent_plaintext`, a `rendered` node and a `let` of `text` stay `plaintext` though a deliverable composes them, and are escaped there ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7082078968), [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7086202369)). `x-generated` is dropped: the node's `producer` says who wrote the value | [2](#2-types-and-inputs), [7](#7-the-compiled-documents) |
 | a format file | **`$schema` written** as `urn:consultologist:spec:31:dialect` | [2](#2-types-and-inputs) |
 | an object format (catalogue or package) whose `required` lists only some properties | every property listed in `required`, the optional ones made nullable (§ 10.5) | [2](#2-types-and-inputs) |
+| a classifier: a node of format `classification` whose `with` lists its values | **a package format of its answers**, `formats/<node id>_answer.json` (cut to 64 characters, A10-034; `_answer_2`, … when a format already has the name), listed after the package's other formats: `classification`'s shape with `value` an **`enum` of the `with` values in written order**, `{ "$schema": …, "type": "object", "additionalProperties": false, "required": ["value"], "properties": { "value": { "type": "string", "enum": [<values>] } } }`, one per classifier, even for two with the same values. A reply outside the values does not fit the format, so the node takes its `onInvalid`, as 30 refused it, never a silent match of no gate; reads keep `node.<id>.value.value` (§ 10.9), and a `case` on it lists its values as any enum's, with no hand edit. The prompt keeps 30's last line, *"Answer with exactly one of: \<values>."* (A10-064); the format is bound `custom`, so 31 sends it after that line, an expected difference (§ 10.11). A `with` with no values keeps `classification`, and A10-030 says `with` was dropped ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 1) | [2](#2-types-and-inputs) |
 | inputs as an array with `type`, `values`, `fields`, `items`, `expectedContent` | an object keyed by id: `text` → `markdown_block`; `enum` + `values` → **a plain `enum`, with no invented titles**; `date` → `"date"`; `fields` → `properties` + `required` listing every field, optional ones made nullable; `expectedContent` → `channel`; `description: null` added | [2](#2-types-and-inputs) |
 | 30's "one or many" union inputs | **their array form**, since inputs refuse a top-level `anyOf`; a `string.contains` on one is a hand edit, since 30 searched the list written as text where 31's `in` on a list is membership (§ 10.10, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2) | [2](#2-types-and-inputs) |
 | a long free-text `string` field | unchanged; a notice **suggests** a text format, never applied automatically | [2](#2-types-and-inputs) |
@@ -6716,11 +6717,12 @@ converter reuses; there is one printer.
 | `[x, y]` | a JSON array |
 
 - **Equality is always written strict** (`===`/`!==`); `==`/`!=` are never written.
-- **A 30 classifier gate keeps its format:** today's catalogue `classification`
-  (`{ value: string }`) is unchanged, so a macro gated on a classifier's *yes* reads
+- **A 30 classifier's reads keep `.value.value`:** its format is the package format of its answers
+  (§ 10.1), `classification`'s shape (`{ value: string }`) with `value` an `enum` of its values
+  ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 1), so a macro gated on a classifier's *yes* reads
   `{ "===": [ { "var": "node.<id>.value.value" }, "yes" ] }`. The built-in `judgement`
   ([chapter 2 § 2.4](#24-built-in-and-catalogue-formats)) is for classifiers written at 31; the
-  migration doesn't rewrite a `classification` into it.
+  migration doesn't rewrite a 30 classifier into it.
 - **The output is canonical:** the same input always gives the same bytes (RFC 8785 ordering for
   any object), so migrated packages diff cleanly and the round-trip fixtures are stable.
 - **The size of a list that can be `null` keeps 30's meaning** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2).
@@ -6806,6 +6808,11 @@ are listed as expected differences, never silently accepted.
   - **A macro body's trailing whitespace:** 31 drops exactly one final line ending ([chapter 5](#5-templates-and-macros)), 30 trims all trailing
     whitespace (`TrimEnd()`); each body whose text differs is listed, naming this ruling ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647), 1).
   - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes.
+  - **A classifier's answers sent as its format** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #3, format descriptions sent): 30 sent
+    a classifier no format and ended its prompt with *"Answer with exactly one of: \<values>."*, which the migrated prompt
+    keeps; 31 sends the answers' format (§ 10.1) after it, as every `custom` binding is sent. The rule `sent-format`
+    explains exactly that trailer: the custom trailer and a format of `value` alone, closed, an `enum` of the values 30's
+    line lists in its order, with nothing else sent (no description, title or `$id`). The values are sent twice.
 - **It notes a package whose estimated worst case passes the job limit** (30 minutes, or a
   total-work limit, [chapter 8 § 8.7](#87-retries-and-limits)), with the estimate, in the
   sentence of [chapter 8 § 8.8](#88-the-publish-note):

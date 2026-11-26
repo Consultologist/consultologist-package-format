@@ -979,7 +979,7 @@ implementation's `A10-` sentence. A reason fills `S10-002`'s `<reason>` (*"Hand 
 \<member>: \<reason>."*); a notice stands alone; a refusal stops the migration (or, for `A10-043`,
 `A10-044`, `A10-052` and `A10-062`, a start). `A10-054` to `A10-057` are what a 31 job records and sends
 for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-format-v31.md#68-delivery)).
-`A10-009` is not used. The area's sentences are:
+`A10-009` is not used, nor is `A10-032`, retired when a 30 classifier's format became the enum of its values (Consultologist-Blazor#1508). The area's sentences are:
 
 | Id | Sentence | Rule |
 |---|---|---|
@@ -1009,11 +1009,10 @@ for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-forma
 | `A10-025` | *"the format is nullable at its root, which a format a model writes cannot be at 31; make the root an object."* | a reason S10-002 gives: a format a model writes that is nullable at its root ([chapter 10 § 10.5](../../package-format-v31.md#105-every-property-required)) |
 | `A10-026` | *"\<file>: a carriage return that didn't end a line became a line end."* | a notice: a carriage return that did not end a line ([chapter 1 § 1.2.4](../../package-format-v31.md#124-encoding-and-line-endings)) |
 | `A10-027` | *"\<file>, \<member>: size(\<list>) is null when \<list> is null, where 30 counted 0."* | a notice: a converted `size` over a list that can be `null` ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
-| `A10-028` | *"the case switches on \<subject>, whose values 31 cannot list; switch on an enumerated string."* | a reason S10-002 gives: a `case` whose subject is neither an enum nor a classifier ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
+| `A10-028` | *"the case switches on \<subject>, whose values 31 cannot list; switch on an enumerated string."* | a reason S10-002 gives: a `case` whose subject is not an enum (a 30 classifier's is: its answer format's) ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
 | `A10-029` | *"\<subject> can be null, which a 31 case sends to its else; add an else body."* | a reason S10-002 gives: a `case` with no `else` whose subject can be `null` ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
 | `A10-030` | *"Node '\<id>' declared \<member> at 30, which 31 has no member for; it was dropped."* | a notice: a node's 30 member 31 has no member for, dropped ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)) |
 | `A10-031` | *"a package format's root is an object or a list at 31; make it one, or use a registry format."* | a reason S10-002 gives: a package format whose root is neither an object nor a list ([chapter 10 § 10.5](../../package-format-v31.md#105-every-property-required)) |
-| `A10-032` | *"the case switches on classifier '\<id>', whose answers are not typed at 31; give it a package format whose value is an enum of its answers."* | a reason S10-002 gives: a `case` on a 30 classifier, whose answers are not typed at 31 ([chapter 4 § 4.5.2](../../package-format-v31.md#452-case)) |
 | `A10-033` | *"The chosen rename of '\<id>' to '\<new id>' cannot be made: '\<new id>' \<is already taken \| is not a 31 id>; choose another."* | a refusal: a hand-chosen rename (`options.json`'s `renames`) that cannot be made ([chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)) |
 | `A10-034` | *"Renamed \<kind> '\<id>' to '\<new id>': an id is at most 64 characters at 31."* | a notice: an id past 64 characters, renamed ([chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)) |
 | `A10-035` | *"the body's if at line \<n> decides what a \<snippet \| macro \| rendered node> body shows, which has no parts; write each text as a snippet with its own if, placed where the text was."* | a reason S10-002 gives: a body `if` testing a value in a snippet, macro or rendered body, which has no parts ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
