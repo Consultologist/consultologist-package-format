@@ -1,0 +1,7 @@
+{
+  "about": "A part or a macro is placed on its own (chapter 5 § 5.2.6). The agent closing places the macro follow_up. Invalid: it pipes macro.follow_up into string.upcase, which is no placement. Valid: it places it.",
+  "valid": false,
+  "sentences": [
+    "Node 'closing' uses macro.follow_up at line 2 in an expression; a part or a macro is placed on its own, as {{ macro.follow_up }}, never piped or used in an expression."
+  ]
+}

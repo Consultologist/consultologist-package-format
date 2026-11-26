@@ -1054,7 +1054,9 @@ refusals the owner ruled on [#1508](https://github.com/Consultologist/Consultolo
 three cases, 6 packages, under `refusal-packages/`. `A11-002` is the type step's; `A11-001` and `A11-003`
 are said by publish's compiler, after the check, so a runner judges an `A11-` case by checking the package
 and then compiling it against the engine's default limits (`jobInstances` 10,000, `loopItems` 200), which
-each case's `about` states. `A11-008` is said at run time only, so it has no case. The area's sentences are:
+each case's `about` states. `A11-008` is said at run time only, so it has no case. `A11-012` (a part or a
+macro read in an expression rather than placed) is the dialect's, judged by the check alone, and adds one case,
+2 packages. The area's sentences are:
 
 | Id | Said | Sentence | Rule |
 |---|---|---|---|
@@ -1066,6 +1068,7 @@ each case's `about` states. `A11-008` is said at run time only, so it has no cas
 | `A11-006` | publish | *"Version \<version> of \<package> is already published. Publish a new version."* | the version's folder already holds a stamp; a stamped version is never written again |
 | `A11-007` | publish | *"The workflow couldn't be published because the engine failed. Tell the operator."* | the engine met a fault of its own at publish (as `A08-006` says for a template); the fault is logged by the operator, and this is said to the caller |
 | `A11-008` | run time only | *"\<Subject> couldn't be rendered because the engine failed. Tell the operator."* | a body the engine itself failed rendering (the run-time sibling of `A08-006`, which says it at publish) fails its node, deliverable or check with this sentence, never `A06-008`, which is for a body that fails on what it reads; the engine logs the fault ([ruled by the owner on #1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508); the sentence is shown to the clinician, who is told to tell the operator; said at run time only, so it has no case) |
+| `A11-012` | publish | *"\<Subject> uses \<part or macro> at line \<n> in an expression; a part or a macro is placed on its own, as {{ \<part or macro> }}, never piped or used in an expression."* | a template reads `part.<id>`, `macro.<id>` or `macro.<folder>.<id>` other than as a placement, alone in its tag: piped (into a built-in or a renderer), as a pipe's argument, or beside another value; the run reads a unit as nothing there ([chapter 5 § 5.2.6](../../package-format-v31.md#526-placement-forms-and-whitespace); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), ruling 12: every read is checked at publish; its case pipes a placed macro into `string.upcase`) |
 
 **The publish report and the stamp (Task 22).** Each `compiled-documents` case also holds what publish
 writes beside the pair in a version's folder: `publish-report.json`
