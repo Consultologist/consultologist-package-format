@@ -1981,7 +1981,7 @@ nullable; "text" is any text format (`plaintext`, `markdown_block`, `markdown_in
 | `-` | 1 (negation) or 2 | `number` | `number` | `null` if any operand is `null` | |
 | `/`, `%` | 2 | `number` | `number` | `null` if any operand is `null`; division or remainder by zero gives `null` | |
 | `min`, `max` | 1 or more | `number` | `number` | `null` if any operand is `null` | part of arithmetic |
-| `in` (list) | 2: `[needle, list]` | data needle; a `list` of the same data type | `boolean` | `null` needle: true only if the list holds `null`; `null` list: false | membership: `input.note_type.value in ["consult", "follow_up"]` |
+| `in` (list) | 2: `[needle, list]` | data needle; a `list` of the same data type; or a text needle and a written list of string literals ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2) | `boolean` | `null` needle: true only if the list holds `null`; `null` list: false | membership: `input.note_type.value in ["consult", "follow_up"]`; a text is a member when it is exactly one of the literals (ordinal), the form the migration gives 30's `x == "lit"` on text |
 | `in` (text) | 2: `[needle, haystack]` | a `string` needle; a text or `string` haystack | `boolean` | either `null`: false | exact, case-sensitive substring search (ordinal); on Markdown it searches the source |
 | `cat` | 2 or more | `string`, `number`, plain-text formats | `string` when every operand is `string`; `plaintext` otherwise | a `null` operand contributes `""` (json-logic-js writes `"null"`) | Markdown operands refused (convert with `plain` first, so one result has one media type); numbers in the invariant culture |
 
@@ -2192,8 +2192,9 @@ The checker types every rule against the dialect (chapter 2), reading formats as
 - **Data and text are separate types**:
   - **data** (`string`, `number`, `boolean`, `date`) supports `===`, `!==`, `in` (membership),
     and orderings on numbers and dates;
-  - **text** supports `blank`, `size`, `words`, `lines`, `in` (search), `starts_with`,
-    `ends_with`, `matches`, `has_word`, `lower`, `trim`, `plain` and `cat` (plain text only).
+  - **text** supports `blank`, `size`, `words`, `lines`, `in` (search, and membership in a written
+    list of string literals), `starts_with`, `ends_with`, `matches`, `has_word`, `lower`, `trim`,
+    `plain` and `cat` (plain text only).
 - **Refused on text:** `===`/`!==` against a literal or another text; `<`, `>`, `<=`, `>=`;
   `substr`; `!` as a blank test.
 - **Numbers** are IEEE doubles. An operation whose result isn't finite (an overflow,
@@ -3434,7 +3435,7 @@ a `kind: agent` node's header holds the members that govern its prompt and reply
 
 | Member | Type | Null | Meaning |
 |---|---|---|---|
-| `onInvalid` | `"retry"` or `"fail"` | no | what an invalid reply does: a reply that fails its format, or a macro marker check (§ 5.8.6). `retry` asks once more; `fail` fails the job. As at version 30. |
+| `onInvalid` | `"retry"` or `"fail"` | no | what an invalid reply does: a reply that fails its format, or a macro marker check (§ 5.8.6). `retry` asks once more; `fail` fails the job. As at version 30, but for 30's `flag`, which kept a reply that did not fit: the migration writes it `retry` (chapter 10 § 10.1). |
 | `failIfEmpty` | string | yes: an empty value doesn't fail | the sentence the job fails with when the reply's value is empty. Carried over from version 30 unchanged, and always written (`null` when unused). |
 | `parts` | object | yes: none | the node's conditional prompt text (§ 5.7) |
 | `ordered` | boolean | no | whether triggered macro markers must come back in order (§ 5.8.5) |
@@ -6525,13 +6526,13 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a format file | **`$schema` written** as `urn:consultologist:spec:31:dialect` | [2](#2-types-and-inputs) |
 | an object format (catalogue or package) whose `required` lists only some properties | every property listed in `required`, the optional ones made nullable (§ 10.5) | [2](#2-types-and-inputs) |
 | inputs as an array with `type`, `values`, `fields`, `items`, `expectedContent` | an object keyed by id: `text` → `markdown_block`; `enum` + `values` → **a plain `enum`, with no invented titles**; `date` → `"date"`; `fields` → `properties` + `required` listing every field, optional ones made nullable; `expectedContent` → `channel`; `description: null` added | [2](#2-types-and-inputs) |
-| 30's "one or many" union inputs | **their array form**, since inputs refuse a top-level `anyOf` | [2](#2-types-and-inputs) |
+| 30's "one or many" union inputs | **their array form**, since inputs refuse a top-level `anyOf`; a `string.contains` on one is a hand edit, since 30 searched the list written as text where 31's `in` on a list is membership (§ 10.10, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2) | [2](#2-types-and-inputs) |
 | a long free-text `string` field | unchanged; a notice **suggests** a text format, never applied automatically | [2](#2-types-and-inputs) |
 | bare `input.x` reads, in conditions, expressions and templates | **`input.x.value`**, or **`input.x.content`** for a text-format input, since a bare `input.<id>` is refused | [2](#2-types-and-inputs) |
 | `labelField` on an input | `itemLabel` on **each loop** that iterates the input (several loops get the same value) | [4](#4-loops-and-functions) |
 | a node's `when` gate | `if`; a `case` branch keeps `when` | [3](#3-expressions) |
 | a `case` with no `else` whose branches miss some values (which 30 skipped) | **an explicitly empty branch for the missing values**, `{ "when": [<values>], "nodes": [], "ret": null }`, so every `case` is exhaustive and those values still read as skipped, with the reason *"case '\<id\>': arm for \<value\> does nothing"*. The `case` keeps its shape and keys: `example-conditional-sections`' `route` gains `{ "when": ["omit"], "nodes": [], "ret": null }` | [4](#4-loops-and-functions) |
-| string conditions (Scriban) | JSON Logic, by the converter (§ 10.9); `==`/`!=` written `===`/`!==`; `!x` on text → `blank(x)`, each listed in the migration report (§ 10.10) | [3](#3-expressions) |
+| string conditions (Scriban) | JSON Logic, by the converter (§ 10.9); `==`/`!=` written `===`/`!==`; `!x` on text → `blank(x)`, each listed in the migration report (§ 10.10); text compared with a literal → `in` a list of that literal, and a nullable list's `size` compared → with its null test, so each answers as at 30 (§ 10.9) | [3](#3-expressions) |
 | `let` (a Scriban expression) | `kind: computed` with JSON Logic in `expression`, by the converter | [3](#3-expressions) |
 | a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
 | deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says | [6](#6-checks-deliverables-and-the-profile) |
@@ -6542,6 +6543,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a `{{ for m in macro.<folder> }}… {{ m.prompt }}` loop over a macro folder | **unrolled into one placement per macro in the folder**, in the folder's order: a placement inside a `for` is refused (A07-009), so each macro is placed at the top level of its template, and its own `if` decides it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)) | [5](#5-templates-and-macros) |
 | a body `if` around a macro placement | **hoisted into the placement's header `if`**, joined with the macro's own `if` by `and`: a placement inside an `if` is refused (A07-009) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)) | [5](#5-templates-and-macros) |
 | a bare read of a node or an input in a template (`{{ input.consult_draft }}`) | **its `.content` form for text, its `.value` form otherwise**: a bare read of an object or a list is refused (A07-007, A07-008) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)) | [5](#5-templates-and-macros) |
+| `onInvalid: flag` (a reply that did not fit was kept) | **`retry`**: one more attempt with the validation error, then the node fails; a notice (`A10-013`) says so, and the owner's before-and-after notification lists it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3) | [5](#5-templates-and-macros) |
 | `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
 | optional macros: per-run choices with a `default` | **boolean inputs** (§ 10.3) | [2](#2-types-and-inputs), [5](#5-templates-and-macros) |
 | no tests | one snapshot test (§ 10.12) | [7](#7-the-compiled-documents) |
@@ -6698,15 +6700,16 @@ converter reuses; there is one printer.
 | a read: `node.x.value.y`, `node.x.content`, `item.id`, `item.value.y`, `pass.number`, `run.x` | `{ "var": "<the same path, with its root>" }` |
 | a read of an input: `input.x`, `input.x.y` | `{ "var": "input.x.value" }` (or `input.x.content` for a text-format input), `{ "var": "input.x.value.y" }` |
 | `a == b`, `a != b` | `{ "===": [a, b] }`, `{ "!==": [a, b] }` |
+| `x == "lit"`, `x != "lit"`, with `x` text | `{ "in": [x, ["lit"]] }`, `{ "!": [ { "in": [x, ["lit"]] } ] }` (text is never compared with a literal by `===`, chapter 3), with a notice |
 | `a < b`, `a <= b`, `a > b`, `a >= b` | the same operators, two operands |
 | `a && b`, `a \|\| b` | `and`, `or` (flattened: `a && b && c` is one `and`) |
 | `!a`, with `a` boolean | `{ "!": [a] }` |
 | `!a`, with `a` text | `{ "blank": [a] }` (§ 10.10) |
 | `+ - * / %` on numbers | the same operators |
-| `(x \| array.size)`, `x.size` on a list | `{ "size": [x] }` |
+| `(x \| array.size)`, `x.size` on a list | `{ "size": [x] }`; compared, for a list that can be `null`, with its null test (below) |
 | `string.downcase x`, `string.strip x` | `{ "lower": [x] }`, `{ "trim": [x] }` |
 | `string.starts_with x "p"`, `string.ends_with x "p"` | `starts_with`, `ends_with` |
-| `string.contains x "p"` | `{ "in": ["p", x] }` |
+| `string.contains x "p"`, with `x` text | `{ "in": ["p", x] }` (on a list: a hand edit, § 10.10) |
 | `date.parse "YYYY-MM-DD"` | the literal string, typed `date` by its comparison |
 | a number, `true`, `false`, a quoted string | the JSON literal |
 | `{ a: x, b: y }` (a `let`'s object) | the `object` operation ([chapter 3](#3-expressions)) |
@@ -6720,6 +6723,18 @@ converter reuses; there is one printer.
   migration doesn't rewrite a `classification` into it.
 - **The output is canonical:** the same input always gives the same bytes (RFC 8785 ordering for
   any object), so migrated packages diff cleanly and the round-trip fixtures are stable.
+- **The size of a list that can be `null` keeps 30's meaning** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2).
+  30 read an absent list as `[]` and counted 0; 31's `size(null)` is `null`. A comparison of such a
+  `size` is written so that a `null` list counts 0: `size(x) == 0` is
+  `{ "or": [ { "===": [x, null] }, { "===": [ { "size": [x] }, 0 ] } ] }`; `size(x) > 0` and
+  `size(x) != 0` are `{ "and": [ { "!==": [x, null] }, { ">": [ { "size": [x] }, 0 ] } ] }`; any
+  other comparison with a number is the `or` form when it holds at 0 and the `and` form when it
+  doesn't, and one with anything else is `{ "if": [ { "===": [x, null] }, c0, c ] }`, where `c` is
+  the comparison and `c0` the same comparison with 0 in place of the `size`. The migration report still lists each such `size` (`A10-027`).
+- **Text compared with a literal keeps 30's meaning** (the same decision): `x == "lit"` on text is
+  exact membership in a list of that literal, which answers as 30's comparison did (a `null` text
+  is in no list of text, as 30's `null` equalled no text); each one is listed in the migration
+  report (`A10-074`).
 
 ### 10.10 What the converter refuses, and `!x` on text
 
@@ -6729,9 +6744,11 @@ a hand edit (§ 10.4), with a notice. In particular:
 - a comparison the 31 checker refuses by type (for example `<` on text), using **the checker's own
   sentence** ([chapter 3](#3-expressions));
 - a read of `profile.*` in a condition, which 31 refuses;
-- an assignment, a template, or more than one statement.
+- an assignment, a template, or more than one statement;
+- `string.contains` on a list: 30 wrote the list as text and searched it, which 31's `in` on a list
+  (membership) is not, so the hand edit's reason says so (`A10-073`, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2).
 
-For anything but a refusal on type, the notice reads:
+For anything but a refusal on type or `string.contains` on a list, the notice reads:
 
 *"The condition '\<expression\>' uses \<construct\>, which has no JSON Logic form at 31: rewrite it by hand."*
 
@@ -6739,8 +6756,13 @@ For anything but a refusal on type, the notice reads:
 truthiness treats it as present; `blank` counts it as blank), so **the migration report lists every
 such conversion.** For every condition in the public packages and the fixture set, 30's evaluator on
 the Scriban string and 31's evaluator on the converted JSON Logic agree on generated fictional
-inputs, including `null` and absent values, except this whitespace case, which is listed as an
-expected difference in the byte-equivalence report, never silently accepted.
+inputs, including `null` and absent values, except this whitespace case and the one below, which
+are listed as expected differences, never silently accepted.
+
+**`strip(x) == ""` on text converts to `blank(x)`**, and `!=` to its negation. Where `x` can be
+`null` at 31 and 30 read it as text (a node that did not run, a field of an object input left out),
+`blank(null)` holds where 30's comparison did not; that difference is **expected**
+([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8), and the migration report lists each such conversion (`A10-050`).
 
 ### 10.11 The migration report
 
