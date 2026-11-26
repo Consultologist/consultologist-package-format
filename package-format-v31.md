@@ -6652,8 +6652,8 @@ validation fails with sentences until each is made. The cases:
 - **a member read through an object that can be null where no guard can stand** (§ 10.1): in a lifted part's text, which
   holds no `if`, a path the part's own `if` does not assert (`A10-080`); until it is moved, publish refuses the read
   (`A11-009`);
-- **a package whose worst case passes the instances one job may open** at the engine's default (10,000), which publish
-  refuses (`A11-001`): the migration counts the package it wrote as publish does, and the hand edit is on the outermost
+- **a package whose worst case passes the instances one job may open** at the engine's default (10,000), or in the
+  bulk publish (§ 10.8) at the engine's configured limit, which publish refuses (`A11-001`): the migration counts the package it wrote as publish does, and the hand edit is on the outermost
   loop's `max` on the heaviest path, with `A11-001`'s count and limit (`A10-081`). **No `max` is written**
   ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), B2, and [its clarification](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179842619)): until one is chosen the
   package keeps its 30 version and its pin;
@@ -6664,8 +6664,11 @@ validation fails with sentences until each is made. The cases:
 Notices that need no edit (a renamed id, a `!x` converted to `blank(x)`, a suggested text format)
 are listed in the migration report and block nothing.
 
-The script exits **0** when the package migrated cleanly, **1** with *"written; hand edits remain"*,
-and **2** when it refused, writing no package (unreadable input, or a version below 5).
+The script exits **0** when the package migrated cleanly, **1** when hand edits remain, its summary
+ending *"written; hand edits remain"*, and **2** when it refused, writing no package (unreadable input,
+or a version below 5). A dry run (no `--write`) that finds hand edits also exits **1**, though it
+writes nothing, and its summary ends *"(dry run; pass --write to apply)"* in place of *"written; hand
+edits remain"*.
 
 Each notice reads:
 
