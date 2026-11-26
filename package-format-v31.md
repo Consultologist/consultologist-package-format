@@ -3530,7 +3530,11 @@ that fails to render is never sent. The failure follows the node's normal failur
 
 **Carried over from version 30:**
 - **strict variables:** reading a member that doesn't exist is refused at publish, and a render
-  that meets one fails;
+  that meets one fails. A member of nothing is not there either: a read that steps through an
+  object that can be null (an input not required, a field whose format admits `null`, a node that
+  may not run, read as `.value.<member>`) fails its render when it is null, so publish refuses it
+  unless it stands under a guard on that object (§ 5.2.5; ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q5).
+  A nullable value read as the last step renders nothing, as `null` always does;
 - **dates render as ISO** (`%Y-%m-%d`) unless formatted;
 - **an empty list counts as false** where a truth value is read.
 
@@ -3552,9 +3556,25 @@ engine has already decided and recorded:
 | loop position | `for.first`, `for.last`, `for.index`, `for.even`, `for.odd` | as Scriban gives them |
 | an item's or node's state | `s.state == "completed"` | the closed set `completed`, `skipped`, `not_run` ([chapter 6 § 6.2](#662-item-states)) |
 | whether a check passed | `check.coverage.value.pass` | `true` or `false` |
+| whether an object that can be null is there | `input.intake.value`, `input.intake.value != null` | there or not |
 
 - The tests combine with `!`, `&&`, `||` and parentheses.
 - A `state` is compared only with a literal from the closed set.
+- **The guard** (ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q5): an object that can be null (an input not
+  required, a field whose format admits `null`, a node that may not run) is tested bare or with
+  `!= null`, never piped; an object that is always there is a data value, so testing it is refused.
+  A read that steps through such an object (`input.intake.value.reason`) stands inside a branch
+  that asserts it: the branch's own condition is the test, or the test joined to others by `&&`
+  and parentheses alone (`{{ if input.intake.value && input.intake.value.contact }}`, where the
+  second test reads under the first, since `&&` reads no right side of a false left). An `else`
+  guards nothing, an `else if` only by its own test, and a test under `!` or `||` or on another
+  path is no guard. Each object the read steps through needs its guard, outermost first. A read
+  with no guard is refused at publish. The header rule of the text the read is in guards it too:
+  the `if` of the node, the deliverable, the snippet or the macro, and a part's own `if`, when it
+  asserts the object: `{ "var": x }` alone, `x !== null`, `x === v` with a literal `v` that is not
+  `null`, or `!!x`, each joined by `and`, where `x` is the object or a path under it; and
+  `pass.number > 1` (or `>= 2`) for an object that is null only on the first pass
+  (`pass.previous.node.<id>.value` of a node that runs in every pass).
 - **Testing anything else is refused:** a data value, an input, a node's text, a run fact. The
   one exception is a renderer's body, which may test its own `value` (§ 5.5.1). The
   sentence points to the header forms: a part (§ 5.7), a snippet's `if` (§ 5.6) or a macro's `if`
@@ -5822,6 +5842,11 @@ points (§ 7.4.4):
 - *"Up to \<n\> steps could run in one job, through \<loop key\>; this engine runs at most \<limit\> for one job. Lower a loop's max or split the workflow."* The package's worst case opens more instances than the engine's `jobInstances` ([chapter 8 § 8.8](#88-the-publish-note)).
 - *"Format '\<id\>' names format '\<name\>' and also defines '\<name\>' in its own $defs. Rename the definition or remove it."* A package's format file names a format and defines the same name for itself ([chapter 2 § 2.3](#23-the-dialect)); no byte of a published format changes.
 - *"Format '\<id\>' expands to more than \<limit\> parts, more than this engine can run. Make it smaller."* A bundled format whose expansion at run (every reference inlined, § 7.2.4) passes the run's own budget of 1,048,576 JSON nodes, so nothing publishes that cannot run.
+
+**At publish, from the templates** (ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508): every read is checked at publish, and a
+member read through a nullable object is told at publish, never at run time):
+- *"\<Subject\> uses \<part or macro\> at line \<n\> in an expression; a part or a macro is placed on its own, as {{ \<part or macro\> }}, never piped or used in an expression."* A template reads `part.<id>`, `macro.<id>` or `macro.<folder>.<id>` other than alone in its tag ([chapter 5 § 5.2.6](#526-placement-forms-and-whitespace)); the run reads a unit there as nothing.
+- *"\<Subject\> reads \<path\> at line \<n\> through \<object path\>, which can be null. Put the read inside {{ if \<object path\> }}."* A template read steps through an object that can be null with no guard on it ([chapter 5 § 5.2.5](#525-a-body-if-tests-recorded-facts-only)); the render would fail when it is null. `<object path>` is the outermost object not guarded.
 
 **Warnings** (never blocking):
 - *"Test '\<test id\>' stubs \<row key\>, which doesn't run."*

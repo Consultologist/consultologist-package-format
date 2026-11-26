@@ -1,0 +1,7 @@
+{
+  "about": "A member read through an object that can be null is guarded (chapter 5 § 5.2.5). The optional object input intake is unset in some jobs. Invalid: the plan's prompt reads input.intake.value.reason bare, which fails to render when intake is unset. Valid: it reads it inside {{ if input.intake.value }}.",
+  "valid": false,
+  "sentences": [
+    "Node 'plan' reads input.intake.value.reason at line 4 through input.intake.value, which can be null. Put the read inside {{ if input.intake.value }}."
+  ]
+}

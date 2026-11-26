@@ -138,11 +138,19 @@ has already decided and recorded:
 | loop position | `for.first`, `for.last`, `for.index`, `for.even`, `for.odd` | as Scriban gives them |
 | an item's or node's state | `s.state == "completed"` | the closed set `completed`, `skipped`, `not_run` |
 | whether a check passed | `check.coverage.value.pass` | `true` or `false` |
+| whether an object that can be null is there | `input.intake.value`, `input.intake.value != null` | there or not |
 
 - The tests combine with `!`, `&&`, `||` and parentheses.
 - A loop position is tested bare (`for.first`) or compared with a literal (`for.index == 0`); a
   check's pass bare or compared with `true` or `false`.
 - A `state` is compared only with a literal from the closed set.
+- **The guard** (ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q5): an object that can be null (an input not
+  required, a field whose format admits `null`, a node that may not run) is tested bare or with
+  `!= null`, never piped; testing an object that is always there is refused (R-D7). A member read
+  through such an object stands inside a branch whose condition asserts it, alone or joined by `&&`
+  and parentheses alone, or under a header `if` that asserts it; else it is refused at publish
+  ([chapter 5 § 5.2.5](../package-format-v31.md#525-a-body-if-tests-recorded-facts-only) gives the
+  forms). An `else` guards nothing.
 - **A pipe to an allowed built-in inside an `if`** (`(c.support | string.strip) != ""`) is
   allowed wherever that `if` may test the piped value: in a renderer's body, on its own `value`
   (ruled on [#1504](https://github.com/Consultologist/Consultologist-Blazor/issues/1504)). In
