@@ -1,7 +1,7 @@
 {
-  "about": "A template reads what is there (chapter 5 § 5.3.1). The note writes the plan. Invalid: it reads node.plan.value.sections, which a plaintext does not have. Valid: node.plan.content.",
+  "about": "A template reads what is there, at every step (chapter 5 § 5.3.1). The agent closing places the macro hpi of the folder section_notes. Invalid: it reads macro.section_notes.hpi.anything, which the macro does not have. Valid: it places macro.section_notes.hpi.",
   "valid": false,
   "sentences": [
-    "Deliverable 'note' reads node.plan.value.sections at line 1, which plaintext doesn't have."
+    "Node 'closing' reads macro.section_notes.hpi.anything at line 2, which macro.section_notes.hpi doesn't have."
   ]
 }
