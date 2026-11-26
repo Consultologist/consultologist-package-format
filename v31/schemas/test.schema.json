@@ -82,9 +82,9 @@
     "outputs": {
       "type": "object",
       "propertyNames": {
-        "pattern": "^node\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(#[1-9][0-9]*)*(:[a-z0-9_]+(#[1-9][0-9]*)*(/[a-z0-9_]+(#[1-9][0-9]*)*)*)?$"
+        "pattern": "^(node|check)\\.[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*(#[1-9][0-9]*)*(:[a-z0-9_]+(#[1-9][0-9]*)*(/[a-z0-9_]+(#[1-9][0-9]*)*)*)?$"
       },
-      "description": "A stubbed value for every agent node instance that runs, keyed by the node's rooted key and, inside a loop or while, : and its item path, #<n> where a while's pass sits (chapter 7 § 7.8.2)."
+      "description": "A stubbed value for every agent node instance that runs, keyed by the node's or the check's rooted key (node.<id> or check.<id>) and, inside a loop or while, : and its item path, #<n> where a while's pass sits (chapter 7 § 7.8.2)."
     },
     "expect": {
       "type": "object",

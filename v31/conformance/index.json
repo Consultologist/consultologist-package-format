@@ -723,7 +723,7 @@
         "test/invalid-missing-profile.json",
         "test/invalid-missing-run.json",
         "test/invalid-outputs-bare-key.json",
-        "test/invalid-outputs-check-key.json",
+        "test/invalid-outputs-deliverable-key.json",
         "test/invalid-outputs-null.json",
         "test/invalid-outputs-pass-zero.json",
         "test/invalid-profile-field-number.json",
@@ -735,6 +735,7 @@
         "test/valid-every-expectation.json",
         "test/valid-expect-deliverable-skipped-alone.json",
         "test/valid-minimal.json",
+        "test/valid-outputs-check-key.json",
         "test/valid-outputs-while-pass.json",
         "test/valid-two_sections.json"
       ]

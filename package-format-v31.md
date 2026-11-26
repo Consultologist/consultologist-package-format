@@ -5707,7 +5707,7 @@ matter. Every member is present.
 | `inputs` | object keyed by input id | never | a **fictional** value for **every** declared input, valid against its format, or `null` for an optional input left unset. The value is the raw value, as `input.<id>.value` reads it. Never patient text. Document-filled inputs take their text form here; file fixtures are Milestone 40 ([#1442](https://github.com/Consultologist/Consultologist-Blazor/issues/1442)) |
 | `profile` | object keyed by profile field | never | a fixed fictional value for **exactly** the fields in `needs.profile`; `{}` when it's empty |
 | `run` | object keyed by run fact | never | a fixed value for **exactly** the facts in `resolve.json`'s `run`: `"date": { "value": "2026-11-16", "timeZone": "America/Toronto" }`, `"id"`, `"package"`, `"engine"` as strings; `{}` when none is read |
-| `outputs` | object keyed by stub key | never | a stubbed value for every agent node instance that runs, valid against the node's format (§ 7.8.2) |
+| `outputs` | object keyed by stub key | never | a stubbed value for every agent node instance that runs, valid against the node's format (§ 7.8.2); a key is a node's or a check's row key |
 | `expect` | object | never | the expectations (§ 7.8.3); `{}` checks only that the run completes |
 
 #### 7.8.2 Stub keys
@@ -5716,7 +5716,9 @@ A stub key is the node's **rooted key**, then, for an instance inside a loop or 
 its path: item ids from the outermost inward, joined by `/`, and `#<n>` for a pass of a `while` where it sits, exactly the record's
 row key ([chapter 9](#9-the-record)): `node.plan`, `node.sections.outline:2`,
 `node.sections.paragraphs.draft_paragraph:2/1`, `node.refine.judge#3`. Inside a function the key
-goes through the call node: `node.hpi_section.standard_draft`.
+goes through the call node: `node.hpi_section.standard_draft`. A check's row key is a stub key too, in the same forms
+(`check.all_covered`, `check.part_coverage.coverage:1`), so a snapshot's `outputs` may hold `check.` keys
+([ruled by the owner](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), item 9); any other key is A11-005.
 
 - A text format's stub is a JSON string; a data or object format's stub is the JSON value.
 - **A node that runs with no stub** is an error (§ 7.10). **A stub for a node that doesn't run** is a

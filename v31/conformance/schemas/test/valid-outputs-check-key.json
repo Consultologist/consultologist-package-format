@@ -1,5 +1,5 @@
 {
-  "about": "A stub is for a node: check.<id> is not a stub key.",
+  "about": "A check's row key is a stub key too (Consultologist-Blazor#1508, 2026-11-25 item 9): check.<id>, and its #<n> and :<path> forms.",
   "instance": {
     "description": [
       "Two planned sections; the second fails coverage; the note is held."
@@ -17,7 +17,22 @@
       }
     },
     "outputs": {
-      "check.all_covered": {}
+      "check.all_covered": {
+        "pass": false,
+        "reason": "Not every section covers its planned terms."
+      },
+      "check.refine.judge#2": {
+        "pass": true,
+        "reason": "Fine."
+      },
+      "check.part_coverage.coverage:1": {
+        "pass": true,
+        "reason": "Covered."
+      },
+      "check.sections.outer#2:1/3": {
+        "pass": true,
+        "reason": "Covered."
+      }
     },
     "expect": {
       "checks": {
