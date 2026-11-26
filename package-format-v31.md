@@ -6861,7 +6861,8 @@ are listed as expected differences, never silently accepted.
     reached first; a text only one side has is explained (`failed-job-dispatch-order`).
   - **`onInvalid: flag` is retried** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3; § 10.1):
     30 kept a reply that did not fit its format and ran on; at 31 the node asks once more with the validation error, then
-    fails. The status, that node's prompt (the retry's) and each text only 30 has are explained (`flag-becomes-retry`).
+    fails. The status and each text only 30 has are explained (`flag-becomes-retry`), and in that node's prompt the
+    retry's text at its end, so another rule may credit the rest.
   - **A `before`/`after` node macro is a marker** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #10; § 10.3):
     30's engine placed the macro's body before or after the node's reply, joined by a blank line; at 31 the model writes
     its marker where the hand-edited instruction says. 30's reply never held a marker for it, so the comparison writes
