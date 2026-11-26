@@ -4603,6 +4603,14 @@ A template reads each loop item's `state` and `reason` through `.items`:
   sentences, because it can land in the deliverable.
 - A branch on `state` handles every state or ends with an `else`; an unknown state is refused
   ([chapter 5 § 2.5](#525-a-body-if-tests-recorded-facts-only)).
+- **A loop over `.items` writes its fixed text for every item,** the ones that did not run too.
+  Publish warns ([ruled by the owner](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q4)
+  when a deliverable's `for` over a loop's `.items` writes literal text beyond white space, or reads
+  anything but its item (or a `for` over that item), outside every `if` that tests the item's `state`:
+  *"Deliverable '\<id\>' writes fixed text for every item of \<loop key\> at line \<n\>, also for items
+  that did not run. Loop over .value, or guard on state."* A loop over `.value` sees the completed
+  items only; a body inside `{{ if s.state == "completed" }} … {{ else }}{{ end }}` (any branch of a
+  chain testing the item's `state`) is the author's choice per state.
 
 #### 6.6.3 What a deliverable reads
 
@@ -4752,6 +4760,13 @@ sections puts the heading inside a loop or a recorded-fact `if`.
 | `release` | an empty document is released and recorded |
 | `hold` | not released, recorded as *held: empty*; the other deliverables go on |
 | `fail` | the job fails, naming the deliverable |
+
+**A deliverable that could be released empty is warned at publish** ([ruled by the owner](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q3):
+a text deliverable with no `if` and `whenEmpty: release` that reads at least one node, where every
+node and check it reads may not run (it is not always valued, [§ 4.7.6](#476-one-ret-always-valued-one-format)),
+gets *"Deliverable '\<id\>' could be released with nothing in it: everything it reads may not run.
+Give it an if, or whenEmpty: hold."* Its other reads (an input, a snippet's text, the profile) are not
+judged. The package publishes; the migration writes the `if` itself ([chapter 10](#10-migration-30--31)).
 
 **An object-format deliverable is never empty**: its canonical JSON is never
 blank, so `whenEmpty` has no effect there, but is still written.
@@ -5856,6 +5871,8 @@ member read through a nullable object is told at publish, never at run time):
 
 **Warnings** (never blocking):
 - *"Test '\<test id\>' stubs \<row key\>, which doesn't run."*
+- *"Deliverable '\<id\>' could be released with nothing in it: everything it reads may not run. Give it an if, or whenEmpty: hold."* A text deliverable with no `if` and `whenEmpty: release` reads at least one node, and every node and check it reads may not run ([§ 6.6.6](#666-when-a-deliverable-comes-out-empty); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), Q3: new packages are told at publish).
+- *"Deliverable '\<id\>' writes fixed text for every item of \<loop key\> at line \<n\>, also for items that did not run. Loop over .value, or guard on state."* A deliverable's `for` (at line `<n>`) over a loop's `.items` writes literal text beyond white space, or reads anything but its item, outside every `if` that tests the item's `state` ([§ 6.6.2](#662-item-states); Q4).
 - CI, in the examples repository: *"\<path\> is evidence written only by publish; it is ignored and shouldn't be committed."*
 - The Editor, on import: *"This package's resolve.json and lock.json were ignored; publishing writes new ones."*
 
