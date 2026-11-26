@@ -5,6 +5,11 @@
     "newVersion": "v2026.12.1",
     "handEdits": [],
     "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
     "texts": []
   }
 }

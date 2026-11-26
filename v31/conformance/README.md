@@ -940,8 +940,9 @@ migrated with,** every member written, in this order: `renames` (each hand-chose
 [chapter 10 § 10.6](../../package-format-v31.md#106-reserved-ids-are-renamed)), `whenEmpty` (each
 deliverable's hand-chosen `whenEmpty`, by its id, [§ 10.7](../../package-format-v31.md#107-whenempty-for-migrated-deliverables);
 a deliverable it does not name takes `release`), `folderFormats` (the format a snippet folder's items take,
-by the folder's id; a folder it does not name takes `<folder>_item`), each `null` when the case chooses
-none, and `toolchain`, the toolchain the migration publishes its result with to write the snapshot test,
+by the folder's id; a folder it does not name takes `<folder>_item`), each `{}` when the case chooses
+none (the three are a package's `options.json`, the file the migration's choices live in beside its hand
+edits, [chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)), and `toolchain`, the toolchain the migration publishes its result with to write the snapshot test,
 in `lock.json`'s names (the toolchain of `compiled-documents`). The types the case is migrated against are
 the published ones: `v31/formats/`, `v31/renderers/` and the agents catalogue `toolchain` names, whose
 formats are also the 30 catalogue the source is read against. `expected/` holds the 31 package the
@@ -1045,6 +1046,9 @@ for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-forma
 | `A10-067` | *"Macro '\<id>' is chosen per run by the input '\<input id>', but its if reads another boolean input, so a MacroChoices entry for '\<id>' is refused at 31; send the input '\<input id>' in Inputs instead."* | a notice: a per-run macro choice whose `if` reads another boolean input too, so `A10-044` refuses a `MacroChoices` entry for it ([chapter 10 § 10.3](../../package-format-v31.md#103-per-run-macro-choices-become-boolean-inputs)) |
 | `A10-068` | *"\<file>: the white-space marks at \<line \<n> \| lines \<list>> of the 30 body became 31's (- is ~; a placement keeps only a {{~ alone on its line), so line endings beside them are now kept."* | a notice: a body whose white-space marks were rewritten as 31 has them, one per file ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
 | `A10-069` | *"The chosen format '\<format>' for snippet folder '\<id>' cannot be used: '\<format>' \<is already taken \| is not a 31 id>; choose another."* | a refusal: a hand-chosen item format for a snippet folder (`options.json`'s `folderFormats`) that is already a format or no 31 id ([chapter 10 § 10.1](../../package-format-v31.md#101-what-the-rewrite-does-mechanically)) |
+| `A10-070` | *"options.json has the member '\<member>', which is not an option of the migration; its members are renames, whenEmpty and folderFormats."* | a refusal: a package's `options.json` with a member that is none of the three choices ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)); the operator's, so it has no case |
+| `A10-071` | *"options.json must give \<renames \| whenEmpty \| folderFormats> as an object whose values are text; write {} for none."* | a refusal: a choice of `options.json` missing, or not an object of text ([chapter 10 § 10.11](../../package-format-v31.md#1011-the-migration-report)); the operator's, so it has no case |
+| `A10-072` | *"options.json gives deliverable '\<id>' a whenEmpty that is not release, hold or fail."* | a refusal: a `whenEmpty` choice of `options.json` that is no `whenEmpty` ([chapter 10 § 10.7](../../package-format-v31.md#107-whenempty-for-migrated-deliverables)); the operator's, so it has no case |
 
 ## Publish (area 11)
 

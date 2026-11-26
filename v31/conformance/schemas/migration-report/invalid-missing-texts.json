@@ -6,6 +6,11 @@
     "handEdits": [
       "Renamed the loop parts to sections."
     ],
-    "notices": []
+    "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    }
   }
 }

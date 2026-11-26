@@ -6784,6 +6784,7 @@ expected difference in the byte-equivalence report, never silently accepted.
   | `newVersion` | string | the version migrated to |
   | `handEdits` | array of string | the hand edits made; `[]` for none |
   | `notices` | array of string | every notice that needs no edit (a renamed id, a `_macro` suffix, a `!x` converted to `blank(x)`, a suggestion, a `reproducible` claim that differed, the worst-case note); `[]` for none |
+  | `options` | object | the choices the package was migrated with, its `options.json` as read (below) |
   | `texts` | array of entry | one entry per compared text; `[]` for none |
 
   **An entry of `texts`** is `{ "site", "oldHash", "newHash", "equal", "expected", "explanation" }`:
@@ -6796,6 +6797,14 @@ expected difference in the byte-equivalence report, never silently accepted.
   | `equal` | boolean | never | whether the two texts are equal |
   | `expected` | boolean | never | whether the rewrite declares and explains the difference |
   | `explanation` | string | allowed | why the difference is expected; `null` unless `expected` is true |
+
+- **The choices live in a file** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 6).
+  Each package's `options.json`, kept beside its hand edits, is `{ "renames", "whenEmpty", "folderFormats" }`: each hand-chosen
+  rename (§ 10.6), each deliverable's hand-chosen `whenEmpty` (§ 10.7: `release`, `hold` or `fail`) and the format each snippet
+  folder's items take, every member required, an object of text, `{}` for none, and no other member. The tests, the migration
+  script (`--options <file>`) and the operator's bulk publish read the same file, and the report records it as `options`. A
+  file the migration cannot read is refused: `A10-070` (a member that is no option), `A10-071` (a choice missing or not an
+  object of text), `A10-072` (a `whenEmpty` that is not one).
 
 ### 10.12 The snapshot test
 

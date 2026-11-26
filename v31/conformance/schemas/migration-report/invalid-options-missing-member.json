@@ -1,0 +1,14 @@
+{
+  "about": "options holds renames, whenEmpty and folderFormats, each {} for none.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [],
+    "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {}
+    },
+    "texts": []
+  }
+}

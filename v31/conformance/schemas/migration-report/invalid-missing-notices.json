@@ -4,6 +4,11 @@
     "oldVersion": "v2026.11.2",
     "newVersion": "v2026.12.1",
     "handEdits": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
     "texts": []
   }
 }

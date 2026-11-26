@@ -1,0 +1,17 @@
+{
+  "about": "A whenEmpty choice is release, hold or fail.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [],
+    "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {
+        "note": "maybe"
+      },
+      "folderFormats": {}
+    },
+    "texts": []
+  }
+}

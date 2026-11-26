@@ -1,0 +1,16 @@
+{
+  "about": "options holds the three choices and no others.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [],
+    "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {},
+      "toolchain": {}
+    },
+    "texts": []
+  }
+}

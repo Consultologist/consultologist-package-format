@@ -2,13 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:consultologist:spec:31:schema:migration-report",
   "title": "migration-report.json",
-  "description": "The report of a migration to 31: the old and new versions, the hand edits made, the notices that need no edit and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
+  "description": "The report of a migration to 31: the old and new versions, the hand edits made, the notices that need no edit, the choices the package was migrated with and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
   "type": "object",
   "required": [
     "oldVersion",
     "newVersion",
     "handEdits",
     "notices",
+    "options",
     "texts"
   ],
   "additionalProperties": false,
@@ -34,6 +35,43 @@
         "type": "string"
       },
       "description": "Every notice that needs no edit: a renamed id, a _macro suffix, a !x converted to blank(x), a suggestion, a reproducible claim that differed, the worst-case note; [] for none."
+    },
+    "options": {
+      "type": "object",
+      "required": [
+        "renames",
+        "whenEmpty",
+        "folderFormats"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "renames": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Each hand-chosen rename, a 30 id to its 31 id; {} for none."
+        },
+        "whenEmpty": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "release",
+              "hold",
+              "fail"
+            ]
+          },
+          "description": "Each deliverable's hand-chosen whenEmpty, by its id; {} for none (every deliverable release)."
+        },
+        "folderFormats": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The format a snippet folder's items take, by the folder's id; {} for none (each folder <folder>_item)."
+        }
+      },
+      "description": "The choices the package was migrated with: its options.json, beside its hand edits, as the migration read it."
     },
     "texts": {
       "type": "array",

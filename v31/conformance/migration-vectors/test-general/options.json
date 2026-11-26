@@ -1,5 +1,5 @@
 {
-  "renames": null,
+  "renames": {},
   "whenEmpty": {
     "consult": "hold"
   },

@@ -1,7 +1,7 @@
 {
-  "renames": null,
-  "whenEmpty": null,
-  "folderFormats": null,
+  "renames": {},
+  "whenEmpty": {},
+  "folderFormats": {},
   "toolchain": {
     "packageFormat": "package-format@v2026.12.1",
     "dialect": "scriban-dialect@1.0.0",

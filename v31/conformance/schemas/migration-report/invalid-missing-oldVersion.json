@@ -6,6 +6,11 @@
       "Renamed the loop parts to sections."
     ],
     "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
     "texts": [
       {
         "site": "nodes/plan.md",

@@ -1,5 +1,5 @@
 {
-  "about": "The report holds its four members and no others.",
+  "about": "The report holds its six members and no others.",
   "instance": {
     "oldVersion": "v2026.11.2",
     "newVersion": "v2026.12.1",
@@ -7,6 +7,11 @@
       "Renamed the loop parts to sections."
     ],
     "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
     "texts": [
       {
         "site": "nodes/plan.md",

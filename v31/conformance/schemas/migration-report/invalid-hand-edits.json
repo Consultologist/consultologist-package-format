@@ -7,6 +7,11 @@
       1
     ],
     "notices": [],
+    "options": {
+      "renames": {},
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
     "texts": [
       {
         "site": "nodes/plan.md",

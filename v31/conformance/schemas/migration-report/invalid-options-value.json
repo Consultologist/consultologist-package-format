@@ -1,0 +1,17 @@
+{
+  "about": "Each choice maps an id to text.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [],
+    "notices": [],
+    "options": {
+      "renames": {
+        "parts": 1
+      },
+      "whenEmpty": {},
+      "folderFormats": {}
+    },
+    "texts": []
+  }
+}

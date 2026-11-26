@@ -1017,9 +1017,8 @@ def check_migration_vectors():
             expect(failures, f"{where}/options.json: its members", list(options), MIGRATION_OPTIONS_KEYS)
             for member in MIGRATION_OPTIONS_KEYS[:3]:
                 choice = options.get(member)
-                if choice is not None and not (isinstance(choice, dict)
-                                               and all(isinstance(v, str) for v in choice.values())):
-                    failures.append(f"{where}/options.json: {member} is neither null nor an object of strings")
+                if not (isinstance(choice, dict) and all(isinstance(v, str) for v in choice.values())):
+                    failures.append(f"{where}/options.json: {member} is not an object of strings ({{}} for none)")
             toolchain = options.get("toolchain")
             expect(failures, f"{where}/options.json: the toolchain's members",
                    list(toolchain) if isinstance(toolchain, dict) else toolchain, MIGRATION_TOOLCHAIN_KEYS)

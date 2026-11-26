@@ -5,7 +5,7 @@
   "whenEmpty": {
     "note": "fail"
   },
-  "folderFormats": null,
+  "folderFormats": {},
   "toolchain": {
     "packageFormat": "package-format@v2026.12.1",
     "dialect": "scriban-dialect@1.0.0",
