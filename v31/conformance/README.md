@@ -1354,7 +1354,9 @@ Chapters are those of [`package-format-v31.md`](../../package-format-v31.md).
   `notices` (an array of strings, required) is the fifth: what the rewrite notes and no hand edit follows
   ([#1507](https://github.com/Consultologist/Consultologist-Blazor/issues/1507), D9); the two
   versions are strings with no pattern, since the design does not say whether they are package
-  versions or spec versions.
+  versions or spec versions. `counts` (`explained`, `partlyExplained`, `unexplained`) and each entry's `rules` and
+  `unexplained` are this repository's names for the comparison that credits each difference on its own
+  ([#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), R19).
 - **The registry's own files.** The schemas of `bounds.json`, `constants.json`, `profile.json`,
   `sentences.json` fix shape, not values: the `constants` and `sentences` check groups pin the
   values and the rows. `agents.json` and `bindings.json` live in the agents catalogue; their

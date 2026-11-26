@@ -9,6 +9,11 @@
       "renames": {},
       "whenEmpty": {}
     },
+    "counts": {
+      "explained": 0,
+      "partlyExplained": 0,
+      "unexplained": 0
+    },
     "texts": []
   }
 }

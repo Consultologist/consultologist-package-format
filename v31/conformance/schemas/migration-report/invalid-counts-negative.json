@@ -1,0 +1,52 @@
+{
+  "about": "A count is a whole number, not below 0.",
+  "instance": {
+    "oldVersion": "v2026.11.2",
+    "newVersion": "v2026.12.1",
+    "handEdits": [
+      "Renamed the loop parts to sections."
+    ],
+    "notices": [
+      "Renamed loop 'parts' to 'sections': 'parts' is reserved at 31.",
+      "nodes/plan.md: '!input.letter' became blank(input.letter.content); it now also holds for empty and white-space-only text."
+    ],
+    "options": {
+      "renames": {
+        "parts": "sections"
+      },
+      "whenEmpty": {
+        "note": "fail"
+      },
+      "folderFormats": {}
+    },
+    "counts": {
+      "explained": 1,
+      "partlyExplained": 0,
+      "unexplained": -1
+    },
+    "texts": [
+      {
+        "site": "nodes/plan.md",
+        "oldHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "newHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "equal": true,
+        "expected": false,
+        "explanation": null,
+        "rules": [],
+        "unexplained": false
+      },
+      {
+        "site": "checks/coverage.md",
+        "oldHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "newHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "equal": false,
+        "expected": true,
+        "explanation": "A !x converted to blank(x).",
+        "rules": [
+          "blank-conversion"
+        ],
+        "unexplained": false
+      }
+    ]
+  }
+}

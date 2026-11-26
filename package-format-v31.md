@@ -6544,7 +6544,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
 | deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says | [6](#6-checks-deliverables-and-the-profile) |
 | the deliverable header's signature | `{{ profile.signature }}` in the template | [6](#6-checks-deliverables-and-the-profile) |
-| a deliverable none of whose sources ran (each an `if` with no `else`, or a `case` with an empty branch), which 30 skipped | **an `if` that says a source ran**: `{ "===": [ { "var": "node.<source>.state" }, "completed" ] }` for each source, joined by `or`, after 30's own `if` by `and`, so the deliverable is skipped as at 30 instead of composed empty and released; a notice says so (`A10-079`). A source that always runs leaves the `if` as it was, and so does a `while`: 30 composed a while that ran no pass as empty text and released the deliverable, as 31 does; beside another source its blank-line separator is kept, an unexpected difference the report keeps. A new package is warned instead (`A11-010`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q3) | [6](#6-checks-deliverables-and-the-profile) |
+| a deliverable none of whose sources ran (each an `if` with no `else`, or a `case` with an empty branch), which 30 skipped | **an `if` that says a source ran**: `{ "===": [ { "var": "node.<source>.state" }, "completed" ] }` for each source, joined by `or`, after 30's own `if` by `and`, so the deliverable is skipped as at 30 instead of composed empty and released; a notice says so (`A10-079`). A source that always runs leaves the `if` as it was, and so does a `while`: 30 composed a while that ran no pass as empty text and released the deliverable, as 31 does; beside another source its blank-line separator is kept, which no `if` can drop: an expected difference, `while-no-pass-separator` (§ 10.11). A new package is warned instead (`A11-010`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q3) | [6](#6-checks-deliverables-and-the-profile) |
 | built-in renderers in C# (`concept_bullets`, `concept_context`) | **built-in Scriban renderers in the registry**, versioned and locked, their ids reserved; piped as `\| renderer.concept_bullets` | [5](#5-templates-and-macros) |
 | whitespace forms version 31 refuses, `-` on a tag | rewritten to the accepted forms | [5](#5-templates-and-macros) |
 | simple `{{ if }}…{{ end }}` blocks in prompts | lifted into parts | [5](#5-templates-and-macros) |
@@ -6815,8 +6815,12 @@ are listed as expected differences, never silently accepted.
 - **What it also lists:** every renamed id (§ 10.6), every `_macro` suffix (§ 10.3), every `!x`
   converted to `blank(x)` (§ 10.10), every suggestion made, and every node whose `reproducible` claim at 30 differed. Each is a string of `notices` in the report (below), so a notice that needs no edit is listed, never lost between the hand edits and the compared texts.
 - **Expected differences.** A difference is marked **expected** only when the rewrite declares it and
-  a rule explains the bytes exactly, naming its ruling or section. The rulings so far, each listed in
-  the report with its reason:
+  rules explain all of its bytes, each naming its ruling or section. Each difference within a text is credited on its own
+  ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 5): each rule undoes
+  the difference it declares wherever it finds it, whatever else differs, and is credited only where that brings 31's text
+  nearer 30's; what is left after every rule is the unexplained remainder. A text with a rule credited and a remainder is
+  **partly explained**, named with its rules and not expected; the report counts the explained, the partly explained and the
+  unexplained. The rulings so far, each listed in the report with its reason:
   - **`!x` on text → `blank(x)`:** the two differ for **empty and whitespace-only text** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7042190908); § 10.10).
   - **Two captures refused at 30 complete at 31:** `example-prior-letters` / `no-prior-letters` and
     `example-structured-intake` / `all-optional-inputs-unset`, because an empty list settles at 0 items and the job runs
@@ -6825,17 +6829,47 @@ are listed as expected differences, never silently accepted.
   - **Reading `.content` of a skipped deliverable** reads `null` and no longer fails the job ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7055767482), 1).
   - **A refused deliverable is withheld, not erased** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7055767482), 3): the rest of the job reads it as `null`,
     its state and check result stay readable, it is never delivered, and it is kept in the record under the usual retention.
+    Only checks read a deliverable ([chapter 6](#6-checks-deliverables-and-the-profile)), so no compared text of a published
+    package holds it, and no rule of the comparison names it (retired, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8).
   - **A required text input supplied blank** is refused at the start, as a missing one is ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7055767482), 6).
   - **Every deliverable refused by its check:** the job is **Completed**, each deliverable refused with its sentence, not
     Failed ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7055767482), 7).
   - **A macro body's trailing whitespace:** 31 drops exactly one final line ending ([chapter 5](#5-templates-and-macros)), 30 trims all trailing
     whitespace (`TrimEnd()`); each body whose text differs is listed, naming this ruling ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647), 1).
-  - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes.
+  - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes. A `let` of text is escaped too, and its computed value unescapes it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #13); so are plain-text items joined into a Markdown loop's `.content`, which a prompt that reads the loop holds escaped (D23, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8). The rule is `escaped-plain-text`.
+  - **A format's description sent** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #3): 31 sends the
+    `description` of a format, at the top or on a property, where 30's sent format had none at that place; beside § 10.5's
+    change (every property required, an optional one nullable) the rule `sent-format` sets it aside. A description that
+    differs from 30's, a title, `$schema` or `$id` stay unexpected.
   - **A classifier's answers sent as its format** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #3, format descriptions sent): 30 sent
     a classifier no format and ended its prompt with *"Answer with exactly one of: \<values>."*, which the migrated prompt
     keeps; 31 sends the answers' format (§ 10.1) after it, as every `custom` binding is sent. The rule `sent-format`
     explains exactly that trailer: the custom trailer and a format of `value` alone, closed, an `enum` of the values 30's
-    line lists in its order, with nothing else sent (no description, title or `$id`). The values are sent twice.
+    line lists in its order, with nothing else sent but a description (no title or `$id`). The values are sent twice.
+  - **A reply is never a template** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #5): 30 rendered a
+    reply holding `{{` as a template before it composed; 31 never does. The rule `reply-never-a-template` puts back, where
+    31's text holds such a reply as written, the reply as 30 rendered it (with no variable), and explains a job 30 failed
+    because a reply did not render (*"Node '\<id>' reply failed to render"*) where 31 completed that node and the job: the
+    status, and each deliverable only 31 composed.
+  - **An input's trailing white space is kept** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #6): where
+    31's text holds an input's text value whole and 30's holds it with its trailing white space trimmed
+    (`input-trailing-whitespace`).
+  - **A failed job's prompts follow its dispatch order** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #9):
+    both jobs failed at the same empty reply, which the node's `failIfEmpty` refused at both, and each sent what its
+    dispatch order reached first; a text only one side has is explained (`failed-job-dispatch-order`).
+  - **A `before`/`after` node macro is a marker** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #10; § 10.3):
+    30's engine placed the macro's body before or after the node's reply, joined by a blank line; at 31 the model writes
+    its marker where the hand-edited instruction says. The comparison writes the marker into a captured reply that lacks
+    it, alone on the reply's first line (before) or its last (after). The rule `before-after-macro-marker` explains the
+    placing prompt's instruction, and in a text that holds the body only the white space between the body and the reply.
+  - **A `while` that ran no pass beside another source** (the controller's ruling on
+    [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), as the owner ruled for a flow that ran
+    nothing, § 10.1): both compose the while as empty text, but 30's composer dropped its part with its separator, where
+    31's template keeps the blank line between it and the next source; no `if` can drop a separator and keep the text
+    (`while-no-pass-separator`).
+  - **An item named by its position** ([chapter 4 § 4.2.7](#4-loops-and-functions); an empty `itemLabel` field too,
+    [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 4): the loop's label
+    and the position at 31, where 30 gave the input's label (`position-names-from-the-loop`).
   - **A macro the model chose, gated by its classifier** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171840295), items 1 and 2;
     § 10.1): the classifier's prompt is 31's alone, and the comparison answers it from the capture, `answer: true`
     exactly where 30's reply for the placing node held the macro's marker (`macro.<id>.content`, with the macro's 30 id where the migration renamed it); a captured reply is
@@ -6857,9 +6891,10 @@ are listed as expected differences, never silently accepted.
   | `handEdits` | array of string | the hand edits made; `[]` for none |
   | `notices` | array of string | every notice that needs no edit (a renamed id, a `_macro` suffix, a `!x` converted to `blank(x)`, a suggestion, a `reproducible` claim that differed, the worst-case note); `[]` for none |
   | `options` | object | the choices the package was migrated with, its `options.json` as read (below) |
+  | `counts` | object | of the texts that differ, `{ "explained", "partlyExplained", "unexplained" }`, each a count: explained whole (expected), a rule credited with a remainder left, no rule credited; an equal text is in none |
   | `texts` | array of entry | one entry per compared text; `[]` for none |
 
-  **An entry of `texts`** is `{ "site", "oldHash", "newHash", "equal", "expected", "explanation" }`:
+  **An entry of `texts`** is `{ "site", "oldHash", "newHash", "equal", "expected", "explanation", "rules", "unexplained" }`:
 
   | Member | Type | Null | Meaning |
   |---|---|---|---|
@@ -6867,8 +6902,10 @@ are listed as expected differences, never silently accepted.
   | `oldHash` | string (`sha256:…`) | never | the hash of the text at 30 |
   | `newHash` | string (`sha256:…`) | never | the hash of the text at 31 |
   | `equal` | boolean | never | whether the two texts are equal |
-  | `expected` | boolean | never | whether the rewrite declares and explains the difference |
+  | `expected` | boolean | never | whether the rewrite declares and explains the whole difference: a rule is credited and nothing is unexplained |
   | `explanation` | string | allowed | why the difference is expected; `null` unless `expected` is true |
+  | `rules` | array of string | never | the ids of the rules credited with part or all of the difference, in the comparison's order; `[]` for none and for an equal text |
+  | `unexplained` | boolean | never | whether a difference no rule explains is left; `false` for an equal text |
 
 - **The choices live in a file** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 6).
   Each package's `options.json`, kept beside its hand edits, is `{ "renames", "whenEmpty", "folderFormats" }`: each hand-chosen

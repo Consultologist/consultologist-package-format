@@ -11,6 +11,11 @@
       "renames": {},
       "whenEmpty": {},
       "folderFormats": {}
+    },
+    "counts": {
+      "explained": 0,
+      "partlyExplained": 0,
+      "unexplained": 0
     }
   }
 }

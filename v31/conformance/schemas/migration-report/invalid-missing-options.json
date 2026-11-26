@@ -5,6 +5,11 @@
     "newVersion": "v2026.12.1",
     "handEdits": [],
     "notices": [],
+    "counts": {
+      "explained": 0,
+      "partlyExplained": 0,
+      "unexplained": 0
+    },
     "texts": []
   }
 }

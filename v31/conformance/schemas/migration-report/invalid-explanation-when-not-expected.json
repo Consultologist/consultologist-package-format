@@ -12,6 +12,11 @@
       "whenEmpty": {},
       "folderFormats": {}
     },
+    "counts": {
+      "explained": 1,
+      "partlyExplained": 0,
+      "unexplained": 0
+    },
     "texts": [
       {
         "site": "nodes/plan.md",
@@ -19,7 +24,9 @@
         "newHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
         "equal": true,
         "expected": false,
-        "explanation": "An unexpected note."
+        "explanation": "An unexpected note.",
+        "rules": [],
+        "unexplained": false
       },
       {
         "site": "checks/coverage.md",
@@ -27,7 +34,11 @@
         "newHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         "equal": false,
         "expected": true,
-        "explanation": "A !x converted to blank(x)."
+        "explanation": "A !x converted to blank(x).",
+        "rules": [
+          "blank-conversion"
+        ],
+        "unexplained": false
       }
     ]
   }

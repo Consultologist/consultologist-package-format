@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:consultologist:spec:31:schema:migration-report",
   "title": "migration-report.json",
-  "description": "The report of a migration to 31: the old and new versions, the hand edits made, the notices that need no edit, the choices the package was migrated with and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
+  "description": "The report of a migration to 31: the old and new versions, the hand edits made, the notices that need no edit, the choices the package was migrated with, how many differences are explained, and each compared text. Reported, never a gate; like the other derived files it never lives in source.",
   "type": "object",
   "required": [
     "oldVersion",
@@ -10,6 +10,7 @@
     "handEdits",
     "notices",
     "options",
+    "counts",
     "texts"
   ],
   "additionalProperties": false,
@@ -73,6 +74,33 @@
       },
       "description": "The choices the package was migrated with: its options.json, beside its hand edits, as the migration read it."
     },
+    "counts": {
+      "type": "object",
+      "required": [
+        "explained",
+        "partlyExplained",
+        "unexplained"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "explained": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The texts that differ whose difference the rules explain whole: expected."
+        },
+        "partlyExplained": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The texts that differ with a rule credited and a remainder no rule explains."
+        },
+        "unexplained": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The texts that differ with no rule credited."
+        }
+      },
+      "description": "Of the texts that differ, how many the rules explain whole, in part and not at all; an equal text is in none."
+    },
     "texts": {
       "type": "array",
       "items": {
@@ -83,7 +111,9 @@
           "newHash",
           "equal",
           "expected",
-          "explanation"
+          "explanation",
+          "rules",
+          "unexplained"
         ],
         "additionalProperties": false,
         "properties": {
@@ -105,7 +135,7 @@
           },
           "expected": {
             "type": "boolean",
-            "description": "Whether the rewrite declares and explains the difference."
+            "description": "Whether the rewrite declares and explains the whole difference: a rule is credited and nothing is unexplained."
           },
           "explanation": {
             "type": [
@@ -113,6 +143,17 @@
               "null"
             ],
             "description": "Why the difference is expected; null unless expected is true."
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The ids of the rules credited with part or all of the difference, in the comparison's order; [] for none and for an equal text."
+          },
+          "unexplained": {
+            "type": "boolean",
+            "description": "Whether a difference no rule explains is left; false for an equal text."
           }
         },
         "description": "One compared text.",
