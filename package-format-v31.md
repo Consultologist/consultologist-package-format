@@ -6738,7 +6738,11 @@ since a field is always read after `.value`, so 30's `title` fields keep their n
   *"This package stops working when specVersion 30 is retired."*
 
   The bulk publish migrates only the account package an account's pin names (`A11-016`: *"\<package\> is not the
-  account's active account package; the bulk publish migrates only the account package an account's pin names."*).
+  account's active account package; the bulk publish migrates only the account package an account's pin names."*). A
+  package the engine did not answer for (an error status, a timeout, a lost answer) may have been published; the bulk
+  publish records it *"unknown: \<fault\>"* and lists it for the operator to check before the notification is sent
+  (`A11-017`: *"The engine did not answer for this package; check whether it was published before sending this
+  list."*).
 - **A migrated version is recorded as a migration:** its publish record says
   *"migrated by the operator from \<old version\>"*, with the byte-equivalence report and the list
   of hand edits attached.

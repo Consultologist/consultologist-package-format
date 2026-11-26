@@ -1079,8 +1079,8 @@ macro read in an expression rather than placed) is the dialect's, judged by the 
 packages. `A11-013` (a `judgement` node whose prompt asks nothing) is the dialect's too, one case, 2 packages.
 `A11-014` (an agent's `onInvalid` that is not `retry` or `fail`) is the reader's, one case, 2 packages.
 `A11-010` and `A11-011` are publish warnings, as `S07-014` is: a package that gets them is
-accepted, so they have no case. `A11-015` and `A11-016` are said by the operator's bulk publish, not by publish, so they have
-no case. The area's sentences are:
+accepted, so they have no case. `A11-015`, `A11-016` and `A11-017` are said by the operator's bulk publish, not by publish, so
+they have no case. The area's sentences are:
 
 | Id | Said | Sentence | Rule |
 |---|---|---|---|
@@ -1100,6 +1100,7 @@ no case. The area's sentences are:
 | `A11-014` | publish | *"Node '\<id>' has onInvalid \<value>; write retry or fail."* | an agent node whose `onInvalid` is any value but `retry` or `fail`, the two `node-agent.schema.json` lists ([chapter 5 § 5.1.2](../../package-format-v31.md#512-an-agent-nodes-prompt-members)); 30's `flag`, which kept a reply that did not fit its format, has no 31 form, and the migration writes `retry` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508) by the owner, 2026-11-25, item 3; the new-package side of the edge-case package `edge-flag`, 2026-11-25T19:06Z, item 3; its case's plan is `retry`, and `flag`) |
 | `A11-015` | the bulk publish | *"This package stops working when specVersion 30 is retired."* | the deadline in the bulk publish's owners' list, beside `S10-005`, for a package it cannot publish at 31, which keeps its 30 version and its pin ([chapter 10 § 10.8](../../package-format-v31.md#108-a-package-that-stays-at-30-and-what-its-owner-is-told); ruled by the owner on [#1508](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179842619), the clarification of B2); said to the owner, so it has no case |
 | `A11-016` | the bulk publish | *"\<package> is not the account's active account package; the bulk publish migrates only the account package an account's pin names."* | the operator's bulk publish was asked for a package that is not an account package, or that the account's pin does not name; only an account's active account package is published as the account's ([chapter 10 § 10.8](../../package-format-v31.md#108-a-package-that-stays-at-30-and-what-its-owner-is-told)); the operator's, so it has no case |
+| `A11-017` | the bulk publish | *"The engine did not answer for this package; check whether it was published before sending this list."* | the bulk publish's owners' list, for a package whose row is `unknown: <fault>`: the engine did not answer the request that sent it (an error status, a timeout, a lost answer), so a run that publishes may have published it; the operator checks its version on the engine before the list is sent ([chapter 10 § 10.8](../../package-format-v31.md#108-a-package-that-stays-at-30-and-what-its-owner-is-told)); the operator's, so it has no case |
 
 **The publish report and the stamp (Task 22).** Each `compiled-documents` case also holds what publish
 writes beside the pair in a version's folder: `publish-report.json`
