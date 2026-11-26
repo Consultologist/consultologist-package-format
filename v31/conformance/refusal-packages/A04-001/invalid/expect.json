@@ -1,7 +1,7 @@
 {
-  "about": "Each operand is of a type its operation takes: arithmetic takes numbers (chapter 3 § 3.5.1; this implementation's sentence). Invalid: the agent node plan's if multiplies the draft's text by 2. Valid: the draft's count of words.",
+  "about": "Each operand is of a type its operation takes: arithmetic takes numbers, and text is a member only of a written list of string literals (chapter 3 § 3.5.1; this implementation's sentence). The input prior_notes is a list of plaintext. Valid: the agent node plan's if multiplies the draft's count of words by 2 and tests the draft in the written list [\"Reviewed in clinic.\"]. Invalid: the draft in the list input.prior_notes.value.",
   "valid": false,
   "sentences": [
-    "Node 'plan' gives * input.consult_draft.content (markdown_block); * takes numbers."
+    "Node 'plan' gives in input.consult_draft.content (markdown_block); in takes a list of its type, or text."
   ]
 }

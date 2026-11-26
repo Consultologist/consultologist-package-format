@@ -6700,7 +6700,7 @@ converter reuses; there is one printer.
 | a read: `node.x.value.y`, `node.x.content`, `item.id`, `item.value.y`, `pass.number`, `run.x` | `{ "var": "<the same path, with its root>" }` |
 | a read of an input: `input.x`, `input.x.y` | `{ "var": "input.x.value" }` (or `input.x.content` for a text-format input), `{ "var": "input.x.value.y" }` |
 | `a == b`, `a != b` | `{ "===": [a, b] }`, `{ "!==": [a, b] }` |
-| `x == "lit"`, `x != "lit"`, with `x` text | `{ "in": [x, ["lit"]] }`, `{ "!": [ { "in": [x, ["lit"]] } ] }` (text is never compared with a literal by `===`, chapter 3), with a notice |
+| `x == "lit"`, `x != "lit"`, with `x` text | `{ "in": [x, ["lit"]] }`, `{ "!": [ { "in": [x, ["lit"]] } ] }` (text is never compared with a literal by `===`, chapter 3), with a notice; with `""` and `x` a text input read whole, with its null test (below); another comparison of an input's text with blank text is a hand edit (§ 10.10) |
 | `a < b`, `a <= b`, `a > b`, `a >= b` | the same operators, two operands |
 | `a && b`, `a \|\| b` | `and`, `or` (flattened: `a && b && c` is one `and`) |
 | `!a`, with `a` boolean | `{ "!": [a] }` |
@@ -6735,6 +6735,17 @@ converter reuses; there is one printer.
   exact membership in a list of that literal, which answers as 30's comparison did (a `null` text
   is in no list of text, as 30's `null` equalled no text); each one is listed in the migration
   report (`A10-074`).
+- **Blank text is the exception.** 30 read an input's text not given, or given as white space alone,
+  as `""` (a field's text too), where 31's start leaves out a text input absent or blank, which then
+  reads `null` ([chapter 2 § 2.8](#28-inputs)), and keeps a field as given. So a text input read
+  whole compared with `""` is written with its null test, as a nullable list's `size` is:
+  `input.x == ""` is `{ "or": [ { "===": [x, null] }, { "in": [x, [""]] } ] }` and `input.x != ""` is
+  `{ "and": [ { "!==": [x, null] }, { "!": [ { "in": [x, [""]] } ] } ] }`, `x` the input's
+  `{ "var": "input.x.content" }` (or `.value`), so an input not given or blank answers as at 30; each
+  one is listed in the migration report (`A10-075`). Any other comparison of an input's text with
+  blank text (`string.downcase input.x == ""`, `input.x == " "`, `input.x.y == ""`) is not written: a
+  hand edit (§ 10.10). A node's or an item's text compared with `""` is `in [""]` as above: 30 kept it
+  as written.
 
 ### 10.10 What the converter refuses, and `!x` on text
 
@@ -6746,9 +6757,12 @@ a hand edit (§ 10.4), with a notice. In particular:
 - a read of `profile.*` in a condition, which 31 refuses;
 - an assignment, a template, or more than one statement;
 - `string.contains` on a list: 30 wrote the list as text and searched it, which 31's `in` on a list
-  (membership) is not, so the hand edit's reason says so (`A10-073`, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2).
+  (membership) is not, so the hand edit's reason says so (`A10-073`, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 2);
+- a comparison of an input's text with blank text other than a text input read whole with `""`
+  (§ 10.9): 30 read the input's text not given or blank as `""` and 31 reads it as `null` or as given,
+  so no form is written that would answer otherwise, and the hand edit's reason says so (`A10-076`).
 
-For anything but a refusal on type or `string.contains` on a list, the notice reads:
+For anything but a refusal on type, `string.contains` on a list or a comparison with blank text, the notice reads:
 
 *"The condition '\<expression\>' uses \<construct\>, which has no JSON Logic form at 31: rewrite it by hand."*
 

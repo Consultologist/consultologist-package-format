@@ -193,6 +193,11 @@ expression: the valid and invalid packages of `A02-008`, `S01-036`, `S02-013`, `
 `S04-041` tested an `if` by comparing the input `consult_draft`'s Markdown with a literal (`!==` or
 `===` with `""`, or `===` with `"full"`), which `S03-002` refuses; they now test it with `blank`.
 Their sentences are unchanged, and every other earlier package is byte for byte as it was.
+Area 11 changed one of this area's cases: `A04-001`'s valid package also tests the draft `in` the written list
+`["Reviewed in clinic."]`, which the checker takes as exact membership (the form the migration gives 30's `x == "lit"`
+on text, [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), item 2),
+and its invalid package tests the draft in the list `input.prior_notes.value` instead, which is still refused: text is
+a member only of a written list of string literals.
 
 Area 04 adds 46 cases, 92 packages, built as the earlier areas' are (the smallest package plus only
 what the rule needs, here a second input of the needed format, a package format, a computed node,
@@ -1051,6 +1056,8 @@ for the delivery that keeps 30's promise ([chapter 6 § 6.8](../../package-forma
 | `A10-072` | *"options.json gives deliverable '\<id>' a whenEmpty that is not release, hold or fail."* | a refusal: a `whenEmpty` choice of `options.json` that is no `whenEmpty` ([chapter 10 § 10.7](../../package-format-v31.md#107-whenempty-for-migrated-deliverables)); the operator's, so it has no case |
 | `A10-073` | *"The condition '\<expression>' uses string.contains on \<list>, a list, which 30 tested as a substring of the list written as text; rewrite it by hand."* | a reason S10-002 gives: 30's `string.contains` on a list, which 31's `in` (membership) does not mean ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
 | `A10-074` | *"\<file>, \<member>: '\<comparison>' became \<rule>; text is compared with a literal by in at 31."* | a notice: 30's text compared with a literal written as membership in a list of that literal ([chapter 10 § 10.9](../../package-format-v31.md#109-the-converter)) |
+| `A10-075` | *"\<file>, \<member>: '\<comparison>' became \<rule>; 31 reads an input not given or blank as null, where 30 read \"\"."* | a notice: 30's text input read whole compared with `""`, written with its null test, `x === null or x in [""]` or `x !== null and not (x in [""])` ([chapter 10 § 10.9](../../package-format-v31.md#109-the-converter)) |
+| `A10-076` | *"The condition '\<expression>' compares \<text>, read from an input, with blank text, which 30 and 31 read differently when the text is blank or not given; rewrite it by hand."* | a reason S10-002 gives: any other comparison of an input's text with blank text (`string.downcase input.x == ""`, `input.x == " "`, `input.x.y == ""`), which 30 read as `""` when blank or not given ([chapter 10 § 10.10](../../package-format-v31.md#1010-what-the-converter-refuses-and-x-on-text)) |
 
 ## Publish (area 11)
 
