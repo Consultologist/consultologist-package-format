@@ -6565,7 +6565,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | `labelField` on an input | `itemLabel` on **each loop** that iterates the input (several loops get the same value) | [4](#4-loops-and-functions) |
 | a node's `when` gate | `if`; a `case` branch keeps `when` | [3](#3-expressions) |
 | a `case` with no `else` whose branches miss some values (which 30 skipped) | **an explicitly empty branch for the missing values**, `{ "when": [<values>], "nodes": [], "ret": null }`, so every `case` is exhaustive and those values still read as skipped, with the reason *"case '\<id\>': arm for \<value\> does nothing"*. The `case` keeps its shape and keys: `example-conditional-sections`' `route` gains `{ "when": ["omit"], "nodes": [], "ret": null }` | [4](#4-loops-and-functions) |
-| string conditions (Scriban) | JSON Logic, by the converter (§ 10.9); `==`/`!=` written `===`/`!==`; `!x` on text → `blank(x)`, each listed in the migration report (§ 10.10); text compared with a literal → `in` a list of that literal, with `trim` on each text read of an input (30 trimmed an input's text at its end; `trim` trims both), and a nullable list's `size` compared → with its null test (§ 10.9) | [3](#3-expressions) |
+| string conditions (Scriban) | JSON Logic, by the converter (§ 10.9); `==`/`!=` written `===`/`!==`; `!x` on text → `blank(x)`, each listed in the migration report (§ 10.10); text compared with a literal → `in` a list of that literal, with `trim` on each text read of an input (an item of an input's list too; 30 trimmed an input's text at its end; `trim` trims both), and a nullable list's `size` compared → with its null test (§ 10.9) | [3](#3-expressions) |
 | `let` (a Scriban expression) | `kind: computed` with JSON Logic in `expression`, by the converter | [3](#3-expressions) |
 | a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
 | deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says | [6](#6-checks-deliverables-and-the-profile) |
@@ -6769,7 +6769,7 @@ converter reuses; there is one printer.
 | a read: `node.x.value.y`, `node.x.content`, `item.id`, `item.value.y`, `pass.number`, `run.x` | `{ "var": "<the same path, with its root>" }` |
 | a read of an input: `input.x`, `input.x.y` | `{ "var": "input.x.value" }` (or `input.x.content` for a text-format input), `{ "var": "input.x.value.y" }` |
 | `a == b`, `a != b` | `{ "===": [a, b] }`, `{ "!==": [a, b] }` |
-| `x == "lit"`, `x != "lit"`, with `x` text | `{ "in": [ trim(x)…, ["lit"] ] }`, `{ "!": [ { "in": [ trim(x)…, ["lit"] ] } ] }` (text is never compared with a literal by `===`, chapter 3), with `trim` on each text read of an input in `x` (30 trimmed an input's text at its end; `trim` trims both), with a notice; a literal that starts with white space is a hand edit (`A10-085`); with `""` and `x` a text input read whole, with its null test (below); another comparison of an input's text with blank text is a hand edit (§ 10.10) |
+| `x == "lit"`, `x != "lit"`, with `x` text | `{ "in": [ trim(x)…, ["lit"] ] }`, `{ "!": [ { "in": [ trim(x)…, ["lit"] ] } ] }` (text is never compared with a literal by `===`, chapter 3), with `trim` on each text read of an input in `x`, an item of an input's list too (30 trimmed an input's text at its end; `trim` trims both), with a notice; a literal that starts with white space is a hand edit (`A10-085`); with `""` and `x` a text input read whole, with its null test (below); another comparison of an input's text with blank text is a hand edit (§ 10.10) |
 | `a < b`, `a <= b`, `a > b`, `a >= b` | the same operators, two operands |
 | `a && b`, `a \|\| b` | `and`, `or` (flattened: `a && b && c` is one `and`) |
 | `!a`, with `a` boolean | `{ "!": [a] }` |
@@ -6809,10 +6809,13 @@ converter reuses; there is one printer.
   trimmed an input's text (a field's and an element's too) at its end before it compared; `trim`
   ([chapter 3 § 3.5.2](#352-custom-text-operations)), the one trimming operation 31's JSON Logic has, trims both
   ends, so an input's text with trailing white space answers as at 30, and one with **leading** white
-  space, which 30 kept, now matches where 30's did not. A read the author already trimmed
-  (`| string.strip`) gets no second `trim`; a node's or an item's text, which 30 compared as it was,
-  gets none. A `null` text is in no list of text (`trim` of `null` is `null`), as 30's `null` equalled
-  no text. Each one is listed in the migration report (`A10-074`). A literal that starts with white
+  space, which 30 kept, now matches where 30's did not. An item of a loop over an input's list
+  (`item.value` and its fields, and a nested loop's item over a list field of such an item) is an
+  input's text, which 30 trimmed per element and per field, so its text reads are trimmed the same. A
+  read the author already trimmed (`| string.strip`) gets no second `trim`; a node's text, or an item
+  of a node's list or of a snippet folder, which 30 compared as it was, gets none. A `null` text is in
+  no list of text (`trim` of `null` is `null`), as 30's `null` equalled no text. Each one is listed in
+  the migration report (`A10-074`), whose clause on the trim is said only where a `trim` was written. A literal that starts with white
   space, compared with an input's text, could match at 30 and never matches a trimmed text, so no
   trim fits: a hand edit (§ 10.10).
 - **Blank text is the exception.** 30 read an input's text not given, or given as white space alone,
@@ -6823,9 +6826,10 @@ converter reuses; there is one printer.
   `{ "and": [ { "!==": [x, null] }, { "!": [ { "in": [x, [""]] } ] } ] }`, `x` the input's
   `{ "var": "input.x.content" }` (or `.value`), so an input not given or blank answers as at 30; each
   one is listed in the migration report (`A10-075`). Any other comparison of an input's text with
-  blank text (`string.downcase input.x == ""`, `input.x == " "`, `input.x.y == ""`) is not written: a
-  hand edit (§ 10.10). A node's or an item's text compared with `""` is `in [""]` as above: 30 kept it
-  as written.
+  blank text (`string.downcase input.x == ""`, `input.x == " "`, `input.x.y == ""`, and an item of an
+  input's list's `item.value.y == ""`) is not written: a hand edit (§ 10.10). A node's text, or an item
+  of a node's list or of a snippet folder, compared with `""` is `in [""]` as above: 30 kept it as
+  written.
 
 ### 10.10 What the converter refuses, and `!x` on text
 
