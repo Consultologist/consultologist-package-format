@@ -6701,6 +6701,18 @@ since a field is always read after `.value`, so 30's `title` fields keep their n
 
   *"\<package\> stays at version 30 for now: \<reason\>. Its pin is unchanged; you can migrate it in the Editor when Milestone 41 arrives."*
 
+- **Pins move always** for a package that publishes at 31: each account pin moves to the migrated version at
+  publish. **A package that cannot be published at 31 keeps its 30 version and its pin**
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179842619), the
+  clarification of B2): a publish refusal such as `A11-001`, or a migration refusal. Nothing is published at 31 for it,
+  and no `max` or other value is guessed to force it through; it keeps running at 30 until 30 is retired. The operator's
+  bulk publish records it *"not migrated: \<reason\>"*, with the refusal's sentence, and names its owner in the
+  before-and-after notification with the reason and the deadline (`A11-015`):
+
+  *"This package stops working when specVersion 30 is retired."*
+
+  The bulk publish migrates only the account package an account's pin names (`A11-016`: *"\<package\> is not the
+  account's active account package; the bulk publish migrates only the account package an account's pin names."*).
 - **A migrated version is recorded as a migration:** its publish record says
   *"migrated by the operator from \<old version\>"*, with the byte-equivalence report and the list
   of hand edits attached.
@@ -6921,7 +6933,10 @@ are listed as expected differences, never silently accepted.
   folder's items take, every member required, an object of text, `{}` for none, and no other member. The tests, the migration
   script (`--options <file>`) and the operator's bulk publish read the same file, and the report records it as `options`. A
   file the migration cannot read is refused: `A10-070` (a member that is no option), `A10-071` (a choice missing or not an
-  object of text), `A10-072` (a `whenEmpty` that is not one).
+  object of text), `A10-082` (an empty id or choice, which the script's flags refuse too), `A10-072` (a `whenEmpty` that is
+  not one). A leading byte-order mark is dropped, as a package file's is, and text that is not strict JSON is refused with
+  `A10-019`'s sentence for `options.json`. A package with no `options.json` takes the defaults (§§ 10.6, 10.7), and the
+  bulk publish says so in its record (`A10-083`).
 
 ### 10.12 The snapshot test
 
