@@ -5204,8 +5204,10 @@ dialect plus `propertyOrder`**: its `$schema` names the dialect of its source, a
 a compiled format against the dialect removes `propertyOrder` first (the dialect does not admit it;
 `resolve.schema.json` judges an inline format as the dialect's inline schema plus `propertyOrder`,
 closed to anything else). A `resolve.json` written by an earlier 31 preview,
-before `propertyOrder`, does not fit `resolve.schema.json`: while 31 is in preview such a document is
-published again, not honoured.
+before `propertyOrder`, does not fit `resolve.schema.json`. The engine still loads and serves such a
+version (a load checks the stamp's hashes, not the schema), and an object's `Fields` then come in the
+order `resolve.json` holds its properties, sorted, not the written order; while 31 is in preview, such a
+version is published again to have the written order.
 
 #### 7.2.3 `inputs`
 
