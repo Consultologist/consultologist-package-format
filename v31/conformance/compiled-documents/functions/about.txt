@@ -2,8 +2,8 @@ example-functions, after chapter 4 § 4.7.11 (with an agent plan and a second ag
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:648ba23e93f8f2e70ad87bb8d4988ad9315ef2552536ddebf23864b651d3d72e
-lock.json: sha256:6e676040795c1a8e97b7dd997a11b3871be8f2d850844cd72b47bc05a0bac6d0
+resolve.json: sha256:f5a140a8a731d4a05738a1fda3968dc0bdc0c3e892f4951270eb7d4b9ba77538
+lock.json: sha256:156935264883763de2e405b39943b591d4821b501cd14cb310f642448c33696a
 
 publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The package has no tests, so the report's tests are []. publish.json is the stamp written last, holding the two hashes above.
 

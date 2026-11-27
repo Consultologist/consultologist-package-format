@@ -2,8 +2,8 @@ example-nested-note: an agent planning the sections, a computed count, the loop 
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 100,000 instances a job and 30 minutes a job (the engine's defaults but the instances, raised so that the package publishes: at 10,000 it is refused, its worst case opening more). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:e280d3362bccde17e4191a3b8b7cbf8d5439367633eb117b8035bd5f1efd92d2
-lock.json: sha256:9b4729b7652b72957be51b5908d697615c66c1959ecb3c38ccb5f61f837b31a3
+resolve.json: sha256:a3939b0262342a091ec62b713d79b10d401b42925f4d1219a00e32a25baecefe
+lock.json: sha256:df4f09474cd344bb24382e8606c12eb31fc994859df01a809264fbc4998f1082
 
 publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The report's tests are two_sections (pass), run offline on their stubs. publish.json is the stamp written last, holding the two hashes above.
 

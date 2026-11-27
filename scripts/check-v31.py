@@ -1182,11 +1182,15 @@ LEADING_REFERENCES = {" ": "&#32;", "\t": "&#9;"}
 
 def markdown_escape(plain):
     """markdown_escape 1.0.0: a backslash before each ASCII punctuation character; the first space or tab of each line
-    (a line starts at the text's start and after each \\n or \\r) as its character reference."""
+    (a line starts at the text's start and after each \\n or \\r) as its character reference; two spaces before each
+    line ending (\\r, or \\n not after a \\r: \\r\\n is one ending), a hard break at 31's standard line handling
+    (Consultologist-Blazor#1510, G-D7)."""
     out = []
     for at, c in enumerate(plain):
         if c in LEADING_REFERENCES and (at == 0 or plain[at - 1] in "\n\r"):
             out.append(LEADING_REFERENCES[c])
+        elif c == "\r" or (c == "\n" and (at == 0 or plain[at - 1] != "\r")):
+            out.append("  " + c)
         elif c in ASCII_PUNCTUATION:
             out.append("\\" + c)
         else:
@@ -1197,9 +1201,9 @@ def markdown_escape(plain):
 def check_markdown_escape_vectors():
     """Chapter 6's escape (area 07): the family lists exactly the one file on disk, vectors.json, a list of
     { plain, escaped } in that order; it holds each of the 32 ASCII punctuation characters alone, and each escaped is
-    its plain with a backslash before each ASCII punctuation character and the first space or tab leading each line (at
-    the start, and after each \\n or \\r) written &#32; or &#9; (Consultologist-Blazor#1505, ruling R9), nothing else
-    changed."""
+    its plain with a backslash before each ASCII punctuation character, the first space or tab leading each line (at
+    the start, and after each \\n or \\r) written &#32; or &#9; (Consultologist-Blazor#1505, ruling R9) and two spaces
+    before each line ending (Consultologist-Blazor#1510, G-D7), nothing else changed."""
     index, failures = load(V31 / "conformance" / "index.json")
     if index is None:
         return failures
@@ -1222,8 +1226,9 @@ def check_markdown_escape_vectors():
             continue
         plains.append(vector["plain"])
         if vector["escaped"] != markdown_escape(vector["plain"]):
-            failures.append(f"{where}: escaped is not plain with a backslash before each ASCII punctuation character "
-                            "and each line's first leading space or tab as its character reference")
+            failures.append(f"{where}: escaped is not plain with a backslash before each ASCII punctuation character, "
+                            "each line's first leading space or tab as its character reference and two spaces before "
+                            "each line ending")
     missing = [c for c in ASCII_PUNCTUATION if c not in plains]
     if missing:
         failures.append(f"markdown-escape-vectors/vectors.json: no vector of {missing} alone")

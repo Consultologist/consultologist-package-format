@@ -2,8 +2,8 @@ example-conditional-sections: a required list input of sections, each with a tit
 
 Publishing source/ with toolchain.json gives resolve.json and lock.json, byte for byte (canonical by RFC 8785, UTF-8, no final newline), against these publish limits: 16 agent calls at once, 200 items a loop, 500 agent calls a job, 10,000 instances a job and 30 minutes a job (the engine's defaults). Any notes they give (the per-job ceiling note among them) are resolve.json's warnings and the report's.
 
-resolve.json: sha256:6f1cc78f0b388b83f679ef5bf938d1dfdcec3a8350f841ba3d7fff817d1a9d3b
-lock.json: sha256:c89689ef2546600c9a743934d5dfa2f963a25bb808bafdc855cc5c6ca1002aed
+resolve.json: sha256:edff34c9a1f6cb9b034fe80dee4c767ef7ea04c82fec21450f8d45d904c6e09f
+lock.json: sha256:403b2ff419b46d27d25d1cf2f1ec04b24a3008a6314ad151a3f96f4fff35ca43
 
 publish-report.json is the report publish writes beside them (canonical, no final newline), published by ci at 2026-12-01T09:00:00Z on a clock that does not move, so every test's durationMs is 0 (a real publish measures it). The package has no tests, so the report's tests are []. publish.json is the stamp written last, holding the two hashes above.
 
