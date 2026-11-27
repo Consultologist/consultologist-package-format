@@ -3,5 +3,6 @@
 ---
 {{ node.plan.content }}
 
-Sincerely,\
+Sincerely,
+
 {{ profile.closing }}

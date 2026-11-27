@@ -1,7 +1,7 @@
 {
-  "about": "Nothing follows a markdown_block read on its line (chapter 5 § 5.2.6; #1543, ruling 2). The note, a markdown_block, ends with Sincerely, and the profile's closing on the next line. Invalid: text after the closing on its line. Valid: alone.",
+  "about": "Nothing follows a markdown_block read on its line (chapter 5 § 5.2.6; #1543, ruling 2). The note, a markdown_block, ends with Sincerely, and the profile's closing after a blank line. Invalid: text after the closing on its line. Valid: alone.",
   "valid": false,
   "sentences": [
-    "Deliverable 'note' has text after {{ profile.closing }}, a markdown_block, at line 4; a markdown_block read stands alone on its line."
+    "Deliverable 'note' has text after {{ profile.closing }}, a markdown_block, at line 5; a markdown_block read stands alone on its line."
   ]
 }
