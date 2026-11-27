@@ -123,7 +123,8 @@ def check_constants():
         for name, expected in CONSTANT_MEMBERS.items():
             expect(failures, f"constants.{name}", constants.get(name), expected)
         markdig = constants.get("markdig", {})
-        expect(failures, "constants.markdig keys", list(markdig), ["version", "extensions"])
+        expect(failures, "constants.markdig keys", list(markdig), ["version", "extensions", "emphasisExtras", "html"])
+        expect(failures, "constants.markdig.html", markdig.get("html"), False)
         if not re.fullmatch(r"0\.41\.\d+", str(markdig.get("version"))):
             failures.append(f"constants.markdig.version: expected 0.41.x, found {markdig.get('version')!r}")
         if not markdig.get("extensions"):

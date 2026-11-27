@@ -82,6 +82,26 @@
       "output": "\"Take letrozole daily\""
     },
     {
+      "about": "§ 3.5.2 plain: raw HTML is text, kept as written (HTML is off at 31, #1510).",
+      "rule": {
+        "plain": [
+          "a <b>bold</b> claim"
+        ]
+      },
+      "data": {},
+      "output": "\"a <b>bold</b> claim\""
+    },
+    {
+      "about": "§ 3.5.2 plain: a generic attribute is text, kept as written (the 31 bundle has no GenericAttributes, #1510).",
+      "rule": {
+        "plain": [
+          "Seen by Dr A. Sample {onclick=x}"
+        ]
+      },
+      "data": {},
+      "output": "\"Seen by Dr A. Sample {onclick=x}\""
+    },
+    {
       "about": "§ 3.6.2 plain: a number, data that escaped validation, reads as null.",
       "rule": {
         "plain": [

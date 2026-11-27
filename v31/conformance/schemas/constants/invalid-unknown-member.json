@@ -163,22 +163,21 @@
         "Abbreviation",
         "AutoIdentifier",
         "Citation",
-        "CustomContainer",
         "DefinitionList",
         "EmphasisExtra",
         "Figure",
         "Footer",
         "Footnote",
-        "GridTable",
-        "Math",
-        "MediaLink",
         "PipeTable",
         "ListExtra",
         "TaskList",
-        "Diagram",
-        "AutoLink",
-        "GenericAttributes"
-      ]
+        "AutoLink"
+      ],
+      "emphasisExtras": [
+        "Superscript",
+        "Inserted"
+      ],
+      "html": false
     },
     "extra": []
   }

@@ -458,7 +458,9 @@
       "type": "object",
       "required": [
         "version",
-        "extensions"
+        "extensions",
+        "emphasisExtras",
+        "html"
       ],
       "additionalProperties": false,
       "properties": {
@@ -472,7 +474,19 @@
             "type": "string"
           },
           "uniqueItems": true,
-          "description": "The Markdown extensions enabled."
+          "description": "The Markdown extensions enabled, in the order the pipeline adds them: UseAdvancedExtensions' less those specVersion 31 leaves out."
+        },
+        "emphasisExtras": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The EmphasisExtra options enabled."
+        },
+        "html": {
+          "type": "boolean",
+          "description": "Whether HTML in the source is parsed as HTML; false: it is text."
         }
       },
       "description": "Markdig's version and extensions."
