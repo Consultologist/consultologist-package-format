@@ -4269,6 +4269,8 @@ marks a placeholder.
 - R-R4: *"\<Kind\> '\<id\>' reaches itself: \<chain\>."*
 - R-R6: *"\<Subject\> reads \<path\> at line \<n\>, which carries profile text through macro '\<id\>'; a prompt or a part doesn't read profile text. Read it in a deliverable."*
 - R-R5: *"\<Subject\> reads \<path\> and run.\<fact\> in one output at line \<n\>; an output that reads a run fact reads nothing else."* (also for a run-dependent value: *"… reads \<path\> and the run-dependent \<value\> in one output …"*)
+- R-R7: *"\<Subject\> has text before {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
+- R-R8: *"\<Subject\> has text after {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
 
 **Renderers**
 - R-N1: *"\<Subject\> pipes \<source\> (\<format\>) into renderer.\<id\>, which renders \<input format\>."*, for example *"Node 'identify_problem' pipes node.plan.value (section_plan) into renderer.concept_bullets, which renders concept_list."*
@@ -7384,6 +7386,8 @@ running a workflow).
 | S05-063 | 5 · Refusals | *"\<Subject\> reads \<path\>[\<n\>] at line \<n\>, a position in a list; lists are read whole, with a for, or by identity through .items."* | author |
 | S05-064 | 5 · Refusals | *"\<Subject\> reads \<path\> at line \<n\>, which carries profile text through macro '\<id\>'; a prompt or a part doesn't read profile text. Read it in a deliverable."* | author |
 | S05-065 | 5 · Refusals | *"\<Subject\> has a single line ending inside a paragraph at line \<n\>: a single line ending is not a break; end the line with \ or leave a blank line."* | author |
+| S05-066 | 5 · Refusals | *"\<Subject\> has text before {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."* | author |
+| S05-067 | 5 · Refusals | *"\<Subject\> has text after {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."* | author |
 | S06-001 | 6 · Checks in the record and History | *"12 of 12 terms present"* | author |
 | S06-002 | 6 · Checks in the record and History | *"7 of 9 sections passed"* | author |
 | S06-003 | 6 · Checks in the record and History | *"Consultation note was blocked: check 'coverage' failed (10 of 12 terms present)."* | clinician |

@@ -1,0 +1,7 @@
+{
+  "about": "A markdown_block read stands alone on its line (chapter 5 § 5.2.6; #1543, ruling 2). The note, a markdown_block, ends with Sincerely, and the profile's closing on the next line. Invalid: the closing on the line of Sincerely,. Valid: on its own line, after an explicit hard break.",
+  "valid": false,
+  "sentences": [
+    "Deliverable 'note' has text before {{ profile.closing }}, a markdown_block, at line 3; a markdown_block read stands alone on its line."
+  ]
+}

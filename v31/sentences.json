@@ -2011,6 +2011,20 @@
       "audience": "author"
     },
     {
+      "id": "S05-066",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> has text before {{ <read> }}, a markdown_block, at line <n>; a markdown_block read stands alone on its line.",
+      "audience": "author"
+    },
+    {
+      "id": "S05-067",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> has text after {{ <read> }}, a markdown_block, at line <n>; a markdown_block read stands alone on its line.",
+      "audience": "author"
+    },
+    {
       "id": "S06-001",
       "part": "06",
       "section": "5. Checks in the record and History",
