@@ -121,7 +121,7 @@ The format is built on these libraries, each pinned as shown.
 | Library | Use | Pin |
 |---|---|---|
 | Scriban | every template | locked, caret range from the registry (`lock.json`, chapter 7) |
-| Markdig, with its advanced extensions | the Markdown formats | **exact** (it floats at `0.41.*` today) |
+| Markdig, with the 31 bundle: its advanced extensions less those § 2.5.2 leaves out, HTML off | the Markdown formats | **exact** (0.41.3) |
 | `Corvus.Text.Json.JsonLogic` (Apache-2.0) | evaluating JSON Logic, with our custom operations and **our null rules overriding its defaults** | **exact**, behind our own interface |
 | `Corvus.JsonSchema` (Apache-2.0) | validating values against formats; **our own checker** enforces the dialect | **exact**, behind our own interface |
 
@@ -1258,14 +1258,44 @@ The checker refuses one missing where it applies, and one present where it doesn
   `typeHash`, § 2.2.3): type equality ignores them, and full equality includes them, since a
   `description` changes what the model is told.
 
-#### 2.5.2 Markdown means Markdig's advanced extensions
+#### 2.5.2 Markdown means one explicit Markdig bundle
 
-`markdown_block` and `markdown_inline` mean **Markdig with `UseAdvancedExtensions`** (pipe and grid
-tables, footnotes, task lists, emphasis extras, auto-links and the rest of that set). The spec lists
-the extensions by name as of the pinned Markdig version; Markdig is pinned **exactly** and listed in
-`lock.json`.
-Escaping plain text into Markdown, `plain()` and composing to HTML or PDF are defined against that
-list. Flavours (CommonMark, GFM) are [#1451](https://github.com/Consultologist/Consultologist-Blazor/issues/1451).
+`markdown_block` and `markdown_inline` mean **Markdig 0.41.3 with the 31 bundle**, built extension by
+extension in the order of Markdig's `UseAdvancedExtensions`, with the ones below left out. Markdig is
+pinned **exactly** and listed in `lock.json`; `v31/constants.json` `markdig` lists the bundle:
+`{"version":"0.41.3","extensions":["Alert","Abbreviation","AutoIdentifier","Citation","DefinitionList","EmphasisExtra","Figure","Footer","Footnote","PipeTable","ListExtra","TaskList","AutoLink"],"emphasisExtras":["Superscript","Inserted"],"html":false}`.
+31 renders by this one standard ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), the owner's third fix-first group): the Web's 31
+surfaces, the PDF, `plain()` and the migration's line-ending finder all parse with it.
+
+- **HTML is off:** raw HTML in the text is shown as text, never injected.
+- **Standard line handling:** a single line ending inside a paragraph is **not a break**; Markdown
+  reads it as a space. A line ends with `\` (or two spaces) to break, or a blank line starts a new
+  paragraph. Escaped plain text keeps its lines (§ 6.6.4), the migration ends with `\` the lines 30
+  broke (§ 10.1), and publish warns where a body a reader sees has such a line ending (§ 5.2.6, W-3).
+- **Left out, and why:**
+  - **GenericAttributes:** `{…}` writes any attribute name the text names, an event handler
+    included (Markdig 0.41.3 has no `on*` filter: `Seen by Dr A. Sample {onclick=x}` gives
+    `<p onclick="x">`). In the 31 bundle the braces are text.
+  - **CustomContainers:** `:::name` and `::text::` write a `class` taken from the text, the same
+    path by another syntax.
+  - **MediaLinks:** turns a URL into an `iframe`, `video` or `audio` element; with HTML off it is
+    the one embed path left, and the PDF has no counterpart.
+  - **Mathematics:** neither surface typesets it, and `$` amounts appear in clinical text.
+  - **Diagrams:** no note surface draws Mermaid or nomnoml; a fence shows as code.
+  - **GridTables:** row and column spans and multi-block cells the PDF does not lay out; pipe tables
+    remain.
+  - **EmphasisExtras' strikethrough, subscript and marked:** the PDF's fonts have no strikethrough or
+    highlight, and subscript shares `~` with strikethrough. `~~x~~` and `==x==` stay as written;
+    superscript (`^x^`) and inserted (`++x++`, underlined) remain.
+- **The PDF draws every block and inline the bundle writes** (a heading, a paragraph, a list with
+  `a.`, `A.`, `i.` or `I.` labels, a quote, an alert with its bold title, code, a rule, a pipe table,
+  a definition list, a figure and its caption, a footer, footnotes, a task list's `[x]` and `[ ]`, a
+  citation, an abbreviation, a link's text, an autolink's URL). A type it does not know is an error,
+  never a fallback.
+- **AutoIdentifiers stays:** headings get ids, which two deliverables shown on one page can share.
+
+5–30 keep their own pipeline (HTML off, pipe tables, a single line ending a hard break) until 30 is
+retired. Flavours (CommonMark, GFM) are [#1451](https://github.com/Consultologist/Consultologist-Blazor/issues/1451).
 
 #### 2.5.3 Object schemas are fully typed; nested text references a text format
 
@@ -2013,7 +2043,7 @@ version, pinned by golden tests and listed in `lock.json` (chapter 7). All are v
 | `trim` | `trim(x)` | text-like (see below) | leading and trailing whitespace removed | `null` |
 | `starts_with` | `starts_with(x, prefix)` | `boolean` | ordinal, case-sensitive prefix test; on Markdown, of the source | `false` if either is `null` |
 | `ends_with` | `ends_with(x, suffix)` | `boolean` | ordinal, case-sensitive suffix test | `false` if either is `null` |
-| `plain` | `plain(x)` | `plaintext` | Markdown converted to plain text by the same conversion as plain-text output (Markdig with the listed extensions); a plain-text operand is returned unchanged | `null` |
+| `plain` | `plain(x)` | `plaintext` | Markdown converted to plain text by the same conversion as plain-text output (Markdig with the 31 bundle of § 2.5.2, HTML off, so raw HTML and a generic attribute's `{…}` stay as text); a plain-text operand is returned unchanged | `null` |
 | `matches` | `matches(x, pattern)` | `boolean` | § 3.5.3 | `false` if `x` is `null` |
 | `has_word` | `has_word(x, word)` | `boolean` | § 3.5.3 | `false` if `x` is `null` |
 
@@ -4198,6 +4228,7 @@ text is recorded by hash under the node that placed it.
 | `at: before`, `after`, `append`, item-level placements, deliverable macros | removed: fixed text is a snippet read in the deliverable template |
 | optional at most once, required exactly once | triggered exactly once, untriggered never |
 | prompt hashes vary with run facts and nothing says so | run spots, with a run-neutral hash beside the sent-text hash |
+| a single line ending in Markdown is a hard break (5–30's pipeline) | it is not a break: end the line with `\` or leave a blank line; publish warns where a body a reader sees has one (§ 5.2.6, W-3), and the migration writes the `\` ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)) |
 
 ### 5.11 Refusals
 
@@ -4669,8 +4700,15 @@ node with `plain`, or a renderer); the only automatic step is escaping.
   CommonMark's backslash escapes for ASCII punctuation,** published with test vectors in the
   conformance suite. **Leading indentation is protected too:** the first space or tab of each
   line of the plain text is written as its character reference (`&#32;`, `&#9;`), so a line led
-  by four spaces or a tab is not a code block; the rest of the line is escaped as above, and a
-  line break stays a hard break. **`resolve.json` lists the escaped reads:** each `deliverables`
+  by four spaces or a tab is not a code block; the rest of the line is escaped as above.
+  **Each line ending stays a line ending:** at 31 a single line ending is not a break (§ 2.5.2), so
+  the escape writes **two spaces before each line ending** (a hard break; `\r\n` is one ending, and
+  a lone `\r` is one too): `"a\nb"` escapes to `"a  \nb"`. A blank line's ending gains them as well
+  (`"a\n\nb"` to `"a  \n  \nb"`), which Markdown still reads as a blank line. Two spaces rather
+  than `\`, because the escape works piece by piece and a piece cannot know whether its line ending
+  ends a paragraph, where a `\` would show and two spaces are dropped; the rule is local, so escaping
+  piece by piece is escaping whole. `markdown_escape` stays 1.0.0, as it is not yet frozen
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 1). **`resolve.json` lists the escaped reads:** each `deliverables`
   entry has `escapes`, one `{ "unit", "at" }` for every output tag whose value is escaped
   (chapter 7 § 7.2.5), and a renderer's output is never in it, since it is the renderer's own
   format. A line of white space only is escaped so too, and Markdown text that is
@@ -6592,6 +6630,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a bare read of a node or an input in a template (`{{ input.consult_draft }}`) | **its `.content` form for text, its `.value` form otherwise**: a bare read of an object or a list is refused (A07-007, A07-008) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)); A date input read whole is written `{{ input.x.value | date.to_string "%d %b %Y" }}`, 30's `09 Nov 2026` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 2); a new package keeps the ISO form (#357) | [5](#5-templates-and-macros) |
 | a `for` over a loop node (`{{ for e in node.<loop> }}`), whose 30 list held only the items that ran | **over `.value`**, the completed items' values ([chapter 4 § 4.2.5](#425-reading-a-loop-from-outside)), each written as the item (`e.content` → `e`), where the body reads only each item's text (its `ret` a text format, or nothing of the item read); otherwise **over `.items`** with the body wrapped in `{{ if e.state == "completed" }} … {{ else }}{{ end }}`, inside the loop's own marks, unless it already tests the item's state (30's `skipped`), so an item its `until` or `max` left `not_run` writes no fixed text. A new package is warned instead (`A11-011`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q4) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
 | a `for` whose `.content` is read (by a prompt, a rendered body, an expression or a deliverable), whose items 30 trimmed as it composed them | **a `rendered` node that strips each item**, written as the last node of the loop's body and made its `ret` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 1): its id the old `ret`'s with `_stripped` (fitted as a classifier's id is), `producer: computed`, the old `ret`'s label, `description: null`, the old `ret`'s `.content` text format (`markdown_block` or `markdown_inline`, else `plaintext`), its `if` `{ "===": [ { "var": "node.<old ret id>.state" }, "completed" ] }` and its body `{{ node.<old ret id>.content \| string.strip }}`, reading its sibling by bare id; the loop's `ret` names it by its rooted key. The reads of the loop's `.content` stay as written: the engine builds it from the stripped items. A loop returned by a loop is stripped at each level, the outer node reading the inner loop's `.content`, and the formats of the loops and flows that return it follow the new `ret`. A loop read only through `.items` or `.value` is left as it was. A notice (`A10-088`). A loop whose items have no one text format (an `if` or a `case` of a Markdown and a plain branch) gets no node and keeps its `ret`: a hand edit on its `index.json`, member `ret` (`A10-090`), one publish does not refuse. The node's texts are 31's alone, an expected difference (`loop-item-strip-node`, § 10.11) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
+| a single line ending inside a paragraph of a Markdown body, which 30's pipeline broke (a single line ending was a hard break) | **ended with `\`, an explicit hard break** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4), since 31's pipeline reads it as a space (§ 2.5.2). The sites are the bodies of deliverables, `rendered` nodes, macros, snippets (one or a folder's item) and package renderers whose `format` is `markdown_block` or `markdown_inline`. A line ending is found as publish's warning finds it (W-3, § 5.2.6): a single line ending inside a paragraph (in a list item, a quote, an alert or a footnote too), not in a fence, indented code, a table or a heading, not at a paragraph's last line, not before a list item or a heading, not inside a tag, not one a `~}}` or `-}}` ending the line or a `{{-` opening the next removes, and not beside a line of only tags and white space; a `\` or two spaces already there is a break, so migrating twice writes no second `\`. The `\` is written after any trailing spaces, and `~` does not strip it. Never a site: a prompt or a part, a body a prompt reads or places (a snippet, a folder's item read as `item.content`, a `rendered` node whose text a prompt reads, and whatever those read or place in turn), since a `\` there changes what the model reads; a deliverable a check's prompt reads stays a site; a file the migration writes itself (the stripping nodes, the signature renderers). A notice per file (`A10-091`); a body left for a prompt that a deliverable, a `rendered` node no prompt reads or a macro also shows, with such line endings, has a notice instead (`A10-092`), and publish warns there. The `\` is an expected difference (`explicit-hard-break`, § 10.11). No package of the conformance suite has such a line ending at a site | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
 | a member read through an object that can be null (`{{ input.patient.age }}` of an input not required; a field that can be null; a node's `.value` when it may not run), which rendered empty at 30 | **wrapped in its guard**, the form `A11-009` accepts: `{{ if input.patient.value }}{{ input.patient.value.age }}{{ end }}`, each object the read steps through joined by `&&`, the tag's outer marks moved onto the guard; a `for` over such a list is wrapped whole. In a lifted part's text, which holds no `if`, a path the part's own `if` does not assert is a hand edit (§ 10.4) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q5) | [5](#5-templates-and-macros) |
 | `onInvalid: flag` (a reply that did not fit was kept) | **`retry`**: one more attempt with the validation error, then the node fails; a notice (`A10-013`) says so, and the owner's before-and-after notification lists it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3) | [5](#5-templates-and-macros) |
 | `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
@@ -6912,7 +6951,13 @@ are listed as expected differences, never silently accepted.
     Failed ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7055767482), 7).
   - **A macro body's trailing whitespace:** 31 drops exactly one final line ending ([chapter 5](#5-templates-and-macros)), 30 trims all trailing
     whitespace (`TrimEnd()`); each body whose text differs is listed, naming this ruling ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647), 1).
-  - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes. A `let` of text is escaped too, and its computed value unescapes it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #13); so are plain-text items joined into a Markdown loop's `.content`, which a prompt that reads the loop holds escaped (D23, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8). A rendered or computed node's text is read stripped as well as whole, since a migrated deliverable composes each source stripped ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 3). The rule is `escaped-plain-text`.
+  - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes. A `let` of text is escaped too, and its computed value unescapes it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #13); so are plain-text items joined into a Markdown loop's `.content`, which a prompt that reads the loop holds escaped (D23, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8). A rendered or computed node's text is read stripped as well as whole, since a migrated deliverable composes each source stripped ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 3). Unescaping also drops the two spaces the escape writes before each line ending at 31 ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 1). The rule is `escaped-plain-text`.
+  - **An explicit hard break the migration wrote** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4; § 10.1): a single line ending inside a
+    paragraph of a Markdown body, which 30's pipeline broke and 31's does not, ends with `\`; 31's text holds that `\`
+    before the line ending, where 30's has none. It is credited, in any compared text (a macro body or a `rendered`
+    node a prompt reads later reaches prompts too), only in a package whose sources, with any operator's edits laid
+    over, hold a break the migration wrote, and only where removing the `\` brings 31's text nearer 30's
+    (`explicit-hard-break`).
   - **A format's description sent** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #3): 31 sends the
     `description` of a format, at the top or on a property, where 30's sent format had none at that place; beside § 10.5's
     change (every property required, an optional one nullable) the rule `sent-format` sets it aside. A description that
