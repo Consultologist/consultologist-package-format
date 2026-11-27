@@ -1,5 +1,5 @@
 {
-  "about": "A parameter bound to the profile carries it, and no condition reads it (chapter 4 § 4.7.7). The call section passes draft_section's draft, which its node draft_note's if reads. Invalid: the call passes profile.signature. Valid: node.plan.content.",
+  "about": "A parameter bound to the profile carries it, and no condition reads it (chapter 4 § 4.7.7). The call section passes draft_section's draft, which its node draft_note's if reads. Invalid: the call passes profile.signature. Valid: input.consult_draft.content.",
   "valid": false,
   "sentences": [
     "Function 'draft_section' reads param.draft, which carries profile.signature, in a condition; the profile is read only in deliverables and macro bodies."
