@@ -1139,6 +1139,22 @@ a warning (the `nested-note` report above holds one), and `A11-004`, `A11-006` a
 case: a manifest whose `name` is not text is also refused by the source check's member sentence, a
 version already stamped is a fact of the registry, and an engine fault is not the package's.
 
+## The pages (area 12)
+
+Area 12, the Create and History pages, adds sentences that are not rows of `sentences.json`; each is this
+implementation's `A12-` sentence. The pages say them to the clinician, from a browser, not from a package, so no
+`A12-` sentence has a case under `refusal-packages/`; the browser suite and the pages' tests pin them.
+
+| Id | Said | Sentence | Rule |
+|---|---|---|---|
+| `A12-001` | History | *"This job stopped before it finished, so it has no record. Run the workflow again."* | a job that stopped without a record is shown with this sentence beside its state ([chapter 9 § 6.2](../../package-format-v31.md#62-the-job-header)) |
+| `A12-002` | History, Create | *"The text was deleted 7 days after the job finished. Its hash is kept."* | a row's text the record no longer holds is shown with this sentence and the row's hash, never a blank pane ([chapter 8 § 11](../../package-format-v31.md#11-retention)) |
+| `A12-003` | History | *"Part of this text comes from run facts, such as the date, so it differs from run to run."* | a body (a prompt, a rendered node, a deliverable or a macro) whose hash differs from its run-neutral hash is marked with this sentence ([chapter 9 § 6.4](../../package-format-v31.md#64-the-sections-in-the-order-the-job-runs)) |
+| `A12-004` | Create | *"The workflow's checks couldn't be run. Reload the page to try again."* | the start checks could not be asked before a start ([chapter 9 § 5.3](../../package-format-v31.md#53-checks-before-submission)) |
+| `A12-005` | History | *"The record couldn't be checked: \<what could not be read>."* | Verify, when the record or a row it needs cannot be fetched ([chapter 9 § 6](../../package-format-v31.md#6-history)) |
+| `A12-006` | Create | *"This workflow can't be filled in here: this page has no field for '\<input label>'. Tell the operator."* | an input whose format has no widget on the page holds Start ([chapter 9 § 5.1](../../package-format-v31.md#51-inputs)) |
+| `A12-007` | History | *"The template this job ran couldn't be read, so it isn't shown."* | a deliverable's template the job's pinned version does not give (no content, no entry, or a hash that is not the row's `templateHash`) ([chapter 9 § 6.4](../../package-format-v31.md#64-the-sections-in-the-order-the-job-runs)) |
+
 ## The schemas' examples
 
 `schemas/<name>/` holds hand-written instance files for the schema `<name>` (`dialect` is
