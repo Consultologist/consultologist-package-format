@@ -2,4 +2,4 @@ Area 01's fixture composer-sources: one deliverable per kind of source it compos
 
 Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
 
-Files: 42 written. Notices: 14. Hand edits: 2. Snapshot test: none.
+Files: 45 written. Notices: 17. Hand edits: 2. Snapshot test: none.

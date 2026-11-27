@@ -20,7 +20,8 @@
   "max": null,
   "itemLabel": null,
   "nodes": [
-    "problem_line"
+    "problem_line",
+    "problem_line_stripped"
   ],
-  "ret": "node.problem_loop.problem_line"
+  "ret": "node.problem_loop.problem_line_stripped"
 }

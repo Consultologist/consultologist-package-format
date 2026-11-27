@@ -2,4 +2,4 @@ Area 01's fixture composer-macros: the deliverable composer's macros, one delive
 
 Migrating source/ (specVersion 30) with options.json gives expected/ (specVersion 31), byte for byte, and notices.json: every notice, the hand edits among them, and the refusals, each in the migration's order.
 
-Files: 40 written. Notices: 15. Hand edits: 10. Snapshot test: none.
+Files: 43 written. Notices: 18. Hand edits: 10. Snapshot test: none.

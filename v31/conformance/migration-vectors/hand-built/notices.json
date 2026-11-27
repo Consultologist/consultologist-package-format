@@ -4,6 +4,7 @@
     "Macro 'leaflet' is now offered by the input 'leaflet_macro'.",
     "Hand edit needed in nodes/leaflet_applies.md, body: node 'leaflet_applies' decides whether macro 'leaflet' is offered, which 30's model chose; write its yes-or-no question on the prompt's last line, and remove the \"otherwise\" clause from the macro's instruction.",
     "Hand edit needed in deliverables/urgent_copy.md, if: The condition '(input.consult_draft | string.upcase) == \"URGENT\"' uses string.upcase, which has no JSON Logic form at 31: rewrite it by hand.",
+    "Loop 'problem_loop' returns each item through the new node 'problem_line_stripped', which strips the item's text as specVersion 30 did.",
     "No snapshot test was written: hand edits remain."
   ],
   "handEdits": [
