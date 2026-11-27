@@ -6912,7 +6912,7 @@ are listed as expected differences, never silently accepted.
     (no title or `$id`), off 31's.
   - **A reply is never a template** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #5): 30 rendered a
     reply holding `{{` as a template before it composed; 31 never does. The rule `reply-never-a-template` puts back, where
-    31's text holds such a reply as written, the reply as 30 rendered it (with no variable), and explains a job 30 failed
+    31's text holds such a reply as written, or stripped as a migrated deliverable reads a source (`| string.strip`; [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508), 2026-11-26, item 3), the reply as 30 rendered it (with no variable), and explains a job 30 failed
     because a reply did not render (*"Node '\<id>' reply failed to render"*) where 31 completed that node and the job: the
     status, and each deliverable only 31 composed.
   - **An input's trailing white space is kept** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #6): where
