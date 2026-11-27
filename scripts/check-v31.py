@@ -162,7 +162,7 @@ def check_constants():
 
 
 # Rows of each part of the design's refusal-sentences.md (the table, not its totals).
-SENTENCE_COUNTS = {"01": 42, "02": 56, "03": 44, "04": 80, "05": 64,
+SENTENCE_COUNTS = {"01": 42, "02": 56, "03": 44, "04": 80, "05": 65,
                    "06": 38, "07": 17, "08": 9, "09": 19, "10": 6}
 SENTENCE_ID = re.compile(r"^S(0[1-9]|10)-\d{3}$")
 

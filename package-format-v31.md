@@ -3630,6 +3630,17 @@ explains.
 **The Editor** previews each placement with and without its unit, side by side. That's
 information, not a warning.
 
+**Line endings.** At 31 a single line ending inside a paragraph is not a break: Markdown reads it as
+a space ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4). End such a line with `\` (an explicit hard
+break, which `~` does not strip) or leave a blank line. Publish and the Editor warn (W-3) once for each
+such line ending in a Markdown body a reader sees: a deliverable, a `rendered` node, a macro, a snippet
+(one or a folder's item) or a renderer whose `format` is `markdown_block` or `markdown_inline`. A prompt
+and a part are never warned, nor is a body only prompts read or place, since its text is the model's to
+read; one a prompt reads that is also shown is warned. A line ending is not counted in a fence, indented
+code, a table or a heading, at a paragraph's last line, before a list item or a heading, inside a tag,
+where a tag's `~}}` removes it, or beside a line holding only tags (whose output may be empty or a block).
+The migration writes the `\` where 30 broke the line ([chapter 10](#101-what-the-rewrite-does-mechanically)).
+
 ### 5.3 What each template reads
 
 #### 5.3.1 The table
@@ -4275,6 +4286,7 @@ marks a placeholder.
 **Warnings** (publish and the Editor; not refusals)
 - W-1: *"\<Subject\> reads \<run.fact or run-dependent value\> at line \<n\>. Its main hash differs between runs; runs are compared on the run-neutral hash."* (For a macro body the subject is the macro; its row's `runNeutralHash` is the one runs are compared on.)
 - W-2: *"\<Subject\> pipes renderer.\<id\>, a markdown_block, inside a line at line \<n\>."*
+- W-3: *"\<Subject\> has a single line ending inside a paragraph at line \<n\>: a single line ending is not a break; end the line with \ or leave a blank line."*
 
 ## 6. Checks, deliverables and the profile
 
@@ -7323,6 +7335,7 @@ running a workflow).
 | S05-062 | 5 · Refusals | *"\<Subject\> stopped rendering: it took more than \<limit\> steps."* | author |
 | S05-063 | 5 · Refusals | *"\<Subject\> reads \<path\>[\<n\>] at line \<n\>, a position in a list; lists are read whole, with a for, or by identity through .items."* | author |
 | S05-064 | 5 · Refusals | *"\<Subject\> reads \<path\> at line \<n\>, which carries profile text through macro '\<id\>'; a prompt or a part doesn't read profile text. Read it in a deliverable."* | author |
+| S05-065 | 5 · Refusals | *"\<Subject\> has a single line ending inside a paragraph at line \<n\>: a single line ending is not a break; end the line with \ or leave a blank line."* | author |
 | S06-001 | 6 · Checks in the record and History | *"12 of 12 terms present"* | author |
 | S06-002 | 6 · Checks in the record and History | *"7 of 9 sections passed"* | author |
 | S06-003 | 6 · Checks in the record and History | *"Consultation note was blocked: check 'coverage' failed (10 of 12 terms present)."* | clinician |

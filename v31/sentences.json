@@ -2004,6 +2004,13 @@
       "audience": "author"
     },
     {
+      "id": "S05-065",
+      "part": "05",
+      "section": "Refusals",
+      "sentence": "<Subject> has a single line ending inside a paragraph at line <n>: a single line ending is not a break; end the line with \\ or leave a blank line.",
+      "audience": "author"
+    },
+    {
       "id": "S06-001",
       "part": "06",
       "section": "5. Checks in the record and History",
