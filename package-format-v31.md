@@ -1278,8 +1278,9 @@ surfaces, the PDF, `plain()` and the migration's line-ending finder all parse wi
     `<p onclick="x">`). In the 31 bundle the braces are text.
   - **CustomContainers:** `:::name` and `::text::` write a `class` taken from the text, the same
     path by another syntax.
-  - **MediaLinks:** turns a URL into an `iframe`, `video` or `audio` element; with HTML off it is
-    the one embed path left, and the PDF has no counterpart.
+  - **MediaLinks:** turns image-link syntax (`![…](url)`) into an embed: an `iframe` when the URL
+    is a known video host's, a `video` or `audio` element when it names a media file; with HTML off
+    it is the one embed path left, and the PDF has no counterpart.
   - **Mathematics:** neither surface typesets it, and `$` amounts appear in clinical text.
   - **Diagrams:** no note surface draws Mermaid or nomnoml; a fence shows as code.
   - **GridTables:** row and column spans and multi-block cells the PDF does not lay out; pipe tables
@@ -4707,7 +4708,8 @@ node with `plain`, or a renderer); the only automatic step is escaping.
   (`"a\n\nb"` to `"a  \n  \nb"`), which Markdown still reads as a blank line. Two spaces rather
   than `\`, because the escape works piece by piece and a piece cannot know whether its line ending
   ends a paragraph, where a `\` would show and two spaces are dropped; the rule is local, so escaping
-  piece by piece is escaping whole. `markdown_escape` stays 1.0.0, as it is not yet frozen
+  piece by piece is escaping whole, except where a cut falls inside one `\r\n`: `"x\r"` then `"\ny"`
+  escape to a paragraph break where `"x\r\ny"` escapes to a hard break. `markdown_escape` stays 1.0.0, as it is not yet frozen
   ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 1). **`resolve.json` lists the escaped reads:** each `deliverables`
   entry has `escapes`, one `{ "unit", "at" }` for every output tag whose value is escaped
   (chapter 7 § 7.2.5), and a renderer's output is never in it, since it is the renderer's own
