@@ -80,8 +80,8 @@ PROFILE_FIELDS = {  # field -> (format, label), part 06 section 10.1 and part 09
     "name": ("string", "name"),
     "credentials": ("string", "credentials"),
     "organisation": ("string", "organisation"),
-    "signature": ("plaintext", "signature"),
-    "closing": ("plaintext", "closing line"),
+    "signature": ("markdown_block", "signature"),
+    "closing": ("markdown_block", "closing line"),
 }
 
 

@@ -38,7 +38,8 @@
             "format": {
               "enum": [
                 "string",
-                "plaintext"
+                "plaintext",
+                "markdown_block"
               ],
               "description": "The field's format."
             },
@@ -65,7 +66,8 @@
             "format": {
               "enum": [
                 "string",
-                "plaintext"
+                "plaintext",
+                "markdown_block"
               ],
               "description": "The field's format."
             },
@@ -92,7 +94,8 @@
             "format": {
               "enum": [
                 "string",
-                "plaintext"
+                "plaintext",
+                "markdown_block"
               ],
               "description": "The field's format."
             },
@@ -119,7 +122,8 @@
             "format": {
               "enum": [
                 "string",
-                "plaintext"
+                "plaintext",
+                "markdown_block"
               ],
               "description": "The field's format."
             },
@@ -146,7 +150,8 @@
             "format": {
               "enum": [
                 "string",
-                "plaintext"
+                "plaintext",
+                "markdown_block"
               ],
               "description": "The field's format."
             },

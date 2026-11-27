@@ -1,10 +1,10 @@
 {
-  "about": "A profile field is string or plaintext.",
+  "about": "A profile field is string, plaintext or markdown_block.",
   "instance": {
     "specVersion": 31,
     "fields": {
       "name": {
-        "format": "markdown_block",
+        "format": "markdown_inline",
         "label": "name",
         "preview": "Dr A. Sample"
       },
@@ -19,12 +19,12 @@
         "preview": "Sample Oncology Clinic"
       },
       "signature": {
-        "format": "plaintext",
+        "format": "markdown_block",
         "label": "signature",
         "preview": "Dr A. Sample\nSample Oncology Clinic"
       },
       "closing": {
-        "format": "plaintext",
+        "format": "markdown_block",
         "label": "closing line",
         "preview": "Please call the clinic with any questions."
       }
