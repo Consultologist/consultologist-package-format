@@ -4,5 +4,5 @@
   "type": "string",
   "contentMediaType": "text/markdown",
   "x-markdown": "inline",
-  "description": "Markdown text that sits inside a line (emphasis, a link or code), with no block structure."
+  "description": "Markdown text that sits inside a line (emphasis, a link or code), with no block structure. It holds no line ending; separate lines are list items or paragraphs with a blank line between them, in Markdown that stands on its own lines."
 }
