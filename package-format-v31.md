@@ -2619,47 +2619,47 @@ loop's, outward (`item.parent.parent`), skipping any `while` between. A paragrap
 
 ```json
 { "kind": "for", "producer": "computed", "label": "Sections", "description": null,
-  "format": { "type": "array", "items": { "type": "array", "items": { "$ref": "plaintext" } } },
+  "format": { "type": "array", "items": { "$ref": "markdown_block" } },
   "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
   "in": "node.plan.value.sections",
   "parallel": true, "maxParallel": null, "until": null, "max": null,
   "itemLabel": "title",
-  "nodes": ["outline", "paragraphs"], "ret": "node.sections.paragraphs" }
+  "nodes": ["outline", "paragraphs", "paragraphs_stripped"], "ret": "node.sections.paragraphs_stripped" }
 ```
 
 ```json
 { "kind": "for", "producer": "computed", "label": "Paragraphs", "description": null,
-  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "format": { "type": "array", "items": { "$ref": "markdown_block" } },
   "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
   "in": "node.outline.value.points",
   "parallel": true, "maxParallel": null, "until": null, "max": null,
   "itemLabel": null,
-  "nodes": ["draft_paragraph"], "ret": "node.sections.paragraphs.draft_paragraph" }
+  "nodes": ["draft_paragraph", "draft_paragraph_stripped"], "ret": "node.sections.paragraphs.draft_paragraph_stripped" }
 ```
 
 `example-conditional-sections`, `nodes/sections_draft/index.json`:
 
 ```json
 { "kind": "for", "producer": "computed", "label": "Sections — drafting each requested section by its kind", "description": null,
-  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "format": { "type": "array", "items": { "$ref": "markdown_block" } },
   "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
   "in": "input.sections.value",
   "parallel": true, "maxParallel": null, "until": null, "max": null,
   "itemLabel": "title",
-  "nodes": ["route"], "ret": "node.sections_draft.route" }
+  "nodes": ["route", "route_stripped"], "ret": "node.sections_draft.route_stripped" }
 ```
 
 `test/general`, `nodes/standards/index.json`:
 
 ```json
 { "kind": "for", "producer": "computed", "label": "Standards", "description": null,
-  "format": { "type": "array", "items": { "$ref": "plaintext" } },
+  "format": { "type": "array", "items": { "$ref": "markdown_block" } },
   "reproducible": false, "modelDerived": true, "runDependent": false, "profileCarrying": false,
   "in": "snippet.standards",
   "parallel": true, "maxParallel": null, "until": null, "max": null,
   "itemLabel": "title",
-  "nodes": ["section_instructions", "patient_section_draft", "standard_section_draft"],
-  "ret": "node.standards.section_instructions" }
+  "nodes": ["section_instructions", "patient_section_draft", "standard_section_draft", "section_instructions_stripped"],
+  "ret": "node.standards.section_instructions_stripped" }
 ```
 
 Every loop writes every member of its kind, `null` for each one it does not use. How the migration writes them is [chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically).
@@ -6569,7 +6569,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | `let` (a Scriban expression) | `kind: computed` with JSON Logic in `expression`, by the converter | [3](#3-expressions) |
 | a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
 | deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says; each source read as `{{ node.<id>.content | string.strip }}`, as 30's composer trimmed each part, never the whole ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 3); a macro's snippet is not stripped (R5) | [6](#6-checks-deliverables-and-the-profile) |
-| the deliverable header's signature | `{{ profile.signature }}` in the template | [6](#6-checks-deliverables-and-the-profile) |
+| the deliverable header's signature | **piped through a package renderer that tests it trimmed** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 2): the template ends `{{ profile.signature \| renderer.signature_after_blank_line }}` where 30 appended the block after a blank line, and the migration writes `renderers/signature_after_blank_line.md` (`input` and `format` `plaintext`), whose body is `{{ if value != null && (value \| string.strip) != "" }}`, a blank line, then `{{ value }}{{ end }}`: a blank or absent signature leaves the signature and the line before it out, as 30 appended nothing, and a signature is written as 30's own bytes (a renderer's text is never escaped). A snippet read only by deliverables whose body, trimmed, ends with the read after one blank line or one line ending pipes it through `signature_after_blank_line` or `signature_after_line_end` (one line ending in place of the blank line); a signature with text after it, and a deliverable whose only piece is the signature, keep `{{ profile.signature }}`. Each renderer is written only into a package that needs it and listed in `renderers/index.json` in the order first used; a notice (`A10-089`). A body `if` on the trimmed read is refused ([chapter 5](#5-templates-and-macros)), and so is a guard node, whose rule would read the profile ([chapter 3](#3-expressions)) | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
 | a deliverable none of whose sources ran (each an `if` with no `else`, or a `case` with an empty branch), which 30 skipped | **an `if` that says a source ran**: `{ "===": [ { "var": "node.<source>.state" }, "completed" ] }` for each source, joined by `or`, after 30's own `if` by `and`, so the deliverable is skipped as at 30 instead of composed empty and released; a notice says so (`A10-079`). When 30's own `if` is a hand edit (the converter refused it), nothing is joined to it; a second hand edit on that `if` names the term, verbatim, for the operator to join to the condition by `and` (`A10-084`). The term is `.state === "completed"` where the deliverable's `if` can read the source's state, else `.value !== null`; a source whose run it cannot read at all is a hand edit (`A10-086`), and 30's own `if` is kept as converted ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 8). A source that always runs leaves the `if` as it was, and so does a `while`: 30 composed a while that ran no pass as empty text and released the deliverable, as 31 does; beside another source its blank-line separator is kept, which no `if` can drop: an expected difference, `while-no-pass-separator` (§ 10.11). A new package is warned instead (`A11-010`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q3) | [6](#6-checks-deliverables-and-the-profile) |
 | a node only deliverables with a condition need (30 ran only what an applicable deliverable needed) | **each leaf of it gets those deliverables' `if`**, one or joined by `or` (a `for` has no `if`, so its body's leaves take it); a classifier, what a condition reads and a `while` are never gated; a notice (`A10-087`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 1). A gated source runs whenever its deliverable applies, so the row above judges it by 30's always-valued and joins no term for it | [4](#4-loops-and-functions) |
 | built-in renderers in C# (`concept_bullets`, `concept_context`) | **built-in Scriban renderers in the registry**, versioned and locked, their ids reserved; piped as `\| renderer.concept_bullets` | [5](#5-templates-and-macros) |
@@ -6579,6 +6579,7 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a body `if` around a macro placement | **hoisted into the placement's header `if`**, joined with the macro's own `if` by `and`: a placement inside an `if` is refused (A07-009) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)) | [5](#5-templates-and-macros) |
 | a bare read of a node or an input in a template (`{{ input.consult_draft }}`) | **its `.content` form for text, its `.value` form otherwise**: a bare read of an object or a list is refused (A07-007, A07-008) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)); A date input read whole is written `{{ input.x.value | date.to_string "%d %b %Y" }}`, 30's `09 Nov 2026` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 2); a new package keeps the ISO form (#357) | [5](#5-templates-and-macros) |
 | a `for` over a loop node (`{{ for e in node.<loop> }}`), whose 30 list held only the items that ran | **over `.value`**, the completed items' values ([chapter 4 § 4.2.5](#425-reading-a-loop-from-outside)), each written as the item (`e.content` → `e`), where the body reads only each item's text (its `ret` a text format, or nothing of the item read); otherwise **over `.items`** with the body wrapped in `{{ if e.state == "completed" }} … {{ else }}{{ end }}`, inside the loop's own marks, unless it already tests the item's state (30's `skipped`), so an item its `until` or `max` left `not_run` writes no fixed text. A new package is warned instead (`A11-011`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q4) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
+| a `for` whose `.content` is read (by a prompt, a rendered body, an expression or a deliverable), whose items 30 trimmed as it composed them | **a `rendered` node that strips each item**, written as the last node of the loop's body and made its `ret` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 1): its id the old `ret`'s with `_stripped` (fitted as a classifier's id is), `producer: computed`, the old `ret`'s label, `description: null`, the old `ret`'s `.content` text format (`markdown_block` or `markdown_inline`, else `plaintext`), its `if` `{ "===": [ { "var": "node.<old ret id>.state" }, "completed" ] }` and its body `{{ node.<old ret id>.content \| string.strip }}`, reading its sibling by bare id; the loop's `ret` names it by its rooted key. The reads of the loop's `.content` stay as written: the engine builds it from the stripped items. A loop returned by a loop is stripped at each level, the outer node reading the inner loop's `.content`, and the formats of the loops and flows that return it follow the new `ret`. A loop read only through `.items` or `.value` is left as it was. A notice (`A10-088`). A loop whose items have no one text format (an `if` or a `case` of a Markdown and a plain branch) gets no node and keeps its `ret`: a hand edit on its `index.json`, member `ret` (`A10-090`), one publish does not refuse. The node's texts are 31's alone, an expected difference (`loop-item-strip-node`, § 10.11) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
 | a member read through an object that can be null (`{{ input.patient.age }}` of an input not required; a field that can be null; a node's `.value` when it may not run), which rendered empty at 30 | **wrapped in its guard**, the form `A11-009` accepts: `{{ if input.patient.value }}{{ input.patient.value.age }}{{ end }}`, each object the read steps through joined by `&&`, the tag's outer marks moved onto the guard; a `for` over such a list is wrapped whole. In a lifted part's text, which holds no `if`, a path the part's own `if` does not assert is a hand edit (§ 10.4) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q5) | [5](#5-templates-and-macros) |
 | `onInvalid: flag` (a reply that did not fit was kept) | **`retry`**: one more attempt with the validation error, then the node fails; a notice (`A10-013`) says so, and the owner's before-and-after notification lists it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3) | [5](#5-templates-and-macros) |
 | `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
@@ -6937,6 +6938,12 @@ are listed as expected differences, never silently accepted.
     nothing, § 10.1): both compose the while as empty text, but 30's composer dropped its part with its separator, where
     31's template keeps the blank line between it and the next source; no `if` can drop a separator and keep the text
     (`while-no-pass-separator`).
+  - **A loop's item, stripped by the node the migration wrote** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261),
+    item 1; § 10.1): a `for` whose `.content` is read returns each item through a `rendered` node that strips it, as 30
+    trimmed each item it composed, so the texts that read the loop are 30's; the node's own text is 31's alone. It is
+    credited exactly where the node is one the migration wrote (or an operator's edit wrote in its place) and its text is
+    the old `ret`'s text for that item, trimmed (`loop-item-strip-node`). No text that 30 and 31 both produce is excused
+    by it.
   - **An item that did not run** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966),
     item 4; Q4 stands): past a loop's `max`, or with its body skipped, an item writes nothing at 31 (§ 10.1's guard), where
     30's template loop wrote its fixed text for it; that text is 30's alone (`loop-item-not-run`). 30's fixed text for an
