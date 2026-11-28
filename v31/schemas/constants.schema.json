@@ -460,7 +460,8 @@
         "version",
         "extensions",
         "emphasisExtras",
-        "html"
+        "html",
+        "linkSchemes"
       ],
       "additionalProperties": false,
       "properties": {
@@ -487,6 +488,14 @@
         "html": {
           "type": "boolean",
           "description": "Whether HTML in the source is parsed as HTML; false: it is text."
+        },
+        "linkSchemes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "The URL schemes a link, an image or an autolink is written with, in either pipeline; a URL with no scheme stays a link, any other scheme is written as its text."
         }
       },
       "description": "Markdig's version and extensions."

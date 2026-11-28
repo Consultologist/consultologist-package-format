@@ -1263,11 +1263,23 @@ The checker refuses one missing where it applies, and one present where it doesn
 `markdown_block` and `markdown_inline` mean **Markdig 0.41.3 with the 31 bundle**, built extension by
 extension in the order of Markdig's `UseAdvancedExtensions`, with the ones below left out. Markdig is
 pinned **exactly** and listed in `lock.json`; `v31/constants.json` `markdig` lists the bundle:
-`{"version":"0.41.3","extensions":["Alert","Abbreviation","AutoIdentifier","Citation","DefinitionList","EmphasisExtra","Figure","Footer","Footnote","PipeTable","ListExtra","TaskList","AutoLink"],"emphasisExtras":["Superscript","Inserted"],"html":false}`.
+`{"version":"0.41.3","extensions":["Alert","Abbreviation","AutoIdentifier","Citation","DefinitionList","EmphasisExtra","Figure","Footer","Footnote","PipeTable","ListExtra","TaskList","AutoLink"],"emphasisExtras":["Superscript","Inserted"],"html":false,"linkSchemes":["http","https","mailto"]}`.
 31 renders by this one standard ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), the owner's third fix-first group): the Web's 31
 surfaces, the PDF, `plain()` and the migration's line-ending finder all parse with it.
 
 - **HTML is off:** raw HTML in the text is shown as text, never injected.
+- **Links by scheme, in both pipelines**
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), ruling 8): a link, an image
+  or an autolink is written only when its URL's scheme is `http`, `https` or `mailto`, in any case
+  (`constants.json` `markdig.linkSchemes`); a URL with no scheme (`/plan`, `plan.md`, `#plan`, `//host`)
+  stays a link. Any other (`javascript:`, `data:`, `vbscript:`, `file:`, `tel:`, …) is written as its
+  text: a link's text, an image's alt text, an autolink's URL as text. The scheme is read after ASCII
+  white space and control characters are removed and entities decoded, so `JAVASCRIPT:`, a tab or a
+  line ending inside the scheme and `javascript&colon;` are refused, inline or by reference. This holds
+  for the 31 bundle and for the 5–30 pipeline alike (the filter rewrites the parsed document, so the
+  Web, the PDF and `plain()` read the same text; it is not a Markdig extension, and
+  `markdig.extensions` does not name it). The PDF draws a link's text either way, whatever
+  its scheme (an autolink's text is its URL).
 - **Standard line handling:** a single line ending inside a paragraph is **not a break**; Markdown
   reads it as a space. A line ends with `\` (or two spaces) to break, or a blank line starts a new
   paragraph. Escaped plain text keeps its lines (§ 6.6.4), the migration ends with `\` the lines 30

@@ -157,7 +157,12 @@
         "Superscript",
         "Inserted"
       ],
-      "html": false
+      "html": false,
+      "linkSchemes": [
+        "http",
+        "https",
+        "mailto"
+      ]
     }
   }
 }
