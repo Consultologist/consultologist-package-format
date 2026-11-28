@@ -19,7 +19,7 @@
         "preview": "Sample Oncology Clinic"
       },
       "signature": {
-        "format": "plaintext",
+        "format": "markdown_block",
         "label": "signature",
         "preview": "Dr A. Sample\nSample Oncology Clinic"
       }

@@ -3648,6 +3648,7 @@ author's: no rule on how it starts or ends.
 | `{{~ x }}` inside a line | refused: it removes the space the author wrote before it |
 | `{{~ x }}` with text after it on its line | refused: a block placement stands alone on its line |
 | `{{ x }}` inside an `if` or a `for` | refused (A07-009): a placement's decision is recorded once, so it is made by the unit's own `if`, not by a tag around it; the migration unrolls or hoists what 30 wrote ([chapter 10](#101-what-the-rewrite-does-mechanically)) |
+| a `markdown_block` read (`{{ profile.closing }}`, `{{ node.x.content }}` of a `markdown_block` node) with text before or after it on its line | refused (R-W6, R-W7): a `markdown_block` read stands alone on its line; a `markdown_inline` read stands inside a line (*Block reads*, below) |
 
 Scriban's markers, as tested on 7.2.5: `~` removes spaces and tabs on its side, and on the right
 also the one newline ending the line; `-` removes all whitespace on its side, blank lines
@@ -3664,13 +3665,47 @@ information, not a warning.
 **Line endings.** At 31 a single line ending inside a paragraph is not a break: Markdown reads it as
 a space ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4). End such a line with `\` (an explicit hard
 break, which `~` does not strip) or leave a blank line. Publish warns (W-3) once for each
-such line ending in a Markdown body a reader sees: a deliverable, a `rendered` node, a macro, a snippet
-(one or a folder's item) or a renderer whose `format` is `markdown_block` or `markdown_inline`. A prompt
-and a part are never warned, nor is a body only prompts read or place, since its text is the model's to
-read; one a prompt reads that is also shown is warned. A line ending is not counted in a fence, indented
-code, a table or a heading, at a paragraph's last line, before a list item or a heading, inside a tag,
-where a tag's `~}}` removes it, or beside a line holding only tags (whose output may be empty or a block).
-The migration writes the `\` where 30 broke the line ([chapter 10](#101-what-the-rewrite-does-mechanically)).
+such line ending in every Markdown body: a deliverable, a `rendered` node, a macro, a snippet
+(one or a folder's item) or a package renderer whose `format` is `markdown_block` or `markdown_inline`,
+**a body a prompt reads or places included** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 1): the engine sends a prompt as the template's text and
+never renders its Markdown, so the model sees exactly what the reader sees. A prompt and a part are never warned: they
+are not Markdown values (a node's format describes its reply), and nothing shows them. A line ending is not counted in
+a fence, indented code, a table or a heading, at a paragraph's last line, before a list item or a heading, inside a
+tag, or where a tag's `~}}` removes it.
+
+A line of only tags and white space is judged by its tags' **roles**, each from publish's own typing of the body
+([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2): a *statement* (`if`, `for`, `else`, `end`, an assignment; a comment counts as one), a *placement*
+(above), a *renderer* (an output whose pipe ends in a renderer), a *block read* (an output of format
+`markdown_block`, no renderer at its end) or an *inline read* (any other output). A tag the checker did not type (a
+file it refused, or read nowhere) counts as a statement.
+
+- A line ending between a line of text (literal text, or an inline read among its tags) and a line whose only reads
+  are block reads, **on either side of it**, is counted, and wants a **blank line**, never `\`: `\` breaks only inside a
+  paragraph, and a block value may start or end with a list, a table, a heading or a code block
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543#issuecomment-7228887738), item 3).
+- Any other line ending after a line of only tags is not counted when any of them is not an inline read (after a
+  statement, a placement or a renderer the `\` could end a paragraph); nor one before a line of only tags when any of
+  them is a statement, a placement or a renderer (its output may be nothing, which would leave `\` at a paragraph's end).
+  So `Sincerely,` above a line of only `{{ profile.name }}` is counted, and so is each line but the last of a letterhead
+  of single inline reads.
+
+The migration writes the `\` where 30 broke the line, and the blank line beside a block read ([chapter 10](#101-what-the-rewrite-does-mechanically)).
+From 31 on, `\` is the author's choice. A `plaintext` body is what the author types: the engine never adds `\` there,
+and the escape keeps its lines when it is shown in Markdown (§ 6.6.4).
+
+**Block reads.** A `markdown_block` read stands at the start of its line and alone on it ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2): in a
+Markdown body (the sites W-3 warns), a block read with text before it on its line is refused (R-W6), and one with text
+after it (R-W7), each naming the file, the read as written (without its pipes) and its line; a read with text on both
+sides gets both. **Text** is, on the read's own line, any character other than a space or a tab outside every tag and
+comment, or an inline read; a statement, a comment, a placement, a renderer-ended output or another block read beside
+it is not text and is stepped over, so `{{ value }}{{ end }}` and
+`{{ node.a.content | string.strip }}{{ profile.signature | renderer.signature_after_blank_line }}` are accepted, and
+`Referred for: {{ if x }}{{ read }}{{ end }} (…)` has text on both sides. An indent alone is not text; a Markdown
+marker is (`- {{ node.plan.content }}`, `> {{ … }}`, `**Plan:** {{ … }}` are refused). A `~` or `-` on the tag does
+not change the judgement: it is about the line as written. A prompt and a part are not judged. A renderer whose
+`format` is `markdown_block` piped inside a line is still only warned (W-2, § 5.5.4): its output begins with its own
+line endings. This is the mistake the two formats exist to catch: a letter puts `Sincerely,` and the signature each on
+its own line. The migration separates such a read from the text beside it by a blank line ([chapter 10](#101-what-the-rewrite-does-mechanically)).
 
 ### 5.3 What each template reads
 
@@ -3865,7 +3900,10 @@ byte-equivalence reference** and are removed in Milestone 40 ([#1404](https://gi
 
 Each text format carries `contentMediaType`, and Markdown carries `x-markdown: block | inline`
 ([chapter 2](#2-types-and-inputs)). Publish warns (W-2) when a `markdown_block` renderer is
-piped inside a line.
+piped inside a line. It stays a warning: a renderer's output begins with its own line endings. A `markdown_block`
+read whose pipe does not end in a renderer is refused there instead (R-W6, R-W7, § 5.2.6). The two signature renderers
+the migration writes take `input` and `format` `markdown_block` ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)),
+so each use of them that shares its line with the text before it is warned.
 
 #### 5.5.5 In the record and History
 
@@ -4229,7 +4267,8 @@ text is recorded by hash under the node that placed it.
 | `at: before`, `after`, `append`, item-level placements, deliverable macros | removed: fixed text is a snippet read in the deliverable template |
 | optional at most once, required exactly once | triggered exactly once, untriggered never |
 | prompt hashes vary with run facts and nothing says so | run spots, with a run-neutral hash beside the sent-text hash |
-| a single line ending in Markdown is a hard break (5–30's pipeline) | it is not a break: end the line with `\` or leave a blank line; publish warns where a body a reader sees has one (§ 5.2.6, W-3), and the migration writes the `\` ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)) |
+| a single line ending in Markdown is a hard break (5–30's pipeline) | it is not a break: end the line with `\` or leave a blank line; publish warns where any Markdown body has one, a body a prompt reads or places included (§ 5.2.6, W-3), and the migration writes the `\`, or a blank line beside a `markdown_block` read ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)) |
+| a value read anywhere on a line (`Sincerely, {{ signature }}`) | a `markdown_block` read stands alone on its line, a `markdown_inline` read inside one (§ 5.2.6, R-W6, R-W7); the migration separates a block read from the text beside it by a blank line ([chapter 10 § 10.1](#101-what-the-rewrite-does-mechanically)) |
 
 ### 5.11 Refusals
 
@@ -4261,6 +4300,8 @@ marks a placeholder.
 - R-W3: *"\<Subject\> places {{~ \<unit\> }} inside a line at line \<n\>; it removes the space before it. Use {{ \<unit\> }}."*
 - R-W4: *"\<Subject\> has text after {{~ \<unit\> }} at line \<n\>; a block placement stands alone on its line."*
 - R-W5 (§ 5.2.6): *"\<Subject\> uses - at line \<n\>; it removes blank lines between paragraphs. Use ~."*
+- R-W6 (§ 5.2.6): *"\<Subject\> has text before {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
+- R-W7 (§ 5.2.6): *"\<Subject\> has text after {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
 
 **Reads**
 - R-R1: *"\<Subject\> reads \<root\> at line \<n\>; \<site\> reads \<allowed roots\>."*
@@ -4269,8 +4310,6 @@ marks a placeholder.
 - R-R4: *"\<Kind\> '\<id\>' reaches itself: \<chain\>."*
 - R-R6: *"\<Subject\> reads \<path\> at line \<n\>, which carries profile text through macro '\<id\>'; a prompt or a part doesn't read profile text. Read it in a deliverable."*
 - R-R5: *"\<Subject\> reads \<path\> and run.\<fact\> in one output at line \<n\>; an output that reads a run fact reads nothing else."* (also for a run-dependent value: *"… reads \<path\> and the run-dependent \<value\> in one output …"*)
-- R-R7: *"\<Subject\> has text before {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
-- R-R8: *"\<Subject\> has text after {{ \<read\> }}, a markdown_block, at line \<n\>; a markdown_block read stands alone on its line."*
 
 **Renderers**
 - R-N1: *"\<Subject\> pipes \<source\> (\<format\>) into renderer.\<id\>, which renders \<input format\>."*, for example *"Node 'identify_problem' pipes node.plan.value (section_plan) into renderer.concept_bullets, which renders concept_list."*
@@ -4693,7 +4732,7 @@ node with `plain`, or a renderer); the only automatic step is escaping.
 
 | Deliverable `format` | May read | Refused |
 |---|---|---|
-| `markdown_block` | `markdown_block`; `markdown_inline` inside a line; plain-text formats (escaped); `string`, `number` and `boolean` data (escaped) | objects (use a renderer or a node) |
+| `markdown_block` | `markdown_block`, on its own line; `markdown_inline` inside a line; plain-text formats (escaped); `string`, `number` and `boolean` data (escaped) | objects (use a renderer or a node); a `markdown_block` read with text before or after it on its line (R-W6, R-W7, § 5.2.6) |
 | `plaintext` | plain-text formats; `string` and `number` data | any Markdown (convert in a node) |
 | an object format | exactly that format, as `{{ node.x.value }}` and nothing else | everything else |
 
@@ -4723,8 +4762,10 @@ node with `plain`, or a renderer); the only automatic step is escaping.
   but its single expression.
 - **An object deliverable's output** is canonical JSON (RFC 8785).
 - **`profile.signature` and `profile.closing` are `markdown_block`** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2),
-  so a Markdown deliverable or macro body reads them as they are, and a `plaintext` one that reads
-  either is refused (`S06-021`).
+  since a `markdown_inline` value cannot hold a line ending and these keep several lines: a Markdown deliverable or
+  macro body reads them as they are, each on its own line (`Sincerely,`, then the closing on the next line or after a
+  blank line), a line break inside them being the author's `\` or a blank line, and a `plaintext` one that reads
+  either is refused (`S06-021`); no conversion is built. `name`, `credentials` and `organisation` stay `string`.
 
 #### 6.6.5 Headings are the author's
 
@@ -4995,6 +5036,9 @@ The list and the preview values are published as [`v31/profile.json`](v31/profil
 | `profile.signature` | `markdown_block` | never | the chosen signature block |
 | `profile.closing` | `markdown_block` | never | a closing line or contact block |
 
+- **`signature` and `closing` are `markdown_block`** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2): a `markdown_inline` value cannot hold a
+  line ending, so `block` is the one format that keeps several lines. They are read unescaped, each on its own line
+  (§ 6.6.4), and [`profile.json`](v31/profile.json) and its schema say so.
 - **Adding a field later is compatible;** removing or retyping one is a format change.
 - `profile.closing` is the home of a clinician's fixed boilerplate. Personal macros are
   [#1417](https://github.com/Consultologist/Consultologist-Blazor/issues/1417) (Milestone 40).
@@ -5063,6 +5107,9 @@ registry** (the table in § 6.10.1), never the author's own profile.
 
 - **Profile gains a "Letter details" card** for `credentials`, `organisation` and `closing`,
   with limits of 120, 200 and 4,000 characters (the last the same as a signature block).
+  The closing, like a signature block, is stored as typed and read as `markdown_block` (§ 6.10.1): a line of it breaks
+  where the author ends it with `\` or leaves a blank line, since at 31 a single line ending is not a break
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2).
 - **The account time zone** (an IANA name, for `run.date`) is an **account setting, not a profile
   field:** it's never read as `profile.*`. It's a select list that starts empty, with a "Use this
   browser's zone" button that fills it only when clicked. The zone is recorded beside
@@ -6624,8 +6671,8 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | `let` (a Scriban expression) | `kind: computed` with JSON Logic in `expression`, by the converter | [3](#3-expressions) |
 | a `terms_subset` check node | a file in `checks/`, `kind: computed`, `format: check_result`, `failWith` a literal; every reader of `node.x` rewritten to `check.x` | [6](#6-checks-deliverables-and-the-profile) |
 | deliverables with `sources`, composed by the engine | a file in `deliverables/` whose generated template **reproduces today's composer bytes**, with `whenEmpty` chosen as § 10.7 says; each source read as `{{ node.<id>.content | string.strip }}`, as 30's composer trimmed each part, never the whole ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 3); a macro's snippet is not stripped (R5) | [6](#6-checks-deliverables-and-the-profile) |
-| the deliverable header's signature | **piped through a package renderer that tests it trimmed** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 2): the template ends `{{ profile.signature \| renderer.signature_after_blank_line }}` where 30 appended the block after a blank line, and the migration writes `renderers/signature_after_blank_line.md` (`input` and `format` `markdown_block`, [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2), whose body is `{{ if value != null && (value \| string.strip) != "" }}`, a blank line, then `{{ value }}{{ end }}`: a blank or absent signature leaves the signature and the line before it out, as 30 appended nothing, and a signature is written as 30's own bytes (a renderer's text is never escaped). A snippet read only by deliverables whose body, trimmed, ends with the read after one blank line or one line ending pipes it through `signature_after_blank_line` or `signature_after_line_end` (one line ending in place of the blank line); a signature with text after it, and a deliverable whose only piece is the signature, keep `{{ profile.signature }}`. Each renderer is written only into a package that needs it and listed in `renderers/index.json` in the order first used; a notice (`A10-089`). A body `if` on the trimmed read is refused ([chapter 5](#5-templates-and-macros)), and so is a guard node, whose rule would read the profile ([chapter 3](#3-expressions)) | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
-| a deliverable none of whose sources ran (each an `if` with no `else`, or a `case` with an empty branch), which 30 skipped | **an `if` that says a source ran**: `{ "===": [ { "var": "node.<source>.state" }, "completed" ] }` for each source, joined by `or`, after 30's own `if` by `and`, so the deliverable is skipped as at 30 instead of composed empty and released; a notice says so (`A10-079`). When 30's own `if` is a hand edit (the converter refused it), nothing is joined to it; a second hand edit on that `if` names the term, verbatim, for the operator to join to the condition by `and` (`A10-084`). The term is `.state === "completed"` where the deliverable's `if` can read the source's state, else `.value !== null`; a source whose run it cannot read at all is a hand edit (`A10-086`), and 30's own `if` is kept as converted ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 8). A source that always runs leaves the `if` as it was, and so does a `while`: 30 composed a while that ran no pass as empty text and released the deliverable, as 31 does; beside another source its blank-line separator is kept, which no `if` can drop: an expected difference, `while-no-pass-separator` (§ 10.11). A new package is warned instead (`A11-010`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q3) | [6](#6-checks-deliverables-and-the-profile) |
+| the deliverable header's signature | **piped through a package renderer that tests it trimmed** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 2): the template ends `{{ profile.signature \| renderer.signature_after_blank_line }}` where 30 appended the block after a blank line, and the migration writes `renderers/signature_after_blank_line.md` (`input` and `format` `markdown_block`, [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2), whose body is `{{ if value != null && (value \| string.strip) != "" }}`, a blank line, then `{{ value }}{{ end }}`: a blank or absent signature leaves the signature and the line before it out, as 30 appended nothing, and a signature is written as 30's own bytes (a renderer's text is never escaped). A snippet read only by deliverables whose body, trimmed, ends with the read after one blank line or one line ending pipes it through `signature_after_blank_line` or `signature_after_line_end` (one line ending in place of the blank line); a signature with text after it, and a deliverable whose only piece is the signature, keep `{{ profile.signature }}`. Each renderer is written only into a package that needs it and listed in `renderers/index.json` in the order first used; a notice (`A10-089`). A body `if` on the trimmed read is refused ([chapter 5](#5-templates-and-macros)), and so is a guard node, whose rule would read the profile ([chapter 3](#3-expressions)). Each use of a signature renderer that shares its line with the text before it is warned (`S05-061`, W-2, § 5.5.4), which stays a warning: the renderer's output begins with its own line endings | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
+| a deliverable with a source that did not run (an `if` with no `else`, or a `case` with an empty branch, that took no branch), which 30 skipped | **an `if` that says each such source ran** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 3): for each source that may not run, one term, `{ "===": [ { "var": "node.<source>.state" }, "completed" ] }`, the terms joined by `and`, after 30's own `if` by `and` (an own `if` that is an `and` gains the terms after its own), so the deliverable is skipped where 30 skipped it (30 skipped a deliverable when **any** source took no branch) instead of composed from the others and released; a notice says so (`A10-079`). When 30's own `if` is a hand edit (the converter refused it), nothing is joined to it; a second hand edit on that `if` names the term (one, or the `and` of the terms), verbatim, for the operator to join to the condition by `and` (`A10-084`). The term is `.state === "completed"` where the deliverable's `if` can read the source's state, else `.value !== null`; a source that may not run and whose run it cannot read at all is a hand edit, whatever runs beside it (`A10-086`), and 30's own `if` is kept as converted ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 8). A source that always runs adds no term and cancels no other's, and so does a `while`: 30 composed a while that ran no pass as empty text and released the deliverable, as 31 does; beside another source its blank-line separator is kept, which no `if` can drop: an expected difference, `while-no-pass-separator` (§ 10.11). A new package is warned instead (`A11-010`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q3) | [6](#6-checks-deliverables-and-the-profile) |
 | a node only deliverables with a condition need (30 ran only what an applicable deliverable needed) | **each leaf of it gets those deliverables' `if`**, one or joined by `or` (a `for` has no `if`, so its body's leaves take it); a classifier, what a condition reads and a `while` are never gated; a notice (`A10-087`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 1). A gated source runs whenever its deliverable applies, so the row above judges it by 30's always-valued and joins no term for it | [4](#4-loops-and-functions) |
 | built-in renderers in C# (`concept_bullets`, `concept_context`) | **built-in Scriban renderers in the registry**, versioned and locked, their ids reserved; piped as `\| renderer.concept_bullets` | [5](#5-templates-and-macros) |
 | whitespace forms version 31 refuses, `-` on a tag | rewritten to the accepted forms | [5](#5-templates-and-macros) |
@@ -6635,7 +6682,8 @@ Every rewrite the format defines is listed here, with the chapter that defines t
 | a bare read of a node or an input in a template (`{{ input.consult_draft }}`) | **its `.content` form for text, its `.value` form otherwise**: a bare read of an object or a list is refused (A07-007, A07-008) ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1507#issuecomment-7073314647)); A date input read whole is written `{{ input.x.value | date.to_string "%d %b %Y" }}`, 30's `09 Nov 2026` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 2); a new package keeps the ISO form (#357) | [5](#5-templates-and-macros) |
 | a `for` over a loop node (`{{ for e in node.<loop> }}`), whose 30 list held only the items that ran | **over `.value`**, the completed items' values ([chapter 4 § 4.2.5](#425-reading-a-loop-from-outside)), each written as the item (`e.content` → `e`), where the body reads only each item's text (its `ret` a text format, or nothing of the item read); otherwise **over `.items`** with the body wrapped in `{{ if e.state == "completed" }} … {{ else }}{{ end }}`, inside the loop's own marks, unless it already tests the item's state (30's `skipped`), so an item its `until` or `max` left `not_run` writes no fixed text. A new package is warned instead (`A11-011`) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q4) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
 | a `for` whose `.content` is read (by a prompt, a rendered body, an expression or a deliverable), whose items 30 trimmed as it composed them | **a `rendered` node that strips each item**, written as the last node of the loop's body and made its `ret` ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7207709261), item 1): its id the old `ret`'s with `_stripped` (fitted as a classifier's id is), `producer: computed`, the old `ret`'s label, `description: null`, the old `ret`'s `.content` text format (`markdown_block` or `markdown_inline`, else `plaintext`), its `if` `{ "===": [ { "var": "node.<old ret id>.state" }, "completed" ] }` and its body `{{ node.<old ret id>.content \| string.strip }}`, reading its sibling by bare id; the loop's `ret` names it by its rooted key. The reads of the loop's `.content` stay as written: the engine builds it from the stripped items. A loop returned by a loop is stripped at each level, the outer node reading the inner loop's `.content`, and the formats of the loops and flows that return it follow the new `ret`. A loop read only through `.items` or `.value` is left as it was. A notice (`A10-088`). A loop whose items have no one text format (an `if` or a `case` of a Markdown and a plain branch) gets no node and keeps its `ret`: a hand edit on its `index.json`, member `ret` (`A10-090`), one publish does not refuse. The node's texts are 31's alone, an expected difference (`loop-item-strip-node`, § 10.11) | [4](#4-loops-and-functions), [5](#5-templates-and-macros) |
-| a single line ending inside a paragraph of a Markdown body, which 30's pipeline broke (a single line ending was a hard break) | **ended with `\`, an explicit hard break** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4), since 31's pipeline reads it as a space (§ 2.5.2). The sites are the bodies of deliverables, `rendered` nodes, macros, snippets (one or a folder's item) and package renderers whose `format` is `markdown_block` or `markdown_inline`. A line ending is found as publish's warning finds it (W-3, § 5.2.6): a single line ending inside a paragraph (in a list item, a quote, an alert or a footnote too), not in a fence, indented code, a table or a heading, not at a paragraph's last line, not before a list item or a heading, not inside a tag, not one a `~}}` or `-}}` ending the line or a `{{-` opening the next removes, and not beside a line of only tags and white space; a `\` or two spaces already there is a break, so migrating twice writes no second `\`. The `\` is written after any trailing spaces, and `~` does not strip it. Never a site: a prompt or a part, a body a prompt reads or places (a snippet, a folder's item read as `item.content`, a `rendered` node whose text a prompt reads, and whatever those read or place in turn), since a `\` there changes what the model reads; a deliverable a check's prompt reads stays a site; a file the migration writes itself (the stripping nodes, the signature renderers). A notice per file (`A10-091`); a body left for a prompt that a deliverable, a `rendered` node no prompt reads or a macro also shows, with such line endings, has a notice instead (`A10-092`), and publish warns there. The `\` is an expected difference (`explicit-hard-break`, § 10.11). No package of the conformance suite has such a line ending at a site | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
+| a single line ending inside a paragraph of a Markdown body, which 30's pipeline broke (a single line ending was a hard break) | **ended with `\`, an explicit hard break** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4), since 31's pipeline reads it as a space (§ 2.5.2). The sites are the bodies of deliverables, `rendered` nodes, macros, snippets (one or a folder's item) and package renderers whose `format` is `markdown_block` or `markdown_inline`, **a body a prompt reads or places included** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 1: the engine sends a prompt as the template's text and never renders its Markdown, so the model sees exactly what the reader sees): every site publish's warning names (W-3, § 5.2.6), found the same way, so a migrated package with no hand edit is warned nowhere. Never a site: a prompt or a part, which are not Markdown values; a file the migration writes itself (the stripping nodes, the signature renderers). A line ending is found as publish's warning finds it: a single line ending inside a paragraph (in a list item, a quote, an alert or a footnote too), not in a fence, indented code, a table or a heading, not at a paragraph's last line, not before a list item or a heading, not inside a tag, not one a `~}}` or `-}}` ending the line or a `{{-` opening the next removes. **Beside a line of only tags and white space it follows the tags' roles** (§ 5.2.6; [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2): a line ending after such a line is skipped when any of its tags is not an inline read, and one before such a line when any of its tags is a statement, a placement or a renderer, whose output may be nothing; so `Sincerely,` above a line of only `{{ profile.name }}` gets its `\`, and so does each line but the last of a letterhead of single inline reads. A line ending between a line of text and a line whose only reads are `markdown_block` reads, above or below it, gets **no** `\`: the next row writes a blank line there. A `\` or two spaces already there is a break, so migrating twice writes no second `\`. The `\` is written after any trailing spaces, and `~` does not strip it. A notice per file (`A10-091`, its count agreeing with its noun). The notice of a body a prompt reads whose line endings were kept (`A10-092`) is retired with the exception it named. The `\` is an expected difference (`explicit-hard-break`, § 10.11), in a prompt that places such a body too. No package of the conformance suite has such a line ending at a site | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
+| a `markdown_block` read with text before or after it on its line (`Sincerely, {{ profile.closing }}`; 30's `text` inputs and their fields are `markdown_block` at 31), which 31 refuses (§ 5.2.6, `S05-066`, `S05-067`) | **separated from that text by a blank line, on both sides** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543#issuecomment-7228887738) on 2026-11-27: `\` breaks only inside a paragraph, and a block value may start or end with a list, a table, a heading or a code block), dropping nothing. Text **before**: two line endings are written directly before the read's tag, the tags § 5.2.6 steps over kept on the read's line (`Seen at: {{ r }}` becomes `Seen at: `, an empty line, `{{ r }}`; `{{ if x }}{{ r }}{{ end }}` moves whole). Text **after**: two line endings directly after the read's tag and the tags that stay with it. **A line of text next to a line whose only reads are block reads**, above or below it: one more line ending, so a blank line stands between them. The sites are the hard-break row's, so a migrated package with no hand edit is refused and warned neither. **Where a blank line would break the read's line out of its Markdown block** (the text before it starts with a block marker, `-`, `*`, `+`, `>`, a list number `1.` or `1)`, `#` to `######`; or the text after it would start a block on its own line, or indented code), nothing on the line is moved, and it is a hand edit on the body (`A10-094`); publish refuses the package until it is made. A notice per file with a read separated (`A10-093`), naming each separated read once. The pass runs after the stripping nodes and directly before the hard breaks, and is idempotent: a blank line already there is left. The blank lines are an expected difference (`block-read-own-line`, § 10.11) | [5](#5-templates-and-macros), [6](#6-checks-deliverables-and-the-profile) |
 | a member read through an object that can be null (`{{ input.patient.age }}` of an input not required; a field that can be null; a node's `.value` when it may not run), which rendered empty at 30 | **wrapped in its guard**, the form `A11-009` accepts: `{{ if input.patient.value }}{{ input.patient.value.age }}{{ end }}`, each object the read steps through joined by `&&`, the tag's outer marks moved onto the guard; a `for` over such a list is wrapped whole. In a lifted part's text, which holds no `if`, a path the part's own `if` does not assert is a hand edit (§ 10.4) ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7179739459), Q5) | [5](#5-templates-and-macros) |
 | `onInvalid: flag` (a reply that did not fit was kept) | **`retry`**: one more attempt with the validation error, then the node fails; a notice (`A10-013`) says so, and the owner's before-and-after notification lists it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 3) | [5](#5-templates-and-macros) |
 | `failIfEmpty` on agent nodes | the failure sentence, or null (chapter 5 § 1.2); 30's true, false or absent is what the migration converts from | [5](#5-templates-and-macros) |
@@ -6714,6 +6762,9 @@ validation fails with sentences until each is made. The cases:
 - **a member read through an object that can be null where no guard can stand** (§ 10.1): in a lifted part's text, which
   holds no `if`, a path the part's own `if` does not assert (`A10-080`); until it is moved, publish refuses the read
   (`A11-009`);
+- **a `markdown_block` read whose line a blank line would break out of its Markdown block** (§ 10.1): `- {{ … }}`,
+  `> Signed: {{ … }}`, `# {{ … }}`, or text after the read that would start a block (`A10-094`); until the line is
+  rewritten, publish refuses the read (`S05-066`, `S05-067`);
 - **a package whose worst case passes the instances one job may open** at the engine's default (10,000), or in the
   bulk publish (§ 10.8) at the engine's configured limit, which publish refuses (`A11-001`): the migration counts the package it wrote as publish does, and the hand edit is on the outermost
   loop's `max` on the heaviest path, with `A11-001`'s count and limit (`A10-081`). **No `max` is written**
@@ -6959,10 +7010,23 @@ are listed as expected differences, never silently accepted.
   - **Plain text escaped into a Markdown deliverable** ([chapter 6](#6-checks-deliverables-and-the-profile)): unescaping the 31 text gives 30's bytes. A `let` of text is escaped too, and its computed value unescapes it ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #13); so are plain-text items joined into a Markdown loop's `.content`, which a prompt that reads the loop holds escaped (D23, [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 8). A rendered or computed node's text is read stripped as well as whole, since a migrated deliverable composes each source stripped ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966), item 3). Unescaping also drops the two spaces the escape writes before each line ending at 31 ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 1). The rule is `escaped-plain-text`.
   - **An explicit hard break the migration wrote** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1509#issuecomment-7209167166), item 4; § 10.1): a single line ending inside a
     paragraph of a Markdown body, which 30's pipeline broke and 31's does not, ends with `\`; 31's text holds that `\`
-    before the line ending, where 30's has none. It is credited, in any compared text (a macro body or a `rendered`
-    node a prompt reads later reaches prompts too), only in a package whose sources, with any operator's edits laid
-    over, hold a break the migration wrote, and only where removing the `\` brings 31's text nearer 30's
+    before the line ending, where 30's has none. It is credited, in any compared text, **a prompt's included** (a body
+    a prompt reads or places is a site, [ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543),
+    ruling 1, so a `\` in a prompt is part of this difference), only in a package whose sources, with any operator's
+    edits laid over, hold a break the migration wrote, and only where removing the `\` brings 31's text nearer 30's
     (`explicit-hard-break`).
+  - **A `markdown_block` read separated by a blank line** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543#issuecomment-7228887738)
+    on 2026-11-27, item 6; § 10.1): a block read that had text beside it on its line, which 31 refuses, or a line of
+    text next to its line, is separated from that text by a blank line the migration wrote; 31's text holds the line
+    endings of that blank line where 30's has the read inside the line, or one line ending. The rule
+    `block-read-own-line`, directly after `explicit-hard-break`, **only ever deletes line endings** from 31's text (two
+    where the read stood inside a line, one where a line of text stood next to the read's line), at the places of the
+    reads the migration separated (taken from the separated reads' positions in the migrated sources, with any
+    operator's edits laid over, never from any line a tag ends), only in a package with such a read, and is credited
+    only where that brings 31's text nearer 30's. It deletes no `\` and no other character, so it can never excuse a
+    lost word. Where a read rendered empty, its trailing space and the blank line beside it are one run of white space
+    that neither this rule nor `empty-read-trailing-space` brings nearer alone: the two are then tried as a pair, kept
+    only where together they do.
   - **A format's description sent** ([decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 7, #3): 31 sends the
     `description` of a format, at the top or on a property, where 30's sent format had none at that place; beside § 10.5's
     change (every property required, an optional one nullable) the rule `sent-format` sets it aside. A description that
@@ -7009,7 +7073,11 @@ are listed as expected differences, never silently accepted.
   - **An item that did not run** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966),
     item 4; Q4 stands): past a loop's `max`, or with its body skipped, an item writes nothing at 31 (§ 10.1's guard), where
     30's template loop wrote its fixed text for it; that text is 30's alone (`loop-item-not-run`). 30's fixed text for an
-    item that never ran was 30's defect.
+    item that never ran was 30's defect. The rule matches the loop body's text with each read as a wildcard on one line,
+    and **an identity read stops before the literal text that follows it in the body** (white space counted), so its
+    wildcard cannot swallow another item's result ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543),
+    ruling 5); a body with no literal text after an identity read is credited nothing. No rule excuses a lost result: an
+    item's result missing from 31's text is unexplained.
   - **A chosen macro's final line ending** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7199237966),
     item 5; no migration change): a macro the model chose whose body ends in a line ending stands where its marker stood
     with that one line ending dropped, as 31 renders every body (§ 5.8.6), where 30 wrote the body whole: the white space
@@ -7021,6 +7089,14 @@ are listed as expected differences, never silently accepted.
   - **An item named by its position** ([chapter 4 § 4.2.7](#4-loops-and-functions); an empty `itemLabel` field too,
     [decided](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171415045), 4): the loop's label
     and the position at 31, where 30 gave the input's label (`position-names-from-the-loop`).
+  - **A count over an accepted name** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543),
+    ruling 6): a count computed from an accepted name follows the name (`Topics 4` against 30's `Requested topics 4`
+    counts 404 where 30 counted 414). The rule `count-over-accepted-name`, directly after
+    `position-names-from-the-loop`, credits a number in 31's text only where a `computed` node of the run takes `size`
+    of one text it reads, the node's value is that count of 31's text and stands exactly once in the compared text, and
+    30's text for that read is equal to 31's or its own difference is wholly explained by the other rules; the number is
+    then put back as the expression gives it on 30's text. A number that differs by more, or a counted text that also
+    loses a word, stays unexplained.
   - **A macro the model chose, gated by its classifier** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1508#issuecomment-7171840295), items 1 and 2;
     § 10.1): the classifier's prompt is 31's alone, and the comparison answers it from the capture, `answer: true`
     exactly where 30's reply for the placing node held the macro's marker (`macro.<id>.content`, with the macro's 30 id where the migration renamed it); a captured reply is
