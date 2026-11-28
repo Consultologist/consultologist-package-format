@@ -1524,7 +1524,9 @@ order. Every member is present.
 parser decides), and an array of a text format takes several items, each typed, a document, or an
 earlier run's deliverable, in the order sent ([chapter 8 § 8.14](#814-what-belongs-to-the-app)). A data-format input is typed only,
 except an object filled from a `form`. An element from an earlier run's deliverable starts out
-model-derived (§ 2.1.2), and its record links to the job it came from.
+model-derived (§ 2.1.2), and its record links to the job it came from. The earlier run may be a 31 job: its
+deliverable is read from its record, only when its row's `state` is `released`, and its text is the row's retained
+text that hashes to `composedHash` ([decided in the build](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 9).
 
 - **A document uploaded to a Markdown input gives its extracted text, as at 30.** The
   document-to-Markdown converter (headings, lists and tables kept from docx; best effort from PDF
@@ -5084,6 +5086,9 @@ The list and the preview values are published as [`v31/profile.json`](v31/profil
   Create page). Packages never name blocks. There's no signature snapshot at
   31: the signature is a profile read, recorded by hash, and its text lives in the deliverable,
   under text retention.
+- **A block of several lines keeps them only when each ends with `\` or a blank line stands between them,** as
+  any `markdown_block` text (a single line ending inside a paragraph is a space at 31); the bulk publish tells an
+  owner whose chosen block or closing would be joined (`A11-018`, `A11-019`; [chapter 10 § 10.8](#108-a-package-that-stays-at-30-and-what-its-owner-is-told)).
 
 #### 6.10.4 A missing field refuses the job
 
@@ -5121,7 +5126,9 @@ registry** (the table in § 6.10.1), never the author's own profile.
   with limits of 120, 200 and 4,000 characters (the last the same as a signature block).
   The closing, like a signature block, is stored as typed and read as `markdown_block` (§ 6.10.1): a line of it breaks
   where the author ends it with `\` or leaves a blank line, since at 31 a single line ending is not a break
-  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2).
+  ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2). The card previews the closing
+  and the chosen signature block as the 31 bundle renders them (§ 2.5.2), with the hint *"End a line with \ or leave
+  a blank line."*
 - **The account time zone** (an IANA name, for `run.date`) is an **account setting, not a profile
   field:** it's never read as `profile.*`. It's a select list that starts empty, with a "Use this
   browser's zone" button that fills it only when clicked. The zone is recorded beside
@@ -6873,7 +6880,14 @@ since a field is always read after `.value`, so 30's `title` fields keep their n
   returns with Milestone 41, and after it what changed, with the report and the hand edits. **The
   notice also says that 31 jobs are refused until the account's time zone is set, and when a
   profile field the package reads is missing** ([chapter 6 §§ 6.10.4 and 6.10.7](#6104-a-missing-field-refuses-the-job));
-  those refusals apply to 31 jobs only.
+  those refusals apply to 31 jobs only. **An owner whose signature or closing has several lines is told** how to keep
+  them ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2; [chapter 6 § 6.10.3](#6103-the-signature)):
+  from 31 a single line ending inside a paragraph is a space, so the bulk publish reads the account's chosen signature
+  block and its closing and, for each that has one, lists once for the owner `A11-018`: *"Your signature has \<n\>
+  lines. From specVersion 31, end each line with \\, or leave a blank line between them."*, or `A11-019`, the same with
+  *"Your closing"*, `<n>` the text's lines that are not blank. A text that already ends its lines with `\` or
+  separates them by blank lines is not told. It is said whatever became of the owner's packages, in a dry run too;
+  only the count is written, never the text.
 
 ### 10.9 The converter
 
