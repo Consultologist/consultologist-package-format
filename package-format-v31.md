@@ -4763,8 +4763,8 @@ node with `plain`, or a renderer); the only automatic step is escaping.
 - **An object deliverable's output** is canonical JSON (RFC 8785).
 - **`profile.signature` and `profile.closing` are `markdown_block`** ([ruled](https://github.com/Consultologist/Consultologist-Blazor/issues/1543), 2),
   since a `markdown_inline` value cannot hold a line ending and these keep several lines: a Markdown deliverable or
-  macro body reads them as they are, each on its own line (`Sincerely,`, then the closing on the next line or after a
-  blank line), a line break inside them being the author's `\` or a blank line, and a `plaintext` one that reads
+  macro body reads them as they are, each on its own line (`Sincerely,`, a blank line, then
+  the closing), a line break inside them being the author's `\` or a blank line, and a `plaintext` one that reads
   either is refused (`S06-021`); no conversion is built. `name`, `credentials` and `organisation` stay `string`.
 
 #### 6.6.5 Headings are the author's
